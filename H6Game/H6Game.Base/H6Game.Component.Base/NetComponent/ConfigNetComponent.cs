@@ -9,7 +9,7 @@ namespace H6Game.Component.Base
 {
     public class ConfigNetComponent : BaseComponent
     {
-        public NetConfigEntity ConfigEntity;
+        public NetConfigEntity ConfigEntity { get; private set; }
 
         public ConfigNetComponent()
         {
@@ -19,7 +19,6 @@ namespace H6Game.Component.Base
                 SaveJsonFile(path);
             }
         }
-
 
         private bool ReadJsonFile(string path)
         {
@@ -36,7 +35,7 @@ namespace H6Game.Component.Base
                 }
             }
 
-            if (!string.IsNullOrEmpty(ConfigEntity.DespacherServer.IP))
+            if (!string.IsNullOrEmpty(ConfigEntity.RemoteEndPoint.IP) || !string.IsNullOrEmpty(ConfigEntity.LocalEndPoint.IP))
             {
                 return true;
             }
@@ -48,13 +47,8 @@ namespace H6Game.Component.Base
         {
             ConfigEntity = new NetConfigEntity
             {
-                GameServer = new EndPointEntity { IP = string.Empty, Desc = "游戏服务" },
-                GateServer = new EndPointEntity { IP = string.Empty, Desc = "网关服务" },
-                AccountServer = new EndPointEntity { IP = string.Empty, Desc = "账号服务" },
-                PayServer = new EndPointEntity { IP = string.Empty, Desc = "支付服务" },
-                ResourceServer = new EndPointEntity { IP = string.Empty, Desc = "资源服务" },
-                LoginServer = new EndPointEntity { IP = string.Empty, Desc = "登陆服务" },
-                DespacherServer = new EndPointEntity { IP = string.Empty, Desc = "分布式分发服务" },
+                RemoteEndPoint = new EndPointEntity { IP = string.Empty, Desc = "连接远程服务IP端口" },
+                LocalEndPoint = new EndPointEntity { IP = string.Empty, Desc = "本地服务监听IP端口" },
             };
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))

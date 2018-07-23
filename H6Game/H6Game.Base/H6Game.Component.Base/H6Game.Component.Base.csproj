@@ -8,6 +8,9 @@
     <Reference Include="Common">
       <HintPath>..\..\H6Game.Net\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Uitls">
+      <HintPath>..\..\H6Game.Uitls\bin\Debug\netstandard2.0\H6Game.Uitls.dll</HintPath>
+    </Reference>
     <Reference Include="NetChannel">
       <HintPath>..\..\H6Game.Net\NetChannel\bin\Debug\netstandard2.0\NetChannel.dll</HintPath>
     </Reference>
@@ -15,16 +18,11 @@
 
   <ItemGroup>
     <Folder Include="Attributes\" />
+    <Folder Include="MessageComponent\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="NetConfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

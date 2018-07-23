@@ -102,7 +102,7 @@ namespace NetChannel
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "StartConnecting", e);
 #endif
             }
@@ -176,7 +176,7 @@ namespace NetChannel
                         }
                         else
                         {
-#if DEBUG
+#if SERVER
                             LogRecord.Log(LogLevel.Warn, "HandleRecv", $"接收到客户端:{this.RemoteEndPoint}心跳包.");
 #endif
                         }
@@ -184,7 +184,7 @@ namespace NetChannel
                     catch (Exception e)
                     {
                         DisConnect();
-#if DEBUG
+#if SERVER
                         LogRecord.Log(LogLevel.Warn, "StartRecv", e);
 #endif
                         return;
@@ -256,7 +256,7 @@ namespace NetChannel
             catch(Exception e)
             {
                 DisConnect();
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "Output", e);
 #endif
             }

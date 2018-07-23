@@ -4,7 +4,7 @@ using System.Text;
 
 namespace H6Game.Component.Base
 {
-    public class OutNetComponent : BaseComponent
+    public class Scene
     {
 
     }

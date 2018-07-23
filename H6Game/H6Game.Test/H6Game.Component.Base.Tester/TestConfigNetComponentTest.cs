@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using H6Game.Component.Base;
+using H6Game.Uitls;
 
 namespace H6Game.Component.Base.Tester
 {

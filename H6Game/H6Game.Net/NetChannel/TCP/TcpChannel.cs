@@ -90,7 +90,7 @@ namespace NetChannel
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "StartConnecting", e);
 #endif
             }
@@ -121,7 +121,7 @@ namespace NetChannel
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "CheckConnection", e);
 #endif
                 return false;
@@ -179,7 +179,7 @@ namespace NetChannel
             catch (Exception e)
             {
                 isSending = false;
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "StartSend", e);
 #endif
                 DisConnect();
@@ -215,7 +215,7 @@ namespace NetChannel
             catch (Exception e)
             {
                 isReceiving = false;
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "StartRecv", e);
 #endif
                 DisConnect();
@@ -362,7 +362,7 @@ namespace NetChannel
                 catch(Exception ex)
                 {
                     DisConnect();
-#if DEBUG
+#if SERVER
                     LogRecord.Log(LogLevel.Warn, "OnRecvComplete", ex);
 #endif
                     return;

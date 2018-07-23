@@ -81,7 +81,17 @@ namespace NetChannel
         /// </summary>
         /// <returns></returns>
         public abstract ANetChannel Connect();
+
+        /// <summary>
+        /// 连接断开回调,只处理在客户端发生
+        /// </summary>
+        public Action<ANetChannel> OnDisconnectedInClient { get; set; }
         
+        /// <summary>
+        /// 连接成功回调，只处理在服务端发生
+        /// </summary>
+        public Action<ANetChannel> OnConnectedInServer { get; set; }
+
         /// <summary>
         /// 更新发送接收队列
         /// </summary>
@@ -135,7 +145,7 @@ namespace NetChannel
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleSend", e);
 #endif
             }
@@ -183,7 +193,7 @@ namespace NetChannel
                     {
                         IsHeartbeat = true
                     });
-#if DEBUG
+#if SERVER
                     LogRecord.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
 #endif
                 }
@@ -196,7 +206,7 @@ namespace NetChannel
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime)
                     {
-#if DEBUG
+#if SERVER
                         LogRecord.Log(LogLevel.Info, "CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
 #endif
                         channel.DisConnect();
@@ -238,14 +248,14 @@ namespace NetChannel
             {
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
-#if DEBUG
+#if SERVER
                     LogRecord.Log(LogLevel.Info, "HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
 #endif
                 }
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleDisConnectOnServer", e);
 #endif
             }
@@ -261,14 +271,15 @@ namespace NetChannel
             {
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
-#if DEBUG
+                    OnDisconnectedInClient?.Invoke(value);
+#if SERVER
                     LogRecord.Log(LogLevel.Info, "HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
 #endif
                 }
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleDisConnectOnClient", e);
 #endif
             }

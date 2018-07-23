@@ -6,13 +6,12 @@ namespace H6Game.Component.Base.Enums
 {
     public enum ServiceType
     {
-        GameClient,
+        All,
         GameServer,
         AccountService,
         GateService,
         LoginService,
         PayService,
         ResourceService,
-        DespacherService,
     }
 }

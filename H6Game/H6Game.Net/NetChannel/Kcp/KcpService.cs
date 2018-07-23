@@ -97,7 +97,7 @@ namespace NetChannel
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "StartRecv", e);
 #endif
                 return;
@@ -110,7 +110,7 @@ namespace NetChannel
                 var packet = connectParser.ReadBuffer();
                 if (!packet.IsSuccess)
                 {
-#if DEBUG
+#if SERVER
                     LogRecord.Log(LogLevel.Error, "StartRecv", $"丢弃非法数据包:{this.acceptor.RemoteEndPoint}.");
 #endif
                     //丢弃非法数据包
@@ -140,7 +140,7 @@ namespace NetChannel
                 }
                 else
                 {
-#if DEBUG
+#if SERVER
                     LogRecord.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
 #endif
                 }
@@ -212,13 +212,14 @@ namespace NetChannel
                 channel.Connected = true;
                 AddChannel(channel);
                 AddHandler(channel);
-#if DEBUG
+                this.OnConnectedInServer(channel);
+#if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
 #endif
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleAccept", e);
 #endif
             }
@@ -236,13 +237,13 @@ namespace NetChannel
                 channel.Connected = true;
                 AddChannel(channel);
                 AddHandler(channel);
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
 #endif
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleConnect", e);
 #endif
             }

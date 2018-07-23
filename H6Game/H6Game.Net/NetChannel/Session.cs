@@ -35,6 +35,16 @@ namespace NetChannel
         private ANetChannel clientChannel;
         private ProtocalType protocalType;
 
+        /// <summary>
+        /// 服务端发生连接断开回调事件
+        /// </summary>
+        public Action<ANetChannel> OnNetServiceDisconnected { get; set; }
+
+        /// <summary>
+        /// 服务端发生连接成功回调事件
+        /// </summary>
+        public Action<ANetChannel> OnNetServiceConnected { get; set; }
+
         public Session(IPEndPoint endPoint, ProtocalType protocalType)
         {
             this.endPoint = endPoint;
@@ -55,6 +65,7 @@ namespace NetChannel
             {
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Server);
             }
+            this.netService.OnConnectedInServer += (c) => { OnNetServiceConnected?.Invoke(c); };
             this.netService.Accept();
         }
 
@@ -73,6 +84,7 @@ namespace NetChannel
             {
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
+            this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
             clientChannel = this.netService.Connect();
             return clientChannel;
         }
@@ -86,7 +98,7 @@ namespace NetChannel
             }
             catch(Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "Update", e);
 #endif
             }
@@ -145,6 +157,6 @@ namespace NetChannel
                 Channel = this.clientChannel,
                 Packet = packet,
             });
-        }       
+        }
     }
 }

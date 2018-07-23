@@ -72,7 +72,7 @@ namespace NetChannel
 
             if (e.SocketError != SocketError.Success)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "OnAcceptComplete", $"接受连接发生错误.");
 #endif
                 return;
@@ -111,13 +111,14 @@ namespace NetChannel
                 channel.Connected = true;
                 AddChannel(channel);
                 AddHandler(channel);
-#if DEBUG
+                this.OnConnectedInServer(channel);
+#if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
 #endif
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleAccept", e);
 #endif
             }
@@ -135,13 +136,13 @@ namespace NetChannel
                 channel.Connected = true;
                 AddChannel(channel);
                 AddHandler(channel);
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
 #endif
             }
             catch (Exception e)
             {
-#if DEBUG
+#if SERVER
                 LogRecord.Log(LogLevel.Warn, "HandleConnect", e);
 #endif
             }
