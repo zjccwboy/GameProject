@@ -136,7 +136,6 @@ namespace NetChannel
                 return;
             }
 
-            packet.IsRpc = true;
             packet.RpcId = this.clientChannel.RpcId;
             this.clientChannel.AddPacket(packet, notificationAction);
             this.netService.Enqueue(new SendTask

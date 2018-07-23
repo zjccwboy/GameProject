@@ -27,8 +27,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetChannel", "H6Game.Net\Ne
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestKcpClient", "H6Game.Net\TestKcpClient\TestKcpClient.csproj", "{8DA8CD8E-6E95-47CC-9EB0-A97729CFB239}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B8A1F1EA-C40D-4940-ADCF-45DADFBE4076} = {B8A1F1EA-C40D-4940-ADCF-45DADFBE4076}
+		{9F7E72F1-8C55-4C4E-A02C-38F64D5D94E0} = {9F7E72F1-8C55-4C4E-A02C-38F64D5D94E0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestKcpServer", "H6Game.Net\TestKcpServer\TestKcpServer.csproj", "{D0C5BCC6-EFAB-4D55-9356-1FD378C9ACF1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B8A1F1EA-C40D-4940-ADCF-45DADFBE4076} = {B8A1F1EA-C40D-4940-ADCF-45DADFBE4076}
+		{9F7E72F1-8C55-4C4E-A02C-38F64D5D94E0} = {9F7E72F1-8C55-4C4E-A02C-38F64D5D94E0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataConvert", "H6Game.Net\TestDataConvert\TestDataConvert.csproj", "{F502BDC9-ADC9-4D9D-A689-03E224C86FE8}"
 EndProject

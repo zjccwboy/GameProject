@@ -6,6 +6,6 @@ namespace H6Game.Message
 {
     public interface IRequest
     {
-
+        uint MessageId { get; set; }
     }
 }

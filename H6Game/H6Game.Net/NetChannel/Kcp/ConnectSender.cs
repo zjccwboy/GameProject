@@ -40,7 +40,6 @@ namespace NetChannel
             var finPacket = new Packet
             {
                 KcpProtocal = KcpNetProtocal.ACK,
-                IsMessage = true,
                 MessageId = conv,
             };
 
@@ -60,7 +59,6 @@ namespace NetChannel
             var finPacket = new Packet
             {
                 KcpProtocal = KcpNetProtocal.FIN,
-                IsMessage = true,
                 MessageId = conv,
             };
 

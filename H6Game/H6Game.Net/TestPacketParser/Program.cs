@@ -20,7 +20,6 @@ namespace TestPacketParser
             var parser = new PacketParser();
             var packet = new Packet
             {
-                IsRpc = true,
                 RpcId = 10000111,
                 Data = Encoding.UTF8.GetBytes("654654654654654jhuiyd54yuhihittd6468jhjkhfyuduhlkjuyfyut68789554hhgvhggfd465nbvnbvxdhgkjbhjkl5454hgvj")
             };

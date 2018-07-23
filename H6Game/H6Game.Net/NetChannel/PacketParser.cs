@@ -18,7 +18,7 @@ namespace NetChannel
         /// <summary>
         /// Rpc请求标志
         /// </summary>
-        public bool IsRpc;
+        internal bool IsRpc;
 
         /// <summary>
         /// 心跳标志
@@ -43,7 +43,7 @@ namespace NetChannel
         /// <summary>
         /// 是否时Message
         /// </summary>
-        public bool IsMessage;
+        internal bool IsMessage;
 
         /// <summary>
         /// Rpc请求标识
@@ -75,6 +75,8 @@ namespace NetChannel
                     throw new ArgumentOutOfRangeException();
                 }
             }
+            IsMessage = MessageId > 0;
+            IsRpc = RpcId > 0;
             int headSize = IsRpc ? PacketParser.HeadMinSize + PacketParser.RpcFlagSize : PacketParser.HeadMinSize;
             headSize = IsMessage ? headSize + PacketParser.ActorIdFlagSize : headSize;
             int packetSize = headSize + bodySize;
