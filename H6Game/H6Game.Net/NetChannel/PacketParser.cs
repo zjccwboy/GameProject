@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using Common;
 
 namespace NetChannel
@@ -42,9 +41,9 @@ namespace NetChannel
         public byte KcpProtocal;
 
         /// <summary>
-        /// 是否时Actor
+        /// 是否时Message
         /// </summary>
-        public bool IsActorMessage;
+        public bool IsMessage;
 
         /// <summary>
         /// Rpc请求标识
@@ -54,7 +53,7 @@ namespace NetChannel
         /// <summary>
         /// Actor消息Id
         /// </summary>
-        public uint ActorMessageId;
+        public uint MessageId;
 
         /// <summary>
         /// 数据包
@@ -77,7 +76,7 @@ namespace NetChannel
                 }
             }
             int headSize = IsRpc ? PacketParser.HeadMinSize + PacketParser.RpcFlagSize : PacketParser.HeadMinSize;
-            headSize = IsActorMessage ? headSize + PacketParser.ActorIdFlagSize : headSize;
+            headSize = IsMessage ? headSize + PacketParser.ActorIdFlagSize : headSize;
             int packetSize = headSize + bodySize;
             var sizeBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt16(packetSize)));
             var bytes = new byte[headSize];
@@ -103,7 +102,7 @@ namespace NetChannel
             {
                 bytes[2] |= (byte)(KcpProtocal << 4);
             }
-            if (IsActorMessage)
+            if (IsMessage)
             {
                 bytes[2] |= 1 << 6;
             }
@@ -115,9 +114,9 @@ namespace NetChannel
                 bytes[5] = rpcBytes[2];
                 bytes[6] = rpcBytes[3];
             }
-            if (IsActorMessage)
+            if (IsMessage)
             {
-                var snBytes = BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder(Convert.ToInt32(ActorMessageId)));
+                var snBytes = BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder(Convert.ToInt32(MessageId)));
                 if (IsRpc)
                 {
                     bytes[7] = snBytes[0];
@@ -495,7 +494,7 @@ namespace NetChannel
                         IsCompress = isCompress,
                         IsHeartbeat = isHeartbeat,
                         KcpProtocal = kcpProtocal,
-                        ActorMessageId = actorMessageId,
+                        MessageId = actorMessageId,
                         Data = bodyBytes,
                     };
                     Flush();

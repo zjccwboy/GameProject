@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;SERVER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="Common">
       <HintPath>..\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>

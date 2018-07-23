@@ -40,8 +40,8 @@ namespace NetChannel
             var finPacket = new Packet
             {
                 KcpProtocal = KcpNetProtocal.ACK,
-                IsActorMessage = true,
-                ActorMessageId = conv,
+                IsMessage = true,
+                MessageId = conv,
             };
 
             //握手包不经过KCP发送
@@ -60,8 +60,8 @@ namespace NetChannel
             var finPacket = new Packet
             {
                 KcpProtocal = KcpNetProtocal.FIN,
-                IsActorMessage = true,
-                ActorMessageId = conv,
+                IsMessage = true,
+                MessageId = conv,
             };
 
             //握手包不经过KCP发送

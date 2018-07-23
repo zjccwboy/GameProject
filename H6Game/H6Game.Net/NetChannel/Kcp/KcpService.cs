@@ -180,7 +180,7 @@ namespace NetChannel
             }
             var channel = this.ClientChannel as KcpChannel;
             channel.RemoteEndPoint = remoteEP as IPEndPoint;
-            channel.Id = packet.ActorMessageId;
+            channel.Id = packet.MessageId;
             channel.InitKcp();
             channel.OnConnect = HandleConnect;
             channel.OnConnect?.Invoke(this.ClientChannel);
@@ -193,7 +193,7 @@ namespace NetChannel
         /// <param name="remoteEP"></param>
         private void HandleFIN(Packet packet, EndPoint remoteEP)
         {
-            if (this.Channels.TryGetValue(packet.ActorMessageId, out ANetChannel channel))
+            if (this.Channels.TryGetValue(packet.MessageId, out ANetChannel channel))
             {
                 channel.Connected = false;
                 channel.OnDisConnect?.Invoke(channel);
