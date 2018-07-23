@@ -9,7 +9,7 @@ namespace H6Game.Message
     /// </summary>
     public class MessageCMD
     {
-        #region 分布式服务指令 1-100
+        #region 分布式服务指令
         /// <summary>
         /// 新增一个服务连接
         /// </summary>

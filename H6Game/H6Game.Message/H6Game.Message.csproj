@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="InNetMessage\" />
     <Folder Include="OutNetMessage\" />
   </ItemGroup>
 
