@@ -4,8 +4,8 @@ using System.Text;
 
 namespace H6Game.Message
 {
-    public interface IRequest
+    public interface IMessage
     {
-        IMessage Message { get; set; }
+        uint MessageId { get; set; }
     }
 }

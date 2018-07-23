@@ -1,6 +1,5 @@
 ﻿using H6Game.Component.Base.Entity;
 using H6Game.Component.Base.Enums;
-using NetChannel;
 using System;
 using System.Net;
 using System.Threading;

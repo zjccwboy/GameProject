@@ -1,9 +1,6 @@
 ﻿using H6Game.Component.Base.Entity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using Common;
 
 namespace H6Game.Component.Base
 {

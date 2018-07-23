@@ -5,22 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Common">
-      <HintPath>..\..\H6Game.Net\Common\bin\Debug\netstandard2.0\Common.dll</HintPath>
-    </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Uitls">
       <HintPath>..\..\H6Game.Uitls\bin\Debug\netstandard2.0\H6Game.Uitls.dll</HintPath>
     </Reference>
-    <Reference Include="NetChannel">
-      <HintPath>..\..\H6Game.Net\NetChannel\bin\Debug\netstandard2.0\NetChannel.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Base\Common\log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
