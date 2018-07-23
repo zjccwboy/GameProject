@@ -283,7 +283,6 @@ namespace H6Game.Base
                         {
                             if (Buffer.FirstDataSize >= PacketFlagSize)
                             {
-
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, 0, PacketFlagSize);
                                 Buffer.UpdateRead(PacketFlagSize);
                             }

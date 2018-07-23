@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// </summary>
     public class MessageHandlerFactory
     {
-        private static List<Type> types;
+        private static HashSet<Type> types;
         static MessageHandlerFactory()
         {
             Load();
@@ -40,7 +40,7 @@ namespace H6Game.Base
         private static void Load()
         {
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-            types = new List<Type>();
+            types = new HashSet<Type>();
             foreach (var assembly in assemblys)
             {
                 var type = assembly.GetTypes();
