@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using H6Game.Message;
 
-namespace H6Game.Component.Base.MessageComponent
+namespace H6Game.Component.Base
 {
-    public class MessageHandler : IMessageHandler
+    /// <summary>
+    /// 分布式系统消息处理
+    /// </summary>
+    public class DistributedMessageHandler : IMessageHandler
     {
         public ANetChannel Channel { get; set; }
         public ANetService NetService { get; set; }

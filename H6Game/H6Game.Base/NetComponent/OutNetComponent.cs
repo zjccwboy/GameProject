@@ -1,12 +1,11 @@
-﻿using H6Game.Component.Base.Entity;
-using H6Game.Component.Base.Enums;
+﻿using H6Game.Base.Entity;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
 
-namespace H6Game.Component.Base
+namespace H6Game.Base
 {
     public class OutNetComponent : BaseComponent
     {

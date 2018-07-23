@@ -1,9 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Diagnostics;
 using System.Reflection;
 using log4net.Core;
@@ -11,8 +8,9 @@ using System.Linq;
 
 [assembly: XmlConfigurator(ConfigFile = "Log4net.config", Watch = true)]
 
-namespace H6Game.Component.Base
+namespace H6Game.Base
 {
+#if SERVER
     public class LogRecord
     {
         private static ILogger logger;
@@ -78,4 +76,5 @@ namespace H6Game.Component.Base
         }
 
     }
+#endif
 }

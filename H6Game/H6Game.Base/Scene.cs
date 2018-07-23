@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Component.Base.MessageComponent
+namespace H6Game.Base
 {
-    public class MessageComponent
+    public class Scene
     {
 
     }

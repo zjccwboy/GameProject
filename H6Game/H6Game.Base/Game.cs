@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Message
+namespace H6Game.Base
 {
-    public interface IRequest : IMessage
+    public class Game
     {
 
     }
