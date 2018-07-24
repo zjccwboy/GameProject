@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// <summary>
     /// 分布式系统消息处理
     /// </summary>
-    public class DistributedMessageHandler : AMessageHandler<DistributedMessageRq, DistributedMessageRp> ,IMessageHandler
+    public class DistributedMessageHandler : IMessageHandler
     {
         public ANetChannel Channel { get; set; }
         public ANetService NetService { get; set; }

@@ -5,8 +5,5 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public abstract class AMessageDispatcher : IMessageDispatcher
-    {
 
-    }
 }
