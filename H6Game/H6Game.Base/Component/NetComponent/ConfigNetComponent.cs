@@ -13,13 +13,13 @@ namespace H6Game.Base
         public ConfigNetComponent()
         {
             var path = $"{Directory.GetCurrentDirectory()}\\NetConfig.json";
-            if (!ReadJsonFile(path))
+            if (!ReadConfigFile(path))
             {
-                SaveJsonFile(path);
+                SaveConfigile(path);
             }
         }
 
-        private bool ReadJsonFile(string path)
+        private bool ReadConfigFile(string path)
         {
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
             {
@@ -44,7 +44,7 @@ namespace H6Game.Base
             return false;
         }
 
-        private void SaveJsonFile(string path)
+        private void SaveConfigile(string path)
         {
             ConfigEntity = new NetConfigEntity
             {

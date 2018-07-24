@@ -2,7 +2,6 @@
 using H6Game.Message.InNetMessage;
 using System;
 using System.Net;
-using System.Threading;
 
 namespace H6Game.Base
 {
@@ -23,7 +22,7 @@ namespace H6Game.Base
                 IP = this.config.CenterEndPoint.IP,
             };
             this.mapComponent = SinglePool.Get<NetMapComponent>();
-            this.ConnectToDefaultCenter(centerEndPoint);
+            this.ConnectToCenter(centerEndPoint);
         }
 
         public void HandleInAccept(DistributedMessageRp message)
@@ -62,7 +61,7 @@ namespace H6Game.Base
             this.outAcceptSession = session;
         }
 
-        public void ConnectToDefaultCenter(DistributedMessageRp message)
+        public void ConnectToCenter(DistributedMessageRp message)
         {
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
