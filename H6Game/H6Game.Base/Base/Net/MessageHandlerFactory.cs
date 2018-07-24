@@ -11,7 +11,8 @@ namespace H6Game.Base
         private static HashSet<Type> types;
         static MessageHandlerFactory()
         {
-            Load();
+            //Load();
+            types = ObjectFactory.GetTypes<IMessageHandler>();
         }
 
         /// <summary>
@@ -34,28 +35,28 @@ namespace H6Game.Base
             return handlers;
         }
 
-        /// <summary>
-        /// 加载全部消息处理类类型到内存中
-        /// </summary>
-        private static void Load()
-        {
-            var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-            types = new HashSet<Type>();
-            foreach (var assembly in assemblys)
-            {
-                var type = assembly.GetTypes();
-                foreach(var t in type)
-                {
-                    if(t == typeof(IMessageHandler))
-                    {
-                        continue;
-                    }
-                    if (typeof(IMessageHandler).IsAssignableFrom(t))
-                    {
-                        types.Add(t);
-                    }
-                }
-            }
-        }
+        ///// <summary>
+        ///// 加载全部消息处理类类型到内存中
+        ///// </summary>
+        //private static void Load()
+        //{
+        //    var assemblys = AppDomain.CurrentDomain.GetAssemblies();
+        //    types = new HashSet<Type>();
+        //    foreach (var assembly in assemblys)
+        //    {
+        //        var type = assembly.GetTypes();
+        //        foreach(var t in type)
+        //        {
+        //            if(t == typeof(IMessageHandler))
+        //            {
+        //                continue;
+        //            }
+        //            if (typeof(IMessageHandler).IsAssignableFrom(t))
+        //            {
+        //                types.Add(t);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

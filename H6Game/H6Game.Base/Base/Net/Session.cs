@@ -53,7 +53,7 @@ namespace H6Game.Base
         /// 开始监听并接受客户端连接
         /// </summary>
         /// <param name="endPoint"></param>
-        public void Accept()
+        public bool Accept()
         {
             if(this.protocalType == ProtocalType.Tcp)
             {
@@ -64,7 +64,7 @@ namespace H6Game.Base
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Server);
             }
             this.netService.OnConnectedInServer += (c) => { OnNetServiceConnected?.Invoke(c); };
-            this.netService.Accept();
+            return this.netService.Accept();
         }
 
         /// <summary>

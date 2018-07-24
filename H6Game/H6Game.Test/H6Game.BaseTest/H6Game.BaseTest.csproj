@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <Reference Include="H6Game.Base">
-      <HintPath>..\..\H6Game.Base\bin\Debug\netcoreapp2.1\H6Game.Base.dll</HintPath>
+      <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>

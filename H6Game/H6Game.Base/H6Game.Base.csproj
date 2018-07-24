@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;SERVER</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
@@ -12,9 +16,6 @@
   <ItemGroup>
     <Reference Include="H6Game.Message">
       <HintPath>..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Uitls">
-      <HintPath>..\H6Game.Uitls\bin\Debug\netstandard2.0\H6Game.Uitls.dll</HintPath>
     </Reference>
   </ItemGroup>
 

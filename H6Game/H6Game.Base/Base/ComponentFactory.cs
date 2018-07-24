@@ -8,17 +8,12 @@ namespace H6Game.Base
 {
     public class ComponentFactory
     {
+        public static HashSet<Type> CmponentTypes { get; }
+
         static ComponentFactory()
         {
-            var baseType = typeof(BaseComponent);
-            var subTypes = Assembly.GetExecutingAssembly().GetTypes().Where((a) => IsSubClassOf(a, baseType));
-            foreach (var type in subTypes)
-            {
-                CmponentTypes.Add(type);
-            }
+            CmponentTypes = ObjectFactory.GetTypes<BaseComponent>();
         }
-
-        public static List<Type> CmponentTypes { get; } = new List<Type>();
 
         public static BaseComponent CreateComponent(Type type)
         {
@@ -32,20 +27,6 @@ namespace H6Game.Base
             var component = (BaseComponent)Activator.CreateInstance(type, pars);
             component.ComponentId = ComponentIdCreator.CreateId();
             return component;
-        }
-
-        private static bool IsSubClassOf(Type type, Type baseType)
-        {
-            var b = type.BaseType;
-            while (b != null)
-            {
-                if (b.Equals(baseType))
-                {
-                    return true;
-                }
-                b = b.BaseType;
-            }
-            return false;
         }
     }
 }

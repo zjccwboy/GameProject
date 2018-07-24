@@ -28,8 +28,13 @@ namespace H6Game.Base
         /// 开始监听并接受连接请求
         /// </summary>
         /// <returns></returns>
-        public override void Accept()
+        public override bool Accept()
         {
+            if (!FreePort.TCPPortNoUsed(this.endPoint.Port))
+            {
+                return false;
+            }
+
             if(acceptor == null)
             {
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -43,9 +48,11 @@ namespace H6Game.Base
             this.innArgs.AcceptSocket = null;
             if (this.acceptor.AcceptAsync(this.innArgs))
             {
-                return;
+                return true;
             }
             OnComplete(this, this.innArgs);
+
+            return true;
         }
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)

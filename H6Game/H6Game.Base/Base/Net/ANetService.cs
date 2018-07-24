@@ -73,7 +73,7 @@ namespace H6Game.Base
         /// 监听并接受Socket连接
         /// </summary>
         /// <returns></returns>
-        public abstract void Accept();
+        public abstract bool Accept();
 
         /// <summary>
         /// 发送连接请求与创建连接

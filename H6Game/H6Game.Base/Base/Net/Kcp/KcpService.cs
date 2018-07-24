@@ -29,9 +29,14 @@ namespace H6Game.Base
         /// 开始监听并接受连接请求
         /// </summary>
         /// <returns></returns>
-        public override void Accept()
+        public override bool Accept()
         {
-            if(this.acceptor == null)
+            if (!FreePort.UDPPortNoUsed(this.endPoint.Port))
+            {
+                return false;
+            }
+
+            if (this.acceptor == null)
             {
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 if (serviceType == NetServiceType.Server)
@@ -43,6 +48,7 @@ namespace H6Game.Base
                 }
                 acceptor.Bind(this.endPoint);
             }
+            return true;
         }
 
         /// <summary>
