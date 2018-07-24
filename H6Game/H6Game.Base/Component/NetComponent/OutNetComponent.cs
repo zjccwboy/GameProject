@@ -9,7 +9,7 @@ namespace H6Game.Base
 {
     public class OutNetComponent : BaseComponent
     {
-        private NetConfigEntity config { get; set; }
+        private NetConfig config { get; set; }
         private Session connectSession;
         public OutNetComponent()
         {

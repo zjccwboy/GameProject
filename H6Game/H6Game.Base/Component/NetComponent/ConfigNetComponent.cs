@@ -8,7 +8,7 @@ namespace H6Game.Base
 {
     public class ConfigNetComponent : BaseComponent
     {
-        public NetConfigEntity ConfigEntity { get; private set; }
+        public NetConfig ConfigEntity { get; private set; }
 
         public ConfigNetComponent()
         {
@@ -30,13 +30,21 @@ namespace H6Game.Base
                     {
                         return false;
                     }
-                    ConfigEntity = json.ConvertToObject<NetConfigEntity>();
+                    ConfigEntity = json.ConvertToObject<NetConfig>();
                 }
             }
 
-            if (ConfigEntity.CenterEndPoint != null
-                && !string.IsNullOrEmpty(ConfigEntity.CenterEndPoint.IP)
-                && ConfigEntity.IPList.Any())
+            if(ConfigEntity.InNetConfig == null || ConfigEntity.OuNetConfig == null)
+            {
+                return false;
+            }
+
+            if (ConfigEntity.InNetConfig.CenterEndPoint != null
+                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.CenterEndPoint.IP)
+                && ConfigEntity.InNetConfig.IPList.Any()
+                && ConfigEntity.OuNetConfig.CenterEndPoint != null
+                && !string.IsNullOrEmpty(ConfigEntity.OuNetConfig.CenterEndPoint.IP)
+                && ConfigEntity.OuNetConfig.IPList.Any() )
             {
                 return true;
             }
@@ -46,15 +54,30 @@ namespace H6Game.Base
 
         private void SaveConfigile(string path)
         {
-            ConfigEntity = new NetConfigEntity
+            ConfigEntity = new NetConfig
             {
-                CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
-                MinPort = 40001,
-                MaxPort = 40020,
-                IPList = new List<string>
+                InNetConfig = new NetConfigEntity
                 {
-                    "127.0.0.1",
-                    "192.168.30.13",
+                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
+                    MinPort = 40001,
+                    MaxPort = 40020,
+                    IPList = new List<string>
+                    {
+                        "127.0.0.1",
+                        "192.168.30.13",
+                    },
+                },
+
+                OuNetConfig = new NetConfigEntity
+                {
+                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
+                    MinPort = 40001,
+                    MaxPort = 40020,
+                    IPList = new List<string>
+                    {
+                        "127.0.0.1",
+                        "192.168.30.13",
+                    },
                 },
             };
 

@@ -4,6 +4,12 @@ using System.Text;
 
 namespace H6Game.Base.Entity
 {
+    public class NetConfig
+    {
+        public NetConfigEntity InNetConfig { get; set; }
+        public NetConfigEntity OuNetConfig { get; set; }
+    }
+
     public class NetConfigEntity
     {
         public EndPointEntity CenterEndPoint { get; set; }

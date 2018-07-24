@@ -7,7 +7,7 @@ namespace H6Game.Base
 {
     public class InNetComponent : BaseComponent
     {
-        private NetConfigEntity config;
+        private NetConfig config;
         private Session inConnectSession;
         private Session inAcceptSession;
         private Session outAcceptSession;
@@ -18,8 +18,8 @@ namespace H6Game.Base
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             var centerEndPoint = new DistributedMessageRp
             {
-                Port = this.config.CenterEndPoint.Port,
-                IP = this.config.CenterEndPoint.IP,
+                Port = this.config.InNetConfig.CenterEndPoint.Port,
+                IP = this.config.InNetConfig.CenterEndPoint.IP,
             };
             this.mapComponent = SinglePool.Get<NetMapComponent>();
             this.ConnectToCenter(centerEndPoint);
@@ -27,7 +27,7 @@ namespace H6Game.Base
 
         public void HandleInAccept(DistributedMessageRp message)
         {
-            if(message.Port > this.config.MaxPort)
+            if(message.Port > this.config.InNetConfig.MaxPort)
             {
                 throw new Exception("TCP端口已经占满.");
             }
@@ -45,7 +45,7 @@ namespace H6Game.Base
 
         public void HandleOutAccept(DistributedMessageRp message)
         {
-            if (message.Port > this.config.MaxPort)
+            if (message.Port > this.config.InNetConfig.MaxPort)
             {
                 throw new Exception("KCP端口已经占满.");
             }
@@ -78,16 +78,23 @@ namespace H6Game.Base
                     }
                     session = sessionVal;
                 }
-                return;
             }
             this.inConnectSession = session;
+            this.inConnectSession.OnNetServiceDisconnected = (c)=> 
+            {
+                this.mapComponent.Remove(new DistributedMessageRp
+                {
+                    IP = c.RemoteEndPoint.Address.ToString(),
+                    Port = c.RemoteEndPoint.Port,
+                });
+            };
         }
 
         private bool TryConnect(out Session value)
         {
-            var start = this.config.MinPort;
-            var end = this.config.MaxPort;
-            var ips = this.config.IPList;
+            var start = this.config.InNetConfig.MinPort;
+            var end = this.config.InNetConfig.MaxPort;
+            var ips = this.config.InNetConfig.IPList;
             foreach(var ip in ips)
             {
                 for(var i = start; i<= end; i++)
