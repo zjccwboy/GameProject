@@ -16,13 +16,16 @@ namespace TestTcpClient
         {
             var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8989);
             var session = new Session(endPoint, ProtocalType.Tcp);
-            var channel = session.Connect(); ;
-            stopwatch.Start();
-            while (true)
+            //var channel = session.Connect();
+            if(session.TryConnect(out ANetChannel channel))
             {
-                Subscribe(session, channel);
-                session.Update();
-                Thread.Sleep(1);
+                stopwatch.Start();
+                while (true)
+                {
+                    Subscribe(session, channel);
+                    session.Update();
+                    Thread.Sleep(1);
+                }
             }
         }
 

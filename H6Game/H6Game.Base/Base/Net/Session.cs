@@ -1,6 +1,7 @@
 ﻿
 using System.Net;
 using System;
+using System.Threading;
 
 namespace H6Game.Base
 {
@@ -83,8 +84,46 @@ namespace H6Game.Base
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
             this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
-            clientChannel = this.netService.Connect();
+            this.clientChannel = this.netService.Connect();
             return clientChannel;
+        }
+
+        /// <summary>
+        /// 连接服务器
+        /// </summary>
+        /// <param name="endPoint"></param>
+        /// <returns></returns>
+        public bool TryConnect(out ANetChannel netChannel)
+        {
+            if (this.protocalType == ProtocalType.Tcp)
+            {
+                this.netService = new TcpService(this.endPoint, this, NetServiceType.Client);
+            }
+            else if (this.protocalType == ProtocalType.Kcp)
+            {
+                this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
+            }
+            this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
+            this.clientChannel = this.netService.Connect();
+            var retry = 0;
+            while (true)
+            {
+                Thread.Sleep(100);
+                this.Update();
+                if (retry > 30)//重试3秒钟
+                {
+                    netChannel = null;
+                    return false;
+                }
+                if (this.clientChannel.Connected)
+                {
+                    break;
+                }
+                retry++;
+            }
+
+            netChannel = this.clientChannel;
+            return clientChannel.Connected;
         }
 
         public void Update()
