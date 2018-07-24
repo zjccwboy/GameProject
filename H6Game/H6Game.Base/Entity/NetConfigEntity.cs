@@ -6,6 +6,7 @@ namespace H6Game.Base.Entity
 {
     public class NetConfig
     {
+        public bool IsCenterServer { get; set; }
         public NetConfigEntity InNetConfig { get; set; }
         public NetConfigEntity OuNetConfig { get; set; }
     }

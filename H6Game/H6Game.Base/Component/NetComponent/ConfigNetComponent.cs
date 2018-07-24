@@ -56,6 +56,8 @@ namespace H6Game.Base
         {
             ConfigEntity = new NetConfig
             {
+                IsCenterServer = true,
+
                 InNetConfig = new NetConfigEntity
                 {
                     CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },

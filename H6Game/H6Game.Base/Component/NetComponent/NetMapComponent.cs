@@ -2,6 +2,7 @@
 using H6Game.Message.InNetMessage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace H6Game.Base
@@ -48,7 +49,18 @@ namespace H6Game.Base
 
         public bool TryGetCenterIpEndPoint(out DistributedMessageRp message)
         {
-            message = new DistributedMessageRp();
+            if (!this.connectEntities.Any())
+            {
+                message = null;
+                return false;
+            }
+
+            var first = this.connectEntities.First.Value;
+            message = new DistributedMessageRp
+            {
+                IP = first.IP,
+                Port = first.Port,
+            };
             return true;
         }
 

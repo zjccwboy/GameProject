@@ -16,13 +16,25 @@ namespace H6Game.Base
         public InNetComponent()
         {
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
-            var centerEndPoint = new DistributedMessageRp
+            var outEndPoint = new DistributedMessageRp
+            {
+                Port = this.config.OuNetConfig.CenterEndPoint.Port,
+                IP = this.config.OuNetConfig.CenterEndPoint.IP,
+            };
+            HandleOutAccept(outEndPoint);
+
+            var inEndPoint = new DistributedMessageRp
             {
                 Port = this.config.InNetConfig.CenterEndPoint.Port,
                 IP = this.config.InNetConfig.CenterEndPoint.IP,
             };
             this.mapComponent = SinglePool.Get<NetMapComponent>();
-            this.ConnectToCenter(centerEndPoint);
+            if (config.IsCenterServer)
+            {
+                HandleInAccept(inEndPoint);
+                return;
+            }
+            this.ConnectToCenter(inEndPoint);
         }
 
         public void HandleInAccept(DistributedMessageRp message)
@@ -68,12 +80,22 @@ namespace H6Game.Base
             var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
             if (!session.TryConnect(out ANetChannel channel))
             {
-                if(!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
+                this.mapComponent.Remove(message);
+                if(this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
                 {
-                    if(!TryConnect(out Session sessionVal))
+                    ConnectToCenter(value);
+                }
+                else
+                {
+                    if (!TryConnectAll(out Session sessionVal))
                     {
-                        HandleInAccept(message);
-                        HandleOutAccept(message);
+                        var centerEndPoint = new DistributedMessageRp
+                        {
+                            Port = this.config.InNetConfig.CenterEndPoint.Port,
+                            IP = this.config.InNetConfig.CenterEndPoint.IP,
+                        };
+                        this.mapComponent.Add(centerEndPoint);
+                        HandleInAccept(centerEndPoint);
                         return;
                     }
                     session = sessionVal;
@@ -87,10 +109,26 @@ namespace H6Game.Base
                     IP = c.RemoteEndPoint.Address.ToString(),
                     Port = c.RemoteEndPoint.Port,
                 });
+
+                if (this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
+                {
+                    ConnectToCenter(value);
+                }
+                else
+                {
+                    var centerEndPoint = new DistributedMessageRp
+                    {
+                        Port = this.config.InNetConfig.CenterEndPoint.Port,
+                        IP = this.config.InNetConfig.CenterEndPoint.IP,
+                    };
+                    HandleInAccept(centerEndPoint);
+                    return;
+                }
             };
+            this.mapComponent.Add(message);
         }
 
-        private bool TryConnect(out Session value)
+        private bool TryConnectAll(out Session value)
         {
             var start = this.config.InNetConfig.MinPort;
             var end = this.config.InNetConfig.MaxPort;
