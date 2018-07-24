@@ -1,4 +1,5 @@
 ﻿using H6Game.Base.Entity;
+using H6Game.Message.InNetMessage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,9 +12,11 @@ namespace H6Game.Base
     public class NetMapComponent : BaseComponent
     {
 
-        public EndPointEntity GetRemoteEndPoint()
+        public bool TryGetCenterIpEndPoint(out DistributedMessageRp message)
         {
-            return new EndPointEntity();
+            message = new DistributedMessageRp();
+            return true;
         }
+
     }
 }

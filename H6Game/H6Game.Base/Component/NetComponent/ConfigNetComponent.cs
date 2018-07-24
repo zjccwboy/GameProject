@@ -1,6 +1,8 @@
 ﻿using H6Game.Base.Entity;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace H6Game.Base
 {
@@ -32,7 +34,9 @@ namespace H6Game.Base
                 }
             }
 
-            if (!string.IsNullOrEmpty(ConfigEntity.RemoteEndPoint.IP) || !string.IsNullOrEmpty(ConfigEntity.LocalEndPoint.IP))
+            if (ConfigEntity.CenterEndPoint != null
+                && !string.IsNullOrEmpty(ConfigEntity.CenterEndPoint.IP)
+                && ConfigEntity.IPList.Any())
             {
                 return true;
             }
@@ -44,17 +48,23 @@ namespace H6Game.Base
         {
             ConfigEntity = new NetConfigEntity
             {
-                RemoteEndPoint = new EndPointEntity { IP = string.Empty, Desc = "连接远程服务IP端口" },
-                LocalEndPoint = new EndPointEntity { IP = string.Empty, Desc = "本地服务监听IP端口" },
+                CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
+                MinPort = 40001,
+                MaxPort = 40020,
+                IPList = new List<string>
+                {
+                    "127.0.0.1",
+                    "192.168.30.13",
+                },
             };
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = ConfigEntity.ConvertToJson<NetConfigEntity>(Newtonsoft.Json.Formatting.Indented);
+                    var json = ConfigEntity.ConvertToJson(Newtonsoft.Json.Formatting.Indented);
                     sr.Write(json);
-                    Console.WriteLine("未配置服务IP地址");
+                    Console.WriteLine("未配置服务IP地址端口信息");
                 }
             }
         }

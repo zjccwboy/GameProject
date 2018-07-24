@@ -1,4 +1,5 @@
 ﻿using H6Game.Base.Entity;
+using H6Game.Message.InNetMessage;
 using System;
 using System.Net;
 using System.Threading;
@@ -7,51 +8,103 @@ namespace H6Game.Base
 {
     public class InNetComponent : BaseComponent
     {
-        public NetConfigEntity NetConfigEntity { get; private set; }
-
-        private Session connectSession;
-        private Session acceptSession;
+        private NetConfigEntity config;
+        private Session inConnectSession;
+        private Session inAcceptSession;
         private Session outAcceptSession;
         private NetMapComponent mapComponent;
 
         public InNetComponent()
         {
-            this.NetConfigEntity = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+            this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+            var centerEndPoint = new DistributedMessageRp
+            {
+                Port = this.config.CenterEndPoint.Port,
+                IP = this.config.CenterEndPoint.IP,
+            };
             this.mapComponent = SinglePool.Get<NetMapComponent>();
-            this.HandleConnect();
+            this.ConnectToDefaultCenter(centerEndPoint);
         }
 
-        private void HandleConnect()
+        public void HandleInAccept(DistributedMessageRp message)
         {
-            var localIpaddress = IPAddress.Parse(this.NetConfigEntity.LocalEndPoint.IP);
-            var localPort = this.NetConfigEntity.LocalEndPoint.Port;
-
-            var remoteIpAddress = IPAddress.Parse(this.NetConfigEntity.RemoteEndPoint.IP);
-            var remotePort = this.NetConfigEntity.RemoteEndPoint.Port;
-
-            this.acceptSession = new Session(new IPEndPoint(localIpaddress, localPort), ProtocalType.Tcp);
-            this.acceptSession.Accept();
-            var connect = new Session(new IPEndPoint(remoteIpAddress, remotePort), ProtocalType.Tcp);
-            var channel = connect.Connect();
-            var retry = 0;
-            while (!channel.Connected)
+            if(message.Port > this.config.MaxPort)
             {
-                Thread.Sleep(200);
-                retry++;
-                if (retry > 10)
+                throw new Exception("TCP端口已经占满.");
+            }
+
+            var ip = IPAddress.Parse(message.IP);
+            var port = message.Port;
+            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
+            if (!session.Accept())
+            {
+                message.Port++;
+                HandleInAccept(message);
+            }
+            this.inAcceptSession = session;
+        }
+
+        public void HandleOutAccept(DistributedMessageRp message)
+        {
+            if (message.Port > this.config.MaxPort)
+            {
+                throw new Exception("KCP端口已经占满.");
+            }
+
+            var ip = IPAddress.Parse(message.IP);
+            var port = message.Port;
+            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Kcp);
+            if (!session.Accept())
+            {
+                message.Port++;
+                HandleOutAccept(message);
+            }
+            this.outAcceptSession = session;
+        }
+
+        public void ConnectToDefaultCenter(DistributedMessageRp message)
+        {
+            var ip = IPAddress.Parse(message.IP);
+            var port = message.Port;
+            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
+            if (!session.TryConnect(out ANetChannel channel))
+            {
+                if(!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
                 {
-                    throw new Exception("分布式默认节点服务没有开启");
+                    if(!TryConnect(out Session sessionVal))
+                    {
+                        HandleInAccept(message);
+                        HandleOutAccept(message);
+                        return;
+                    }
+                    session = sessionVal;
+                }
+                return;
+            }
+            this.inConnectSession = session;
+        }
+
+        private bool TryConnect(out Session value)
+        {
+            var start = this.config.MinPort;
+            var end = this.config.MaxPort;
+            var ips = this.config.IPList;
+            foreach(var ip in ips)
+            {
+                for(var i = start; i<= end; i++)
+                {
+                    var port = i;
+                    var ipstr = IPAddress.Parse(ip);
+                    var session = new Session(new IPEndPoint(ipstr, port), ProtocalType.Tcp);
+                    if (session.TryConnect(out ANetChannel channel))
+                    {
+                        value = session;
+                        return true;
+                    }
                 }
             }
-            this.connectSession = connect;
-            this.connectSession.OnNetServiceDisconnected += (c) =>
-            {
-                this.NetConfigEntity.RemoteEndPoint = this.mapComponent.GetRemoteEndPoint();
-                HandleConnect();
-            };
-
-            this.outAcceptSession = new Session(new IPEndPoint(localIpaddress, localPort), ProtocalType.Kcp);
-            this.outAcceptSession.Accept();
+            value = null;
+            return false;
         }
     }
 }

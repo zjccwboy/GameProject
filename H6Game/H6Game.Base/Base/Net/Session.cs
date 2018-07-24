@@ -110,7 +110,7 @@ namespace H6Game.Base
             {
                 Thread.Sleep(100);
                 this.Update();
-                if (retry > 30)//重试3秒钟
+                if (retry > 10)//重试1秒钟
                 {
                     netChannel = null;
                     return false;
