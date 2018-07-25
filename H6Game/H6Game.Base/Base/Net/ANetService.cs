@@ -188,7 +188,7 @@ namespace H6Game.Base
                 var timeSpan = now - this.ClientChannel.LastSendTime;
                 if (timeSpan > HeartbeatTime)
                 {
-                    this.Session.SendMessage(new Packet
+                    this.Session.Notice(this.ClientChannel, new Packet
                     {
                         IsHeartbeat = true
                     });

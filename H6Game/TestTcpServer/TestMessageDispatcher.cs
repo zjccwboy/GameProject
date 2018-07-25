@@ -18,7 +18,7 @@ namespace TestTcpServer
 
         public override void Dispatcher(byte[] bytes)
         {
-            this.Session.SendMessage(new Packet
+            this.Session.Notice(this.Channel, new Packet
             {
                 RpcId = this.RpcId,
                 MessageId = (uint)MessageCMD.TestCMD,

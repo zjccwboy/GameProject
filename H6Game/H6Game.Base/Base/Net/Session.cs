@@ -181,18 +181,5 @@ namespace H6Game.Base
                 Packet = packet,
             });
         }
-
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="packet"></param>
-        public void SendMessage(Packet packet)
-        {
-            this.netService.Enqueue(new SendTask
-            {
-                Channel = this.clientChannel,
-                Packet = packet,
-            });
-        }
     }
 }
