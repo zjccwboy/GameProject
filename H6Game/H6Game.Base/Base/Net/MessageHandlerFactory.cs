@@ -1,4 +1,5 @@
-﻿using System;
+﻿using H6Game.Message;
+using System;
 using System.Collections.Generic;
 
 namespace H6Game.Base
@@ -12,7 +13,7 @@ namespace H6Game.Base
         static MessageHandlerFactory()
         {
             //Load();
-            types = ObjectFactory.GetTypes<IMessageHandler>();
+            types = ObjectFactory.GetTypes<IHandler>();
         }
 
         /// <summary>
@@ -34,29 +35,5 @@ namespace H6Game.Base
             }
             return handlers;
         }
-
-        ///// <summary>
-        ///// 加载全部消息处理类类型到内存中
-        ///// </summary>
-        //private static void Load()
-        //{
-        //    var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-        //    types = new HashSet<Type>();
-        //    foreach (var assembly in assemblys)
-        //    {
-        //        var type = assembly.GetTypes();
-        //        foreach(var t in type)
-        //        {
-        //            if(t == typeof(IMessageHandler))
-        //            {
-        //                continue;
-        //            }
-        //            if (typeof(IMessageHandler).IsAssignableFrom(t))
-        //            {
-        //                types.Add(t);
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

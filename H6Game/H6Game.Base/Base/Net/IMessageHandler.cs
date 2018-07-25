@@ -1,10 +1,12 @@
 ﻿
+using H6Game.Message;
+
 namespace H6Game.Base
 {
     /// <summary>
     /// 消息处理接口，应该所有的消息类都应该从该接口派生实现
     /// </summary>
-    public interface IMessageHandler
+    public interface IMessageHandler : IHandler
     {
         /// <summary>
         /// 通讯管道对象

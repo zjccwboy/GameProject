@@ -1,8 +1,6 @@
 ﻿using H6Game.Message;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Base
 {
@@ -29,8 +27,14 @@ namespace H6Game.Base
         private static void Load()
         {
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
+
+            var handlerType = typeof(IHandler);
             var messageHandlerBaseType = typeof(IMessageHandler);
-            var messageBaseTypes = typeof(IMessage);
+
+            var messageBaseType = typeof(IMessage);
+            var requestType = typeof(IRequest);
+            var responseType = typeof(IResponse);
+
             var componentBaseType = typeof(BaseComponent);
 
             foreach (var assembly in assemblys)
@@ -38,11 +42,16 @@ namespace H6Game.Base
                 var types = assembly.GetTypes();
                 foreach (var t in types)
                 {
-                    if (messageHandlerBaseType.IsAssignableFrom(t) && t != messageHandlerBaseType)
+                    if (messageHandlerBaseType.IsAssignableFrom(t) 
+                        && t != messageHandlerBaseType 
+                        && t != handlerType)
                     {
                         messageHandlerTypes.Add(t);
                     }
-                    else if(messageBaseTypes.IsAssignableFrom(t) && t != messageBaseTypes)
+                    else if(messageBaseType.IsAssignableFrom(t) 
+                        && t != messageBaseType 
+                        && t != requestType
+                        && t != responseType)
                     {
                         messageTypes.Add(t);
                     }
@@ -53,8 +62,8 @@ namespace H6Game.Base
                 }
             }
 
-            dictionary[messageHandlerBaseType] = messageHandlerTypes;
-            dictionary[messageBaseTypes] = messageTypes;
+            dictionary[handlerType] = messageHandlerTypes;
+            dictionary[messageBaseType] = messageTypes;
             dictionary[componentBaseType] = componentTypes;
         }
 

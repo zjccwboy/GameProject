@@ -6,9 +6,8 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public abstract class AMessageHandler
+    public abstract class AMessageHandler<Request, Response> where Request : IRequest where Response : IResponse
     {
-        private ConcurrentDictionary<uint, IDispatcher> dispatcherDictionary = new ConcurrentDictionary<uint, IDispatcher>();
 
     }
 }
