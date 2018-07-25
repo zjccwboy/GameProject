@@ -1,12 +1,16 @@
-﻿
-using H6Game.Message;
+﻿using H6Game.Message;
 
 namespace H6Game.Base
 {
     /// <summary>
     /// 消息处理接口，应该所有的消息类都应该从该接口派生实现
     /// </summary>
-    public interface IMessageHandler : IHandler
+    public interface IMessageHandler<Response> : IHandler where Response : IResponse
+    {
+
+    }
+
+    public interface IHandler
     {
         /// <summary>
         /// 通讯管道对象
@@ -17,6 +21,11 @@ namespace H6Game.Base
         /// 网络服务对象
         /// </summary>
         ANetService NetService { get; set; }
+
+        /// <summary>
+        /// 网络会话对象
+        /// </summary>
+        Session Session { get; set; }
 
         /// <summary>
         /// 接收消息处理回调接口，除了RPC以外的所有消息都会被回调到该接口中

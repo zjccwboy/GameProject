@@ -6,9 +6,6 @@ namespace H6Game.Base
 {
     public static class ObjectFactory
     {
-        private static readonly HashSet<Type> messageHandlerTypes = new HashSet<Type>();
-        private static readonly HashSet<Type> messageTypes = new HashSet<Type>();
-        private static readonly HashSet<Type> componentTypes = new HashSet<Type>();
         private static readonly Dictionary<Type, HashSet<Type>> dictionary = new Dictionary<Type, HashSet<Type>>();
 
         static ObjectFactory()
@@ -27,31 +24,34 @@ namespace H6Game.Base
         private static void Load()
         {
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-
             var handlerType = typeof(IHandler);
-            var messageHandlerBaseType = typeof(IMessageHandler);
-
             var messageBaseType = typeof(IMessage);
-            var requestType = typeof(IRequest);
-            var responseType = typeof(IResponse);
-
             var componentBaseType = typeof(BaseComponent);
+
+            var handlerTypes = new HashSet<Type>();
+            var messageTypes = new HashSet<Type>();
+            var componentTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)
             {
                 var types = assembly.GetTypes();
                 foreach (var t in types)
                 {
-                    if (messageHandlerBaseType.IsAssignableFrom(t) 
-                        && t != messageHandlerBaseType 
-                        && t != handlerType)
+                    if (!t.IsClass)
                     {
-                        messageHandlerTypes.Add(t);
+                        continue;
                     }
-                    else if(messageBaseType.IsAssignableFrom(t) 
-                        && t != messageBaseType 
-                        && t != requestType
-                        && t != responseType)
+
+                    if (t.IsAbstract)
+                    {
+                        continue;
+                    }
+
+                    if (handlerType.IsAssignableFrom(t))
+                    {
+                        handlerTypes.Add(t);
+                    }
+                    else if(messageBaseType.IsAssignableFrom(t))
                     {
                         messageTypes.Add(t);
                     }
@@ -62,7 +62,7 @@ namespace H6Game.Base
                 }
             }
 
-            dictionary[handlerType] = messageHandlerTypes;
+            dictionary[handlerType] = handlerTypes;
             dictionary[messageBaseType] = messageTypes;
             dictionary[componentBaseType] = componentTypes;
         }
