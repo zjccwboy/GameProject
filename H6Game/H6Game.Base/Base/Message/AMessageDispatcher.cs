@@ -27,6 +27,8 @@ namespace H6Game.Base
             {
                 Dispatcher(packet.Data);
             }
+            this.Session = null;
+            this.Channel = null;
         }
 
         public abstract void Dispatcher(Response response);

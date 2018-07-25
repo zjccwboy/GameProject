@@ -31,7 +31,6 @@ namespace H6Game.Base
     {
         private ANetService netService;
         private IPEndPoint endPoint;
-        private ANetChannel clientChannel;
         private ProtocalType protocalType;
 
         /// <summary>
@@ -84,8 +83,7 @@ namespace H6Game.Base
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
             this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
-            this.clientChannel = this.netService.Connect();
-            return clientChannel;
+            return this.netService.Connect();
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace H6Game.Base
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
             this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
-            this.clientChannel = this.netService.Connect();
+            var channel = this.netService.Connect();
             var retry = 0;
             while (true)
             {
@@ -115,15 +113,15 @@ namespace H6Game.Base
                     netChannel = null;
                     return false;
                 }
-                if (this.clientChannel.Connected)
+                if (channel.Connected)
                 {
                     break;
                 }
                 retry++;
             }
 
-            netChannel = this.clientChannel;
-            return clientChannel.Connected;
+            netChannel = channel;
+            return channel.Connected;
         }
 
         public void Update()
@@ -166,18 +164,18 @@ namespace H6Game.Base
         /// <param name="channel"></param>
         /// <param name="packet"></param>
         /// <param name="notificationAction"></param>
-        public void Subscribe(Packet packet, Action<Packet> notificationAction)
+        public void Subscribe(ANetChannel channel, Packet packet, Action<Packet> notificationAction)
         {
-            if (!this.clientChannel.Connected)
+            if (!channel.Connected)
             {
                 return;
             }
 
-            packet.RpcId = this.clientChannel.RpcId;
-            this.clientChannel.AddPacket(packet, notificationAction);
+            packet.RpcId = channel.RpcId;
+            channel.AddPacket(packet, notificationAction);
             this.netService.Enqueue(new SendTask
             {
-                Channel = this.clientChannel,
+                Channel = channel,
                 Packet = packet,
             });
         }

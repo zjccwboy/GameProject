@@ -61,7 +61,7 @@ namespace TestTcpClient
             for (var i = 1; i <= 1000; i++)
             {
                 sendCount++;
-                session.Subscribe(send, (packet) =>
+                session.Subscribe(channel, send, (packet) =>
                 {
                     recvCount++;
                     var data = Encoding.UTF8.GetString(packet.Data);//BitConverter.ToInt32(packet.Data, 0);
