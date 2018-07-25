@@ -62,7 +62,7 @@ namespace H6Game.Base
         /// <summary>
         /// 连接通道池
         /// </summary>
-        public readonly ConcurrentDictionary<long, IEnumerable<IMessageHandler>> Handlers = new ConcurrentDictionary<long, IEnumerable<IMessageHandler>>();
+        public readonly ConcurrentDictionary<long, MessageHandler> Handlers = new ConcurrentDictionary<long, MessageHandler>();
 
         /// <summary>
         /// 消息会话
@@ -232,8 +232,15 @@ namespace H6Game.Base
         {
             if (!Handlers.ContainsKey(channel.Id))
             {
-                var handlers = MessageHandlerFactory.CreateHandlers(this.Session, channel, this);
-                Handlers[channel.Id] = handlers;
+                var handler = new MessageHandler
+                {
+                    Session = this.Session,
+                    Channel = channel,
+                    NetService = this,
+                };
+
+                Handlers[channel.Id] = handler;
+                channel.OnReceive += handler.DoReceive;
             }
         }
 

@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// <summary>
     /// 分布式系统消息处理
     /// </summary>
-    public class MessageHandler : IMessageHandler
+    public class MessageHandler
     {
         public ANetChannel Channel { get; set; }
         public ANetService NetService { get; set; }
