@@ -24,13 +24,18 @@ namespace H6Game.Base
         private static void Load()
         {
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-            var handlerType = typeof(IHandler);
-            var messageBaseType = typeof(IMessage);
-            var componentBaseType = typeof(BaseComponent);
 
-            var handlerTypes = new HashSet<Type>();
+            var componentBaseType = typeof(BaseComponent);
+            var componentBaseTypes = new HashSet<Type>();
+
+            var handlerType = typeof(IMessageHandler);
             var messageTypes = new HashSet<Type>();
-            var componentTypes = new HashSet<Type>();
+
+            var messageBaseType = typeof(IMessage);
+            var handlerTypes = new HashSet<Type>();
+
+            var dispatcherType = typeof(IDispatcher);
+            var dispatcherTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)
             {
@@ -57,14 +62,19 @@ namespace H6Game.Base
                     }
                     else if(t.BaseType == componentBaseType)
                     {
-                        componentTypes.Add(t);
+                        componentBaseTypes.Add(t);
+                    }
+                    else if (dispatcherType.IsAssignableFrom(t))
+                    {
+                        dispatcherTypes.Add(t);
                     }
                 }
             }
 
             dictionary[handlerType] = handlerTypes;
             dictionary[messageBaseType] = messageTypes;
-            dictionary[componentBaseType] = componentTypes;
+            dictionary[componentBaseType] = componentBaseTypes;
+            dictionary[dispatcherType] = dispatcherTypes;
         }
 
     }

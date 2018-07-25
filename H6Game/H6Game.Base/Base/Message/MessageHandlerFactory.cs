@@ -12,7 +12,7 @@ namespace H6Game.Base
         private static HashSet<Type> types;
         static MessageHandlerFactory()
         {
-            types = ObjectFactory.GetTypes<IHandler>();
+            types = ObjectFactory.GetTypes<IMessageHandler>();
         }
 
         /// <summary>
@@ -21,12 +21,12 @@ namespace H6Game.Base
         /// <param name="channel">通讯管道对象</param>
         /// <param name="netService">网络服务对象</param>
         /// <returns></returns>
-        public static IEnumerable<IHandler> CreateHandlers(Session session, ANetChannel channel, ANetService netService)
+        public static IEnumerable<IMessageHandler> CreateHandlers(Session session, ANetChannel channel, ANetService netService)
         {
-            var handlers = new List<IHandler>();
+            var handlers = new List<IMessageHandler>();
             foreach(var type in types)
             {
-                var handler = (IHandler)Activator.CreateInstance(type);
+                var handler = (IMessageHandler)Activator.CreateInstance(type);
                 handler.Channel = channel;
                 handler.NetService = netService;
                 handler.Session = session;

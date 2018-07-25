@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTcpServer", "TestTcpSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGetCurrentPort", "H6Game.Test\TestGetCurrentPort\TestGetCurrentPort.csproj", "{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "H6Game.Test\Tester\Tester.csproj", "{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,10 @@ Global
 		{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{0FF1BA90-3007-4464-8530-CA5F56D0E4B8} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
 		{930EB7F4-7E8C-4A05-9BD7-E8A68E1325BF} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
 		{835F3DB2-3A80-4AD8-97C2-3D2001B269CA} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
+		{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9256E0EA-B7B6-467E-888A-9A55B18CEB05}

@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// <summary>
     /// 分布式系统消息处理
     /// </summary>
-    public class MessageHandler<Response> : IMessageHandler<Response> where Response : IResponse
+    public class MessageHandler : IMessageHandler
     {
         public ANetChannel Channel { get; set; }
         public ANetService NetService { get; set; }
@@ -16,7 +16,8 @@ namespace H6Game.Base
 
         public void DoReceive(Packet packet)
         {
-            //var data = packet.GetData<DistributedMessageRp>();
+            var dispatcher = DispatcherFactory.Get(packet.MessageId);
+            dispatcher.Receive(this.Session, this.Channel, packet);
         }
     }
 }

@@ -177,5 +177,23 @@ namespace H6Game.Base
             var obj = json.ConvertToObject<T>();
             return obj;
         }
+
+        /// <summary>
+        /// json bytes转object
+        /// </summary>
+        /// <param name="bytes">json bytes</param>
+        /// <param name="type">type</param>
+        /// <returns>泛型对象,class约束</returns>
+        public static object ConvertToObject(this byte[] bytes, Type type)
+        {
+            if (bytes == null)
+            {
+                return null;
+            }
+
+            var json = Encoding.UTF8.GetString(bytes);
+            var obj = JsonConvert.DeserializeObject(json, type);
+            return obj;
+        }
     }
 }

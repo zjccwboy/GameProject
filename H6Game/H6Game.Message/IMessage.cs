@@ -6,6 +6,5 @@ namespace H6Game.Message
 {
     public interface IMessage
     {
-        uint MessageCommand { get; set; }
     }
 }

@@ -62,7 +62,7 @@ namespace H6Game.Base
         /// <summary>
         /// 连接通道池
         /// </summary>
-        public readonly ConcurrentDictionary<long, IEnumerable<IHandler>> Handlers = new ConcurrentDictionary<long, IEnumerable<IHandler>>();
+        public readonly ConcurrentDictionary<long, IEnumerable<IMessageHandler>> Handlers = new ConcurrentDictionary<long, IEnumerable<IMessageHandler>>();
 
         /// <summary>
         /// 消息会话

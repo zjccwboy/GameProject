@@ -50,7 +50,7 @@ namespace H6Game.Base
         public int RpcId;
 
         /// <summary>
-        /// Actor消息Id
+        /// MessageId
         /// </summary>
         public uint MessageId;
 
@@ -134,26 +134,6 @@ namespace H6Game.Base
                 }
             }
             return bytes;
-        }
-
-        /// <summary>
-        /// 反序列化缓冲区包体字节数组并返回反序列化对象
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T GetData<T>() where T : class, new()
-        {
-            return Data.ConvertToObject<T>();
-        }
-
-        /// <summary>
-        /// 把一个对象序列化成一个byte数组存到包体缓冲区中
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        public void SetData<T>(T data) where T:class, new()
-        {
-            Data = data.ConvertToBytes();
         }
     }
 

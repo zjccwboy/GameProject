@@ -8,14 +8,13 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发接口
     /// </summary>
-    public interface IMessageDispatcher<Request, Response> : IDispatcher where Request : IRequest where Response : IResponse
+    public interface IMessageDispatcher<Response> : IDispatcher where Response : IResponse
     {
-        void Receive(Response response);
-        void Receive(Packet packet);
+
     }
 
     public interface IDispatcher
     {
-
+        void Receive(Session session, ANetChannel channel, Packet packet);
     }
 }

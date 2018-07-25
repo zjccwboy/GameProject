@@ -7,24 +7,22 @@ namespace H6Game.Message
     /// <summary>
     /// 全局消息定义
     /// </summary>
-    public class MessageCMD
+    public enum MessageCMD
     {
-        #region 分布式服务指令
         /// <summary>
         /// 新增一个服务连接
         /// </summary>
-        public const uint AddOneServer = 1;
+        AddOneServer = 100,
         /// <summary>
         /// 删除一个服务连接
         /// </summary>
-        public const uint DeleteOneServer = 2;
+        DeleteOneServer,
         /// <summary>
         /// 更新当前所有服务连接列表
         /// </summary>
-        public const uint UpdateCurrentConnections = 3;
-        #endregion
+        UpdateCurrentConnections,
 
 
-
+        TestCMD = 100000,
     }
 }

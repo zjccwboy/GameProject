@@ -2,15 +2,7 @@
 
 namespace H6Game.Base
 {
-    /// <summary>
-    /// 消息处理接口，应该所有的消息类都应该从该接口派生实现
-    /// </summary>
-    public interface IMessageHandler<Response> : IHandler where Response : IResponse
-    {
-
-    }
-
-    public interface IHandler
+    public interface IMessageHandler
     {
         /// <summary>
         /// 通讯管道对象
