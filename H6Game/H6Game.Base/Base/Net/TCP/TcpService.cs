@@ -35,9 +35,19 @@ namespace H6Game.Base
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 this.innArgs.Completed += this.OnComplete;
+                try
+                {
+                    this.acceptor.Bind(this.endPoint);
+                    this.acceptor.Listen(1000);
+                }
+                catch(Exception e)
+                {
+#if SERVER
+                    LogRecord.Log(LogLevel.Error, "Accept", e);
+#endif
+                    return false;
+                }
 
-                this.acceptor.Bind(this.endPoint);
-                this.acceptor.Listen(1000);
             }
 
             this.innArgs.AcceptSocket = null;

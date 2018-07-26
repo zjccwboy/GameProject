@@ -41,7 +41,17 @@ namespace H6Game.Base
                     uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
                     this.acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
                 }
-                acceptor.Bind(this.endPoint);
+                try
+                {
+                    acceptor.Bind(this.endPoint);
+                }
+                catch(Exception e)
+                {
+#if SERVER
+                    LogRecord.Log(LogLevel.Error, "Accept", e);
+#endif
+                    return false;
+                }
             }
             return true;
         }
