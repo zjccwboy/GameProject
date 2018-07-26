@@ -31,11 +31,6 @@ namespace H6Game.Base
         /// <returns></returns>
         public override bool Accept()
         {
-            if (!FreePort.UDPPortNoUsed(this.endPoint.Port))
-            {
-                return false;
-            }
-
             if (this.acceptor == null)
             {
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

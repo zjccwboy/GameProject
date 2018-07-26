@@ -30,12 +30,7 @@ namespace H6Game.Base
         /// <returns></returns>
         public override bool Accept()
         {
-            if (!FreePort.TCPPortNoUsed(this.endPoint.Port))
-            {
-                return false;
-            }
-
-            if(acceptor == null)
+            if (acceptor == null)
             {
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
