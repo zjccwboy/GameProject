@@ -373,6 +373,8 @@ namespace H6Game.Base
 
         private void OnSendComplete(object o)
         {
+            this.LastSendTime = TimeUitls.Now();
+
             isSending = false;
 
             if (this.NetSocket == null)

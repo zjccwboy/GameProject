@@ -82,11 +82,6 @@ namespace H6Game.Base
         protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionarys = new ConcurrentDictionary<int, Action<Packet>>();
 
         /// <summary>
-        /// 同步多线程发送队列
-        /// </summary>
-        protected readonly SemaphoreSlim SendSemaphore = new SemaphoreSlim(1);
-
-        /// <summary>
         /// 网络服务类
         /// </summary>
         public ANetService netService { get; private set; }

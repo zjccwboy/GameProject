@@ -1,6 +1,7 @@
 ﻿using H6Game.Base.Entity;
 using H6Game.Message.InNetMessage;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace H6Game.Base
@@ -8,7 +9,7 @@ namespace H6Game.Base
     public class InNetComponent : BaseComponent
     {
         private NetConfig config;
-        private Session inConnectSession;
+        private Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
         private NetMapComponent mapComponent;
@@ -18,32 +19,56 @@ namespace H6Game.Base
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             var outEndPoint = new DistributedMessageRp
             {
-                Port = this.config.OuNetConfig.CenterEndPoint.Port,
-                IP = this.config.OuNetConfig.CenterEndPoint.IP,
+                Port = config.InNetConfig.OutNetListenPort,
+                IP = "0.0.0.0",
             };
             HandleOutAccept(outEndPoint);
 
-            var inEndPoint = new DistributedMessageRp
+            this.mapComponent = SinglePool.Get<NetMapComponent>();
+
+            var centerEndPoint = new DistributedMessageRp
             {
                 Port = this.config.InNetConfig.CenterEndPoint.Port,
                 IP = this.config.InNetConfig.CenterEndPoint.IP,
             };
-            this.mapComponent = SinglePool.Get<NetMapComponent>();
-            if (config.IsCenterServer)
+            var localEndPoint = new DistributedMessageRp
             {
-                HandleInAccept(inEndPoint);
-                return;
+                Port = this.config.InNetConfig.LocalEndPoint.Port,
+                IP = this.config.InNetConfig.LocalEndPoint.IP,
+            };
+            if (this.config.IsCenterServer)
+            {
+                HandleInAccept(centerEndPoint);
             }
-            this.ConnectToCenter(inEndPoint);
+
+            else
+            {
+                HandleInAccept(localEndPoint);
+            }
+            this.ConnectToCenter(centerEndPoint);
+        }
+
+        public void Update()
+        {
+            if(outAcceptSession != null)
+            {
+                outAcceptSession.Update();
+            }
+
+            if(inAcceptSession != null)
+            {
+                inAcceptSession.Update();
+            }
+
+            var connections = inConnectSessions.Values;
+            foreach(var connect in connections)
+            {
+                connect.Update();
+            }
         }
 
         public void HandleInAccept(DistributedMessageRp message)
         {
-            if(message.Port > this.config.InNetConfig.MaxPort)
-            {
-                throw new Exception("TCP端口已经占满.");
-            }
-
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
             var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
@@ -53,15 +78,25 @@ namespace H6Game.Base
                 HandleInAccept(message);
             }
             this.inAcceptSession = session;
+            this.inAcceptSession.OnNetServiceConnected = (c) =>
+            {
+
+            };
+
+#if SERVER
+            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听端口:{message.Port}成功.");
+#endif
+
+#if SERVER
+            if (config.IsCenterServer)
+            {
+                LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
+            }
+#endif
         }
 
         public void HandleOutAccept(DistributedMessageRp message)
         {
-            if (message.Port > this.config.InNetConfig.MaxPort)
-            {
-                throw new Exception("KCP端口已经占满.");
-            }
-
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
             var session = new Session(new IPEndPoint(ip, port), ProtocalType.Kcp);
@@ -75,80 +110,59 @@ namespace H6Game.Base
 
         public void ConnectToCenter(DistributedMessageRp message)
         {
+            if (config.IsCenterServer)
+            {
+                return;
+            }
+
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
             var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
             if (!session.TryConnect(out ANetChannel channel))
             {
                 this.mapComponent.Remove(message);
-                if(this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
+                if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
                 {
-                    ConnectToCenter(value);
+#if SERVER
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
+#endif
+                    return;
                 }
-                else
-                {
-                    if (!TryConnectAll(out Session sessionVal))
-                    {
-                        var centerEndPoint = new DistributedMessageRp
-                        {
-                            Port = this.config.InNetConfig.CenterEndPoint.Port,
-                            IP = this.config.InNetConfig.CenterEndPoint.IP,
-                        };
-                        this.mapComponent.Add(centerEndPoint);
-                        HandleInAccept(centerEndPoint);
-                        return;
-                    }
-                    session = sessionVal;
-                }
+                ConnectToCenter(value);
             }
-            this.inConnectSession = session;
-            this.inConnectSession.OnNetServiceDisconnected = (c)=> 
+            this.mapComponent.Add(message);
+            var hashCode = GetHashCode(message);
+            this.inConnectSessions.Add(hashCode, session);
+            session.OnNetServiceDisconnected = (c) =>
             {
-                this.mapComponent.Remove(new DistributedMessageRp
+                var messageRp = new DistributedMessageRp
                 {
                     IP = c.RemoteEndPoint.Address.ToString(),
                     Port = c.RemoteEndPoint.Port,
-                });
+                };
 
-                if (this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
+                this.mapComponent.Remove(messageRp);
+                this.inConnectSessions.Remove(GetHashCode(messageRp));
+                if (config.IsCenterServer)
                 {
-                    ConnectToCenter(value);
-                }
-                else
-                {
-                    var centerEndPoint = new DistributedMessageRp
-                    {
-                        Port = this.config.InNetConfig.CenterEndPoint.Port,
-                        IP = this.config.InNetConfig.CenterEndPoint.IP,
-                    };
-                    HandleInAccept(centerEndPoint);
                     return;
                 }
+                if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessageRp value))
+                {
+#if SERVER
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
+#endif
+                    return;
+                }
+                ConnectToCenter(value);
             };
             this.mapComponent.Add(message);
         }
 
-        private bool TryConnectAll(out Session value)
+        private int GetHashCode(DistributedMessageRp messageRp)
         {
-            var start = this.config.InNetConfig.MinPort;
-            var end = this.config.InNetConfig.MaxPort;
-            var ips = this.config.InNetConfig.IPList;
-            foreach(var ip in ips)
-            {
-                for(var i = start; i<= end; i++)
-                {
-                    var port = i;
-                    var ipstr = IPAddress.Parse(ip);
-                    var session = new Session(new IPEndPoint(ipstr, port), ProtocalType.Tcp);
-                    if (session.TryConnect(out ANetChannel channel))
-                    {
-                        value = session;
-                        return true;
-                    }
-                }
-            }
-            value = null;
-            return false;
+            var hashCode = $"{messageRp.IP}:{messageRp.Port}".GetHashCode();
+            return hashCode;
         }
     }
 }

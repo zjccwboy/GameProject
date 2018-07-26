@@ -7,15 +7,19 @@ namespace H6Game.Base.Entity
     public class NetConfig
     {
         public bool IsCenterServer { get; set; }
-        public NetConfigEntity InNetConfig { get; set; }
-        public NetConfigEntity OuNetConfig { get; set; }
+        public InNetConfigEntity InNetConfig { get; set; }
+        public OutNetConfigEntity OuNetConfig { get; set; }
     }
 
-    public class NetConfigEntity
+    public class InNetConfigEntity
     {
         public EndPointEntity CenterEndPoint { get; set; }
-        public int MinPort { get; set; }
-        public int MaxPort { get; set; }
-        public List<string> IPList { get; set; } = new List<string>();
+        public EndPointEntity LocalEndPoint { get; set; }
+        public int OutNetListenPort { get; set; }
+    }
+
+    public class OutNetConfigEntity
+    {
+        public string Host { get; set; }
     }
 }

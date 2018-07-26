@@ -27,12 +27,12 @@ namespace H6Game.Base
         /// <summary>
         /// 最后一次检测心跳的时间
         /// </summary>
-        private uint LastCheckTime;
+        private uint LastCheckTime = TimeUitls.Now();
 
         /// <summary>
         /// 心跳超时时长
         /// </summary>
-        public static uint HeartbeatTime = 1000 * 20;
+        public static uint HeartbeatTime = 1000 * 8;
 
         /// <summary>
         /// 接受连接请求Socket
@@ -186,7 +186,7 @@ namespace H6Game.Base
                     return;
                 }
                 var timeSpan = now - this.ClientChannel.LastSendTime;
-                if (timeSpan > HeartbeatTime)
+                if (timeSpan > HeartbeatTime - 200)
                 {
                     this.Session.Notice(this.ClientChannel, new Packet
                     {
@@ -203,7 +203,7 @@ namespace H6Game.Base
                 foreach (var channel in channels)
                 {
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime)
+                    if (timeSpan > HeartbeatTime + 4000)
                     {
 #if SERVER
                         LogRecord.Log(LogLevel.Info, "CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");

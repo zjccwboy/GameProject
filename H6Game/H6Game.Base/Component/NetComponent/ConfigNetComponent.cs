@@ -41,10 +41,8 @@ namespace H6Game.Base
 
             if (ConfigEntity.InNetConfig.CenterEndPoint != null
                 && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.CenterEndPoint.IP)
-                && ConfigEntity.InNetConfig.IPList.Any()
-                && ConfigEntity.OuNetConfig.CenterEndPoint != null
-                && !string.IsNullOrEmpty(ConfigEntity.OuNetConfig.CenterEndPoint.IP)
-                && ConfigEntity.OuNetConfig.IPList.Any() )
+                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.LocalEndPoint.IP)
+                && !string.IsNullOrEmpty(ConfigEntity.OuNetConfig.Host))
             {
                 return true;
             }
@@ -58,28 +56,15 @@ namespace H6Game.Base
             {
                 IsCenterServer = true,
 
-                InNetConfig = new NetConfigEntity
+                InNetConfig = new InNetConfigEntity
                 {
-                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
-                    MinPort = 40001,
-                    MaxPort = 40020,
-                    IPList = new List<string>
-                    {
-                        "127.0.0.1",
-                        "192.168.30.13",
-                    },
+                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式中心服务监听IP端口" },
+                    LocalEndPoint = new EndPointEntity { IP = string.Empty, Desc = "本地服务监听IP端口" },
                 },
 
-                OuNetConfig = new NetConfigEntity
+                OuNetConfig = new OutNetConfigEntity
                 {
-                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式默认启动主机IP端口" },
-                    MinPort = 40001,
-                    MaxPort = 40020,
-                    IPList = new List<string>
-                    {
-                        "127.0.0.1",
-                        "192.168.30.13",
-                    },
+                    Host = "payapi.test.com",
                 },
             };
 
