@@ -117,17 +117,17 @@ namespace H6Game.Base
         {
             try
             {
-                channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.Connected = true;
                 channel.Handler = new MessageHandler
                 {
                     Session = this.Session,
                     Channel = channel,
                     NetService = this,
-                }; ;
+                };
+                channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.OnReceive += channel.Handler.DoReceive;
-                AddChannel(channel);
-                this.OnConnectedInServer(channel);
+                this.AddChannel(channel);
+                this.OnServerConnected?.Invoke(channel);
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
 #endif
@@ -148,7 +148,6 @@ namespace H6Game.Base
         {
             try
             {
-                channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.Connected = true;
                 channel.Handler = new MessageHandler
                 {
@@ -156,8 +155,10 @@ namespace H6Game.Base
                     Channel = channel,
                     NetService = this,
                 };
-                AddChannel(channel);
+                channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.OnReceive += channel.Handler.DoReceive;
+                this.AddChannel(channel);
+                this.OnClientConnected?.Invoke(channel);
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
 #endif

@@ -1,4 +1,5 @@
 ﻿using H6Game.Base.Entity;
+using H6Game.Message;
 using H6Game.Message.InNetMessage;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,18 @@ namespace H6Game.Base
             }
         }
 
-        public void HandleInAccept(DistributedMessage message)
+        public void BroadcastConnections(Session session, List<DistributedMessage> message)
+        {
+            var bytes = message.ConvertToBytes();
+            var packet = new Packet
+            {
+                MessageId = (int)MessageCMD.UpdateInNetonnections,
+                Data = bytes,
+            };
+            session.Broadcast(packet);
+        }
+
+        private void HandleInAccept(DistributedMessage message)
         {
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
@@ -78,11 +90,6 @@ namespace H6Game.Base
                 HandleInAccept(message);
             }
             this.inAcceptSession = session;
-            this.inAcceptSession.OnNetServiceConnected = (c) =>
-            {
-
-            };
-
 #if SERVER
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听端口:{message.Port}成功.");
 #endif
@@ -95,7 +102,7 @@ namespace H6Game.Base
 #endif
         }
 
-        public void HandleOutAccept(DistributedMessage message)
+        private void HandleOutAccept(DistributedMessage message)
         {
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;
@@ -108,7 +115,7 @@ namespace H6Game.Base
             this.outAcceptSession = session;
         }
 
-        public void ConnectToCenter(DistributedMessage message)
+        private void ConnectToCenter(DistributedMessage message)
         {
             if (config.IsCenterServer)
             {
@@ -133,7 +140,7 @@ namespace H6Game.Base
             this.mapComponent.Add(message);
             var hashCode = GetHashCode(message);
             this.inConnectSessions.Add(hashCode, session);
-            session.OnNetServiceDisconnected = (c) =>
+            session.OnClientDisconnected = (c) =>
             {
                 var messageRp = new DistributedMessage
                 {
@@ -155,6 +162,11 @@ namespace H6Game.Base
                     return;
                 }
                 ConnectToCenter(value);
+            };
+
+            session.OnClientConnected = (c) =>
+            {
+
             };
             this.mapComponent.Add(message);
         }

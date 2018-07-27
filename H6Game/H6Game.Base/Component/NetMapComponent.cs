@@ -1,28 +1,28 @@
-﻿using H6Game.Base.Entity;
-using H6Game.Message.InNetMessage;
-using System;
+﻿using H6Game.Message.InNetMessage;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace H6Game.Base
 {
-    public class ConnectEntity
-    {
-        public string IP { get; set; }
-        public int Port { get; set; }
-    }
 
     /// <summary>
     /// 管理整个服务端分布式的组件
     /// </summary>
     public class NetMapComponent : BaseComponent
     {
-        private readonly LinkedList<ConnectEntity> connectEntities = new LinkedList<ConnectEntity>();
+        private readonly LinkedList<DistributedMessage> connectEntities = new LinkedList<DistributedMessage>();
+
+        public List<DistributedMessage> ConnectEntities
+        {
+            get
+            {
+                return connectEntities.ToList();
+            }
+        }
 
         public void Remove(DistributedMessage message)
         {
-            ConnectEntity remove = null;
+            DistributedMessage remove = null;
             foreach (var entiry in connectEntities)
             {
                 if(entiry.IP == message.IP && entiry.Port == message.Port)
@@ -40,11 +40,20 @@ namespace H6Game.Base
 
         public void Add(DistributedMessage message)
         {
-            this.connectEntities.AddLast(new ConnectEntity
+            this.connectEntities.AddLast(new DistributedMessage
             {
                 IP = message.IP,
                 Port = message.Port,
             });
+        }
+
+        public void Update(IEnumerable<DistributedMessage> entities)
+        {
+            connectEntities.Clear();
+            foreach(var entity in entities)
+            {
+                connectEntities.AddLast(entity);
+            }
         }
 
         public bool TryGetCenterIpEndPoint(out DistributedMessage message)

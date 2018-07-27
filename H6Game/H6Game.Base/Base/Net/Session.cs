@@ -2,6 +2,7 @@
 using System.Net;
 using System;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace H6Game.Base
 {
@@ -34,14 +35,24 @@ namespace H6Game.Base
         private ProtocalType protocalType;
 
         /// <summary>
-        /// 服务端发生连接断开回调事件
+        /// 连接断开回调发生在服务端
         /// </summary>
-        public Action<ANetChannel> OnNetServiceDisconnected { get; set; }
+        public Action<ANetChannel> OnServerDisconnected { get; set; }
 
         /// <summary>
-        /// 服务端发生连接成功回调事件
+        /// 连接断开回调发生在服务端
         /// </summary>
-        public Action<ANetChannel> OnNetServiceConnected { get; set; }
+        public Action<ANetChannel> OnServerConnected { get; set; }
+
+        /// <summary>
+        /// 连接断开回调发生在客户端
+        /// </summary>
+        public Action<ANetChannel> OnClientDisconnected { get; set; }
+
+        /// <summary>
+        /// 连接断开回调发生在客户端
+        /// </summary>
+        public Action<ANetChannel> OnClientConnected { get; set; }
 
         public Session(IPEndPoint endPoint, ProtocalType protocalType)
         {
@@ -63,7 +74,10 @@ namespace H6Game.Base
             {
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Server);
             }
-            this.netService.OnConnectedInServer += (c) => { OnNetServiceConnected?.Invoke(c); };
+
+            this.netService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c); };
+            this.netService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c); };
+
             return this.netService.Accept();
         }
 
@@ -82,7 +96,8 @@ namespace H6Game.Base
             {
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
-            this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
+            this.netService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
+            this.netService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
             return this.netService.Connect();
         }
 
@@ -101,7 +116,8 @@ namespace H6Game.Base
             {
                 this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
             }
-            this.netService.OnDisconnectedInClient += (c) => { this.OnNetServiceDisconnected?.Invoke(c); };
+            this.netService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
+            this.netService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
             var channel = this.netService.Connect();
             var retry = 0;
             while (true)
@@ -178,6 +194,31 @@ namespace H6Game.Base
                 Channel = channel,
                 Packet = packet,
             });
+        }
+
+        /// <summary>
+        /// 给所有的Channel广播一条消息
+        /// </summary>
+        /// <param name="packet"></param>
+        public void Broadcast(Packet packet)
+        {
+            var channels = this.netService.Channels.Values;
+            foreach(var channel in channels)
+            {
+                Notice(channel, packet);
+            }
+        }
+
+        /// <summary>
+        /// 给所有的Channel广播一条消息
+        /// </summary>
+        /// <param name="packet"></param>
+        public void Broadcast(IEnumerable<ANetChannel> channels, Packet packet)
+        {
+            foreach (var channel in channels)
+            {
+                Notice(channel, packet);
+            }
         }
     }
 }

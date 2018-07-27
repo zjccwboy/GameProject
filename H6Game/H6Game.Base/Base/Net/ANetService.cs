@@ -77,14 +77,24 @@ namespace H6Game.Base
         public abstract ANetChannel Connect();
 
         /// <summary>
-        /// 连接断开回调,只处理在客户端发生
+        /// 连接断开回调在服务端发生
         /// </summary>
-        public Action<ANetChannel> OnDisconnectedInClient { get; set; }
-        
+        public Action<ANetChannel> OnServerDisconnected { get; set; }
+
         /// <summary>
-        /// 连接成功回调，只处理在服务端发生
+        /// 连接成功回调在服务端发生
         /// </summary>
-        public Action<ANetChannel> OnConnectedInServer { get; set; }
+        public Action<ANetChannel> OnServerConnected { get; set; }
+
+        /// <summary>
+        /// 连接断开回调在客户端发生
+        /// </summary>
+        public Action<ANetChannel> OnClientDisconnected { get; set; }
+
+        /// <summary>
+        /// 连接成功回调在客户端发生
+        /// </summary>
+        public Action<ANetChannel> OnClientConnected { get; set; }
 
         /// <summary>
         /// 更新发送接收队列
@@ -229,6 +239,7 @@ namespace H6Game.Base
             {
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
+                    OnServerDisconnected?.Invoke(channel);
 #if SERVER
                     LogRecord.Log(LogLevel.Info, "HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
 #endif
@@ -252,7 +263,7 @@ namespace H6Game.Base
             {
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
-                    OnDisconnectedInClient?.Invoke(value);
+                    OnClientDisconnected?.Invoke(value);
 #if SERVER
                     LogRecord.Log(LogLevel.Info, "HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
 #endif
