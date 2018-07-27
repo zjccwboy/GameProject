@@ -26,7 +26,7 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="netService">网络通讯服务对象</param>
         /// <param name="conv">KCP连接确认号Conv</param>
-        public ANetChannel(ANetService netService, uint conv)
+        public ANetChannel(ANetService netService, int conv)
         {
             this.netService = netService;
             Id = conv;
@@ -35,7 +35,7 @@ namespace H6Game.Base
         /// <summary>
         /// 通讯管道Id标识
         /// </summary>
-        public uint Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Socket

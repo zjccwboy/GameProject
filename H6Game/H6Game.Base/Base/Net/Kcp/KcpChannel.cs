@@ -39,7 +39,7 @@ namespace H6Game.Base
         /// <param name="socket">Socket</param>
         /// <param name="netService">网络服务</param>
         /// <param name="connectConv">网络连接Conv</param>
-        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, uint connectConv) : base(netService, connectConv)
+        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, int connectConv) : base(netService, connectConv)
         {
             this.RemoteEndPoint = endPoint;
             this.NetSocket = socket;
@@ -49,7 +49,7 @@ namespace H6Game.Base
 
         public void InitKcp()
         {
-            kcp = new Kcp(this.Id, this);
+            kcp = new Kcp((uint)this.Id, this);
             kcp.SetOutput(this.Output);
             kcp.NoDelay(1, 10, 2, 1);  //fast
         }

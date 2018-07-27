@@ -22,7 +22,7 @@ namespace H6Game.Base
         /// <summary>
         /// 心跳标志
         /// </summary>
-        public bool IsHeartbeat;
+        internal bool IsHeartbeat;
 
         /// <summary>
         /// 压缩标志
@@ -52,7 +52,7 @@ namespace H6Game.Base
         /// <summary>
         /// MessageId
         /// </summary>
-        public uint MessageId;
+        public int MessageId;
 
         /// <summary>
         /// 数据包
@@ -193,7 +193,7 @@ namespace H6Game.Base
         private byte[] bodyBytes = new byte[0];
         private byte[] headBytes = new byte[HeadMaxSize];
         private int rpcId;
-        private uint actorMessageId;
+        private int messageId;
         private bool isRpc;
         private bool isCompress;
         private bool isHeartbeat;
@@ -348,7 +348,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(ActorIdFlagSize - count);
                             }
                             readLength += ActorIdFlagSize;
-                            actorMessageId = (uint)IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, needSize));
+                            messageId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, needSize));
                             state = ParseState.Body;
                         }
                         break;
@@ -440,7 +440,7 @@ namespace H6Game.Base
         private void Flush()
         {
             rpcId = 0;
-            actorMessageId = 0;
+            messageId = 0;
             isRpc = false;
             isEncrypt = false;
             isCompress = false;
@@ -474,7 +474,7 @@ namespace H6Game.Base
                         IsCompress = isCompress,
                         IsHeartbeat = isHeartbeat,
                         KcpProtocal = kcpProtocal,
-                        MessageId = actorMessageId,
+                        MessageId = messageId,
                         Data = bodyBytes,
                     };
                     Flush();

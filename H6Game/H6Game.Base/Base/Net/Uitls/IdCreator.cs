@@ -7,12 +7,12 @@ namespace H6Game.Base
     /// </summary>
     public class ChannelIdCreator
     {
-        private static long id;
-        public static uint CreateId()
+        private static int id;
+        public static int CreateId()
         {
             Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 1, uint.MaxValue);
-            return (uint)id;
+            Interlocked.CompareExchange(ref id, 1, int.MaxValue);
+            return id;
         }
     }
 
@@ -36,11 +36,11 @@ namespace H6Game.Base
     public class KcpConvIdCreator
     {
         private static int id = 100000;
-        public static uint CreateId()
+        public static int CreateId()
         {
             Interlocked.Increment(ref id);
             Interlocked.CompareExchange(ref id, 100000, int.MaxValue);
-            return (uint)id;
+            return id;
         }
     }
 }

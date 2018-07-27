@@ -16,8 +16,11 @@ namespace H6Game.Base
 
         public void DoReceive(Packet packet)
         {
-            var dispatcher = DispatcherFactory.Get(packet.MessageId);
-            dispatcher.Receive(this.Session, this.Channel, packet);
+            var dispatchers = DispatcherFactory.Get(packet.MessageId);
+            foreach(var dispatcher in dispatchers)
+            {
+                dispatcher.Receive(this.Session, this.Channel, packet);
+            }
         }
     }
 }

@@ -8,13 +8,12 @@ namespace H6Game.Base
 {
     public static class DispatcherFactory
     {
-        private static HashSet<Type> dispatcherTypes;
-        private static Dictionary<uint, IDispatcher> dispatcherDictionary = new Dictionary<uint, IDispatcher>();
-        private static Dictionary<uint, Type> meesageCmdDictionary = new Dictionary<uint, Type>();
+        private static Dictionary<int, HashSet<IDispatcher>> dispatcherDictionary = new Dictionary<int, HashSet<IDispatcher>>();
+        private static Dictionary<int, HashSet<Type>> meesageCmdDictionary = new Dictionary<int, HashSet<Type>>();
 
         static DispatcherFactory()
         {
-            dispatcherTypes = ObjectFactory.GetTypes<IDispatcher>();
+            var dispatcherTypes = ObjectFactory.GetTypes<IDispatcher>();
             foreach (var type in dispatcherTypes)
             {
                 var attributes = type.GetCustomAttributes<MessageCMDAttribute>();
@@ -23,33 +22,49 @@ namespace H6Game.Base
 
                 foreach (var cmd in cmds)
                 {
-                    meesageCmdDictionary[cmd] = dispatcher.ResponseType;
-                    if (!dispatcherDictionary.ContainsKey(cmd))
+                    if (!meesageCmdDictionary.TryGetValue(cmd, out HashSet<Type> messageType))
                     {
-                        dispatcherDictionary[cmd] = dispatcher;
+                        messageType = new HashSet<Type>();
+                        meesageCmdDictionary[cmd] = messageType;
                     }
+                    messageType.Add(dispatcher.ResponseType);
+
+                    if(!dispatcherDictionary.TryGetValue(cmd, out HashSet<IDispatcher> dispatchers))
+                    {
+                        dispatchers = new HashSet<IDispatcher>();
+                        dispatcherDictionary[cmd] = dispatchers;
+                    }
+                    dispatchers.Add(dispatcher);
                 }
             }
         }
 
-        public static bool TryGetResponse<T>(uint messageCmd, byte[] bytes, out T response)
+        public static bool TryGetResponse<T>(int messageCmd, byte[] bytes, out T response)
         {
-            if (!meesageCmdDictionary.TryGetValue(messageCmd, out Type type))
+            var type = typeof(T);
+            if (!meesageCmdDictionary.TryGetValue(messageCmd, out HashSet<Type> types))
             {
                 response = default(T);
                 return false;
             }
+
+            if (!types.Contains(type))
+            {
+                response = default(T);
+                return false;
+            }
+
             response = (T)bytes.ConvertToObject(type);
             return true;
         }
 
-        public static IDispatcher Get(uint messageCmd)
+        public static HashSet<IDispatcher> Get(int messageCmd)
         {
-            if (!dispatcherDictionary.TryGetValue(messageCmd, out IDispatcher dispatcher))
+            if (!dispatcherDictionary.TryGetValue(messageCmd, out HashSet<IDispatcher> dispatchers))
             {
                 throw new Exception($"CMD:{messageCmd}没有在IDispatcher实现类中加入MessageCMDAttribute.");
             }
-            return dispatcher;
+            return dispatchers;
         }
     }
 }

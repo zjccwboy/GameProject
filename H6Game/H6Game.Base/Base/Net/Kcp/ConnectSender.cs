@@ -32,7 +32,7 @@ namespace H6Game.Base
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendACK(Socket socket, IPEndPoint endPoint, uint conv)
+        public static void SendACK(Socket socket, IPEndPoint endPoint, int conv)
         {
             var finPacket = new Packet
             {
@@ -51,7 +51,7 @@ namespace H6Game.Base
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendFIN(Socket socket, IPEndPoint endPoint, uint conv)
+        public static void SendFIN(Socket socket, IPEndPoint endPoint, int conv)
         {
             var finPacket = new Packet
             {
