@@ -111,7 +111,7 @@ namespace H6Game.Base
 
             var centerMessage = GetCenterEndPointMessage();
             var centerHashCode = GetMessageHashCode(centerMessage);
-            //排除中心服务区
+            //排除中心服务
             if (hashCode == centerHashCode)
             {
                 return;
@@ -154,7 +154,7 @@ namespace H6Game.Base
 
             var centerMessage = GetCenterEndPointMessage();
             var centerHashCode = GetMessageHashCode(centerMessage);
-            //排除中心服务区
+            //排除中心服务
             if(key == centerHashCode)
             {
                 return;
