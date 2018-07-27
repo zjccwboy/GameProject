@@ -18,6 +18,10 @@ namespace H6Game.Base.Base.Message
                     SinglePool.Get<NetMapComponent>().Remove(response);
                     break;
             }
+
+#if SERVER
+            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
+#endif
             var connections = SinglePool.Get<NetMapComponent>().ConnectEntities;
             SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections);
         }
@@ -29,6 +33,9 @@ namespace H6Game.Base.Base.Message
         protected override void Dispatcher(List<DistributedMessage> response, int messageId)
         {
             SinglePool.Get<NetMapComponent>().Update(response);
+#if SERVER
+            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/NetonnectionsDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
+#endif
         }
     }
 }

@@ -81,9 +81,7 @@ namespace H6Game.Base
 
         private void HandleInAccept(DistributedMessage message)
         {
-            var ip = IPAddress.Parse(message.IP);
-            var port = message.Port;
-            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
+            var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
             if (!session.Accept())
             {
                 message.Port++;
@@ -104,9 +102,7 @@ namespace H6Game.Base
 
         private void HandleOutAccept(DistributedMessage message)
         {
-            var ip = IPAddress.Parse(message.IP);
-            var port = message.Port;
-            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Kcp);
+            var session = new Session(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
             {
                 message.Port++;
@@ -122,9 +118,18 @@ namespace H6Game.Base
                 return;
             }
 
-            var ip = IPAddress.Parse(message.IP);
-            var port = message.Port;
-            var session = new Session(new IPEndPoint(ip, port), ProtocalType.Tcp);
+            var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
+
+            //注册连接成功回调
+            session.OnClientConnected = (c) =>
+            {
+                session.Notice(c, new Packet
+                {
+                    MessageId = (int)MessageCMD.AddOneServer,
+                    Data = message.ConvertToBytes(),
+                });
+            };
+
             if (!session.TryConnect(out ANetChannel channel))
             {
                 this.mapComponent.Remove(message);
@@ -140,6 +145,9 @@ namespace H6Game.Base
             this.mapComponent.Add(message);
             var hashCode = GetHashCode(message);
             this.inConnectSessions.Add(hashCode, session);
+            this.mapComponent.Add(message);
+
+            //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
                 var messageRp = new DistributedMessage
@@ -163,12 +171,13 @@ namespace H6Game.Base
                 }
                 ConnectToCenter(value);
             };
+        }
 
-            session.OnClientConnected = (c) =>
-            {
-
-            };
-            this.mapComponent.Add(message);
+        private IPEndPoint GetIPEndPoint(DistributedMessage message)
+        {
+            var ip = IPAddress.Parse(message.IP);
+            var port = message.Port;
+            return new IPEndPoint(ip, port);
         }
 
         private int GetHashCode(DistributedMessage messageRp)
