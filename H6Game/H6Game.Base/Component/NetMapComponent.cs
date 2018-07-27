@@ -20,7 +20,7 @@ namespace H6Game.Base
     {
         private readonly LinkedList<ConnectEntity> connectEntities = new LinkedList<ConnectEntity>();
 
-        public void Remove(DistributedMessageRp message)
+        public void Remove(DistributedMessage message)
         {
             ConnectEntity remove = null;
             foreach (var entiry in connectEntities)
@@ -38,7 +38,7 @@ namespace H6Game.Base
             }
         }
 
-        public void Add(DistributedMessageRp message)
+        public void Add(DistributedMessage message)
         {
             this.connectEntities.AddLast(new ConnectEntity
             {
@@ -47,7 +47,7 @@ namespace H6Game.Base
             });
         }
 
-        public bool TryGetCenterIpEndPoint(out DistributedMessageRp message)
+        public bool TryGetCenterIpEndPoint(out DistributedMessage message)
         {
             if (!this.connectEntities.Any())
             {
@@ -56,7 +56,7 @@ namespace H6Game.Base
             }
 
             var first = this.connectEntities.First.Value;
-            message = new DistributedMessageRp
+            message = new DistributedMessage
             {
                 IP = first.IP,
                 Port = first.Port,

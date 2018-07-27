@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace H6Game.Base.Base.Message
 {
     [MessageCMD((int)MessageCMD.AddOneServer, (int)MessageCMD.DeleteOneServer,(int)MessageCMD.UpdateInNetonnections)]
-    public class DistributedDispatcher : AMessageDispatcher<DistributedMessageRp>
+    public class DistributedDispatcher : AMessageDispatcher<DistributedMessage>
     {
-        protected override void Dispatcher(DistributedMessageRp response, int messageId)
+        protected override void Dispatcher(DistributedMessage response, int messageId)
         {
             switch ((MessageCMD)MessageId)
             {
