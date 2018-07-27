@@ -17,7 +17,7 @@ namespace H6Game.Base
             foreach (var type in dispatcherTypes)
             {
                 var attributes = type.GetCustomAttributes<MessageCMDAttribute>();
-                var cmds = attributes.Select(a => a.MessageCmd).ToList();
+                var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c=>c).Distinct().ToList();
                 var dispatcher = (IDispatcher)Activator.CreateInstance(type);
 
                 foreach (var cmd in cmds)

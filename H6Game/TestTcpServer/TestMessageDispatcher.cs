@@ -8,17 +8,12 @@ using System.Threading.Tasks;
 
 namespace TestTcpServer
 {
-    [MessageCMD(MessageCMD.TestCMD)]
+    [MessageCMD((int)MessageCMD.TestCMD)]
     public class TestMessageDispatcher : AMessageDispatcher<string>
     {
-        protected override void Dispatcher(string response)
+        protected override void Dispatcher(string response, int messageId)
         {
-            this.Session.Notice(this.Channel, new Packet
-            {
-                RpcId = this.RpcId,
-                MessageId = (int)MessageCMD.TestCMD,
-                Data = Encoding.UTF8.GetBytes(response),
-            });
+            this.CallBack(Encoding.UTF8.GetBytes(response));
         }
     }
 }

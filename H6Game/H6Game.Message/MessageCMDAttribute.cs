@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace H6Game.Message
@@ -7,11 +8,15 @@ namespace H6Game.Message
     [AttributeUsage(AttributeTargets.Class)]
     public class MessageCMDAttribute : Attribute
     {
-        public int MessageCmd { get; private set; }
+        public List<int> MessageCmds { get;} = new List<int>();
 
-        public MessageCMDAttribute(MessageCMD command)
+        public MessageCMDAttribute(params int[] commands)
         {
-            this.MessageCmd = (int)command;
+            if(commands == null || !commands.Any())
+            {
+                throw new NullReferenceException("消息commands不能为空.");
+            }
+            this.MessageCmds.AddRange(commands.Select(c=>c));
         }
     }
 }

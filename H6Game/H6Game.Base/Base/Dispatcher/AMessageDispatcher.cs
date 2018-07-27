@@ -10,6 +10,10 @@ namespace H6Game.Base
         public bool IsEncrypt;
     }
 
+    /// <summary>
+    /// 消息分发处理类，所有消息处理应该继承该抽象类实现
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
     public abstract class AMessageDispatcher<Response> : IDispatcher<Response>
     {
         /// <summary>
@@ -65,7 +69,7 @@ namespace H6Game.Base
             this.RpcId = packet.RpcId;
             if (DispatcherFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
             {
-                Dispatcher(response);
+                Dispatcher(response,  packet.MessageId);
             }
             this.Session = null;
             this.Channel = null;
@@ -130,6 +134,7 @@ namespace H6Game.Base
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Dispatcher(Response response);
+        /// <param name="messageId"></param>
+        protected abstract void Dispatcher(Response response, int messageId);
     }
 }
