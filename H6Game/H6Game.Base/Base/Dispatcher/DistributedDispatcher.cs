@@ -4,26 +4,19 @@ using System.Collections.Generic;
 
 namespace H6Game.Base.Base.Message
 {
-    [MessageCMD((int)MessageCMD.AddOneServer, (int)MessageCMD.DeleteOneServer)]
+    [MessageCMD((int)MessageCMD.AddOneServer)]
     public class DistributedDispatcher : AMessageDispatcher<DistributedMessage>
     {
         protected override void Dispatcher(DistributedMessage response, int messageId)
         {
-            switch ((MessageCMD)MessageId)
-            {
-                case MessageCMD.AddOneServer:
-                    SinglePool.Get<NetMapComponent>().Add(response);
-                    break;
-                case MessageCMD.DeleteOneServer:
-                    SinglePool.Get<NetMapComponent>().Remove(response);
-                    break;
-            }
+            SinglePool.Get<NetMapComponent>().Add(response);
+            SinglePool.Get<NetMapComponent>().AddMaping(this.Channel, response);
+            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"新连接服务消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
 
             var connections = SinglePool.Get<NetMapComponent>().ConnectEntities;
-
             //更新中心服务连接列表
-            SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections);
-            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
+            SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections, (int)MessageCMD.UpdateInNetonnections);
+            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{connections.ConvertToJson()}");
         }
     }
 

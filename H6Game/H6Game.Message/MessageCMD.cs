@@ -14,10 +14,6 @@ namespace H6Game.Message
         /// </summary>
         AddOneServer = 100,
         /// <summary>
-        /// 删除一个服务连接
-        /// </summary>
-        DeleteOneServer,
-        /// <summary>
         /// 更新当前所有服务连接列表
         /// </summary>
         UpdateInNetonnections,

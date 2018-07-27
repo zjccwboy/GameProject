@@ -8,5 +8,14 @@ namespace H6Game.Message.InNetMessage
     {
         public int Port { get; set; }
         public string IP { get; set; }
+        
+        public int HashCode
+        {
+            get
+            {
+                var hashCode = $"{IP}:{Port}".GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

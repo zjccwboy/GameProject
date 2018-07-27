@@ -11,6 +11,7 @@ namespace H6Game.Base
     public class NetMapComponent : BaseComponent
     {
         private readonly LinkedList<DistributedMessage> connectEntities = new LinkedList<DistributedMessage>();
+        private readonly Dictionary<int, DistributedMessage> connectMaping = new Dictionary<int, DistributedMessage>();
 
         public List<DistributedMessage> ConnectEntities
         {
@@ -53,6 +54,27 @@ namespace H6Game.Base
                 IP = message.IP,
                 Port = message.Port,
             });
+        }
+
+        public void AddMaping(ANetChannel channel, DistributedMessage message)
+        {
+            connectMaping[channel.Id] = message;
+        }
+
+        public void RemoveMaping(ANetChannel channel)
+        {
+            connectMaping.Remove(channel.Id);
+        }
+
+        public bool TryGetMappingMessage(ANetChannel channel, out DistributedMessage message)
+        {
+            if(this.connectMaping.TryGetValue(channel.Id, out DistributedMessage value))
+            {
+                message = value;
+                return true;
+            }
+            message = null;
+            return false;
         }
 
         public void UpdateMapping(IEnumerable<DistributedMessage> entities)

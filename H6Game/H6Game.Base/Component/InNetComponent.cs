@@ -27,8 +27,8 @@ namespace H6Game.Base
             var outEndPoint = GetOutEndPointMessage();
             HandleOutAccept(outEndPoint);
 
-            var center = GetCenterEndPointMessage();
-            var local = GetLocalEndPointMessage();
+            var center = this.config.InNetConfig.CenterEndPoint.DMessage;
+            var local = this.config.InNetConfig.LocalEndPoint.DMessage;
             if (this.config.IsCenterServer)
             {
                 HandleInAccept(center);
@@ -59,7 +59,7 @@ namespace H6Game.Base
             }
         }
 
-        public void BroadcastConnections(Session session, List<DistributedMessage> message)
+        public void BroadcastConnections(Session session, List<DistributedMessage> message, int messageCmd)
         {
             if (!this.config.IsCenterServer)
             {
@@ -69,7 +69,7 @@ namespace H6Game.Base
             var bytes = message.ConvertToBytes();
             var packet = new Packet
             {
-                MessageId = (int)MessageCMD.UpdateInNetonnections,
+                MessageId = messageCmd,
                 Data = bytes,
             };
             session.Broadcast(packet);
@@ -79,14 +79,13 @@ namespace H6Game.Base
         {
             foreach(var message in messages)
             {
-                var hashCode = GetMessageHashCode(message);
-                if (!this.inConnectSessions.ContainsKey(hashCode))
+                  if (!this.inConnectSessions.ContainsKey(message.HashCode))
                 {
                     AddSession(message);
                 }
             }
 
-            var messageHashKeys = messages.Select(a => GetMessageHashCode(a));
+            var messageHashKeys = messages.Select(a => a.HashCode);
             var keys = this.inConnectSessions.Keys;
             foreach(var key in keys)
             {
@@ -104,15 +103,15 @@ namespace H6Game.Base
                 return;
             }
 
-            var hashCode = GetMessageHashCode(message);
-            var localHashCode = GetLocalHashCode();
+            var hashCode = message.HashCode;
+            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode;
             //判断是否是本地服务，是排除掉
             if(hashCode == localHashCode)
             {
                 return;
             }
 
-            var centerHashCode = GetCenterHashCode();
+            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
             //排除中心服务
             if (hashCode == centerHashCode)
             {
@@ -146,16 +145,16 @@ namespace H6Game.Base
                 return;
             }
 
-            var localHashCode = GetLocalHashCode();
+            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode;
             //判断是否是本地服务，是排除掉
             if (key == localHashCode)
             {
                 return;
             }
 
-            var centerHashCode = GetCenterHashCode();
+            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
             //排除中心服务
-            if(key == centerHashCode)
+            if (key == centerHashCode)
             {
                 return;
             }
@@ -179,6 +178,16 @@ namespace H6Game.Base
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听端口:{message.Port}成功.");
             if (config.IsCenterServer)
             {
+                this.inAcceptSession.OnServerDisconnected = (c) =>
+                {
+                    if (this.mapComponent.TryGetMappingMessage(c, out DistributedMessage value))
+                    {
+                        this.mapComponent.Remove(value);
+                        var entitys = this.mapComponent.ConnectEntities;
+                        this.BroadcastConnections(session, entitys, (int) MessageCMD.UpdateInNetonnections);
+                        LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
+                    }
+                };
                 LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
             }
         }
@@ -207,7 +216,7 @@ namespace H6Game.Base
             session.OnClientConnected = (c) =>
             {
                 this.mapComponent.Add(message);
-                var localMessage = GetLocalEndPointMessage();
+                var localMessage = this.config.InNetConfig.LocalEndPoint.DMessage;
                 session.Notice(c, new Packet
                 {
                     MessageId = (int)MessageCMD.AddOneServer,
@@ -225,23 +234,21 @@ namespace H6Game.Base
                 };
 
                 this.mapComponent.Remove(messageRp);
-                this.inConnectSessions.Remove(GetMessageHashCode(messageRp));
+                this.inConnectSessions.Remove(messageRp.HashCode);
                 if (config.IsCenterServer)
                 {
                     return;
                 }
 
-                var messageHashCode = GetMessageHashCode(messageRp);
-                var centerHashCode = GetCenterHashCode();
+                var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
                 //如果是中心服务挂掉，切换中心服务
-                if(messageHashCode == centerHashCode)
+                if (messageRp.HashCode == centerHashCode)
                 {
                     if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessage value))
                     {
                         LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
                         //服务全部挂调，重新开始等待默认中心服务
-                        var defaulCenterMessage = GetEndPointMessage(defaultCenterEndPoint);
-                        ConnectToCenter(defaulCenterMessage);
+                        ConnectToCenter(defaultCenterEndPoint.DMessage);
                         return;
                     }
 
@@ -252,9 +259,9 @@ namespace H6Game.Base
                     };
                     //切换中心服务
                     this.config.InNetConfig.CenterEndPoint = newCenterEndPoint;
-                    var centerMessage = GetEndPointMessage(newCenterEndPoint);
+                    var centerMessage = newCenterEndPoint.DMessage;
                     LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"切换中心服务器:{messageRp.IP}:{messageRp.Port} -> {newCenterEndPoint.IP}:{newCenterEndPoint.Port}.");
-                    if (GetLocalHashCode() == GetMessageHashCode(centerMessage))
+                    if (this.config.InNetConfig.LocalEndPoint.DMessage.HashCode == centerMessage.HashCode)
                     {
                         this.config.IsCenterServer = true;
                         LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"当前服务变为中心服务:{this.config.InNetConfig.LocalEndPoint.IP}:{this.config.InNetConfig.LocalEndPoint.Port}.");
@@ -263,42 +270,10 @@ namespace H6Game.Base
             };
 
             session.Connect();
-            var hashCode = GetMessageHashCode(message);
-            this.inConnectSessions[hashCode] = session;
+            this.inConnectSessions[message.HashCode] = session;
         }
 
-        private int GetCenterHashCode()
-        {
-            var message = GetCenterEndPointMessage();
-            return GetMessageHashCode(message);
-        }
-
-        private int GetLocalHashCode()
-        {
-            var message = GetLocalEndPointMessage();
-            return GetMessageHashCode(message);
-        }
-
-        private DistributedMessage GetCenterEndPointMessage()
-        {
-            var centerEndPoint = new DistributedMessage
-            {
-                Port = this.config.InNetConfig.CenterEndPoint.Port,
-                IP = this.config.InNetConfig.CenterEndPoint.IP,
-            };
-            return centerEndPoint;
-        }
-
-        private DistributedMessage GetLocalEndPointMessage()
-        {
-            var localEndPoint = new DistributedMessage
-            {
-                Port = this.config.InNetConfig.LocalEndPoint.Port,
-                IP = this.config.InNetConfig.LocalEndPoint.IP,
-            };
-            return localEndPoint;
-        }
-
+        
         private DistributedMessage GetOutEndPointMessage()
         {
             var outEndPoint = new DistributedMessage
@@ -309,15 +284,6 @@ namespace H6Game.Base
             return outEndPoint;
         }
 
-        private DistributedMessage GetEndPointMessage(EndPointEntity endPointEntity)
-        {
-            return new DistributedMessage
-            {
-                IP = endPointEntity.IP,
-                Port = endPointEntity.Port,
-            };
-        }
-
         private IPEndPoint GetIPEndPoint(DistributedMessage message)
         {
             var ip = IPAddress.Parse(message.IP);
@@ -325,10 +291,5 @@ namespace H6Game.Base
             return new IPEndPoint(ip, port);
         }
 
-        private int GetMessageHashCode(DistributedMessage messageRp)
-        {
-            var hashCode = $"{messageRp.IP}:{messageRp.Port}".GetHashCode();
-            return hashCode;
-        }
     }
 }
