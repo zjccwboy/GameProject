@@ -23,9 +23,7 @@ namespace H6Game.Base.Base.Message
 
             //更新中心服务连接列表
             SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections);
-#if SERVER
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
-#endif     
         }
     }
 
@@ -39,9 +37,8 @@ namespace H6Game.Base.Base.Message
 
             //更新从服务映射列表
             SinglePool.Get<NetMapComponent>().UpdateMapping(response);
-#if SERVER
+
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/NetonnectionsDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
-#endif
         }
     }
 }

@@ -150,9 +150,7 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "Update", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/Update", e);
             }
         }
 

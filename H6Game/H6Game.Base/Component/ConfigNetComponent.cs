@@ -74,7 +74,7 @@ namespace H6Game.Base
                 {
                     var json = ConfigEntity.ConvertToJson(Newtonsoft.Json.Formatting.Indented);
                     sr.Write(json);
-                    Console.WriteLine("未配置服务IP地址端口信息");
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/SaveConfigile", $"未配置服务IP地址端口信息.");
                 }
             }
         }

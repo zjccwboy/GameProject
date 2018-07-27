@@ -11,6 +11,7 @@ namespace H6Game.Base
     public class InNetComponent : BaseComponent
     {
         private NetConfig config;
+        private EndPointEntity defaultCenterEndPoint;
         private Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
@@ -20,6 +21,8 @@ namespace H6Game.Base
         {
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             this.mapComponent = SinglePool.Get<NetMapComponent>();
+
+            this.defaultCenterEndPoint = config.InNetConfig.CenterEndPoint;
 
             var outEndPoint = GetOutEndPointMessage();
             HandleOutAccept(outEndPoint);
@@ -102,15 +105,14 @@ namespace H6Game.Base
             }
 
             var hashCode = GetMessageHashCode(message);
-            var localHashCode = GetMessageHashCode(GetLocalEndPointMessage());
+            var localHashCode = GetLocalHashCode();
             //判断是否是本地服务，是排除掉
             if(hashCode == localHashCode)
             {
                 return;
             }
 
-            var centerMessage = GetCenterEndPointMessage();
-            var centerHashCode = GetMessageHashCode(centerMessage);
+            var centerHashCode = GetCenterHashCode();
             //排除中心服务
             if (hashCode == centerHashCode)
             {
@@ -144,16 +146,14 @@ namespace H6Game.Base
                 return;
             }
 
-            var localMessage = GetLocalEndPointMessage();
-            var localHashCode = GetMessageHashCode(localMessage);
+            var localHashCode = GetLocalHashCode();
             //判断是否是本地服务，是排除掉
             if (key == localHashCode)
             {
                 return;
             }
 
-            var centerMessage = GetCenterEndPointMessage();
-            var centerHashCode = GetMessageHashCode(centerMessage);
+            var centerHashCode = GetCenterHashCode();
             //排除中心服务
             if(key == centerHashCode)
             {
@@ -176,16 +176,11 @@ namespace H6Game.Base
                 HandleInAccept(message);
             }
             this.inAcceptSession = session;
-#if SERVER
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听端口:{message.Port}成功.");
-#endif
-
-#if SERVER
             if (config.IsCenterServer)
             {
                 LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
             }
-#endif
         }
 
         private void HandleOutAccept(DistributedMessage message)
@@ -212,9 +207,6 @@ namespace H6Game.Base
             session.OnClientConnected = (c) =>
             {
                 this.mapComponent.Add(message);
-                var hashCode = GetMessageHashCode(message);
-                this.inConnectSessions[hashCode] = session;
-                this.mapComponent.Add(message);
                 var localMessage = GetLocalEndPointMessage();
                 session.Notice(c, new Packet
                 {
@@ -238,28 +230,53 @@ namespace H6Game.Base
                 {
                     return;
                 }
-                if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessage value))
+
+                var messageHashCode = GetMessageHashCode(messageRp);
+                var centerHashCode = GetCenterHashCode();
+                //如果是中心服务挂掉，切换中心服务
+                if(messageHashCode == centerHashCode)
                 {
-#if SERVER
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
-#endif
-                    return;
+                    if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessage value))
+                    {
+                        LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
+                        //服务全部挂调，重新开始等待默认中心服务
+                        var defaulCenterMessage = GetEndPointMessage(defaultCenterEndPoint);
+                        ConnectToCenter(defaulCenterMessage);
+                        return;
+                    }
+
+                    var newCenterEndPoint = new EndPointEntity
+                    {
+                        IP = value.IP,
+                        Port = value.Port,
+                    };
+                    //切换中心服务
+                    this.config.InNetConfig.CenterEndPoint = newCenterEndPoint;
+                    var centerMessage = GetEndPointMessage(newCenterEndPoint);
+                    LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"切换中心服务器:{messageRp.IP}:{messageRp.Port} -> {newCenterEndPoint.IP}:{newCenterEndPoint.Port}.");
+                    if (GetLocalHashCode() == GetMessageHashCode(centerMessage))
+                    {
+                        this.config.IsCenterServer = true;
+                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"当前服务变为中心服务:{this.config.InNetConfig.LocalEndPoint.IP}:{this.config.InNetConfig.LocalEndPoint.Port}.");
+                    }
                 }
-                ConnectToCenter(value);
             };
 
-            if (!session.TryConnect(out ANetChannel channel))
-            {
-                this.mapComponent.Remove(message);
-                if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessage value))
-                {
-#if SERVER
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
-#endif
-                    return;
-                }
-                ConnectToCenter(value);
-            }
+            session.Connect();
+            var hashCode = GetMessageHashCode(message);
+            this.inConnectSessions[hashCode] = session;
+        }
+
+        private int GetCenterHashCode()
+        {
+            var message = GetCenterEndPointMessage();
+            return GetMessageHashCode(message);
+        }
+
+        private int GetLocalHashCode()
+        {
+            var message = GetLocalEndPointMessage();
+            return GetMessageHashCode(message);
         }
 
         private DistributedMessage GetCenterEndPointMessage()
@@ -290,6 +307,15 @@ namespace H6Game.Base
                 IP = "0.0.0.0",
             };
             return outEndPoint;
+        }
+
+        private DistributedMessage GetEndPointMessage(EndPointEntity endPointEntity)
+        {
+            return new DistributedMessage
+            {
+                IP = endPointEntity.IP,
+                Port = endPointEntity.Port,
+            };
         }
 
         private IPEndPoint GetIPEndPoint(DistributedMessage message)

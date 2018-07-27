@@ -97,9 +97,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "StartConnecting", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartConnecting", e);
             }
         }
 
@@ -171,17 +169,13 @@ namespace H6Game.Base
                         }
                         else
                         {
-#if SERVER
-                            LogRecord.Log(LogLevel.Warn, "HandleRecv", $"接收到客户端:{this.RemoteEndPoint}心跳包.");
-#endif
+                            LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleRecv", $"接收到客户端:{this.RemoteEndPoint}心跳包.");
                         }
                     }
                     catch (Exception e)
                     {
                         DisConnect();
-#if SERVER
-                        LogRecord.Log(LogLevel.Warn, "StartRecv", e);
-#endif
+                        LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartRecv", e);
                         return;
                     }
                 }
@@ -251,9 +245,7 @@ namespace H6Game.Base
             catch(Exception e)
             {
                 DisConnect();
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "Output", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/Output", e);
             }
         }
 

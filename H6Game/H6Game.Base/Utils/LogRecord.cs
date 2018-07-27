@@ -1,18 +1,24 @@
-﻿using log4net;
+﻿
+#if SERVER
+using log4net;
 using log4net.Config;
+using log4net.Core;
+#endif
+
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using log4net.Core;
 using System.Linq;
 
+#if SERVER
 [assembly: XmlConfigurator(ConfigFile = "Log4net.config", Watch = true)]
+#endif
 
 namespace H6Game.Base
 {
-#if SERVER
     public class LogRecord
     {
+#if SERVER
         private static ILogger logger;
         private static Type logType;
         static LogRecord()
@@ -54,7 +60,32 @@ namespace H6Game.Base
             var message = $"Desc:{description} Log:{logRecord}";
             logger.Log(logType, logLevel, message, null);
         }
+#else
+        public static void Log(LogLevel level, string description, string logRecord)
+        {
 
+        }
+
+        public static void Log(LogLevel level, string description, object logRecord)
+        {
+
+        }
+
+        public static void Log(LogLevel level, string description, Exception exception)
+        {
+
+        }
+
+        public static void Log(string description, Exception exception)
+        {
+
+        }
+
+        private static void WriteLog(LogLevel level, string description, string logRecord)
+        {
+
+        }
+#endif
         private static Level GetLogLevel(LogLevel level)
         {
             switch (level)
@@ -76,5 +107,4 @@ namespace H6Game.Base
         }
 
     }
-#endif
 }

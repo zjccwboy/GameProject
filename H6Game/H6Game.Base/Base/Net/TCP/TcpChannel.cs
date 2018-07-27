@@ -89,9 +89,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "StartConnecting", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartConnecting", e);
             }
         }
 
@@ -120,9 +118,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "CheckConnection", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/CheckConnection", e);
                 return false;
             }
         }
@@ -178,9 +174,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 isSending = false;
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "StartSend", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartSend", e);
                 DisConnect();
             }
         }
@@ -214,9 +208,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 isReceiving = false;
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "StartRecv", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartRecv", e);
                 DisConnect();
             }
         }
@@ -358,9 +350,7 @@ namespace H6Game.Base
                 catch(Exception ex)
                 {
                     DisConnect();
-#if SERVER
-                    LogRecord.Log(LogLevel.Warn, "OnRecvComplete", ex);
-#endif
+                    LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/OnRecvComplete", ex);
                     return;
                 }
 

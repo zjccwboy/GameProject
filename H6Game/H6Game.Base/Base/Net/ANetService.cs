@@ -149,9 +149,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "HandleSend", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleSend", e);
             }
         }
 
@@ -197,9 +195,7 @@ namespace H6Game.Base
                     {
                         IsHeartbeat = true
                     });
-#if SERVER
-                    LogRecord.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
-#endif
+                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
                 }
             }
             else if (this.ServiceType == NetServiceType.Server)
@@ -210,9 +206,7 @@ namespace H6Game.Base
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime + 4000)
                     {
-#if SERVER
-                        LogRecord.Log(LogLevel.Info, "CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
-#endif
+                        LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();
                     }
                 }
@@ -240,16 +234,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnServerDisconnected?.Invoke(channel);
-#if SERVER
-                    LogRecord.Log(LogLevel.Info, "HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
-#endif
+                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "HandleDisConnectOnServer", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleDisConnectOnServer", e);
             }
         }
 
@@ -264,16 +254,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnClientDisconnected?.Invoke(value);
-#if SERVER
-                    LogRecord.Log(LogLevel.Info, "HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
-#endif
+                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-#if SERVER
-                LogRecord.Log(LogLevel.Warn, "HandleDisConnectOnClient", e);
-#endif
+                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleDisConnectOnClient", e);
             }
         }
     }
