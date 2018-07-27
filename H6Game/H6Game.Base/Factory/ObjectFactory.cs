@@ -28,11 +28,8 @@ namespace H6Game.Base
             var componentBaseType = typeof(BaseComponent);
             var componentBaseTypes = new HashSet<Type>();
 
-            var handlerType = typeof(IMessageHandler);
             var messageTypes = new HashSet<Type>();
-
             var messageBaseType = typeof(IMessage);
-            var handlerTypes = new HashSet<Type>();
 
             var dispatcherType = typeof(IDispatcher);
             var dispatcherTypes = new HashSet<Type>();
@@ -52,11 +49,7 @@ namespace H6Game.Base
                         continue;
                     }
 
-                    if (handlerType.IsAssignableFrom(t))
-                    {
-                        handlerTypes.Add(t);
-                    }
-                    else if(messageBaseType.IsAssignableFrom(t))
+                    if (messageBaseType.IsAssignableFrom(t))
                     {
                         messageTypes.Add(t);
                     }
@@ -71,7 +64,6 @@ namespace H6Game.Base
                 }
             }
 
-            dictionary[handlerType] = handlerTypes;
             dictionary[messageBaseType] = messageTypes;
             dictionary[componentBaseType] = componentBaseTypes;
             dictionary[dispatcherType] = dispatcherTypes;

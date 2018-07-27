@@ -13,10 +13,5 @@ namespace H6Game.Base.Base.Message
         {
 
         }
-
-        public override void Dispatcher(byte[] bytes)
-        {
-
-        }
     }
 }

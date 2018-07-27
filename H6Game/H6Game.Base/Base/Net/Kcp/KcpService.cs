@@ -21,7 +21,7 @@ namespace H6Game.Base
         /// <param name="session"></param>
         public KcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
         {
-            this.serviceType = serviceType;
+            this.ServiceType = serviceType;
             this.endPoint = endPoint;
         }
         
@@ -34,7 +34,7 @@ namespace H6Game.Base
             if (this.acceptor == null)
             {
                 this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                if (serviceType == NetServiceType.Server)
+                if (this.ServiceType == NetServiceType.Server)
                 {
                     uint IOC_IN = 0x80000000;
                     uint IOC_VENDOR = 0x18000000;
@@ -76,7 +76,7 @@ namespace H6Game.Base
         /// </summary>
         public override void Update()
         {
-            if (serviceType == NetServiceType.Client)
+            if (this.ServiceType == NetServiceType.Client)
             {
                 if(ClientChannel != null)
                 {
@@ -87,8 +87,6 @@ namespace H6Game.Base
             this.StartRecv();
         }
 
-        //int recvCouut = 0;
-        //int startCount = 0;
         /// <summary>
         /// 开始接收数据包
         /// </summary>
@@ -219,8 +217,14 @@ namespace H6Game.Base
             {
                 channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.Connected = true;
+                channel.Handler = new MessageHandler
+                {
+                    Session = this.Session,
+                    Channel = channel,
+                    NetService = this,
+                };
                 AddChannel(channel);
-                AddHandler(channel);
+                channel.OnReceive += channel.Handler.DoReceive;
                 this.OnConnectedInServer(channel);
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
@@ -244,8 +248,14 @@ namespace H6Game.Base
             {
                 channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.Connected = true;
+                channel.Handler = new MessageHandler
+                {
+                    Session = this.Session,
+                    Channel = channel,
+                    NetService = this,
+                };
                 AddChannel(channel);
-                AddHandler(channel);
+                channel.OnReceive += channel.Handler.DoReceive;
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
 #endif

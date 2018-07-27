@@ -53,6 +53,11 @@ namespace H6Game.Base
         public const uint ReConnectInterval = 3000;
 
         /// <summary>
+        /// 消息处理分发类
+        /// </summary>
+        public MessageHandler Handler { get; set; }
+
+        /// <summary>
         /// 接收包缓冲区解析器
         /// </summary>
         protected PacketParser RecvParser = new PacketParser();

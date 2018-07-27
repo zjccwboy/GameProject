@@ -291,9 +291,6 @@ namespace H6Game.Base
             e.RemoteEndPoint = null;
             OnConnect?.Invoke(this);
             this.Connected = true;
-
-            //this.StartRecv();
-            //this.StartSend();
         }
 
         private void OnDisconnectComplete(object o)

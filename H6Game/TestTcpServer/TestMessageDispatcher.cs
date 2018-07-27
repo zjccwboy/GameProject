@@ -9,20 +9,15 @@ using System.Threading.Tasks;
 namespace TestTcpServer
 {
     [MessageCMD(MessageCMD.TestCMD)]
-    public class TestMessageDispatcher : AMessageDispatcher<IResponse>
+    public class TestMessageDispatcher : AMessageDispatcher<string>
     {
-        public override void Dispatcher(IResponse response)
-        {
-
-        }
-
-        public override void Dispatcher(byte[] bytes)
+        public override void Dispatcher(string response)
         {
             this.Session.Notice(this.Channel, new Packet
             {
                 RpcId = this.RpcId,
                 MessageId = (uint)MessageCMD.TestCMD,
-                Data = bytes,
+                Data = Encoding.UTF8.GetBytes(response),
             });
         }
     }

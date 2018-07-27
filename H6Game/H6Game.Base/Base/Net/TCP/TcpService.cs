@@ -19,7 +19,7 @@ namespace H6Game.Base
         /// <param name="session"></param>
         public TcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
         {
-            this.serviceType = serviceType;
+            this.ServiceType = serviceType;
             this.endPoint = endPoint;
         }
 
@@ -119,8 +119,14 @@ namespace H6Game.Base
             {
                 channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.Connected = true;
+                channel.Handler = new MessageHandler
+                {
+                    Session = this.Session,
+                    Channel = channel,
+                    NetService = this,
+                }; ;
+                channel.OnReceive += channel.Handler.DoReceive;
                 AddChannel(channel);
-                AddHandler(channel);
                 this.OnConnectedInServer(channel);
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
@@ -144,8 +150,14 @@ namespace H6Game.Base
             {
                 channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.Connected = true;
+                channel.Handler = new MessageHandler
+                {
+                    Session = this.Session,
+                    Channel = channel,
+                    NetService = this,
+                };
                 AddChannel(channel);
-                AddHandler(channel);
+                channel.OnReceive += channel.Handler.DoReceive;
 #if SERVER
                 LogRecord.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
 #endif

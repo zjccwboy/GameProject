@@ -42,7 +42,7 @@ namespace H6Game.Base
         /// <summary>
         /// 网络服务类型
         /// </summary>
-        protected NetServiceType serviceType;
+        protected NetServiceType ServiceType;
 
         /// <summary>
         /// 客户端连接ANetChannel
@@ -52,17 +52,12 @@ namespace H6Game.Base
         /// <summary>
         /// 发送包队列
         /// </summary>
-        protected readonly ConcurrentQueue<SendTask> sendQueue = new ConcurrentQueue<SendTask>();
+        protected readonly ConcurrentQueue<SendTask> SendQueue = new ConcurrentQueue<SendTask>();
 
         /// <summary>
         /// 连接通道池
         /// </summary>
         public readonly ConcurrentDictionary<long, ANetChannel> Channels = new ConcurrentDictionary<long, ANetChannel>();
-
-        /// <summary>
-        /// 连接通道池
-        /// </summary>
-        public readonly ConcurrentDictionary<long, MessageHandler> Handlers = new ConcurrentDictionary<long, MessageHandler>();
 
         /// <summary>
         /// 消息会话
@@ -96,7 +91,7 @@ namespace H6Game.Base
         /// </summary>
         public virtual void Update()
         {
-            if(serviceType == NetServiceType.Client && ClientChannel != null)
+            if(this.ServiceType == NetServiceType.Client && ClientChannel != null)
             {                
                 ClientChannel.StartConnecting();
             }
@@ -110,7 +105,7 @@ namespace H6Game.Base
         /// <param name="sendTask"></param>
         public void Enqueue(SendTask sendTask)
         {
-            this.sendQueue.Enqueue(sendTask);
+            this.SendQueue.Enqueue(sendTask);
         }
 
         /// <summary>
@@ -120,13 +115,13 @@ namespace H6Game.Base
         {
             try
             {
-                while (!this.sendQueue.IsEmpty)
+                while (!this.SendQueue.IsEmpty)
                 {
-                    if(this.sendQueue.TryPeek(out SendTask send))
+                    if(this.SendQueue.TryPeek(out SendTask send))
                     {
                         if (send.Channel.Connected)
                         {
-                            this.sendQueue.TryDequeue(out SendTask sendTask);
+                            this.SendQueue.TryDequeue(out SendTask sendTask);
                             sendTask.Channel.TimeNow = TimeUitls.Now();
                             sendTask.WriteToBuffer();
                             this.senders.Add(sendTask.Channel);
@@ -175,7 +170,7 @@ namespace H6Game.Base
                 return;
             }
 
-            if (this.serviceType == NetServiceType.Client)
+            if (this.ServiceType == NetServiceType.Client)
             {
                 if (this.ClientChannel == null)
                 {
@@ -197,7 +192,7 @@ namespace H6Game.Base
 #endif
                 }
             }
-            else if (this.serviceType == NetServiceType.Server)
+            else if (this.ServiceType == NetServiceType.Server)
             {
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
@@ -222,26 +217,6 @@ namespace H6Game.Base
         protected void AddChannel(ANetChannel channel)
         {
             Channels.TryAdd(channel.Id, channel);
-        }
-
-        /// <summary>
-        /// 添加一个MessageHandler到消息处理类池中
-        /// </summary>
-        /// <param name="channel"></param>
-        protected void AddHandler(ANetChannel channel)
-        {
-            if (!Handlers.ContainsKey(channel.Id))
-            {
-                var handler = new MessageHandler
-                {
-                    Session = this.Session,
-                    Channel = channel,
-                    NetService = this,
-                };
-
-                Handlers[channel.Id] = handler;
-                channel.OnReceive += handler.DoReceive;
-            }
         }
 
         /// <summary>

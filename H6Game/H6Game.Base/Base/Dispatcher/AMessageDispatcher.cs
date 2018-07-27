@@ -1,14 +1,30 @@
 ﻿using H6Game.Message;
+using System;
 
 namespace H6Game.Base
 {
-    public abstract class AMessageDispatcher<Response> : IMessageDispatcher<Response> where Response : IResponse
+    public class Condition
+    {
+        public bool IsRpc;
+        public bool IsCompress;
+        public bool IsEncrypt;
+    }
+
+    public abstract class AMessageDispatcher<Response> : IDispatcher<Response>
     {
         public Session Session { get; private set; }
         public ANetChannel Channel { get; private set; }
         public Condition Conditions { get;} = new Condition();
         public int RpcId { get; private set; }
         public uint MessageId { get; private set; }
+
+        public Type ResponseType
+        {
+            get
+            {
+                return typeof(Response);
+            }
+        }
 
         public virtual void Receive(Session session, ANetChannel channel, Packet packet)
         {
@@ -19,26 +35,14 @@ namespace H6Game.Base
             this.Conditions.IsRpc = packet.IsRpc;
             this.MessageId = packet.MessageId;
             this.RpcId = packet.RpcId;
-            if (MessageDeserialize.TryGetMessage(packet, out Response response))
+            if (DispatcherFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
             {
                 Dispatcher(response);
-            }
-            else
-            {
-                Dispatcher(packet.Data);
             }
             this.Session = null;
             this.Channel = null;
         }
 
         public abstract void Dispatcher(Response response);
-        public abstract void Dispatcher(byte[] bytes);
-    }
-
-    public class Condition
-    {
-        public bool IsRpc;
-        public bool IsCompress;
-        public bool IsEncrypt;
     }
 }
