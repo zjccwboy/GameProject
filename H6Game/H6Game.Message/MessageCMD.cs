@@ -22,7 +22,6 @@ namespace H6Game.Message
         /// </summary>
         UpdateInNetonnections,
 
-
         TestCMD = 100000,
     }
 }

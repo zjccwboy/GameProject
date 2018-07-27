@@ -67,9 +67,17 @@ namespace H6Game.Base
             this.Conditions.IsRpc = packet.IsRpc;
             this.MessageId = packet.MessageId;
             this.RpcId = packet.RpcId;
-            if (DispatcherFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
+            try
             {
-                Dispatcher(response,  packet.MessageId);
+                if (DispatcherFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
+                {
+                    Dispatcher(response, packet.MessageId);
+                }
+            }
+            catch(Exception e)
+            {
+                LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", $"MessageId:{packet.MessageId}");
+                LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", e.ToString());
             }
             this.Session = null;
             this.Channel = null;

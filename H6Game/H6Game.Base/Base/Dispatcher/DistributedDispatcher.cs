@@ -19,11 +19,13 @@ namespace H6Game.Base.Base.Message
                     break;
             }
 
+            var connections = SinglePool.Get<NetMapComponent>().ConnectEntities;
+
+            //更新中心服务连接列表
+            SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections);
 #if SERVER
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
-#endif
-            var connections = SinglePool.Get<NetMapComponent>().ConnectEntities;
-            SinglePool.Get<InNetComponent>().BroadcastConnections(this.Session, connections);
+#endif     
         }
     }
 
@@ -32,7 +34,11 @@ namespace H6Game.Base.Base.Message
     {
         protected override void Dispatcher(List<DistributedMessage> response, int messageId)
         {
-            SinglePool.Get<NetMapComponent>().Update(response);
+            //更新从服务连接列表
+            SinglePool.Get<InNetComponent>().UpdateConnections(response);
+
+            //更新从服务映射列表
+            SinglePool.Get<NetMapComponent>().UpdateMapping(response);
 #if SERVER
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/NetonnectionsDispatcher", $"分布式分发消息:{this.MessageId} 消息内容:{response.ConvertToJson()}");
 #endif

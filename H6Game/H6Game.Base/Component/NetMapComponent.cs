@@ -40,6 +40,14 @@ namespace H6Game.Base
 
         public void Add(DistributedMessage message)
         {
+            foreach(var entity in connectEntities)
+            {
+                if(entity.IP == message.IP && entity.Port == message.Port)
+                {
+                    return;
+                }
+            }
+
             this.connectEntities.AddLast(new DistributedMessage
             {
                 IP = message.IP,
@@ -47,7 +55,7 @@ namespace H6Game.Base
             });
         }
 
-        public void Update(IEnumerable<DistributedMessage> entities)
+        public void UpdateMapping(IEnumerable<DistributedMessage> entities)
         {
             connectEntities.Clear();
             foreach(var entity in entities)

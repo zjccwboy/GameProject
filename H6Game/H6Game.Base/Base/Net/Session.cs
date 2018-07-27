@@ -3,6 +3,7 @@ using System.Net;
 using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace H6Game.Base
 {
@@ -28,7 +29,7 @@ namespace H6Game.Base
     /// <summary>
     /// 通讯会话接口类
     /// </summary>
-    public class Session
+    public class Session : IDisposable
     {
         private ANetService netService;
         private IPEndPoint endPoint;
@@ -218,6 +219,15 @@ namespace H6Game.Base
             foreach (var channel in channels)
             {
                 Notice(channel, packet);
+            }
+        }
+
+        public void Dispose()
+        {
+            var channels = this.netService.Channels.Values.ToList();
+            foreach(var channel in channels)
+            {
+                channel.DisConnect();
             }
         }
     }
