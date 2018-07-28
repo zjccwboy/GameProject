@@ -78,13 +78,13 @@ namespace H6Game.Base
         {
             foreach(var message in messages)
             {
-                if(!this.inConnectSessions.ContainsKey(message.HashCode))
+                if(!this.inConnectSessions.ContainsKey(message.HashCode()))
                 {
                     AddSession(message);
                 }
             }
 
-            var messageHashKeys = messages.Select(a => a.HashCode);
+            var messageHashKeys = messages.Select(a => a.HashCode());
             var keys = this.inConnectSessions.Keys;
             foreach(var key in keys)
             {
@@ -102,15 +102,15 @@ namespace H6Game.Base
                 return;
             }
 
-            var hashCode = message.HashCode;
-            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode;
+            var hashCode = message.HashCode();
+            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode();
             //判断是否是本地服务，是排除掉
             if(hashCode == localHashCode)
             {
                 return;
             }
 
-            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
+            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode();
             //排除中心服务
             if (hashCode == centerHashCode)
             {
@@ -144,14 +144,14 @@ namespace H6Game.Base
                 return;
             }
 
-            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode;
+            var localHashCode = this.config.InNetConfig.LocalEndPoint.DMessage.HashCode();
             //判断是否是本地服务，是排除掉
             if (key == localHashCode)
             {
                 return;
             }
 
-            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
+            var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode();
             //排除中心服务
             if (key == centerHashCode)
             {
@@ -233,15 +233,15 @@ namespace H6Game.Base
                 };
 
                 this.mapComponent.Remove(messageRp);
-                this.inConnectSessions.Remove(messageRp.HashCode);
+                this.inConnectSessions.Remove(messageRp.HashCode());
                 if (config.IsCenterServer)
                 {
                     return;
                 }
 
-                var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode;
+                var centerHashCode = this.config.InNetConfig.CenterEndPoint.DMessage.HashCode();
                 //如果是中心服务挂掉，切换中心服务
-                if (messageRp.HashCode == centerHashCode)
+                if (messageRp.HashCode() == centerHashCode)
                 {
                     if (!this.mapComponent.TryGetCenterIpEndPoint(out NetEndPointMessage value))
                     {
@@ -260,7 +260,7 @@ namespace H6Game.Base
                     this.config.InNetConfig.CenterEndPoint = newCenterEndPoint;
                     var centerMessage = newCenterEndPoint.DMessage;
                     LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"切换中心服务器:{messageRp.IP}:{messageRp.Port} -> {newCenterEndPoint.IP}:{newCenterEndPoint.Port}.");
-                    if (this.config.InNetConfig.LocalEndPoint.DMessage.HashCode == centerMessage.HashCode)
+                    if (this.config.InNetConfig.LocalEndPoint.DMessage.HashCode() == centerMessage.HashCode())
                     {
                         this.config.IsCenterServer = true;
                         LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"当前服务变为中心服务:{this.config.InNetConfig.LocalEndPoint.IP}:{this.config.InNetConfig.LocalEndPoint.Port}.");
@@ -269,7 +269,7 @@ namespace H6Game.Base
             };
 
             session.Connect();
-            this.inConnectSessions[message.HashCode] = session;
+            this.inConnectSessions[message.HashCode()] = session;
         }
 
         

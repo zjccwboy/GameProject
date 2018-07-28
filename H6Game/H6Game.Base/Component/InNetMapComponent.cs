@@ -10,7 +10,8 @@ namespace H6Game.Base
     public class InNetMapComponent : BaseComponent
     {
         private readonly LinkedList<NetEndPointMessage> connectEntities = new LinkedList<NetEndPointMessage>();
-        private readonly Dictionary<int, NetEndPointMessage> connectMaping = new Dictionary<int, NetEndPointMessage>();
+        private readonly Dictionary<int, NetEndPointMessage> channelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
+        private readonly Dictionary<int, ANetChannel> hCodeMapChannel = new Dictionary<int, ANetChannel>();
 
         public List<NetEndPointMessage> ConnectEntities
         {
@@ -20,19 +21,15 @@ namespace H6Game.Base
             }
         }
 
-        public override void Start()
-        {
-
-        }
-
         public void Remove(NetEndPointMessage message)
         {
             NetEndPointMessage remove = null;
             foreach (var entiry in connectEntities)
             {
-                if(entiry.IP == message.IP && entiry.Port == message.Port)
+                if(entiry.HashCode() == message.HashCode())
                 {
                     remove = entiry;
+                    hCodeMapChannel.Remove(message.HashCode());
                     break;
                 }
             }
@@ -62,17 +59,13 @@ namespace H6Game.Base
 
         public void AddMaping(ANetChannel channel, NetEndPointMessage message)
         {
-            connectMaping[channel.Id] = message;
-        }
-
-        public void RemoveMaping(ANetChannel channel)
-        {
-            connectMaping.Remove(channel.Id);
+            channelIdMapMsg[channel.Id] = message;
+            hCodeMapChannel[message.HashCode()] = channel;
         }
 
         public bool TryGetMappingMessage(ANetChannel channel, out NetEndPointMessage message)
         {
-            if(this.connectMaping.TryGetValue(channel.Id, out NetEndPointMessage value))
+            if(this.channelIdMapMsg.TryGetValue(channel.Id, out NetEndPointMessage value))
             {
                 message = value;
                 return true;
@@ -84,10 +77,16 @@ namespace H6Game.Base
         public void UpdateMapping(IEnumerable<NetEndPointMessage> entities)
         {
             connectEntities.Clear();
-            foreach(var entity in entities)
+            channelIdMapMsg.Clear();
+            foreach (var entity in entities)
             {
                 connectEntities.AddLast(entity);
+                if(hCodeMapChannel.TryGetValue(entity.GetHashCode(), out ANetChannel channel))
+                {
+                    AddMaping(channel, entity);
+                }
             }
+            hCodeMapChannel.Clear();
         }
 
         public bool TryGetCenterIpEndPoint(out NetEndPointMessage message)

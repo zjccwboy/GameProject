@@ -6,14 +6,15 @@ namespace H6Game.Base
     {
         public int Port { get; set; }
         public string IP { get; set; }
-        
-        public int HashCode
+
+        private int hashCode;
+        public int HashCode()
         {
-            get
+            if (hashCode == 0)
             {
-                var hashCode = $"{IP}:{Port}".GetHashCode();
-                return hashCode;
+                hashCode = $"{IP}:{Port}".GetHashCode();
             }
+            return hashCode;
         }
     }
 }

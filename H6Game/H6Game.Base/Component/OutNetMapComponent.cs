@@ -9,9 +9,5 @@ namespace H6Game.Base
     {
         private readonly ConcurrentDictionary<int, NetEndPointMessage> netMapingDictionary = new ConcurrentDictionary<int, NetEndPointMessage>();
 
-        public override void Start()
-        {
-            
-        }
     }
 }
