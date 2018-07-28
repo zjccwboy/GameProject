@@ -225,7 +225,10 @@ namespace H6Game.Base
             var channels = this.netService.Channels.Values.ToList();
             foreach(var channel in channels)
             {
-                channel.DisConnect();
+                if (channel.Connected)
+                {
+                    channel.DisConnect();
+                }
             }
         }
     }

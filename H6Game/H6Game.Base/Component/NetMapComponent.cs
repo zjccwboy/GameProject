@@ -28,28 +28,24 @@ namespace H6Game.Base
 
         public void Remove(NetEndPointMessage message)
         {
-            NetEndPointMessage remove = null;
-            foreach (var entiry in connectEntities)
+            var entities = connectEntities.ToList();
+            foreach (var entiry in entities)
             {
-                if(entiry.HashCode() == message.HashCode())
+                if(entiry == message)
                 {
-                    remove = entiry;
-                    hCodeMapChannel.Remove(message.HashCode());
+                    hCodeMapChannel.Remove(message.GetHashCode());
+                    connectEntities.Remove(entiry);
                     break;
                 }
-            }
-
-            if(remove != null)
-            {
-                connectEntities.Remove(remove);
             }
         }
 
         public void Add(NetEndPointMessage message)
         {
-            foreach(var entity in connectEntities)
+            message.Order = MessageOrderCreator.CreateId();
+            foreach (var entity in connectEntities)
             {
-                if(entity.IP == message.IP && entity.Port == message.Port)
+                if(entity == message)
                 {
                     return;
                 }
@@ -65,7 +61,7 @@ namespace H6Game.Base
         public void AddChannelMaping(ANetChannel channel, NetEndPointMessage message)
         {
             channelIdMapMsg[channel.Id] = message;
-            hCodeMapChannel[message.HashCode()] = channel;
+            hCodeMapChannel[message.GetHashCode()] = channel;
         }
 
         public bool TryGetMappingMessage(ANetChannel channel, out NetEndPointMessage message)
@@ -81,6 +77,7 @@ namespace H6Game.Base
 
         public void UpdateMapping(IEnumerable<NetEndPointMessage> entities)
         {
+            entities = entities.OrderBy(c => c.Order);
             connectEntities.Clear();
             channelIdMapMsg.Clear();
             foreach (var entity in entities)
@@ -91,9 +88,9 @@ namespace H6Game.Base
                     AddChannelMaping(channel, entity);
                 }
 
-                if (!hCodeMapChannel.ContainsKey(entity.HashCode()))
+                if (!hCodeMapChannel.ContainsKey(entity.GetHashCode()))
                 {
-                    hCodeMapChannel.Remove(entity.HashCode());
+                    hCodeMapChannel.Remove(entity.GetHashCode());
                 }
             }
         }

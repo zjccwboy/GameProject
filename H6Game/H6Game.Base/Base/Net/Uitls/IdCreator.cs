@@ -43,4 +43,18 @@ namespace H6Game.Base
             return id;
         }
     }
+
+    /// <summary>
+    /// 分布式消息排序
+    /// </summary>
+    public class MessageOrderCreator
+    {
+        private static int id = 0;
+        public static int CreateId()
+        {
+            Interlocked.Increment(ref id);
+            Interlocked.CompareExchange(ref id, 0, int.MaxValue);
+            return id;
+        }
+    }
 }
