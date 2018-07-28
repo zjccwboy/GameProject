@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using H6Game.Message;
 
-namespace H6Game.Message.InNetMessage
+namespace H6Game.Base
 {
-    public class DistributedMessage : IMessage
+    public class NetEndPointMessage : IMessage
     {
         public int Port { get; set; }
         public string IP { get; set; }

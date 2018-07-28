@@ -1,6 +1,5 @@
 ﻿using H6Game.Base.Entity;
 using H6Game.Message;
-using H6Game.Message.InNetMessage;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,17 +9,17 @@ namespace H6Game.Base
 {
     public class InNetComponent : BaseComponent
     {
-        private NetConfig config;
+        private SysConfig config;
         private EndPointEntity defaultCenterEndPoint;
         private readonly Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
-        private NetMapComponent mapComponent;
+        private InNetMapComponent mapComponent;
 
         public override void Start()
         {
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
-            this.mapComponent = SinglePool.Get<NetMapComponent>();
+            this.mapComponent = SinglePool.Get<InNetMapComponent>();
 
             this.defaultCenterEndPoint = config.InNetConfig.CenterEndPoint;
 
@@ -59,7 +58,7 @@ namespace H6Game.Base
             }
         }
 
-        public void BroadcastConnections(Session session, List<DistributedMessage> message, int messageCmd)
+        public void BroadcastConnections(Session session, List<NetEndPointMessage> message, int messageCmd)
         {
             if (!this.config.IsCenterServer)
             {
@@ -75,7 +74,7 @@ namespace H6Game.Base
             session.Broadcast(packet);
         }
 
-        public void UpdateConnections(List<DistributedMessage> messages)
+        public void UpdateConnections(List<NetEndPointMessage> messages)
         {
             foreach(var message in messages)
             {
@@ -96,7 +95,7 @@ namespace H6Game.Base
             }
         }
 
-        private void AddSession(DistributedMessage message)
+        private void AddSession(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
             {
@@ -166,7 +165,7 @@ namespace H6Game.Base
             }
         }
 
-        private void HandleInAccept(DistributedMessage message)
+        private void HandleInAccept(NetEndPointMessage message)
         {
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
             if (!session.Accept())
@@ -180,11 +179,11 @@ namespace H6Game.Base
             {
                 this.inAcceptSession.OnServerDisconnected = (c) =>
                 {
-                    if (this.mapComponent.TryGetMappingMessage(c, out DistributedMessage value))
+                    if (this.mapComponent.TryGetMappingMessage(c, out NetEndPointMessage value))
                     {
                         this.mapComponent.Remove(value);
                         var entitys = this.mapComponent.ConnectEntities;
-                        this.BroadcastConnections(session, entitys, (int) MessageCMD.UpdateInNetonnections);
+                        this.BroadcastConnections(session, entitys, (int) MessageCMD.UpdateInNetConnections);
                         LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
                     }
                 };
@@ -192,7 +191,7 @@ namespace H6Game.Base
             }
         }
 
-        private void HandleOutAccept(DistributedMessage message)
+        private void HandleOutAccept(NetEndPointMessage message)
         {
             var session = new Session(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
@@ -203,7 +202,7 @@ namespace H6Game.Base
             this.outAcceptSession = session;
         }
 
-        private void ConnectToCenter(DistributedMessage message)
+        private void ConnectToCenter(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
             {
@@ -227,7 +226,7 @@ namespace H6Game.Base
             //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
-                var messageRp = new DistributedMessage
+                var messageRp = new NetEndPointMessage
                 {
                     IP = c.RemoteEndPoint.Address.ToString(),
                     Port = c.RemoteEndPoint.Port,
@@ -244,7 +243,7 @@ namespace H6Game.Base
                 //如果是中心服务挂掉，切换中心服务
                 if (messageRp.HashCode == centerHashCode)
                 {
-                    if (!this.mapComponent.TryGetCenterIpEndPoint(out DistributedMessage value))
+                    if (!this.mapComponent.TryGetCenterIpEndPoint(out NetEndPointMessage value))
                     {
                         LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
                         //服务全部挂调，重新开始等待默认中心服务
@@ -274,17 +273,17 @@ namespace H6Game.Base
         }
 
         
-        private DistributedMessage GetOutEndPointMessage()
+        private NetEndPointMessage GetOutEndPointMessage()
         {
-            var outEndPoint = new DistributedMessage
+            var outEndPoint = new NetEndPointMessage
             {
-                Port = config.InNetConfig.OutNetListenPort,
+                Port = config.OuNetConfig.Port,
                 IP = "0.0.0.0",
             };
             return outEndPoint;
         }
 
-        private IPEndPoint GetIPEndPoint(DistributedMessage message)
+        private IPEndPoint GetIPEndPoint(NetEndPointMessage message)
         {
             var ip = IPAddress.Parse(message.IP);
             var port = message.Port;

@@ -1,5 +1,4 @@
-﻿using H6Game.Message.InNetMessage;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace H6Game.Base
@@ -8,12 +7,12 @@ namespace H6Game.Base
     /// <summary>
     /// 管理整个服务端分布式的组件
     /// </summary>
-    public class NetMapComponent : BaseComponent
+    public class InNetMapComponent : BaseComponent
     {
-        private readonly LinkedList<DistributedMessage> connectEntities = new LinkedList<DistributedMessage>();
-        private readonly Dictionary<int, DistributedMessage> connectMaping = new Dictionary<int, DistributedMessage>();
+        private readonly LinkedList<NetEndPointMessage> connectEntities = new LinkedList<NetEndPointMessage>();
+        private readonly Dictionary<int, NetEndPointMessage> connectMaping = new Dictionary<int, NetEndPointMessage>();
 
-        public List<DistributedMessage> ConnectEntities
+        public List<NetEndPointMessage> ConnectEntities
         {
             get
             {
@@ -26,9 +25,9 @@ namespace H6Game.Base
 
         }
 
-        public void Remove(DistributedMessage message)
+        public void Remove(NetEndPointMessage message)
         {
-            DistributedMessage remove = null;
+            NetEndPointMessage remove = null;
             foreach (var entiry in connectEntities)
             {
                 if(entiry.IP == message.IP && entiry.Port == message.Port)
@@ -44,7 +43,7 @@ namespace H6Game.Base
             }
         }
 
-        public void Add(DistributedMessage message)
+        public void Add(NetEndPointMessage message)
         {
             foreach(var entity in connectEntities)
             {
@@ -54,14 +53,14 @@ namespace H6Game.Base
                 }
             }
 
-            this.connectEntities.AddLast(new DistributedMessage
+            this.connectEntities.AddLast(new NetEndPointMessage
             {
                 IP = message.IP,
                 Port = message.Port,
             });
         }
 
-        public void AddMaping(ANetChannel channel, DistributedMessage message)
+        public void AddMaping(ANetChannel channel, NetEndPointMessage message)
         {
             connectMaping[channel.Id] = message;
         }
@@ -71,9 +70,9 @@ namespace H6Game.Base
             connectMaping.Remove(channel.Id);
         }
 
-        public bool TryGetMappingMessage(ANetChannel channel, out DistributedMessage message)
+        public bool TryGetMappingMessage(ANetChannel channel, out NetEndPointMessage message)
         {
-            if(this.connectMaping.TryGetValue(channel.Id, out DistributedMessage value))
+            if(this.connectMaping.TryGetValue(channel.Id, out NetEndPointMessage value))
             {
                 message = value;
                 return true;
@@ -82,7 +81,7 @@ namespace H6Game.Base
             return false;
         }
 
-        public void UpdateMapping(IEnumerable<DistributedMessage> entities)
+        public void UpdateMapping(IEnumerable<NetEndPointMessage> entities)
         {
             connectEntities.Clear();
             foreach(var entity in entities)
@@ -91,7 +90,7 @@ namespace H6Game.Base
             }
         }
 
-        public bool TryGetCenterIpEndPoint(out DistributedMessage message)
+        public bool TryGetCenterIpEndPoint(out NetEndPointMessage message)
         {
             if (!this.connectEntities.Any())
             {
@@ -100,7 +99,7 @@ namespace H6Game.Base
             }
 
             var first = this.connectEntities.First.Value;
-            message = new DistributedMessage
+            message = new NetEndPointMessage
             {
                 IP = first.IP,
                 Port = first.Port,

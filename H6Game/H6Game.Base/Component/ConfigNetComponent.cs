@@ -5,11 +5,11 @@ namespace H6Game.Base
 {
     public class ConfigNetComponent : BaseComponent
     {
-        public NetConfig ConfigEntity { get; private set; }
+        public SysConfig ConfigEntity { get; private set; }
 
         public override void Start()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\NetConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\SysConfig.json";
             if (!ReadConfigFile(path))
             {
                 SaveConfigile(path);
@@ -27,7 +27,7 @@ namespace H6Game.Base
                     {
                         return false;
                     }
-                    ConfigEntity = json.ConvertToObject<NetConfig>();
+                    ConfigEntity = json.ConvertToObject<SysConfig>();
                 }
             }
 
@@ -49,20 +49,28 @@ namespace H6Game.Base
 
         private void SaveConfigile(string path)
         {
-            ConfigEntity = new NetConfig
+            ConfigEntity = new SysConfig
             {
                 IsCenterServer = true,
 
                 InNetConfig = new InNetConfigEntity
                 {
-                    CenterEndPoint = new EndPointEntity { IP = string.Empty, Desc = "分布式中心服务监听IP端口" },
-                    LocalEndPoint = new EndPointEntity { IP = string.Empty, Desc = "本地服务监听IP端口" },
+                    CenterEndPoint = new EndPointEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
+                    LocalEndPoint = new EndPointEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
                 },
 
                 OuNetConfig = new OutNetConfigEntity
                 {
+                    Port = 50001,
                     Host = "payapi.test.com",
                 },
+
+#if SERVER
+                DbConfig = new DbConfigEntity
+                {
+                    ConnectionString = string.Empty,
+                },
+#endif
             };
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))

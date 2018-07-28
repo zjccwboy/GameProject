@@ -16,7 +16,11 @@ namespace H6Game.Message
         /// <summary>
         /// 更新当前所有服务连接列表
         /// </summary>
-        UpdateInNetonnections,
+        UpdateInNetConnections,
+        /// <summary>
+        /// 更新当前所有服务外网监听IP端口列表
+        /// </summary>
+        UpdateOutNetConnections,
 
         TestCMD = 100000,
     }
