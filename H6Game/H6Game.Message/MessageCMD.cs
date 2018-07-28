@@ -10,17 +10,24 @@ namespace H6Game.Message
     public enum MessageCMD
     {
         /// <summary>
-        /// 新增一个服务连接
+        /// 新增一个监听内网服务连接
         /// </summary>
-        AddOneServer = 100,
+        AddInServer = 100,
         /// <summary>
-        /// 更新当前所有服务连接列表
+        /// 更新当前所有服务内网监听IP端口列表
         /// </summary>
         UpdateInNetConnections,
+        /// <summary>
+        /// 新增一个监听外网服务连接
+        /// </summary>
+        AddOutServer,
         /// <summary>
         /// 更新当前所有服务外网监听IP端口列表
         /// </summary>
         UpdateOutNetConnections,
+
+
+
 
         TestCMD = 100000,
     }

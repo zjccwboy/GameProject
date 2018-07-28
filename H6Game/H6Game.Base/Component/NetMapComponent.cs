@@ -7,7 +7,7 @@ namespace H6Game.Base
     /// <summary>
     /// 管理整个服务端分布式的组件
     /// </summary>
-    public class InNetMapComponent : BaseComponent
+    public class NetMapManager
     {
         private readonly LinkedList<NetEndPointMessage> connectEntities = new LinkedList<NetEndPointMessage>();
         private readonly Dictionary<int, NetEndPointMessage> channelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
@@ -19,6 +19,11 @@ namespace H6Game.Base
             {
                 return connectEntities.ToList();
             }
+        }
+
+        public bool TryGetFromChannelId(int channelId, out NetEndPointMessage message)
+        {
+            return channelIdMapMsg.TryGetValue(channelId, out message);
         }
 
         public void Remove(NetEndPointMessage message)
@@ -57,7 +62,7 @@ namespace H6Game.Base
             });
         }
 
-        public void AddMaping(ANetChannel channel, NetEndPointMessage message)
+        public void AddChannelMaping(ANetChannel channel, NetEndPointMessage message)
         {
             channelIdMapMsg[channel.Id] = message;
             hCodeMapChannel[message.HashCode()] = channel;
@@ -83,10 +88,14 @@ namespace H6Game.Base
                 connectEntities.AddLast(entity);
                 if(hCodeMapChannel.TryGetValue(entity.GetHashCode(), out ANetChannel channel))
                 {
-                    AddMaping(channel, entity);
+                    AddChannelMaping(channel, entity);
+                }
+
+                if (!hCodeMapChannel.ContainsKey(entity.HashCode()))
+                {
+                    hCodeMapChannel.Remove(entity.HashCode());
                 }
             }
-            hCodeMapChannel.Clear();
         }
 
         public bool TryGetCenterIpEndPoint(out NetEndPointMessage message)

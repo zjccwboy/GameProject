@@ -4,8 +4,25 @@ namespace H6Game.Base.Entity
     public class SysConfig
     {
         public bool IsCenterServer { get; set; }
+        public string OuNetHost { get; set; }
         public InNetConfigEntity InNetConfig { get; set; }
-        public OutNetConfigEntity OuNetConfig { get; set; }
+        public EndPointEntity OuNetConfig { get; set; }
+
+        public NetEndPointMessage GetCenterMessage()
+        {
+            return this.InNetConfig.CenterEndPoint.GetMessage();
+        }
+
+        public NetEndPointMessage GetOutMessage()
+        {
+            return OuNetConfig.GetMessage();
+        }
+
+        public NetEndPointMessage GetInMessage()
+        {
+            return this.InNetConfig.LocalEndPoint.GetMessage();
+        }
+
 #if SERVER
         public DbConfigEntity DbConfig { get; set; }
 #endif
@@ -15,12 +32,6 @@ namespace H6Game.Base.Entity
     {
         public EndPointEntity CenterEndPoint { get; set; }
         public EndPointEntity LocalEndPoint { get; set; }
-    }
-
-    public class OutNetConfigEntity
-    {
-        public int Port { get; set; }
-        public string Host { get; set; }
     }
 
     public class DbConfigEntity
@@ -34,18 +45,14 @@ namespace H6Game.Base.Entity
         public string IP { get; set; }
         public string Desc { get; set; }
 
-        [Newtonsoft.Json.JsonIgnore]
-        public NetEndPointMessage DMessage
+        public NetEndPointMessage GetMessage()
         {
-            get
+            var message = new NetEndPointMessage
             {
-                var message = new NetEndPointMessage
-                {
-                    Port = this.Port,
-                    IP = this.IP,
-                };
-                return message;
-            }
+                Port = this.Port,
+                IP = this.IP,
+            };
+            return message;
         }
     }
 }

@@ -19,7 +19,14 @@ namespace H6Game.Base
             var dispatchers = DispatcherFactory.Get(packet.MessageId);
             foreach(var dispatcher in dispatchers)
             {
-                dispatcher.Receive(this.Session, this.Channel, packet);
+                try
+                {
+                    dispatcher.Receive(this.Session, this.Channel, packet);
+                }
+                catch(Exception e)
+                {
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/DoReceive", e.ToString());
+                }
             }
         }
     }

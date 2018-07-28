@@ -31,15 +31,14 @@ namespace H6Game.Base
                 }
             }
 
-            if(ConfigEntity.InNetConfig == null || ConfigEntity.OuNetConfig == null)
+            if(ConfigEntity.InNetConfig == null || ConfigEntity.OuNetConfig == null || string.IsNullOrEmpty(ConfigEntity.OuNetHost))
             {
                 return false;
             }
 
             if (ConfigEntity.InNetConfig.CenterEndPoint != null
                 && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.CenterEndPoint.IP)
-                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.LocalEndPoint.IP)
-                && !string.IsNullOrEmpty(ConfigEntity.OuNetConfig.Host))
+                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.LocalEndPoint.IP))
             {
                 return true;
             }
@@ -52,6 +51,7 @@ namespace H6Game.Base
             ConfigEntity = new SysConfig
             {
                 IsCenterServer = true,
+                OuNetHost = "payapi.test.com",
 
                 InNetConfig = new InNetConfigEntity
                 {
@@ -59,10 +59,10 @@ namespace H6Game.Base
                     LocalEndPoint = new EndPointEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
                 },
 
-                OuNetConfig = new OutNetConfigEntity
+                OuNetConfig = new EndPointEntity
                 {
-                    Port = 50001,
-                    Host = "payapi.test.com",
+                    Port = 50000,
+                    IP = "127.0.0.1",
                 },
 
 #if SERVER
