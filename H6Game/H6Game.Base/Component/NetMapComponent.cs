@@ -21,6 +21,11 @@ namespace H6Game.Base
             }
         }
 
+        public override void Start()
+        {
+
+        }
+
         public void Remove(DistributedMessage message)
         {
             DistributedMessage remove = null;
@@ -102,6 +107,5 @@ namespace H6Game.Base
             };
             return true;
         }
-
     }
 }

@@ -11,14 +11,10 @@ namespace H6Game.Base
     {
         private NetConfig config { get; set; }
         private Session connectSession;
-        public OutNetComponent()
+
+        public override void Start()
         {
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
-        }
-
-        private void HandleConnect()
-        {
-
         }
     }
 }

@@ -12,12 +12,12 @@ namespace H6Game.Base
     {
         private NetConfig config;
         private EndPointEntity defaultCenterEndPoint;
-        private Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
+        private readonly Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
         private NetMapComponent mapComponent;
 
-        public InNetComponent()
+        public override void Start()
         {
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             this.mapComponent = SinglePool.Get<NetMapComponent>();
@@ -79,7 +79,7 @@ namespace H6Game.Base
         {
             foreach(var message in messages)
             {
-                  if (!this.inConnectSessions.ContainsKey(message.HashCode))
+                if(!this.inConnectSessions.ContainsKey(message.HashCode))
                 {
                     AddSession(message);
                 }
@@ -185,7 +185,7 @@ namespace H6Game.Base
                         this.mapComponent.Remove(value);
                         var entitys = this.mapComponent.ConnectEntities;
                         this.BroadcastConnections(session, entitys, (int) MessageCMD.UpdateInNetonnections);
-                        LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
+                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
                     }
                 };
                 LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
@@ -290,6 +290,5 @@ namespace H6Game.Base
             var port = message.Port;
             return new IPEndPoint(ip, port);
         }
-
     }
 }

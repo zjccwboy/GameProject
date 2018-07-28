@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using H6Game.Message;
-using H6Game.Message.InNetMessage;
+﻿using H6Game.Message.InNetMessage;
 
 namespace H6Game.Base.Entity
 {

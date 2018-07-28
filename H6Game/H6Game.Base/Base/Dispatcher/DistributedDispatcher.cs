@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace H6Game.Base.Base.Message
 {
     [MessageCMD((int)MessageCMD.AddOneServer)]
-    public class DistributedDispatcher : AMessageDispatcher<DistributedMessage>
+    public class DistributedDispatcher : ADispatcher<DistributedMessage>
     {
         protected override void Dispatcher(DistributedMessage response, int messageId)
         {
@@ -21,7 +21,7 @@ namespace H6Game.Base.Base.Message
     }
 
     [MessageCMD((int)MessageCMD.UpdateInNetonnections)]
-    public class NetonnectionsDispatcher : AMessageDispatcher<List<DistributedMessage>>
+    public class NetonnectionsDispatcher : ADispatcher<List<DistributedMessage>>
     {
         protected override void Dispatcher(List<DistributedMessage> response, int messageId)
         {

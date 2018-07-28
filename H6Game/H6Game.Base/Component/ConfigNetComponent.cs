@@ -1,8 +1,5 @@
 ﻿using H6Game.Base.Entity;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace H6Game.Base
 {
@@ -10,7 +7,7 @@ namespace H6Game.Base
     {
         public NetConfig ConfigEntity { get; private set; }
 
-        public ConfigNetComponent()
+        public override void Start()
         {
             var path = $"{Directory.GetCurrentDirectory()}\\NetConfig.json";
             if (!ReadConfigFile(path))

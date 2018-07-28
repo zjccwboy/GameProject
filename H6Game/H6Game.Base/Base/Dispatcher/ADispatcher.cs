@@ -14,7 +14,7 @@ namespace H6Game.Base
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
     /// <typeparam name="Response"></typeparam>
-    public abstract class AMessageDispatcher<Response> : IDispatcher<Response>
+    public abstract class ADispatcher<Response> : IDispatcher<Response>
     {
         /// <summary>
         /// 网络会话管理对象

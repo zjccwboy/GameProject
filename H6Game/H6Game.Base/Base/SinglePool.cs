@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Base
 {
@@ -94,7 +92,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if(typeDictionary.TryRemove(type, out BaseComponent value))
             {
-                ComponentPool.PutBack((T)value);
+                value.Close();
             }
         }
     }

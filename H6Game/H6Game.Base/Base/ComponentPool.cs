@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Base
 {
     public static class ComponentPool
     {
-        private static ConcurrentDictionary<uint, BaseComponent> componentDictionary = new ConcurrentDictionary<uint, BaseComponent>();
-        private static ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>> componentTypeDictionary = new ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>>();
+        private static readonly ConcurrentDictionary<int, BaseComponent> componentDictionary = new ConcurrentDictionary<int, BaseComponent>();
+        private static readonly ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>> componentTypeDictionary = new ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>>();
 
         static ComponentPool()
         {
@@ -23,7 +21,7 @@ namespace H6Game.Base
             }
         }
 
-        public static bool TryGetComponent<T>(uint componentId, out T value) where T : BaseComponent
+        public static bool TryGetComponent<T>(int componentId, out T value) where T : BaseComponent
         {
             value = null;
             BaseComponent result;
@@ -47,13 +45,14 @@ namespace H6Game.Base
             BaseComponent result;
             if(queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k,v)=> { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k,v)=> { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -69,13 +68,14 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -91,13 +91,14 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1, k2);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -113,13 +114,14 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -135,13 +137,14 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -157,13 +160,14 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
@@ -179,21 +183,22 @@ namespace H6Game.Base
             BaseComponent result;
             if (queue.TryDequeue(out result))
             {
-                result.ComponentId = ComponentIdCreator.CreateId();
+                result.Id = ComponentIdCreator.CreateId();
             }
             else
             {
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5, k6);
             }
-            componentDictionary.AddOrUpdate(result.ComponentId, result, (k, v) => { return result; });
+            componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            result.Start();
             return (T)result;
         }
 
         public static void PutBack<T>(this T component) where T : BaseComponent
         {
             var baseComponent = component as BaseComponent;
-            baseComponent.ComponentId = 0;
-            componentDictionary.TryRemove(component.ComponentId, out BaseComponent value);
+            baseComponent.Id = 0;
+            componentDictionary.TryRemove(component.Id, out BaseComponent value);
         }
 
     }
