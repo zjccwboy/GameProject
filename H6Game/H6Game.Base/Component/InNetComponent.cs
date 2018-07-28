@@ -179,7 +179,11 @@ namespace H6Game.Base
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
             if (!session.Accept())
             {
-                message.Port++;
+                if (this.config.IsCenterServer)
+                {
+                    throw new Exception($"中心服务端口被占用，");
+                }
+                this.config.InNetConfig.LocalEndPoint.Port = message.Port++;
                 HandleInAccept(message);
             }
             this.inAcceptSession = session;
@@ -217,7 +221,11 @@ namespace H6Game.Base
             var session = new Session(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
             {
-                message.Port++;
+                if (this.config.IsCenterServer)
+                {
+                    throw new Exception($"中心服务端口被占用，");
+                }
+                this.config.OuNetConfig.Port = message.Port++;
                 HandleOutAccept(message);
             }
             this.outAcceptSession = session;
