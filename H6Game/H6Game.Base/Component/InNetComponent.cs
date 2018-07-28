@@ -183,7 +183,7 @@ namespace H6Game.Base
                 HandleInAccept(message);
             }
             this.inAcceptSession = session;
-            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听端口:{message.Port}成功.");
+            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听内网端口:{message.Port}成功.");
             if (config.IsCenterServer)
             {
                 this.inAcceptSession.OnServerDisconnected = (c) =>
@@ -221,6 +221,7 @@ namespace H6Game.Base
                 HandleOutAccept(message);
             }
             this.outAcceptSession = session;
+            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleOutAccept", $"监听外网端口:{message.Port}成功.");
         }
 
         private void ConnectToCenter(NetEndPointMessage message)
