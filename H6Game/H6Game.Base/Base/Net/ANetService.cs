@@ -30,9 +30,13 @@ namespace H6Game.Base
         private uint LastCheckTime = TimeUitls.Now();
 
         /// <summary>
-        /// 心跳超时时长
+        /// 心跳超时时长，服务端4秒,客户端20秒
         /// </summary>
-        public static uint HeartbeatTime = 1000 * 8;
+#if SERVER
+        public static uint HeartbeatTime = 1000 * 4;
+#else
+        public static uint HeartbeatTime = 1000 * 20;
+#endif
 
         /// <summary>
         /// 接受连接请求Socket
@@ -184,8 +188,8 @@ namespace H6Game.Base
                 if (!this.ClientChannel.Connected)
                     return;
 
-                var timeSpan = now - this.ClientChannel.LastSendTime;
-                if (timeSpan > HeartbeatTime - 200)
+                var  timeSendSpan = now - this.ClientChannel.LastSendTime;
+                if (timeSendSpan > HeartbeatTime - 200)
                 {
                     this.Session.Notice(this.ClientChannel, new Packet
                     {
@@ -200,7 +204,7 @@ namespace H6Game.Base
                 foreach (var channel in channels)
                 {
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime + 4000)
+                    if (timeSpan > HeartbeatTime + 2000)
                     {
                         LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();

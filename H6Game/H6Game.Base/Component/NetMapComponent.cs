@@ -95,22 +95,5 @@ namespace H6Game.Base
                     hCodeMapChannel.Remove(entity.GetHashCode());
             }
         }
-
-        public bool TryGetCenterIpEndPoint(out NetEndPointMessage message)
-        {
-            if (!this.connectEntities.Any())
-            {
-                message = null;
-                return false;
-            }
-
-            var first = this.connectEntities.First.Value;
-            message = new NetEndPointMessage
-            {
-                IP = first.IP,
-                Port = first.Port,
-            };
-            return true;
-        }
     }
 }

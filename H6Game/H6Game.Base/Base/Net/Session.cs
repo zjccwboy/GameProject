@@ -226,6 +226,7 @@ namespace H6Game.Base
                     channel.DisConnect();
                 }
             }
+            this.netService = null;
         }
     }
 }

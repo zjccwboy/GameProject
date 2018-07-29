@@ -309,7 +309,6 @@ namespace H6Game.Base
 
                     if (!packet.IsSuccess)
                         break;
-
                     LastRecvTime = TimeUitls.Now();
                     if (!packet.IsHeartbeat)
                     {

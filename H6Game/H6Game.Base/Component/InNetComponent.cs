@@ -58,7 +58,7 @@ namespace H6Game.Base
                 ConnectToCenter(centerMessage);
             }
 
-            var connections = inConnectSessions.Values;
+            var connections = inConnectSessions.Values.ToList();
             foreach(var connect in connections)
             {
                 connect.Update();
@@ -289,12 +289,15 @@ namespace H6Game.Base
             if (config.IsCenterServer)
                 return;
 
+            if (this.inConnectSessions.ContainsKey(message.GetHashCode()))
+                return;
+
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
+            this.inConnectSessions[message.GetHashCode()] = session;
 
             //注册连接成功回调
             session.OnClientConnected = (c) =>
-            {
-                this.inConnectSessions[message.GetHashCode()] = session;
+            {                
                 this.InNetMapManager.Add(message);
                 var localMessage = this.config.GetInMessage();
                 var outMessage = this.config.GetOutMessage();
@@ -311,6 +314,12 @@ namespace H6Game.Base
                     Port = c.RemoteEndPoint.Port,
                 };
 
+                if (messageRp == this.config.GetCenterMessage())
+                {
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
+                    return;
+                }
+
                 this.InNetMapManager.Remove(messageRp);
                 if (this.OutNetMapManager.TryGetMappingMessage(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
@@ -318,12 +327,6 @@ namespace H6Game.Base
                 this.inConnectSessions.Remove(messageRp.GetHashCode());
                 if (config.IsCenterServer)
                 {
-                    return;
-                }
-
-                if (messageRp == this.config.GetCenterMessage())
-                {
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
             };
