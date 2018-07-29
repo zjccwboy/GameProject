@@ -9,6 +9,9 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using System.Threading;
 
 #if SERVER
 [assembly: XmlConfigurator(ConfigFile = "Log4net.config", Watch = true)]
@@ -16,11 +19,19 @@ using System.Linq;
 
 namespace H6Game.Base
 {
+    public class LogEntity
+    {
+        public Type LogType { get; set; }
+        public Level LogLevel { get; set; }
+        public string Logs { get; set; }
+    }
+
     public class LogRecord
     {
 #if SERVER
         private static ILogger logger;
         private static Type logType;
+        private static readonly ConcurrentQueue<Action> actionsQueue = new ConcurrentQueue<Action>();
         static LogRecord()
         {
             GlobalContext.Properties["InstanceName"] = Process.GetCurrentProcess().Id;
@@ -32,6 +43,8 @@ namespace H6Game.Base
             }
             logger = loggerSystem;
             logType = typeof(LogRecord);
+
+            DoWrite();
         }
 
         public static void Log(LogLevel level, string description, string logRecord)
@@ -58,10 +71,47 @@ namespace H6Game.Base
         {
             var logLevel = GetLogLevel(level);
             var message = $"Desc:{description} Log:{logRecord}";
-            logger.Log(logType, logLevel, message, null);
+
+            Post(WriteHandler, new LogEntity
+            {
+                LogType = logType,
+                LogLevel = logLevel,
+                Logs = message
+            });
         }
+
+        private static void WriteHandler(object obj)
+        {
+            var logEntity = obj as LogEntity;
+            logger.Log(logEntity.LogType, logEntity.LogLevel, logEntity.Logs, null);
+        }
+
+        private static void Post(SendOrPostCallback callback, object state)
+        {
+            Add(() => { callback(state); });
+        }
+
+        private static void Add(Action action)
+        {
+            actionsQueue.Enqueue(action);
+        }
+
+        private static void DoWrite()
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    if (actionsQueue.TryDequeue(out Action action))
+                    {
+                        action();
+                    }
+                    Thread.Sleep(1);
+                }
+            });
+        }        
 #else
-        public static void Log(LogLevel level, string description, string logRecord)
+            public static void Log(LogLevel level, string description, string logRecord)
         {
 
         }

@@ -245,23 +245,20 @@ namespace H6Game.Base
             {
                 this.inAcceptSession.OnServerDisconnected = (c) =>
                 {
-                    if (this.InNetMapManager.TryGetMappingMessage(c, out NetEndPointMessage value))
+                    if (this.InNetMapManager.TryGetFromChannelId(c.Id, out NetEndPointMessage inMessage))
                     {
-                        if (this.InNetMapManager.TryGetFromChannelId(c.Id, out NetEndPointMessage inMessage))
-                        {
-                            this.InNetMapManager.Remove(inMessage);
-                            var entitys = this.InNetMapManager.ConnectEntities;
-                            this.BroadcastConnections(entitys, (int)MessageCMD.UpdateInNetConnections);
-                            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
-                        }
+                        this.InNetMapManager.Remove(inMessage);
+                        var entitys = this.InNetMapManager.ConnectEntities;
+                        this.BroadcastConnections(entitys, (int)MessageCMD.UpdateInNetConnections);
+                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
+                    }
 
-                        if (this.OutNetMapManager.TryGetFromChannelId(c.Id, out NetEndPointMessage outMessage))
-                        {
-                            this.OutNetMapManager.Remove(outMessage);
-                            var entitys = this.OutNetMapManager.ConnectEntities;
-                            this.BroadcastConnections(entitys, (int)MessageCMD.UpdateOutNetConnections);
-                            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
-                        } 
+                    if (this.OutNetMapManager.TryGetFromChannelId(c.Id, out NetEndPointMessage outMessage))
+                    {
+                        this.OutNetMapManager.Remove(outMessage);
+                        var entitys = this.OutNetMapManager.ConnectEntities;
+                        this.BroadcastConnections(entitys, (int)MessageCMD.UpdateOutNetConnections);
+                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
                     }
                 };
                 this.InNetMapManager.Add(message);
