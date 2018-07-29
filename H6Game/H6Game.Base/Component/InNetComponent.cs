@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
@@ -36,6 +37,9 @@ namespace H6Game.Base
             this.ConnectToCenter(center);
         }
 
+        /// <summary>
+        /// 更新内部分布式连接状态
+        /// </summary>
         public void Update()
         {
             if(outAcceptSession != null)
@@ -61,8 +65,61 @@ namespace H6Game.Base
             }
         }
 
+        /// <summary>
+        /// RPC请求
+        /// </summary>
+        /// <returns></returns>
+        public Task<T> CallMessage<T>(Session session, ANetChannel channel, byte[] bytes, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            var send = new Packet
+            {
+                IsCompress = isCompress,
+                IsEncrypt = isEncrypt,
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+
+            session.Subscribe(channel, send, (p) =>
+            {
+                if (!DispatcherFactory.TryGetResponse(p.MessageId, p.Data, out T response))
+                    tcs.TrySetResult(default(T));
+
+                tcs.TrySetResult(response);
+            });
+            return tcs.Task;
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="channel"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="bytes"></param>
+        /// <param name="rpcId"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
+        public void SendMessage(Session session, ANetChannel channel, int messageCmd, byte[] bytes, int rpcId = 0, bool isCompress = false, bool isEncrypt = false)
+        {
+            session.Notice(channel, new Packet
+            {
+                MessageId = messageCmd,
+                Data = bytes,
+            });
+        }
+
+        /// <summary>
+        /// 广播内部消息
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <param name="messageCmd"></param>
         public void BroadcastMessage(byte[] bytes, int messageCmd)
         {
+            //中心服务只处理内部分布式连接管理消息
+            if (this.config.IsCenterServer && !IsInNetMessage(messageCmd))
+                return;
+
             if (this.inAcceptSession == null)
                 return;
 
@@ -74,15 +131,29 @@ namespace H6Game.Base
             this.inAcceptSession.Broadcast(packet);
         }
 
+        /// <summary>
+        /// 广播内部通讯消息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="messageCmd"></param>
         public void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
         {
             if (!this.config.IsCenterServer)
                 return;
 
             var bytes = message.ConvertToBytes();
-            BroadcastMessage(bytes, messageCmd);
+            var packet = new Packet
+            {
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+            this.inAcceptSession.Broadcast(packet);
         }
 
+        /// <summary>
+        /// 更新连接信息
+        /// </summary>
+        /// <param name="messages"></param>
         public void UpdateConnections(List<NetEndPointMessage> messages)
         {
             foreach(var message in messages)
@@ -106,15 +177,6 @@ namespace H6Game.Base
                 if (!messageHashKeys.Contains(key))
                     RemoveSession(key);
             }
-        }
-
-        public void SendMessage(Session session, ANetChannel channel, int messageCmd, byte[] bytes)
-        {
-            session.Notice(channel, new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            });
         }
 
         private void AddSession(NetEndPointMessage message)
@@ -266,6 +328,14 @@ namespace H6Game.Base
                 }
             };
             session.Connect();
+        }
+
+        private bool IsInNetMessage(int messageCmd)
+        {
+            return messageCmd == (int)MessageCMD.AddInServer
+                || messageCmd == (int)MessageCMD.AddOutServer
+                || messageCmd == (int)MessageCMD.UpdateInNetConnections
+                || messageCmd == (int)MessageCMD.UpdateOutNetConnections;
         }
 
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)

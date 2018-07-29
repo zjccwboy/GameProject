@@ -16,12 +16,11 @@ namespace TestDistributed
         {
             Broadcast();
         }
-
+        InNetComponent inNetComponent = SinglePool.Get<InNetComponent>();
         private void Broadcast()
         {
             if(TimeUitls.Now() - time >= 1000)
-            {
-                var inNetComponent = SinglePool.Get<InNetComponent>();
+            {                
                 inNetComponent.BroadcastMessage(Encoding.UTF8.GetBytes("Test"), (int)MessageCMD.TestCMD1);
                 time = TimeUitls.Now();
             }
