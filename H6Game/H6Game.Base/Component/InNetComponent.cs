@@ -29,26 +29,35 @@ namespace H6Game.Base
             var center = this.config.GetCenterMessage();
             var local = this.config.GetInMessage();
             if (this.config.IsCenterServer)
-            {
                 HandleInAccept(center);
-            }
             else
-            {
                 HandleInAccept(local);
-            }
+
             this.ConnectToCenter(center);
         }
 
         public void Update()
         {
             if(outAcceptSession != null)
-            {
                 outAcceptSession.Update();
-            }
 
-            if(inAcceptSession != null)
+            if (inAcceptSession != null)
+                inAcceptSession.Update();            
+
+            if (!inConnectSessions.Any())
             {
-                inAcceptSession.Update();
+                if (this.config.IsCenterServer)
+                {
+                    if (this.config.GetCenterMessage().GetHashCode() 
+                        == this.defaultCenterEndPoint.GetMessage().GetHashCode())
+                    {
+                        return;                        
+                    }
+                    this.config.InNetConfig.CenterEndPoint = this.defaultCenterEndPoint;
+                }
+
+                var centerMessage = this.config.GetCenterMessage();
+                ConnectToCenter(centerMessage);
             }
 
             var connections = inConnectSessions.Values;
@@ -61,9 +70,7 @@ namespace H6Game.Base
         public void BroadcastConnections(Session session, List<NetEndPointMessage> message, int messageCmd)
         {
             if (!this.config.IsCenterServer)
-            {
                 return;
-            }
 
             var bytes = message.ConvertToBytes();
             var packet = new Packet
@@ -79,9 +86,15 @@ namespace H6Game.Base
             foreach(var message in messages)
             {
                 if(!this.inConnectSessions.ContainsKey(message.GetHashCode()))
-                {
                     AddSession(message);
-                }
+            }
+
+            //如果连接已经全部断开,清空映射表
+            if (!inConnectSessions.Any())
+            {
+                this.InNetMapManager.Clear();
+                this.OutNetMapManager.Clear();
+                return;
             }
 
             var messageHashKeys = messages.Select(a => a.GetHashCode());
@@ -89,9 +102,7 @@ namespace H6Game.Base
             foreach(var key in keys)
             {
                 if (!messageHashKeys.Contains(key))
-                {
                     RemoveSession(key);
-                }
             }
         }
 
@@ -107,65 +118,44 @@ namespace H6Game.Base
         private void AddSession(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
-            {
                 return;
-            }
 
             var hashCode = message.GetHashCode();
             var localHashCode = this.config.GetInMessage().GetHashCode();
             //判断是否是本地服务，是排除掉
             if(hashCode == localHashCode)
-            {
                 return;
-            }
 
             var centerHashCode = this.config.GetCenterMessage().GetHashCode();
             //排除中心服务
             if (hashCode == centerHashCode)
-            {
                 return;
-            }
 
             if (this.inConnectSessions.ContainsKey(hashCode))
-            {
                 return;
-            }
 
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
             //注册连接成功回调
-            session.OnClientConnected = (c) =>
-            {
-                this.inConnectSessions[hashCode] = session;
-            };
-
+            session.OnClientConnected = (c) =>{ this.inConnectSessions[hashCode] = session; };
             //注册连接断开回调
-            session.OnClientDisconnected = (c) =>
-            {
-                this.inConnectSessions.Remove(hashCode);
-            };
+            session.OnClientDisconnected = (c) =>{ this.inConnectSessions.Remove(hashCode); };
             session.Connect();
         }
 
         private void RemoveSession(int key)
         {
             if (config.IsCenterServer)
-            {
                 return;
-            }
 
             var localHashCode = this.config.GetInMessage().GetHashCode();
             //判断是否是本地服务，是排除掉
             if (key == localHashCode)
-            {
                 return;
-            }
 
             var centerHashCode = this.config.GetCenterMessage().GetHashCode();
             //排除中心服务
             if (key == centerHashCode)
-            {
                 return;
-            }
 
             if (inConnectSessions.TryGetValue(key, out Session session))
             {
@@ -180,9 +170,8 @@ namespace H6Game.Base
             if (!session.Accept())
             {
                 if (this.config.IsCenterServer)
-                {
                     throw new Exception($"中心服务端口被占用，");
-                }
+
                 this.config.InNetConfig.LocalEndPoint.Port = message.Port++;
                 HandleInAccept(message);
             }
@@ -222,9 +211,8 @@ namespace H6Game.Base
             if (!session.Accept())
             {
                 if (this.config.IsCenterServer)
-                {
                     throw new Exception($"中心服务端口被占用，");
-                }
+
                 this.config.OuNetConfig.Port = message.Port++;
                 HandleOutAccept(message);
             }
@@ -235,9 +223,7 @@ namespace H6Game.Base
         private void ConnectToCenter(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
-            {
                 return;
-            }
 
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
 

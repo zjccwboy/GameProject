@@ -50,9 +50,8 @@ namespace H6Game.Base
 
             this.innArgs.AcceptSocket = null;
             if (this.acceptor.AcceptAsync(this.innArgs))
-            {
                 return true;
-            }
+
             OnComplete(this, this.innArgs);
 
             return true;
@@ -73,9 +72,8 @@ namespace H6Game.Base
         private void OnAcceptComplete(object o)
         {
             if (this.acceptor == null)
-            {
                 return;
-            }
+
             SocketAsyncEventArgs e = o as SocketAsyncEventArgs;
 
             if (e.SocketError != SocketError.Success)

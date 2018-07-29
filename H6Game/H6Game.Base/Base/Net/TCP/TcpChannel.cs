@@ -58,18 +58,14 @@ namespace H6Game.Base
             {
                 var now = TimeUitls.Now();
                 if(now - this.LastConnectTime < ANetChannel.ReConnectInterval)
-                {
                     return;
-                }
 
                 this.LastConnectTime = now;
 
                 if (Connected)
-                {
                     return;
-                }
 
-                if(this.NetSocket == null)
+                if (this.NetSocket == null)
                 {
                     this.NetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     this.NetSocket.NoDelay = true;
@@ -82,9 +78,8 @@ namespace H6Game.Base
 
                 this.outArgs.RemoteEndPoint = this.RemoteEndPoint;
                 if (this.NetSocket.ConnectAsync(this.outArgs))
-                {
                     return;
-                }
+
                 OnConnectComplete(this.outArgs);
             }
             catch (Exception e)
@@ -100,9 +95,8 @@ namespace H6Game.Base
         public override void ReConnecting()
         {
             if (Connected)
-            {
                 DisConnect();
-            }
+
             StartConnecting();
         }
 
@@ -139,9 +133,7 @@ namespace H6Game.Base
         public override void StartSend()
         {
             if (isSending)
-            {
                 return;
-            }
 
             SendData();
         }
@@ -187,9 +179,8 @@ namespace H6Game.Base
             try
             {
                 if (isReceiving)
-                {
                     return;
-                }
+
                 isReceiving = true;
 
                 if (!Connected)
@@ -223,9 +214,8 @@ namespace H6Game.Base
             {
                 Connected = false;
                 if (NetSocket == null)
-                {
                     return;
-                }
+
                 OnDisConnect?.Invoke(this);
             }
             catch { }
@@ -268,9 +258,7 @@ namespace H6Game.Base
         private void OnConnectComplete(object o)
         {
             if (this.NetSocket == null)
-            {
                 return;
-            }
 
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
             if (e.SocketError != SocketError.Success)
@@ -295,11 +283,8 @@ namespace H6Game.Base
         {
             isReceiving = false;
             if (this.NetSocket == null)
-            {
                 return;
-            }
 
-            this.LastRecvTime = TimeUitls.Now();
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 
             if (e.SocketError != SocketError.Success)
@@ -323,9 +308,8 @@ namespace H6Game.Base
                     var packet = RecvParser.ReadBuffer();
 
                     if (!packet.IsSuccess)
-                    {
                         break;
-                    }
+
                     LastRecvTime = TimeUitls.Now();
                     if (!packet.IsHeartbeat)
                     {
@@ -365,9 +349,7 @@ namespace H6Game.Base
             isSending = false;
 
             if (this.NetSocket == null)
-            {
                 return;
-            }
 
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
 
@@ -379,9 +361,7 @@ namespace H6Game.Base
 
             this.SendParser.Buffer.UpdateRead(e.BytesTransferred);
             if(this.SendParser.Buffer.DataSize <= 0)
-            {
                 return;
-            }
 
             this.SendData();
         }

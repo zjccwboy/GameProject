@@ -64,7 +64,7 @@ namespace H6Game.Base
         /// </summary>
         /// <returns></returns>
         public byte[] GetHeadBytes()
-        {            
+        {
             var bodySize = 0;
             if (Data != null)
             {
@@ -246,10 +246,9 @@ namespace H6Game.Base
             isOk = false;
             while (true)
             {
-                if(tryCount > 4)
-                {
+                if (tryCount > 4)
                     throw new Exception("解包错误，数据包非法.");
-                }
+
                 tryCount++;
                 switch (state)
                 {
@@ -379,19 +378,13 @@ namespace H6Game.Base
                 }
 
                 if (Buffer.DataSize == 0)
-                {
                     finish = true;
-                }
 
                 if (Buffer.DataSize < packetSize - readLength)
-                {
                     finish = true;
-                }
 
                 if (readLength == packetSize)
-                {
                     isOk = true;
-                }
 
                 if (isOk)
                 {
@@ -400,9 +393,7 @@ namespace H6Game.Base
                 }
 
                 if (finish)
-                {
                     break;
-                }
             }
         }
 
@@ -503,9 +494,7 @@ namespace H6Game.Base
         {
             Buffer.Write(packet.GetHeadBytes());
             if (packet.Data != null)
-            {
                 Buffer.Write(packet.Data);
-            }
         }
 
         private List<byte[]> packetByte = new List<byte[]> { new byte[0], new byte[0] };

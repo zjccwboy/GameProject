@@ -162,9 +162,7 @@ namespace H6Game.Base
         public void Notice(ANetChannel channel, Packet packet)
         {
             if (!channel.Connected)
-            {
                 return;
-            }
 
             this.netService.Enqueue(new SendTask
             {
@@ -182,9 +180,7 @@ namespace H6Game.Base
         public void Subscribe(ANetChannel channel, Packet packet, Action<Packet> notificationAction)
         {
             if (!channel.Connected)
-            {
                 return;
-            }
 
             packet.RpcId = channel.RpcId;
             channel.AddPacket(packet, notificationAction);

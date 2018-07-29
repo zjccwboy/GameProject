@@ -11,9 +11,7 @@ namespace H6Game.Base
         {
             var path = $"{Directory.GetCurrentDirectory()}\\SysConfig.json";
             if (!ReadConfigFile(path))
-            {
                 SaveConfigile(path);
-            }
         }
 
         private bool ReadConfigFile(string path)
@@ -24,24 +22,19 @@ namespace H6Game.Base
                 {
                     var json = sr.ReadToEnd();
                     if (string.IsNullOrEmpty(json))
-                    {
                         return false;
-                    }
+
                     ConfigEntity = json.ConvertToObject<SysConfig>();
                 }
             }
 
             if(ConfigEntity.InNetConfig == null || ConfigEntity.OuNetConfig == null || string.IsNullOrEmpty(ConfigEntity.OuNetHost))
-            {
                 return false;
-            }
 
             if (ConfigEntity.InNetConfig.CenterEndPoint != null
                 && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.CenterEndPoint.IP)
                 && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.LocalEndPoint.IP))
-            {
                 return true;
-            }
 
             return false;
         }

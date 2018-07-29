@@ -61,9 +61,8 @@ namespace H6Game.Base
         public static HashSet<IDispatcher> Get(int messageCmd)
         {
             if (!dispatcherDictionary.TryGetValue(messageCmd, out HashSet<IDispatcher> dispatchers))
-            {
                 throw new Exception($"CMD:{messageCmd}没有在IDispatcher实现类中加入MessageCMDAttribute.");
-            }
+
             return dispatchers;
         }
     }

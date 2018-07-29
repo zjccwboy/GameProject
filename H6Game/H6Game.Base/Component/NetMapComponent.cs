@@ -46,9 +46,7 @@ namespace H6Game.Base
             foreach (var entity in connectEntities)
             {
                 if(entity == message)
-                {
                     return;
-                }
             }
 
             this.connectEntities.AddLast(new NetEndPointMessage
@@ -75,6 +73,13 @@ namespace H6Game.Base
             return false;
         }
 
+        public void Clear()
+        {
+            connectEntities.Clear();
+            channelIdMapMsg.Clear();
+            hCodeMapChannel.Clear();
+        }
+
         public void UpdateMapping(IEnumerable<NetEndPointMessage> entities)
         {
             entities = entities.OrderBy(c => c.Order);
@@ -84,14 +89,10 @@ namespace H6Game.Base
             {
                 connectEntities.AddLast(entity);
                 if(hCodeMapChannel.TryGetValue(entity.GetHashCode(), out ANetChannel channel))
-                {
                     AddChannelMaping(channel, entity);
-                }
 
                 if (!hCodeMapChannel.ContainsKey(entity.GetHashCode()))
-                {
                     hCodeMapChannel.Remove(entity.GetHashCode());
-                }
             }
         }
 

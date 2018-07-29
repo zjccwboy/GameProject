@@ -22,9 +22,8 @@ namespace H6Game.Base
             {
                 Action action;
                 if (!this.queue.TryDequeue(out action))
-                {
                     return;
-                }
+
                 action();
             }
         }

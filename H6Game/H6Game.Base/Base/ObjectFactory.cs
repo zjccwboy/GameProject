@@ -40,14 +40,10 @@ namespace H6Game.Base
                 foreach (var t in types)
                 {
                     if (!t.IsClass)
-                    {
                         continue;
-                    }
 
                     if (t.IsAbstract)
-                    {
                         continue;
-                    }
 
                     if (messageBaseType.IsAssignableFrom(t))
                     {

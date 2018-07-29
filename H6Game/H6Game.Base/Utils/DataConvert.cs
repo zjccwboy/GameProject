@@ -43,9 +43,7 @@ namespace H6Game.Base
         public static string ConvertToJson(this object obj, Type type, Formatting formatting)
         {
             if(obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj, formatting, settings);
             return json;
@@ -61,9 +59,7 @@ namespace H6Game.Base
         public static byte[] ConvertToBytes(this object obj, Type type, Formatting formatting)
         {
             if(obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj, type, formatting, settings);
             var bytes = Encoding.UTF8.GetBytes(json);
@@ -79,9 +75,7 @@ namespace H6Game.Base
         public static string ConvertToJson<T>(this T obj) where T : class, new()
         {
             if (obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj, typeof(T), settings);
             return json;
@@ -97,9 +91,7 @@ namespace H6Game.Base
         public static string ConvertToJson<T>(this T obj, Formatting formatting) where T : class, new()
         {
             if(obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj,typeof(T), formatting, settings);
             return json;
@@ -115,9 +107,7 @@ namespace H6Game.Base
         public static byte[] ConvertToBytes<T>(this T obj) where T : class, new()
         {
             if (obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj, typeof(T), settings);
             var bytes = Encoding.UTF8.GetBytes(json);
@@ -134,9 +124,7 @@ namespace H6Game.Base
         public static byte[] ConvertToBytes<T>(this T obj, Formatting formatting) where T : class, new()
         {
             if (obj == null)
-            {
                 return null;
-            }
 
             var json = JsonConvert.SerializeObject(obj, typeof(T), formatting, settings);
             var bytes = Encoding.UTF8.GetBytes(json);
@@ -152,9 +140,7 @@ namespace H6Game.Base
         public static T ConvertToObject<T>(this string json) where T : class, new()
         {
             if (string.IsNullOrEmpty(json))
-            {
                 return null;
-            }
 
             var obj = JsonConvert.DeserializeObject<T>(json, settings);
             return obj;
@@ -169,9 +155,7 @@ namespace H6Game.Base
         public static T ConvertToObject<T>(this byte[] bytes) where T : class, new()
         {
             if(bytes == null)
-            {
                 return null;
-            }
 
             var json = Encoding.UTF8.GetString(bytes);
             var obj = json.ConvertToObject<T>();
@@ -187,9 +171,7 @@ namespace H6Game.Base
         public static object ConvertToObject(this byte[] bytes, Type type)
         {
             if (bytes == null)
-            {
                 return null;
-            }
 
             var json = Encoding.UTF8.GetString(bytes);
             var obj = JsonConvert.DeserializeObject(json, type);

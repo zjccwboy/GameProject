@@ -110,7 +110,6 @@ namespace H6Game.Base
         public override void HandleRecv(byte[] bytes, int offset, int lenght)
         {
             cacheBytes = bytes;
-            this.LastRecvTime = this.TimeNow;
             this.kcp.Input(bytes, offset, lenght);
         }
 
@@ -119,7 +118,6 @@ namespace H6Game.Base
         /// </summary>
         public override void StartRecv()
         {
-            this.LastRecvTime = TimeUitls.Now();
             SetKcpSendTime();
             while (true)
             {
@@ -146,7 +144,7 @@ namespace H6Game.Base
                         {
                             break;
                         }
-
+                        this.LastRecvTime = TimeUitls.Now();
                         if (!packet.IsHeartbeat)
                         {
                             //LogRecord.Log(LogLevel.Error, "StartRecv", $"收到远程电脑:{this.RemoteEndPoint}");

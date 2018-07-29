@@ -174,20 +174,16 @@ namespace H6Game.Base
 
             var lastCheckSpan = now - this.LastCheckTime;
             if (lastCheckSpan < HeartbeatTime)
-            {
                 return;
-            }
 
             if (this.ServiceType == NetServiceType.Client)
             {
                 if (this.ClientChannel == null)
-                {
                     return;
-                }
+
                 if (!this.ClientChannel.Connected)
-                {
                     return;
-                }
+
                 var timeSpan = now - this.ClientChannel.LastSendTime;
                 if (timeSpan > HeartbeatTime - 200)
                 {
