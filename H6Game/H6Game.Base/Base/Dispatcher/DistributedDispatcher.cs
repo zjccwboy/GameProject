@@ -9,15 +9,16 @@ namespace H6Game.Base.Base.Message
         protected override void Dispatcher(NetEndPointMessage response, int messageId)
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
+            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"新连接服务消息:{(MessageCMD)this.MessageId} 消息内容:{response.ConvertToJson()}");
 
-            if(messageId == (int)MessageCMD.AddInServer)
+            if (messageId == (int)MessageCMD.AddInServer)
             {
                 inNetComponent.InNetMapManager.Add(response);
                 inNetComponent.InNetMapManager.AddChannelMaping(this.Channel, response);
 
                 var connections = inNetComponent.InNetMapManager.ConnectEntities;
                 //广播更新内网监听连接映射表
-                inNetComponent.BroadcastConnections(this.Session, connections, (int)MessageCMD.UpdateInNetConnections);
+                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateInNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateInNetConnections} 消息内容:{connections.ConvertToJson()}");
             }
             else if(messageId == (int)MessageCMD.AddOutServer)
@@ -27,11 +28,9 @@ namespace H6Game.Base.Base.Message
 
                 var connections = inNetComponent.OutNetMapManager.ConnectEntities;
                 //广播更新外网监听连接映射表
-                inNetComponent.BroadcastConnections(this.Session, connections, (int)MessageCMD.UpdateOutNetConnections);
+                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateOutNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateOutNetConnections} 消息内容:{connections.ConvertToJson()}");
             }
-
-            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"新连接服务消息:{(MessageCMD)this.MessageId} 消息内容:{response.ConvertToJson()}");
         }
     }
 

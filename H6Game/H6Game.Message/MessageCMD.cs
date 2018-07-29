@@ -30,5 +30,7 @@ namespace H6Game.Message
 
 
         TestCMD = 100000,
+
+        TestCMD1,
     }
 }

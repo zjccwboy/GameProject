@@ -48,14 +48,8 @@ namespace H6Game.Base
             {
                 if (this.config.IsCenterServer)
                 {
-                    if (this.config.GetCenterMessage().GetHashCode() 
-                        == this.defaultCenterEndPoint.GetMessage().GetHashCode())
-                    {
-                        return;                        
-                    }
-                    this.config.InNetConfig.CenterEndPoint = this.defaultCenterEndPoint;
+                    return;
                 }
-
                 var centerMessage = this.config.GetCenterMessage();
                 ConnectToCenter(centerMessage);
             }
@@ -67,18 +61,26 @@ namespace H6Game.Base
             }
         }
 
-        public void BroadcastConnections(Session session, List<NetEndPointMessage> message, int messageCmd)
+        public void BroadcastMessage(byte[] bytes, int messageCmd)
         {
-            if (!this.config.IsCenterServer)
+            if (this.inAcceptSession == null)
                 return;
 
-            var bytes = message.ConvertToBytes();
             var packet = new Packet
             {
                 MessageId = messageCmd,
                 Data = bytes,
             };
-            session.Broadcast(packet);
+            this.inAcceptSession.Broadcast(packet);
+        }
+
+        public void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
+        {
+            if (!this.config.IsCenterServer)
+                return;
+
+            var bytes = message.ConvertToBytes();
+            BroadcastMessage(bytes, messageCmd);
         }
 
         public void UpdateConnections(List<NetEndPointMessage> messages)
@@ -187,7 +189,7 @@ namespace H6Game.Base
                         {
                             this.InNetMapManager.Remove(inMessage);
                             var entitys = this.InNetMapManager.ConnectEntities;
-                            this.BroadcastConnections(session, entitys, (int)MessageCMD.UpdateInNetConnections);
+                            this.BroadcastConnections(entitys, (int)MessageCMD.UpdateInNetConnections);
                             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
                         }
 
@@ -195,7 +197,7 @@ namespace H6Game.Base
                         {
                             this.OutNetMapManager.Remove(outMessage);
                             var entitys = this.OutNetMapManager.ConnectEntities;
-                            this.BroadcastConnections(session, entitys, (int)MessageCMD.UpdateOutNetConnections);
+                            this.BroadcastConnections(entitys, (int)MessageCMD.UpdateOutNetConnections);
                             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
                         } 
                     }
@@ -230,6 +232,7 @@ namespace H6Game.Base
             //注册连接成功回调
             session.OnClientConnected = (c) =>
             {
+                this.inConnectSessions[message.GetHashCode()] = session;
                 this.InNetMapManager.Add(message);
                 var localMessage = this.config.GetInMessage();
                 var outMessage = this.config.GetOutMessage();
@@ -247,42 +250,22 @@ namespace H6Game.Base
                 };
 
                 this.InNetMapManager.Remove(messageRp);
+                if (this.OutNetMapManager.TryGetMappingMessage(c, out NetEndPointMessage outMessage))
+                    this.OutNetMapManager.Remove(outMessage);
+
                 this.inConnectSessions.Remove(messageRp.GetHashCode());
                 if (config.IsCenterServer)
                 {
                     return;
                 }
 
-                //如果是中心服务挂掉，切换中心服务
                 if (messageRp == this.config.GetCenterMessage())
                 {
-                    if (!this.InNetMapManager.TryGetCenterIpEndPoint(out NetEndPointMessage value))
-                    {
-                        LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前所有服务已经关闭.");
-                        //服务全部挂调，重新开始等待默认中心服务
-                        ConnectToCenter(defaultCenterEndPoint.GetMessage());
-                        return;
-                    }
-
-                    var newCenterEndPoint = new EndPointEntity
-                    {
-                        IP = value.IP,
-                        Port = value.Port,
-                    };
-                    //切换中心服务
-                    this.config.InNetConfig.CenterEndPoint = newCenterEndPoint;
-                    var centerMessage = newCenterEndPoint.GetMessage();
-                    LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"切换中心服务器:{messageRp.IP}:{messageRp.Port} -> {newCenterEndPoint.IP}:{newCenterEndPoint.Port}.");
-                    if (this.config.GetInMessage().GetHashCode() == centerMessage.GetHashCode())
-                    {
-                        this.config.IsCenterServer = true;
-                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/ConnectToCenter", $"当前服务变为中心服务:{this.config.InNetConfig.LocalEndPoint.IP}:{this.config.InNetConfig.LocalEndPoint.Port}.");
-                    }
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
+                    return;
                 }
             };
-
             session.Connect();
-            this.inConnectSessions[message.GetHashCode()] = session;
         }
 
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)

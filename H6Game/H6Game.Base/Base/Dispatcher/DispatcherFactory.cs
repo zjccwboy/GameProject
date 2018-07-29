@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using H6Game.Message;
 using System.Reflection;
 using System.Linq;
+using System.Text;
 
 namespace H6Game.Base
 {
@@ -10,6 +11,7 @@ namespace H6Game.Base
     {
         private static Dictionary<int, HashSet<IDispatcher>> dispatcherDictionary = new Dictionary<int, HashSet<IDispatcher>>();
         private static Dictionary<int, HashSet<Type>> meesageCmdDictionary = new Dictionary<int, HashSet<Type>>();
+        private static Type stringType = typeof(string);
 
         static DispatcherFactory()
         {
@@ -54,9 +56,17 @@ namespace H6Game.Base
                 return false;
             }
 
+            if(type == stringType)
+            {
+                response = (T)(object)Encoding.UTF8.GetString(bytes);
+                return true;
+            }
+
             response = (T)bytes.ConvertToObject(type);
             return true;
         }
+
+
 
         public static HashSet<IDispatcher> Get(int messageCmd)
         {
