@@ -5,7 +5,7 @@ namespace H6Game.Base
 {
 
     /// <summary>
-    /// 管理整个服务端分布式的组件
+    /// 管理服务端分布式网络映射组件
     /// </summary>
     public class NetMapManager
     {

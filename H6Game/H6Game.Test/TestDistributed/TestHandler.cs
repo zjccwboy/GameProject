@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TestDistributed
 {
     [MessageCMD((int)MessageCMD.TestCMD1)]
-    public class TestDispatcher : ADispatcher<string>
+    public class TestHandler : AHandler<string>
     {
         protected override void Dispatcher(string response, int messageId)
         {

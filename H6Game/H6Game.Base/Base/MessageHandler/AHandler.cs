@@ -14,7 +14,7 @@ namespace H6Game.Base
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
     /// <typeparam name="Response"></typeparam>
-    public abstract class ADispatcher<Response> : IDispatcher<Response>
+    public abstract class AHandler<Response> : IHandler<Response>
     {
         /// <summary>
         /// 网络会话管理对象
@@ -69,7 +69,7 @@ namespace H6Game.Base
             this.RpcId = packet.RpcId;
             try
             {
-                if (DispatcherFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
+                if (HandlerFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
                 {
                     Dispatcher(response, packet.MessageId);
                 }
@@ -129,7 +129,7 @@ namespace H6Game.Base
 
             this.Session.Subscribe(this.Channel, send , (p)=> 
             {
-                if (!DispatcherFactory.TryGetResponse(p.MessageId, p.Data, out T response))
+                if (!HandlerFactory.TryGetResponse(p.MessageId, p.Data, out T response))
                     tcs.TrySetResult(default(T));
 
                 tcs.TrySetResult(response);

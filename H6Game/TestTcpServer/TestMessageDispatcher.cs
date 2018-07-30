@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TestTcpServer
 {
     [MessageCMD((int)MessageCMD.TestCMD)]
-    public class TestMessageDispatcher : ADispatcher<string>
+    public class TestMessageDispatcher : AHandler<string>
     {
         protected override void Dispatcher(string response, int messageId)
         {

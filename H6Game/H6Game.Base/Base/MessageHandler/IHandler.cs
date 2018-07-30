@@ -6,12 +6,12 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发接口
     /// </summary>
-    public interface IDispatcher<Response> : IDispatcher
+    public interface IHandler<Response> : IHandler
     {
 
     }
 
-    public interface IDispatcher
+    public interface IHandler
     {
         Type ResponseType { get;}
         void Receive(Session session, ANetChannel channel, Packet packet);

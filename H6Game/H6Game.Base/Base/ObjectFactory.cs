@@ -31,7 +31,7 @@ namespace H6Game.Base
             var messageTypes = new HashSet<Type>();
             var messageBaseType = typeof(IMessage);
 
-            var dispatcherType = typeof(IDispatcher);
+            var dispatcherType = typeof(IHandler);
             var dispatcherTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)

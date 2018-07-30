@@ -208,7 +208,7 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new MessageHandler
+                channel.Handler = new MessageDispatcher
                 {
                     Session = this.Session,
                     Channel = channel,
@@ -235,7 +235,7 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new MessageHandler
+                channel.Handler = new MessageDispatcher
                 {
                     Session = this.Session,
                     Channel = channel,

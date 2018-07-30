@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
+    /// <summary>
+    /// 内网分布式连接核心组件
+    /// </summary>
     public class InNetComponent : BaseComponent
     {
-        private SysConfig config;
+        private SysConfig config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private EndPointEntity defaultCenterEndPoint;
         private readonly Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
@@ -21,16 +24,13 @@ namespace H6Game.Base
 
         public override void Start()
         {
-            this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             this.defaultCenterEndPoint = config.InNetConfig.CenterEndPoint;
-
             var center = this.config.GetCenterMessage();
             if (this.config.IsCenterServer)
             {
                 HandleInAccept(center);
                 return;
             }
-
             HandleInAccept(this.config.GetInMessage());
             this.Connecting(center);
             HandleOutAccept(this.config.GetOutMessage());
@@ -39,7 +39,7 @@ namespace H6Game.Base
         /// <summary>
         /// 更新内部分布式连接状态
         /// </summary>
-        public void Update()
+        public override void Update()
         {
             if(outAcceptSession != null)
                 outAcceptSession.Update();
@@ -71,7 +71,7 @@ namespace H6Game.Base
 
             session.Subscribe(channel, send, (p) =>
             {
-                if (!DispatcherFactory.TryGetResponse(p.MessageId, p.Data, out T response))
+                if (!HandlerFactory.TryGetResponse(p.MessageId, p.Data, out T response))
                     tcs.TrySetResult(default(T));
 
                 tcs.TrySetResult(response);
@@ -106,7 +106,7 @@ namespace H6Game.Base
         public void BroadcastMessage(byte[] bytes, int messageCmd)
         {
             //中心服务只处理内部分布式连接管理消息
-            if (this.config.IsCenterServer && !IsInNetMessage(messageCmd))
+            if (this.config.IsCenterServer && !IsSysMessage(messageCmd))
                 return;
 
             if (this.inAcceptSession == null)
@@ -330,7 +330,7 @@ namespace H6Game.Base
             session.Connect();
         }
 
-        private bool IsInNetMessage(int messageCmd)
+        private bool IsSysMessage(int messageCmd)
         {
             return messageCmd == (int)MessageCMD.AddInServer
                 || messageCmd == (int)MessageCMD.DeleteServer

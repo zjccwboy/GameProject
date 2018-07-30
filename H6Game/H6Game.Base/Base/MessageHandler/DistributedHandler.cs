@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace H6Game.Base.Base.Message
 {
     [MessageCMD((int)MessageCMD.AddInServer, (int)MessageCMD.AddOutServer, (int)MessageCMD.DeleteServer, (int)MessageCMD.DeleteOutServer)]
-    public class DistributedDispatcher : ADispatcher<NetEndPointMessage>
+    public class DistributedHandler : AHandler<NetEndPointMessage>
     {
         protected override void Dispatcher(NetEndPointMessage response, int messageId)
         {
@@ -70,7 +70,7 @@ namespace H6Game.Base.Base.Message
     }
 
     [MessageCMD((int)MessageCMD.UpdateInNetConnections, (int)MessageCMD.UpdateOutNetConnections)]
-    public class NetonnectionsDispatcher : ADispatcher<List<NetEndPointMessage>>
+    public class NetonnectionsHandler : AHandler<List<NetEndPointMessage>>
     {
         protected override void Dispatcher(List<NetEndPointMessage> response, int messageId)
         {

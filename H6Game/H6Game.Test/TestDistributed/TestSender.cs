@@ -12,10 +12,11 @@ namespace TestDistributed
     {
         private uint time = TimeUitls.Now();
 
-        public void Update()
+        public override void Update()
         {
             Broadcast();
         }
+
         InNetComponent inNetComponent = SinglePool.Get<InNetComponent>();
         private void Broadcast()
         {

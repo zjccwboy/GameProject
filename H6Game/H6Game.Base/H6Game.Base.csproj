@@ -25,4 +25,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Component\Room\" />
+    <Folder Include="Component\Player\" />
+  </ItemGroup>
+
 </Project>
