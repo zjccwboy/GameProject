@@ -106,9 +106,8 @@ namespace H6Game.Base
         public virtual void Update()
         {
             if(this.ServiceType == NetServiceType.Client && ClientChannel != null)
-            {                
                 ClientChannel.StartConnecting();
-            }
+
             HandleSend();
             HandleReceive();
         }
@@ -144,11 +143,9 @@ namespace H6Game.Base
                 }
 
                 foreach (var channel in this.senders)
-                {
                     channel.StartSend();
-                }
-                this.senders.Clear();
 
+                this.senders.Clear();
                 this.CheckHeadbeat();
             }
             catch (Exception e)
@@ -164,9 +161,7 @@ namespace H6Game.Base
         {
             var channels = Channels.Values;
             foreach (var channel in channels)
-            {
                 channel.StartRecv();
-            }
         }
 
         /// <summary>
@@ -175,11 +170,6 @@ namespace H6Game.Base
         private void CheckHeadbeat()
         {
             var now = TimeUitls.Now();
-            var lastCheckSpan = now - this.LastCheckTime;
-            if (lastCheckSpan < HeartbeatTime)
-                return;
-            LastCheckTime = now;
-
             if (this.ServiceType == NetServiceType.Client)
             {
                 if (this.ClientChannel == null)
@@ -189,7 +179,7 @@ namespace H6Game.Base
                     return;
 
                 var  timeSendSpan = now - this.ClientChannel.LastSendTime;
-                if (timeSendSpan > HeartbeatTime - 200)
+                if (timeSendSpan > HeartbeatTime)
                 {
                     this.Session.Notice(this.ClientChannel, new Packet
                     {
@@ -200,6 +190,11 @@ namespace H6Game.Base
             }
             else if (this.ServiceType == NetServiceType.Server)
             {
+                var lastCheckSpan = now - this.LastCheckTime;
+                if (lastCheckSpan < HeartbeatTime)
+                    return;
+                LastCheckTime = now;
+
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
@@ -210,7 +205,7 @@ namespace H6Game.Base
                         continue;
 
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime)
+                    if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
                     {
                         LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();

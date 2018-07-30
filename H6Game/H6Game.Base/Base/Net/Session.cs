@@ -130,10 +130,10 @@ namespace H6Game.Base
                     netChannel = null;
                     return false;
                 }
+
                 if (channel.Connected)
-                {
                     break;
-                }
+
                 retry++;
             }
 
@@ -199,9 +199,7 @@ namespace H6Game.Base
         {
             var channels = this.netService.Channels.Values;
             foreach(var channel in channels)
-            {
                 Notice(channel, packet);
-            }
         }
 
         /// <summary>
@@ -211,9 +209,7 @@ namespace H6Game.Base
         public void Broadcast(IEnumerable<ANetChannel> channels, Packet packet)
         {
             foreach (var channel in channels)
-            {
                 Notice(channel, packet);
-            }
         }
 
         public void Dispose()
@@ -222,9 +218,7 @@ namespace H6Game.Base
             foreach(var channel in channels)
             {
                 if (channel.Connected)
-                {
                     channel.DisConnect();
-                }
             }
             this.netService = null;
         }

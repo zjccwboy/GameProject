@@ -26,12 +26,48 @@ namespace H6Game.Base
         public string Logs { get; set; }
     }
 
+    public sealed class WriteQueue : IDisposable
+    {
+        private readonly ConcurrentQueue<Action> actionsQueue = new ConcurrentQueue<Action>();
+        private bool dispose;
+        
+        private WriteQueue()
+        {
+            DoWrite();
+        }
+
+        public static WriteQueue Instance { get; } = new WriteQueue();
+
+        public void Post(SendOrPostCallback callback, object state)
+        {
+            actionsQueue.Enqueue(() => { callback(state); });
+        }
+
+        private void DoWrite()
+        {
+            Task.Run(() =>
+            {
+                while (!dispose)
+                {
+                    if (actionsQueue.TryDequeue(out Action action))
+                        action();
+
+                    Thread.Sleep(1);
+                }
+            });
+        }
+
+        public void Dispose()
+        {
+            dispose = true;
+        }
+    }
+
     public class LogRecord
     {
 #if SERVER
         private static ILogger logger;
         private static Type logType;
-        private static readonly ConcurrentQueue<Action> actionsQueue = new ConcurrentQueue<Action>();
         static LogRecord()
         {
             GlobalContext.Properties["InstanceName"] = Process.GetCurrentProcess().Id;
@@ -43,8 +79,6 @@ namespace H6Game.Base
             }
             logger = loggerSystem;
             logType = typeof(LogRecord);
-
-            DoWrite();
         }
 
         public static void Log(LogLevel level, string description, string logRecord)
@@ -71,45 +105,23 @@ namespace H6Game.Base
         {
             var logLevel = GetLogLevel(level);
             var message = $"Desc:{description} Log:{logRecord}";
-
-            Post(WriteHandler, new LogEntity
+#if WINDOWS
+            WriteQueue.Instance.Post(WriteHandler, new LogEntity
             {
                 LogType = logType,
                 LogLevel = logLevel,
                 Logs = message
             });
+#else
+            logger.Log(logType, logLevel, message, null);
+#endif
         }
 
         private static void WriteHandler(object obj)
         {
             var logEntity = obj as LogEntity;
             logger.Log(logEntity.LogType, logEntity.LogLevel, logEntity.Logs, null);
-        }
-
-        private static void Post(SendOrPostCallback callback, object state)
-        {
-            Add(() => { callback(state); });
-        }
-
-        private static void Add(Action action)
-        {
-            actionsQueue.Enqueue(action);
-        }
-
-        private static void DoWrite()
-        {
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    if (actionsQueue.TryDequeue(out Action action))
-                    {
-                        action();
-                    }
-                    Thread.Sleep(1);
-                }
-            });
-        }        
+        }  
 #else
             public static void Log(LogLevel level, string description, string logRecord)
         {
