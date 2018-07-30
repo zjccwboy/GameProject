@@ -70,7 +70,7 @@ namespace H6Game.Base.Base.Message
     }
 
     [MessageCMD((int)MessageCMD.UpdateInNetConnections, (int)MessageCMD.UpdateOutNetConnections)]
-    public class NetonnectionsHandler : AHandler<List<NetEndPointMessage>>
+    public class NetUpdateHandler : AHandler<List<NetEndPointMessage>>
     {
         protected override void Dispatcher(List<NetEndPointMessage> response, int messageId)
         {
