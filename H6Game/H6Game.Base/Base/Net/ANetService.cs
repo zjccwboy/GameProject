@@ -30,7 +30,7 @@ namespace H6Game.Base
         private uint LastCheckTime = TimeUitls.Now();
 
         /// <summary>
-        /// 心跳超时时长，服务端4秒,客户端20秒
+        /// 心跳超时时长，服务端6秒,客户端20秒
         /// </summary>
 #if SERVER
         public static uint HeartbeatTime = 1000 * 4;
@@ -175,10 +175,10 @@ namespace H6Game.Base
         private void CheckHeadbeat()
         {
             var now = TimeUitls.Now();
-
             var lastCheckSpan = now - this.LastCheckTime;
             if (lastCheckSpan < HeartbeatTime)
                 return;
+            LastCheckTime = now;
 
             if (this.ServiceType == NetServiceType.Client)
             {
@@ -203,15 +203,20 @@ namespace H6Game.Base
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
+                    if (channel == null)
+                        continue;
+
+                    if (!channel.Connected)
+                        continue;
+
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime + 2000)
+                    if (timeSpan > HeartbeatTime)
                     {
                         LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();
                     }
                 }
             }
-            LastCheckTime = now;
         }
 
         /// <summary>
