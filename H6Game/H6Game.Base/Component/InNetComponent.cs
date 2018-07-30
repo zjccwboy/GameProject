@@ -24,9 +24,6 @@ namespace H6Game.Base
             this.config = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
             this.defaultCenterEndPoint = config.InNetConfig.CenterEndPoint;
 
-            var outEndPoint = this.config.GetOutMessage();
-            HandleOutAccept(outEndPoint);
-
             var center = this.config.GetCenterMessage();
             if (this.config.IsCenterServer)
             {
@@ -34,9 +31,9 @@ namespace H6Game.Base
                 return;
             }
 
-            var local = this.config.GetInMessage();
-            HandleInAccept(local);
+            HandleInAccept(this.config.GetInMessage());
             this.Connecting(center);
+            HandleOutAccept(this.config.GetOutMessage());
         }
 
         /// <summary>
@@ -49,16 +46,6 @@ namespace H6Game.Base
 
             if (inAcceptSession != null)
                 inAcceptSession.Update();            
-
-            if (!inConnectSessions.Any())
-            {
-                if (this.config.IsCenterServer)
-                {
-                    return;
-                }
-                var centerMessage = this.config.GetCenterMessage();
-                Connecting(centerMessage);
-            }
 
             var connections = inConnectSessions.Values.ToList();
             foreach(var connect in connections)
@@ -303,9 +290,7 @@ namespace H6Game.Base
 
             //不连接进程内的监听端口
             if(message == this.config.GetInMessage())
-            {
                 return;
-            }
 
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
             this.inConnectSessions[message.GetHashCode()] = session;
