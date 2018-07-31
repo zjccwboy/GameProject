@@ -22,7 +22,7 @@ namespace H6Game.Base
 
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return this.GetHashCode() == obj.GetHashCode();
         }
 
         public override int GetHashCode()

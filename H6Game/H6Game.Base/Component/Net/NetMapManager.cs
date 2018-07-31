@@ -13,6 +13,9 @@ namespace H6Game.Base
         private readonly Dictionary<int, NetEndPointMessage> channelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
         private readonly Dictionary<int, ANetChannel> hCodeMapChannel = new Dictionary<int, ANetChannel>();
 
+        /// <summary>
+        /// 连接消息集合
+        /// </summary>
         public List<NetEndPointMessage> ConnectEntities
         {
             get
@@ -21,11 +24,20 @@ namespace H6Game.Base
             }
         }
 
+        /// <summary>
+        /// 判断是否存在
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public bool Existed(NetEndPointMessage message)
         {
-            return hCodeMapChannel.ContainsKey(message.GetHashCode());
+            return connectEntities.Contains(message);
         }
 
+        /// <summary>
+        /// 删除一条连接消息
+        /// </summary>
+        /// <param name="message"></param>
         public void Remove(NetEndPointMessage message)
         {
             if (connectEntities.Remove(message))
@@ -38,6 +50,23 @@ namespace H6Game.Base
             }
         }
 
+        /// <summary>
+        /// 新增一个连接消息，中心服务不需要跟Channel映射
+        /// </summary>
+        /// <param name="message"></param>
+        public void Add(NetEndPointMessage message)
+        {
+            if (connectEntities.Contains(message))
+                return;
+
+            connectEntities.Add(message);
+        }
+
+        /// <summary>
+        /// 新增一个连接消息，非中心服务需要跟Channel映射
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="message"></param>
         public void Add(ANetChannel channel, NetEndPointMessage message)
         {
             if (connectEntities.Contains(message))
@@ -49,16 +78,20 @@ namespace H6Game.Base
             hCodeMapChannel[message.GetHashCode()] = channel;
         }
 
+        /// <summary>
+        /// 用Channel Id获取相应的连接消息
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public bool TryGetFromChannelId(ANetChannel channel, out NetEndPointMessage message)
         {
             return channelIdMapMsg.TryGetValue(channel.Id, out message);
         }
 
-        public bool TryGetMappingMessage(ANetChannel channel, out NetEndPointMessage message)
-        {
-            return this.channelIdMapMsg.TryGetValue(channel.Id, out message);
-        }
-
+        /// <summary>
+        /// 清除所有连接消息与映射表
+        /// </summary>
         public void Clear()
         {
             connectEntities.Clear();
@@ -66,19 +99,23 @@ namespace H6Game.Base
             hCodeMapChannel.Clear();
         }
 
-        public void UpdateMapping(IEnumerable<NetEndPointMessage> entities)
+        /// <summary>
+        /// 更新消息连接与映射信息
+        /// </summary>
+        /// <param name="entities"></param>
+        public void UpdateConnections(IEnumerable<NetEndPointMessage> entities)
         {
-            entities = entities.OrderBy(c => c.Order);
-            connectEntities.Clear();
-            channelIdMapMsg.Clear();
             foreach (var entity in entities)
             {
                 connectEntities.Add(entity);
-                if(hCodeMapChannel.TryGetValue(entity.GetHashCode(), out ANetChannel channel))
-                    Add(channel, entity);
-
-                if (!hCodeMapChannel.ContainsKey(entity.GetHashCode()))
-                    hCodeMapChannel.Remove(entity.GetHashCode());
+                foreach(var oldEntity in connectEntities)
+                {
+                    if (!entities.Contains(oldEntity))
+                    {
+                        Remove(oldEntity);
+                        break;
+                    }
+                }
             }
         }
     }

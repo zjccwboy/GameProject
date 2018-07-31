@@ -18,7 +18,7 @@ namespace H6Game.Base.Base.Message
                 if (inNetComponent.InNetMapManager.Existed(response))
                     return;
 
-                inNetComponent.InNetMapManager.Add(this.Channel, response);
+                inNetComponent.InNetMapManager.Add(response);
 
                 connections = inNetComponent.InNetMapManager.ConnectEntities;
                 //广播更新内网监听连接映射表
@@ -30,7 +30,7 @@ namespace H6Game.Base.Base.Message
                 if (inNetComponent.OutNetMapManager.Existed(response))
                     return;
 
-                inNetComponent.OutNetMapManager.Add(this.Channel, response);
+                inNetComponent.OutNetMapManager.Add(response);
 
                 connections = inNetComponent.OutNetMapManager.ConnectEntities;
                 //广播更新外网监听连接映射表
@@ -79,12 +79,12 @@ namespace H6Game.Base.Base.Message
                 inNetComponent.UpdateConnections(response);
 
                 //更新内网监听映射列表
-                inNetComponent.InNetMapManager.UpdateMapping(response);
+                inNetComponent.InNetMapManager.UpdateConnections(response);
             }
             else if(messageId == (int)MessageCMD.UpdateOutNetConnections)
             {
                 //更新外网监听映射列表
-                inNetComponent.OutNetMapManager.UpdateMapping(response);
+                inNetComponent.OutNetMapManager.UpdateConnections(response);
             }
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/NetonnectionsDispatcher", $"分布式分发消息:{(MessageCMD)messageId} 消息内容:{response.ConvertToJson()}");
         }

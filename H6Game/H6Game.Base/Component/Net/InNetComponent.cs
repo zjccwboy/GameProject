@@ -318,7 +318,7 @@ namespace H6Game.Base
                 }
 
                 this.InNetMapManager.Remove(messageRp);
-                if (this.OutNetMapManager.TryGetMappingMessage(c, out NetEndPointMessage outMessage))
+                if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
 
                 this.inConnectSessions.Remove(messageRp.GetHashCode());
