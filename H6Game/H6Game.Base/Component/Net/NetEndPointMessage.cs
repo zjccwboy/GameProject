@@ -6,7 +6,6 @@ namespace H6Game.Base
     {
         public int Port { get; set; }
         public string IP { get; set; }
-        public int Order { get; set; }
 
         //重载==运算符
         public static bool operator ==(NetEndPointMessage left, NetEndPointMessage right)

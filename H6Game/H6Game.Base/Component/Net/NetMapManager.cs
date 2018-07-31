@@ -20,7 +20,7 @@ namespace H6Game.Base
         {
             get
             {
-                return connectEntities.OrderBy(c=>c.Order).ToList();
+                return connectEntities.ToList();
             }
         }
 
@@ -72,7 +72,6 @@ namespace H6Game.Base
             if (connectEntities.Contains(message))
                 return;
 
-            message.Order = MessageOrderCreator.CreateId();
             this.connectEntities.Add(message);
             channelIdMapMsg[channel.Id] = message;
             hCodeMapChannel[message.GetHashCode()] = channel;
