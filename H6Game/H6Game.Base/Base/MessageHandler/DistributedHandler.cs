@@ -22,7 +22,7 @@ namespace H6Game.Base.Base.Message
 
                 connections = inNetComponent.InNetMapManager.ConnectEntities;
                 //广播更新内网监听连接映射表
-                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateInNetConnections);
+                this.BroadcastConnections(connections, (int)MessageCMD.UpdateInNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateInNetConnections} 消息内容:{connections.ConvertToJson()}");
             }
             else if(messageId == (int)MessageCMD.AddOutServer)
@@ -34,7 +34,7 @@ namespace H6Game.Base.Base.Message
 
                 connections = inNetComponent.OutNetMapManager.ConnectEntities;
                 //广播更新外网监听连接映射表
-                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateOutNetConnections);
+                this.BroadcastConnections(connections, (int)MessageCMD.UpdateOutNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateOutNetConnections} 消息内容:{connections.ConvertToJson()}");
 
             }
@@ -46,7 +46,7 @@ namespace H6Game.Base.Base.Message
                 inNetComponent.InNetMapManager.Remove(response);
                 connections = inNetComponent.InNetMapManager.ConnectEntities;
                 //广播更新内网监听连接映射表
-                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateInNetConnections);
+                this.BroadcastConnections(connections, (int)MessageCMD.UpdateInNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateInNetConnections} 消息内容:{connections.ConvertToJson()}");
             }
             else if(messageId == (int)MessageCMD.DeleteOutServer)
@@ -57,13 +57,24 @@ namespace H6Game.Base.Base.Message
                 inNetComponent.OutNetMapManager.Remove(response);
                 connections = inNetComponent.OutNetMapManager.ConnectEntities;
                 //广播更新外网监听连接映射表
-                inNetComponent.BroadcastConnections(connections, (int)MessageCMD.UpdateOutNetConnections);
+                this.BroadcastConnections(connections, (int)MessageCMD.UpdateOutNetConnections);
                 LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"分布式分发消息:{MessageCMD.UpdateOutNetConnections} 消息内容:{connections.ConvertToJson()}");
             }
             else
             {
                 throw new Exception("内网分布式消息分发错误.");
             }
+        }
+
+        private void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
+        {
+            var bytes = message.ConvertToBytes();
+            var packet = new Packet
+            {
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+            this.Session.Broadcast(packet);
         }
     }
 

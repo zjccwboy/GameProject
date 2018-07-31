@@ -123,40 +123,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 广播内部通讯消息
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="messageCmd"></param>
-        public void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
-        {
-            if (!this.config.IsCenterServer)
-                return;
-
-            var bytes = message.ConvertToBytes();
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.inAcceptSession.Broadcast(packet);
-        }
-
-        /// <summary>
-        /// 发送一条消息给中心服务
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="messageCmd"></param>
-        public void SendToCenter(byte[] bytes, int messageCmd)
-        {
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.centerConnectSession.Broadcast(packet);
-        }
-
-        /// <summary>
         /// 更新连接信息
         /// </summary>
         /// <param name="messages"></param>
@@ -323,6 +289,30 @@ namespace H6Game.Base
                 this.inConnectSessions.Remove(message.GetHashCode());
             };
             session.Connect();
+        }
+
+        private void SendToCenter(byte[] bytes, int messageCmd)
+        {
+            var packet = new Packet
+            {
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+            this.centerConnectSession.Broadcast(packet);
+        }
+
+        private void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
+        {
+            if (!this.config.IsCenterServer)
+                return;
+
+            var bytes = message.ConvertToBytes();
+            var packet = new Packet
+            {
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+            this.inAcceptSession.Broadcast(packet);
         }
 
         private bool IsSysMessage(int messageCmd)
