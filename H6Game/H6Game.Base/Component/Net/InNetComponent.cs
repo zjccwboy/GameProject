@@ -18,6 +18,7 @@ namespace H6Game.Base
         private readonly Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
+        private Session centerConnectSession;
 
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
@@ -45,7 +46,10 @@ namespace H6Game.Base
                 outAcceptSession.Update();
 
             if (inAcceptSession != null)
-                inAcceptSession.Update();            
+                inAcceptSession.Update();
+
+            if (centerConnectSession != null)
+                centerConnectSession.Update();
 
             var connections = inConnectSessions.Values.ToList();
             foreach(var connect in connections)
@@ -144,15 +148,12 @@ namespace H6Game.Base
         /// <param name="messageCmd"></param>
         public void SendToCenter(byte[] bytes, int messageCmd)
         {
-            if (!this.inConnectSessions.TryGetValue(this.config.GetCenterMessage().GetHashCode(), out Session session))
-                return;
-
             var packet = new Packet
             {
                 MessageId = messageCmd,
                 Data = bytes,
             };
-            session.Broadcast(packet);
+            this.centerConnectSession.Broadcast(packet);
         }
 
         /// <summary>
@@ -291,7 +292,11 @@ namespace H6Game.Base
                 return;
 
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
-            this.inConnectSessions[message.GetHashCode()] = session;
+
+            if (message == this.config.GetCenterMessage())
+                this.centerConnectSession = session;
+            else
+                this.inConnectSessions[message.GetHashCode()] = session;
 
             //注册连接成功回调
             session.OnClientConnected = (c) =>
@@ -305,25 +310,17 @@ namespace H6Game.Base
             //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
-                var messageRp = new NetEndPointMessage
-                {
-                    IP = c.RemoteEndPoint.Address.ToString(),
-                    Port = c.RemoteEndPoint.Port,
-                };
-
-                if (messageRp == this.config.GetCenterMessage())
+                if (message == this.config.GetCenterMessage())
                 {
                     LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
 
-                this.InNetMapManager.Remove(messageRp);
+                this.InNetMapManager.Remove(message);
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
 
-                this.inConnectSessions.Remove(messageRp.GetHashCode());
-                if (config.IsCenterServer)
-                    return;
+                this.inConnectSessions.Remove(message.GetHashCode());
             };
             session.Connect();
         }
