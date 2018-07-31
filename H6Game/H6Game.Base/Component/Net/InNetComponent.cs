@@ -71,10 +71,8 @@ namespace H6Game.Base
 
             session.Subscribe(channel, send, (p) =>
             {
-                if (!HandlerFactory.TryGetResponse(p.MessageId, p.Data, out T response))
-                    tcs.TrySetResult(default(T));
-
-                tcs.TrySetResult(response);
+                var response = p.Data.ConvertToObject(typeof(T));
+                tcs.TrySetResult((T)response);
             });
             return tcs.Task;
         }

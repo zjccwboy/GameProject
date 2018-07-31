@@ -10,6 +10,7 @@ namespace H6Game.Base
     public static class DataConvert
     {
         private readonly static JsonSerializerSettings settings = new JsonSerializerSettings();
+        private static Type stringType = typeof(string);
 
         static DataConvert()
         {
@@ -172,6 +173,11 @@ namespace H6Game.Base
         {
             if (bytes == null)
                 return null;
+
+            if (type == stringType)
+            {
+                return Encoding.UTF8.GetString(bytes);
+            }
 
             var json = Encoding.UTF8.GetString(bytes);
             var obj = JsonConvert.DeserializeObject(json, type);

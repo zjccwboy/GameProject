@@ -21,12 +21,32 @@ namespace H6Game.Base
             }
         }
 
-        public bool Existed(ANetChannel channel, NetEndPointMessage message)
+        public bool Existed(NetEndPointMessage message)
         {
-            if(!channelIdMapMsg.TryGetValue(channel.Id, out NetEndPointMessage value))
-                return false;
+            return hCodeMapChannel.ContainsKey(message.GetHashCode());
+        }
 
-            return message == value;
+        public void Remove(NetEndPointMessage message)
+        {
+            if (connectEntities.Remove(message))
+            {
+                if (hCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
+                {
+                    hCodeMapChannel.Remove(message.GetHashCode());
+                    channelIdMapMsg.Remove(channel.Id);
+                }
+            }
+        }
+
+        public void Add(ANetChannel channel, NetEndPointMessage message)
+        {
+            if (connectEntities.Contains(message))
+                return;
+
+            message.Order = MessageOrderCreator.CreateId();
+            this.connectEntities.Add(message);
+            channelIdMapMsg[channel.Id] = message;
+            hCodeMapChannel[message.GetHashCode()] = channel;
         }
 
         public bool TryGetFromChannelId(ANetChannel channel, out NetEndPointMessage message)
@@ -34,55 +54,9 @@ namespace H6Game.Base
             return channelIdMapMsg.TryGetValue(channel.Id, out message);
         }
 
-        public void Remove(NetEndPointMessage message)
-        {
-            var entities = connectEntities.ToList();
-            foreach (var entiry in entities)
-            {
-                if(entiry == message)
-                {
-                    if(hCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
-                    {
-                        hCodeMapChannel.Remove(message.GetHashCode());
-                        channelIdMapMsg.Remove(channel.Id);
-                    }
-                    connectEntities.Remove(entiry);
-                    break;
-                }
-            }
-        }
-
-        public void Add(NetEndPointMessage message)
-        {
-            message.Order = MessageOrderCreator.CreateId();
-            foreach (var entity in connectEntities)
-            {
-                if(entity == message)
-                    return;
-            }
-
-            this.connectEntities.Add(new NetEndPointMessage
-            {
-                IP = message.IP,
-                Port = message.Port,
-            });
-        }
-
-        public void AddChannelMaping(ANetChannel channel, NetEndPointMessage message)
-        {
-            channelIdMapMsg[channel.Id] = message;
-            hCodeMapChannel[message.GetHashCode()] = channel;
-        }
-
         public bool TryGetMappingMessage(ANetChannel channel, out NetEndPointMessage message)
         {
-            if(this.channelIdMapMsg.TryGetValue(channel.Id, out NetEndPointMessage value))
-            {
-                message = value;
-                return true;
-            }
-            message = null;
-            return false;
+            return this.channelIdMapMsg.TryGetValue(channel.Id, out message);
         }
 
         public void Clear()
@@ -101,7 +75,7 @@ namespace H6Game.Base
             {
                 connectEntities.Add(entity);
                 if(hCodeMapChannel.TryGetValue(entity.GetHashCode(), out ANetChannel channel))
-                    AddChannelMaping(channel, entity);
+                    Add(channel, entity);
 
                 if (!hCodeMapChannel.ContainsKey(entity.GetHashCode()))
                     hCodeMapChannel.Remove(entity.GetHashCode());

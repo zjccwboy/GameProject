@@ -15,11 +15,10 @@ namespace H6Game.Base.Base.Message
             List<NetEndPointMessage> connections = null;
             if (messageId == (int)MessageCMD.AddInServer)
             {
-                if (inNetComponent.InNetMapManager.Existed(this.Channel, response))
+                if (inNetComponent.InNetMapManager.Existed(response))
                     return;
 
-                inNetComponent.InNetMapManager.Add(response);
-                inNetComponent.InNetMapManager.AddChannelMaping(this.Channel, response);
+                inNetComponent.InNetMapManager.Add(this.Channel, response);
 
                 connections = inNetComponent.InNetMapManager.ConnectEntities;
                 //广播更新内网监听连接映射表
@@ -28,11 +27,10 @@ namespace H6Game.Base.Base.Message
             }
             else if(messageId == (int)MessageCMD.AddOutServer)
             {
-                if (inNetComponent.OutNetMapManager.Existed(this.Channel, response))
+                if (inNetComponent.OutNetMapManager.Existed(response))
                     return;
 
-                inNetComponent.OutNetMapManager.Add(response);
-                inNetComponent.OutNetMapManager.AddChannelMaping(this.Channel, response);
+                inNetComponent.OutNetMapManager.Add(this.Channel, response);
 
                 connections = inNetComponent.OutNetMapManager.ConnectEntities;
                 //广播更新外网监听连接映射表
@@ -42,7 +40,7 @@ namespace H6Game.Base.Base.Message
             }
             else if(messageId == (int)MessageCMD.DeleteServer)
             {
-                if (!inNetComponent.InNetMapManager.Existed(this.Channel, response))
+                if (!inNetComponent.InNetMapManager.Existed(response))
                     return;
 
                 inNetComponent.InNetMapManager.Remove(response);
@@ -53,7 +51,7 @@ namespace H6Game.Base.Base.Message
             }
             else if(messageId == (int)MessageCMD.DeleteOutServer)
             {
-                if (!inNetComponent.OutNetMapManager.Existed(this.Channel, response))
+                if (!inNetComponent.OutNetMapManager.Existed(response))
                     return;
 
                 inNetComponent.OutNetMapManager.Remove(response);

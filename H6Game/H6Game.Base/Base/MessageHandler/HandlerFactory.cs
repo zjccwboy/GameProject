@@ -11,7 +11,6 @@ namespace H6Game.Base
     {
         private static Dictionary<int, IHandler> dispatcherDictionary = new Dictionary<int, IHandler>();
         private static Dictionary<int, Type> meesageCmdDictionary = new Dictionary<int, Type>();
-        private static Type stringType = typeof(string);
 
         static HandlerFactory()
         {
@@ -43,12 +42,6 @@ namespace H6Game.Base
             {
                 response = default(T);
                 return false;
-            }
-
-            if(type == stringType)
-            {
-                response = (T)(object)Encoding.UTF8.GetString(bytes);
-                return true;
             }
 
             response = (T)bytes.ConvertToObject(type);

@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.BaseTest", "H6Game.T
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Base", "H6Game.Base\H6Game.Base.csproj", "{25A0602D-0BE2-4850-B5D8-897BAF371B50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.Base", "H6Game.Base\H6Game.Base.csproj", "{25A0602D-0BE2-4850-B5D8-897BAF371B50}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8F854D1B-D001-4E54-B295-916E88F590C7} = {8F854D1B-D001-4E54-B295-916E88F590C7}
 	EndProjectSection
@@ -44,9 +44,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTcpServer", "TestTcpSer
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGetCurrentPort", "H6Game.Test\TestGetCurrentPort\TestGetCurrentPort.csproj", "{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestGetCurrentPort", "H6Game.Test\TestGetCurrentPort\TestGetCurrentPort.csproj", "{835F3DB2-3A80-4AD8-97C2-3D2001B269CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "H6Game.Test\Tester\Tester.csproj", "{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tester", "H6Game.Test\Tester\Tester.csproj", "{27CB7D40-C64E-4AD6-A716-F3257E3E1D2F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDistributed", "H6Game.Test\TestDistributed\TestDistributed.csproj", "{733B3765-3EE3-4416-B738-9C37C68121B8}"
 	ProjectSection(ProjectDependencies) = postProject
