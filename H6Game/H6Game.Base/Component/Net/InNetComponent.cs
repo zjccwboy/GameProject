@@ -174,12 +174,6 @@ namespace H6Game.Base
                 if (this.InNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage inMessage))
                 {
                     this.InNetMapManager.Remove(inMessage);
-                    var entitys = this.InNetMapManager.ConnectEntities;
-                    if (this.config.IsCenterServer)
-                    {
-                        this.BroadcastConnections(entitys, (int)MessageCMD.DeleteServer);
-                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
-                    }
                 }
             };
 
@@ -262,7 +256,7 @@ namespace H6Game.Base
             this.centerConnectSession.Broadcast(packet);
         }
 
-        private void BroadcastConnections(List<NetEndPointMessage> message, int messageCmd)
+        private void BroadcastConnection(NetEndPointMessage message, int messageCmd)
         {
             if (!this.config.IsCenterServer)
                 return;
@@ -278,8 +272,7 @@ namespace H6Game.Base
 
         private bool IsSysMessage(int messageCmd)
         {
-            return messageCmd == (int)MessageCMD.AddInServer
-                || messageCmd == (int)MessageCMD.DeleteServer;
+            return messageCmd == (int)MessageCMD.AddInServer;
         }
 
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)

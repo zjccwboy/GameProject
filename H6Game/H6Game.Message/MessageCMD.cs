@@ -15,10 +15,6 @@ namespace H6Game.Message
         /// </summary>
         AddInServer = 100,
         /// <summary>
-        /// 删除一个监听内网服务连接
-        /// </summary>
-        DeleteServer,
-        /// <summary>
         /// 请求获取外网连接信息
         /// </summary>
         GetOutServer,
