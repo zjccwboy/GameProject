@@ -14,7 +14,7 @@ namespace H6Game.Base
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
     /// <typeparam name="Response"></typeparam>
-    public abstract class AHandler<Response> : IHandler<Response>
+    public abstract class AHandler<Message> : IHandler<Message>
     {
         /// <summary>
         /// 网络会话管理对象
@@ -48,7 +48,7 @@ namespace H6Game.Base
         {
             get
             {
-                return typeof(Response);
+                return typeof(Message);
             }
         }
 
@@ -69,9 +69,9 @@ namespace H6Game.Base
             this.RpcId = packet.RpcId;
             try
             {
-                if (HandlerFactory.TryGetResponse(packet.MessageId, packet.Data, out Response response))
+                if (HandlerFactory.TryGetMessage(packet.MessageId, packet.Data, out Message message))
                 {
-                    Dispatcher(response, packet.MessageId);
+                    Dispatcher(message, packet.MessageId);
                 }
             }
             catch(Exception e)
@@ -129,7 +129,7 @@ namespace H6Game.Base
 
             this.Session.Subscribe(this.Channel, send , (p)=> 
             {
-                if (!HandlerFactory.TryGetResponse(p.MessageId, p.Data, out T response))
+                if (!HandlerFactory.TryGetMessage(p.MessageId, p.Data, out T response))
                     tcs.TrySetResult(default(T));
 
                 tcs.TrySetResult(response);
@@ -142,6 +142,6 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="response"></param>
         /// <param name="messageId"></param>
-        protected abstract void Dispatcher(Response response, int messageId);
+        protected abstract void Dispatcher(Message message, int messageId);
     }
 }

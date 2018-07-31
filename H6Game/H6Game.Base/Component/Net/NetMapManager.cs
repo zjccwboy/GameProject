@@ -51,18 +51,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 新增一个连接消息，中心服务不需要跟Channel映射
-        /// </summary>
-        /// <param name="message"></param>
-        public void Add(NetEndPointMessage message)
-        {
-            if (connectEntities.Contains(message))
-                return;
-
-            connectEntities.Add(message);
-        }
-
-        /// <summary>
         /// 新增一个连接消息，非中心服务需要跟Channel映射
         /// </summary>
         /// <param name="channel"></param>
@@ -86,36 +74,6 @@ namespace H6Game.Base
         public bool TryGetFromChannelId(ANetChannel channel, out NetEndPointMessage message)
         {
             return channelIdMapMsg.TryGetValue(channel.Id, out message);
-        }
-
-        /// <summary>
-        /// 清除所有连接消息与映射表
-        /// </summary>
-        public void Clear()
-        {
-            connectEntities.Clear();
-            channelIdMapMsg.Clear();
-            hCodeMapChannel.Clear();
-        }
-
-        /// <summary>
-        /// 更新消息连接与映射信息
-        /// </summary>
-        /// <param name="entities"></param>
-        public void UpdateConnections(IEnumerable<NetEndPointMessage> entities)
-        {
-            foreach (var entity in entities)
-            {
-                connectEntities.Add(entity);
-                foreach(var oldEntity in connectEntities)
-                {
-                    if (!entities.Contains(oldEntity))
-                    {
-                        Remove(oldEntity);
-                        break;
-                    }
-                }
-            }
         }
     }
 }

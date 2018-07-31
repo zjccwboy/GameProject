@@ -19,21 +19,9 @@ namespace H6Game.Message
         /// </summary>
         DeleteServer,
         /// <summary>
-        /// 更新当前所有服务内网监听IP端口列表
+        /// 请求获取外网连接信息
         /// </summary>
-        UpdateInNetConnections,
-        /// <summary>
-        /// 新增一个监听外网服务连接
-        /// </summary>
-        AddOutServer,
-        /// <summary>
-        /// 删除一个监听外网服务连接
-        /// </summary>
-        DeleteOutServer,
-        /// <summary>
-        /// 更新当前所有服务外网监听IP端口列表
-        /// </summary>
-        UpdateOutNetConnections,
+        GetOutServer,
         #endregion
 
         #region 游戏客户端交互消息指令 200

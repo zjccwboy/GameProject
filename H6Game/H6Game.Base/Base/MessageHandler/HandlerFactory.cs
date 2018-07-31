@@ -29,7 +29,7 @@ namespace H6Game.Base
             }
         }
 
-        public static bool TryGetResponse<T>(int messageCmd, byte[] bytes, out T response)
+        public static bool TryGetMessage<T>(int messageCmd, byte[] bytes, out T response)
         {
             if (!meesageCmdDictionary.TryGetValue(messageCmd, out Type cmdType))
             {

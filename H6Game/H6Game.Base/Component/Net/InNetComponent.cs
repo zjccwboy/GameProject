@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace H6Game.Base
 {
@@ -20,6 +21,8 @@ namespace H6Game.Base
         private Session outAcceptSession;
         private Session centerConnectSession;
 
+        public NetEndPointMessage OutNetMessage { get { return this.config.GetOutMessage(); } }
+        public bool IsCenterServer { get { return this.config.IsCenterServer; } }
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
@@ -122,36 +125,7 @@ namespace H6Game.Base
             this.inAcceptSession.Broadcast(packet);
         }
 
-        /// <summary>
-        /// 更新连接信息
-        /// </summary>
-        /// <param name="messages"></param>
-        public void UpdateConnections(List<NetEndPointMessage> messages)
-        {
-            foreach(var message in messages)
-            {
-                if(!this.inConnectSessions.ContainsKey(message.GetHashCode()))
-                    AddSession(message);
-            }
-
-            var messageHashKeys = messages.Select(a => a.GetHashCode());
-            var keys = this.inConnectSessions.Keys.ToList();
-            foreach (var key in keys)
-            {
-                if (!messageHashKeys.Contains(key))
-                    RemoveSession(key);
-            }
-
-            //如果连接已经全部断开,清空映射表
-            if (!inConnectSessions.Any())
-            {
-                this.InNetMapManager.Clear();
-                this.OutNetMapManager.Clear();
-                return;
-            }
-        }
-
-        private void AddSession(NetEndPointMessage message)
+        public void AddSession(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
                 return;
@@ -171,18 +145,18 @@ namespace H6Game.Base
             Connecting(message);
         }
 
-        private void RemoveSession(int key)
+        public void RemoveSession(NetEndPointMessage message)
         {
             if (config.IsCenterServer)
                 return;
 
             //排除中心服务
-            if (key == this.config.GetCenterMessage().GetHashCode())
+            if (message == this.config.GetCenterMessage())
                 return;
 
-            if (inConnectSessions.TryGetValue(key, out Session session))
+            if (inConnectSessions.TryGetValue(message.GetHashCode(), out Session session))
             {
-                this.inConnectSessions.Remove(key);
+                this.inConnectSessions.Remove(message.GetHashCode());
                 session.Dispose();
             }
         }
@@ -203,27 +177,8 @@ namespace H6Game.Base
                     var entitys = this.InNetMapManager.ConnectEntities;
                     if (this.config.IsCenterServer)
                     {
-                        this.BroadcastConnections(entitys, (int)MessageCMD.UpdateInNetConnections);
+                        this.BroadcastConnections(entitys, (int)MessageCMD.DeleteServer);
                         LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
-                    }
-                    else
-                    {
-                        SendToCenter(inMessage.ConvertToBytes(), (int)MessageCMD.DeleteServer);                        
-                    }                    
-                }
-
-                if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
-                {
-                    this.OutNetMapManager.Remove(outMessage);
-                    var entitys = this.OutNetMapManager.ConnectEntities;
-                    if (this.config.IsCenterServer)
-                    {
-                        this.BroadcastConnections(entitys, (int)MessageCMD.UpdateOutNetConnections);
-                        LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/HandleInAccept", $"广播新的连接映射表:{entitys.ConvertToJson()}.");
-                    }
-                    else
-                    {
-                        SendToCenter(outMessage.ConvertToBytes(), (int)MessageCMD.DeleteOutServer);
                     }
                 }
             };
@@ -265,12 +220,18 @@ namespace H6Game.Base
                 this.inConnectSessions[message.GetHashCode()] = session;
 
             //注册连接成功回调
-            session.OnClientConnected = (c) =>
+            session.OnClientConnected = async (c) =>
             {
                 var localMessage = this.config.GetInMessage();
-                var outMessage = this.config.GetOutMessage();
+                this.InNetMapManager.Add(c, message);
+
+                if(message != this.config.GetCenterMessage())
+                {
+                    var remoteOutNet = await this.CallMessage<NetEndPointMessage>(session, c, null, (int)MessageCMD.GetOutServer);
+                    this.OutNetMapManager.Add(c, remoteOutNet);
+                }
+
                 SendToCenter(localMessage.ConvertToBytes(), (int)MessageCMD.AddInServer);
-                SendToCenter(outMessage.ConvertToBytes(), (int)MessageCMD.AddOutServer);
             };
 
             //注册连接断开回调
@@ -318,11 +279,7 @@ namespace H6Game.Base
         private bool IsSysMessage(int messageCmd)
         {
             return messageCmd == (int)MessageCMD.AddInServer
-                || messageCmd == (int)MessageCMD.DeleteServer
-                || messageCmd == (int)MessageCMD.AddOutServer
-                || messageCmd == (int)MessageCMD.DeleteOutServer
-                || messageCmd == (int)MessageCMD.UpdateInNetConnections
-                || messageCmd == (int)MessageCMD.UpdateOutNetConnections;
+                || messageCmd == (int)MessageCMD.DeleteServer;
         }
 
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)

@@ -6,7 +6,7 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发接口
     /// </summary>
-    public interface IHandler<Response> : IHandler
+    public interface IHandler<Message> : IHandler
     {
 
     }
