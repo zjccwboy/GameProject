@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -165,13 +166,6 @@ namespace H6Game.Base
         public abstract void DisConnect();
 
         /// <summary>
-        /// 把发送数据包写到缓冲区
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <returns></returns>
-        public abstract void WriteSendBuffer(Packet packet);
-
-        /// <summary>
         /// 开始发送
         /// </summary>
         public abstract void StartSend();
@@ -181,6 +175,11 @@ namespace H6Game.Base
         /// </summary>
         /// <returns></returns>
         public abstract void StartRecv();
+
+        /// <summary>
+        /// 发送队列
+        /// </summary>
+        public Queue<Packet> SendQueue { get; } = new Queue<Packet>();
 
         /// <summary>
         /// 处理KCP接收
@@ -198,7 +197,7 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="packet"></param>
         /// <param name="recvAction"></param>
-        public void AddPacket(Packet packet, Action<Packet> recvAction)
+        public void AddRpcPacket(Packet packet, Action<Packet> recvAction)
         {
             RpcDictionarys.TryAdd(packet.RpcId, recvAction);
         }

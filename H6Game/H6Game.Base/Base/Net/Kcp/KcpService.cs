@@ -81,8 +81,13 @@ namespace H6Game.Base
                     this.ClientChannel.StartConnecting();
                 }
             }
-            this.HandleSend();
+
+            foreach (var channel in this.Channels.Values)
+                channel.StartSend();
+
             this.StartRecv();
+
+            this.CheckHeadbeat();
         }
 
         /// <summary>

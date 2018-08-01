@@ -18,6 +18,7 @@ namespace H6Game.Base
         private SysConfig config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private EndPointEntity defaultCenterEndPoint;
         private readonly ConcurrentDictionary<int, Session> inConnectSessions = new ConcurrentDictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Session> disconnectSessions = new ConcurrentDictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
         private Session centerConnectSession;
@@ -56,8 +57,12 @@ namespace H6Game.Base
             if (centerConnectSession != null)
                 centerConnectSession.Update();
 
-            var connections = inConnectSessions.Values.ToList();
-            foreach(var connect in connections)
+            foreach(var connect in inConnectSessions.Values)
+            {
+                connect.Update();
+            }
+
+            foreach (var connect in disconnectSessions.Values)
             {
                 connect.Update();
             }
@@ -208,10 +213,13 @@ namespace H6Game.Base
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
+                if (this.disconnectSessions.TryRemove(hashCode, out Session oldSession))
+                    this.inConnectSessions[hashCode] = oldSession;
+
                 var localMessage = this.config.GetInMessage();
                 this.InNetMapManager.Add(c, message);
 
-                if(message != this.config.GetCenterMessage())
+                if (message != this.config.GetCenterMessage())
                 {
                     var remoteOutNet = await this.CallMessage<NetEndPointMessage>(session, c, null, (int)MessageCMD.GetOutServer);
                     this.OutNetMapManager.Add(c, remoteOutNet);
@@ -229,11 +237,12 @@ namespace H6Game.Base
                     return;
                 }
 
+                if (this.inConnectSessions.TryRemove(hashCode, out Session oldSession))
+                    this.disconnectSessions[hashCode] = oldSession;
+
                 this.InNetMapManager.Remove(message);
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
-
-                this.inConnectSessions.TryRemove(hashCode, out Session value);
             };
             session.Connect();
         }

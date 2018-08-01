@@ -184,6 +184,12 @@ namespace H6Game.Base
         /// <returns></returns>
         public override void StartSend()
         {
+            while(SendQueue.Count > 0)
+            {
+                var packet = SendQueue.Dequeue();
+                this.SendParser.WriteBuffer(packet);
+            }
+
             if (Connected)
             {
                 while (this.SendParser.Buffer.DataSize > 0)
@@ -202,14 +208,6 @@ namespace H6Game.Base
             }
         }
 
-        /// <summary>
-        /// 把数据包写道缓冲区队列中
-        /// </summary>
-        /// <param name="packet"></param>
-        public override void WriteSendBuffer(Packet packet)
-        {
-            this.SendParser.WriteBuffer(packet);
-        }
 
         /// <summary>
         /// 断开连接

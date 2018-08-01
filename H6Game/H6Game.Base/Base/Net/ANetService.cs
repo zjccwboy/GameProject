@@ -20,11 +20,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 发送列表
-        /// </summary>
-        private readonly HashSet<ANetChannel> senders = new HashSet<ANetChannel>();
-
-        /// <summary>
         /// 最后一次检测心跳的时间
         /// </summary>
         private uint LastCheckTime = TimeUitls.Now();
@@ -52,11 +47,6 @@ namespace H6Game.Base
         /// 客户端连接ANetChannel
         /// </summary>
         protected ANetChannel ClientChannel;
-
-        /// <summary>
-        /// 发送包队列
-        /// </summary>
-        protected readonly ConcurrentQueue<SendTask> SendQueue = new ConcurrentQueue<SendTask>();
 
         /// <summary>
         /// 连接通道池
@@ -103,71 +93,12 @@ namespace H6Game.Base
         /// <summary>
         /// 更新发送接收队列
         /// </summary>
-        public virtual void Update()
-        {
-            if(this.ServiceType == NetServiceType.Client && ClientChannel != null)
-                ClientChannel.StartConnecting();
-
-            HandleSend();
-            HandleReceive();
-        }
-
-        /// <summary>
-        /// 插入一个数据包到发送队列中
-        /// </summary>
-        /// <param name="sendTask"></param>
-        public void Enqueue(SendTask sendTask)
-        {
-            this.SendQueue.Enqueue(sendTask);
-        }
-
-        /// <summary>
-        /// 处理数据发送回调函数
-        /// </summary>
-        protected void HandleSend()
-        {
-            try
-            {
-                while (!this.SendQueue.IsEmpty)
-                {
-                    if(this.SendQueue.TryPeek(out SendTask send))
-                    {
-                        if (send.Channel.Connected)
-                        {
-                            this.SendQueue.TryDequeue(out SendTask sendTask);
-                            sendTask.Channel.TimeNow = TimeUitls.Now();
-                            sendTask.WriteToBuffer();
-                            this.senders.Add(sendTask.Channel);
-                        }
-                    }
-                }
-
-                foreach (var channel in this.senders)
-                    channel.StartSend();
-
-                this.senders.Clear();
-                this.CheckHeadbeat();
-            }
-            catch (Exception e)
-            {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleSend", e);
-            }
-        }
-
-        /// <summary>
-        /// 所有管道接收数据
-        /// </summary>
-        private void HandleReceive()
-        {
-            var channels = Channels.Values;
-            foreach (var channel in channels)
-                channel.StartRecv();
-        }
+        public abstract void Update();
 
         /// <summary>
         /// 心跳检测
         /// </summary>
-        private void CheckHeadbeat()
+        protected void CheckHeadbeat()
         {
             var now = TimeUitls.Now();
             if (this.ServiceType == NetServiceType.Client)

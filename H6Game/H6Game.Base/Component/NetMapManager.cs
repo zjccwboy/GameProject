@@ -15,17 +15,6 @@ namespace H6Game.Base
         private readonly ConcurrentDictionary<int, ANetChannel> hCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
 
         /// <summary>
-        /// 连接消息集合
-        /// </summary>
-        public List<NetEndPointMessage> ConnectEntities
-        {
-            get
-            {
-                return connectEntities.ToList();
-            }
-        }
-
-        /// <summary>
         /// 判断是否存在
         /// </summary>
         /// <param name="message"></param>

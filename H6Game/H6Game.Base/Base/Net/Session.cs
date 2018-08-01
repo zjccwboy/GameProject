@@ -168,14 +168,7 @@ namespace H6Game.Base
         /// <param name="packet"></param>
         public void Notice(ANetChannel channel, Packet packet)
         {
-            if (!channel.Connected)
-                return;
-
-            this.netService.Enqueue(new SendTask
-            {
-                Channel = channel,
-                Packet = packet,
-            });
+            channel.SendQueue.Enqueue(packet);
         }
 
         /// <summary>
@@ -190,12 +183,8 @@ namespace H6Game.Base
                 return;
 
             packet.RpcId = channel.RpcId;
-            channel.AddPacket(packet, notificationAction);
-            this.netService.Enqueue(new SendTask
-            {
-                Channel = channel,
-                Packet = packet,
-            });
+            channel.AddRpcPacket(packet, notificationAction);
+            channel.SendQueue.Enqueue(packet);
         }
 
         /// <summary>

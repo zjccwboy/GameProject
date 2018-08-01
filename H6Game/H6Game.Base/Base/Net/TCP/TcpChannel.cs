@@ -57,7 +57,7 @@ namespace H6Game.Base
             try
             {
                 var now = TimeUitls.Now();
-                if(now - this.LastConnectTime < ANetChannel.ReConnectInterval)
+                if (now - this.LastConnectTime < ANetChannel.ReConnectInterval)
                     return;
 
                 this.LastConnectTime = now;
@@ -118,57 +118,56 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 写入发送包到缓冲区队列(合并发送)
-        /// </summary>
-        /// <param name="packet"></param>
-        public override void WriteSendBuffer(Packet packet)
-        {
-            SendParser.WriteBuffer(packet);
-        }
-
-        /// <summary>
         /// 发送缓冲区队列中的数据(合并发送)
         /// </summary>
         /// <returns></returns>
         public override void StartSend()
         {
+            if (!Connected)
+                return;
+
             if (isSending)
                 return;
+
+            while (SendQueue.Count > 0)
+            {
+                var packet = SendQueue.Dequeue();
+                SendParser.WriteBuffer(packet);
+            }
 
             SendData();
         }
 
         private void SendData()
         {
+            isSending = true;
+
+            if (!Connected)
+            {
+                isSending = false;
+                return;
+            }
+
+            if (SendParser.Buffer.DataSize <= 0)
+            {
+                isSending = false;
+                return;
+            }
+
+            this.outArgs.SetBuffer(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
             try
             {
-                isSending = true;
-
-                if (!Connected)
-                {
-                    isSending = false;
-                    return;
-                }
-
-                if (SendParser.Buffer.DataSize <= 0)
-                {
-                    isSending = false;
-                    return;
-                }
-
-                this.outArgs.SetBuffer(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
                 if (this.NetSocket.SendAsync(this.outArgs))
-                {
                     return;
-                }
-                OnSendComplete(this.outArgs);
             }
             catch (Exception e)
             {
                 isSending = false;
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartSend", e);
                 DisConnect();
+                return;
             }
+            OnSendComplete(this.outArgs);
         }
 
         /// <summary>
@@ -305,7 +304,7 @@ namespace H6Game.Base
             {
                 try
                 {
-                    if(!RecvParser.TryGetPacket(out Packet packet))
+                    if (!RecvParser.TryGetPacket(out Packet packet))
                         break;
 
                     LastRecvTime = TimeUitls.Now();
@@ -329,7 +328,7 @@ namespace H6Game.Base
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     DisConnect();
                     LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/OnRecvComplete", ex);
@@ -358,7 +357,7 @@ namespace H6Game.Base
             }
 
             this.SendParser.Buffer.UpdateRead(e.BytesTransferred);
-            if(this.SendParser.Buffer.DataSize <= 0)
+            if (this.SendParser.Buffer.DataSize <= 0)
                 return;
 
             this.SendData();

@@ -57,6 +57,20 @@ namespace H6Game.Base
             return true;
         }
 
+        public override void Update()
+        {
+            if (this.ServiceType == NetServiceType.Client && ClientChannel != null)
+                ClientChannel.StartConnecting();
+
+            foreach(var channel in this.Channels.Values)
+            {
+                channel.StartSend();
+                channel.StartRecv();
+            }
+
+            this.CheckHeadbeat();
+        }
+
         private void OnComplete(object sender, SocketAsyncEventArgs e)
         {
             switch (e.LastOperation)
@@ -156,5 +170,6 @@ namespace H6Game.Base
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleConnect", e);
             }
         }
-     }
+
+    }
 }
