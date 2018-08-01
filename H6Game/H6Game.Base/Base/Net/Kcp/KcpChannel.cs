@@ -117,11 +117,13 @@ namespace H6Game.Base
                 }
 
                 RecvParser.WriteBuffer(cacheBytes, 0, count);
+
                 while (true)
                 {
                     try
                     {
-                        if (!RecvParser.TryGetPacket(out Packet packet))
+                        Packet packet = new Packet();
+                        if (!RecvParser.TryGetPacket(ref packet))
                             break;
 
                         this.LastRecvTime = TimeUitls.Now();

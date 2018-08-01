@@ -445,7 +445,7 @@ namespace H6Game.Base
         /// 从缓冲区中读数据包
         /// </summary>
         /// <returns></returns>
-        public bool TryGetPacket(out Packet packet)
+        public bool TryGetPacket(ref Packet packet)
         {
             finish = false;
             while (!finish)
@@ -453,21 +453,17 @@ namespace H6Game.Base
                 Parse();
                 if (isOk)
                 {
-                    packet = new Packet
-                    {
-                        RpcId = rpcId,
-                        IsRpc = isRpc,
-                        IsCompress = isCompress,
-                        IsHeartbeat = isHeartbeat,
-                        KcpProtocal = kcpProtocal,
-                        MessageId = messageId,
-                        Data = bodyBytes,
-                    };
+                    packet.RpcId = rpcId;
+                    packet.IsRpc = isRpc;
+                    packet.IsCompress = isCompress;
+                    packet.IsHeartbeat = isHeartbeat;
+                    packet.KcpProtocal = kcpProtocal;
+                    packet.MessageId = messageId;
+                    packet.Data = bodyBytes;
                     Flush();
                     return true;
                 }
             }
-            packet = new Packet();
             return false;
         }
 

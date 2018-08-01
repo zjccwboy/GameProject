@@ -115,8 +115,8 @@ namespace H6Game.Base
             {
                 //握手处理
                 connectParser.WriteBuffer(recvBytes, 0, recvCount);
-
-                if (!connectParser.TryGetPacket(out Packet packet))
+                Packet packet = new Packet();
+                if (!connectParser.TryGetPacket(ref packet))
                 {
                     LogRecord.Log(LogLevel.Error, $"{this.GetType()}/StartRecv", $"丢弃非法数据包:{this.acceptor.RemoteEndPoint}.");
                     //丢弃非法数据包

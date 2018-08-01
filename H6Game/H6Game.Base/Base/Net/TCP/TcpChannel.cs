@@ -270,12 +270,12 @@ namespace H6Game.Base
             }
 
             RecvParser.Buffer.UpdateWrite(e.BytesTransferred);
-
             while (true)
             {
                 try
                 {
-                    if (!RecvParser.TryGetPacket(out Packet packet))
+                    var packet = new Packet();
+                    if (!RecvParser.TryGetPacket(ref packet))
                         break;
 
                     LastRecvTime = TimeUitls.Now();
