@@ -13,13 +13,17 @@ namespace TestDistributed
     {
         protected override void Handler(TestMessage message, int messageId)
         {
-            CallBack(message.ConvertToBytes());
+            CallBack(message.ToBytes());
         }
     }
 
+    [ProtoBuf.ProtoContract]
     public class TestMessage : IMessage
     {
+        [ProtoBuf.ProtoMember(1)]
         public int ActorId { get; set; }
+
+        [ProtoBuf.ProtoMember(2)]
         public string Message { get; set; }
     }
 }

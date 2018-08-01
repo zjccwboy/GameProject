@@ -88,7 +88,7 @@ namespace H6Game.Base
 
         public static void Log(LogLevel level, string description, object logRecord)
         {
-            WriteLog(level, description, logRecord.ConvertToJson());
+            WriteLog(level, description, logRecord.ToJson());
         }
 
         public static void Log(LogLevel level, string description, Exception exception)

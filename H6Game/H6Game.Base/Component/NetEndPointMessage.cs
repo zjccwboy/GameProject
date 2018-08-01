@@ -1,10 +1,15 @@
 ﻿using H6Game.Message;
+using ProtoBuf;
 
 namespace H6Game.Base
 {
+    [ProtoContract]
     public class NetEndPointMessage : IMessage
     {
+        [ProtoMember(1)]
         public int Port { get; set; }
+
+        [ProtoMember(2)]
         public string IP { get; set; }
 
         //重载==运算符

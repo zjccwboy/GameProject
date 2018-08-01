@@ -85,7 +85,7 @@ namespace H6Game.Base
 
             session.Subscribe(channel, send, (p) =>
             {
-                var response = p.Data.ConvertToObject(typeof(T));
+                var response = p.Data.ProtoToObject(typeof(T));
                 if (response == null)
                 {
                     tcs.TrySetResult(default(T));
@@ -225,7 +225,7 @@ namespace H6Game.Base
                     this.OutNetMapManager.Add(c, remoteOutNet);
                 }
 
-                SendToCenter(localMessage.ConvertToBytes(), (int)MessageCMD.AddInServer);
+                SendToCenter(localMessage.ToBytes(), (int)MessageCMD.AddInServer);
             };
 
             //注册连接断开回调

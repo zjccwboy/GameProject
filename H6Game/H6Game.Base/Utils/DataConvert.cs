@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Text;
+using ProtoBuf;
+using System.IO;
 
 namespace H6Game.Base
 {
@@ -9,9 +11,8 @@ namespace H6Game.Base
     /// </summary>
     public static class DataConvert
     {
-        private readonly static JsonSerializerSettings settings = new JsonSerializerSettings();
         private static Type stringType = typeof(string);
-
+        private readonly static JsonSerializerSettings settings = new JsonSerializerSettings();
         static DataConvert()
         {
             settings.NullValueHandling = NullValueHandling.Ignore;
@@ -20,60 +21,10 @@ namespace H6Game.Base
         /// <summary>
         /// object转json string
         /// </summary>
-        /// <param name="obj">object</param>
-        /// <param name="type">object type</param>
-        /// <returns>json string</returns>
-        public static string ConvertToJson(this object obj, Type type)
-        {
-            if (obj == null)
-            {
-                return null;
-            }
-
-            var json = JsonConvert.SerializeObject(obj, settings);
-            return json;
-        }
-
-        /// <summary>
-        /// object转json string
-        /// </summary>
-        /// <param name="obj">object</param>
-        /// <param name="type">object type</param>
-        /// <param name="formatting"></param>
-        /// <returns>json string</returns>
-        public static string ConvertToJson(this object obj, Type type, Formatting formatting)
-        {
-            if(obj == null)
-                return null;
-
-            var json = JsonConvert.SerializeObject(obj, formatting, settings);
-            return json;
-        }
-
-        /// <summary>
-        /// object转json bytes
-        /// </summary>
-        /// <param name="obj">object</param>
-        /// <param name="type">object type</param>
-        /// <param name="formatting">json格式化参数</param>
-        /// <returns>json bytes</returns>
-        public static byte[] ConvertToBytes(this object obj, Type type, Formatting formatting)
-        {
-            if(obj == null)
-                return null;
-
-            var json = JsonConvert.SerializeObject(obj, type, formatting, settings);
-            var bytes = Encoding.UTF8.GetBytes(json);
-            return bytes;
-        }
-
-        /// <summary>
-        /// object转json string
-        /// </summary>
         /// <typeparam name="T">泛型对象,class约束</typeparam>
         /// <param name="obj">泛型对象,class约束</param>
         /// <returns>json string</returns>
-        public static string ConvertToJson<T>(this T obj) where T : class, new()
+        public static string ToJson<T>(this T obj) where T : class, new()
         {
             if (obj == null)
                 return null;
@@ -89,7 +40,7 @@ namespace H6Game.Base
         /// <param name="obj">泛型对象,class约束</param>
         /// <param name="formatting">json格式化参数</param>
         /// <returns>json string</returns>
-        public static string ConvertToJson<T>(this T obj, Formatting formatting) where T : class, new()
+        public static string ToJson<T>(this T obj, Formatting formatting) where T : class, new()
         {
             if(obj == null)
                 return null;
@@ -99,46 +50,12 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// object转bytes
-        /// </summary>
-        /// <typeparam name="T">泛型对象,class约束</typeparam>
-        /// <param name="obj">泛型对象,class约束</param>
-        /// <param name="formatting">json格式化参数</param>
-        /// <returns>json bytes</returns>
-        public static byte[] ConvertToBytes<T>(this T obj) where T : class, new()
-        {
-            if (obj == null)
-                return null;
-
-            var json = JsonConvert.SerializeObject(obj, typeof(T), settings);
-            var bytes = Encoding.UTF8.GetBytes(json);
-            return bytes;
-        }
-
-        /// <summary>
-        /// object转bytes
-        /// </summary>
-        /// <typeparam name="T">泛型对象,class约束</typeparam>
-        /// <param name="obj">泛型对象,class约束</param>
-        /// <param name="formatting">json格式化参数</param>
-        /// <returns>json bytes</returns>
-        public static byte[] ConvertToBytes<T>(this T obj, Formatting formatting) where T : class, new()
-        {
-            if (obj == null)
-                return null;
-
-            var json = JsonConvert.SerializeObject(obj, typeof(T), formatting, settings);
-            var bytes = Encoding.UTF8.GetBytes(json);
-            return bytes;
-        }
-
-        /// <summary>
         /// json string转object
         /// </summary>
         /// <typeparam name="T">泛型对象,class约束</typeparam>
         /// <param name="json">json string</param>
         /// <returns>泛型对象,class约束</returns>
-        public static T ConvertToObject<T>(this string json) where T : class, new()
+        public static T JsonToObject<T>(this string json) where T : class, new()
         {
             if (string.IsNullOrEmpty(json))
                 return null;
@@ -148,19 +65,25 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// json bytes转object
+        /// object转bytes
         /// </summary>
         /// <typeparam name="T">泛型对象,class约束</typeparam>
-        /// <param name="bytes">json bytes</param>
-        /// <returns>泛型对象,class约束</returns>
-        public static T ConvertToObject<T>(this byte[] bytes) where T : class, new()
+        /// <param name="obj">泛型对象,class约束</param>
+        /// <param name="formatting">json格式化参数</param>
+        /// <returns>json bytes</returns>
+        public static byte[] ToBytes<T>(this T obj) where T : class, new()
         {
-            if(bytes == null)
+            if (obj == null)
                 return null;
 
-            var json = Encoding.UTF8.GetString(bytes);
-            var obj = json.ConvertToObject<T>();
-            return obj;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Serializer.Serialize(ms, obj);
+                ms.Position = 0;
+                var bytes = new byte[ms.Length];
+                ms.Read(bytes, 0, (int)ms.Length);
+                return bytes;
+            }
         }
 
         /// <summary>
@@ -169,19 +92,121 @@ namespace H6Game.Base
         /// <param name="bytes">json bytes</param>
         /// <param name="type">type</param>
         /// <returns>泛型对象,class约束</returns>
-        public static object ConvertToObject(this byte[] bytes, Type type)
+        public static T ProtoToObject<T>(this byte[] bytes)
+        {
+            if (bytes == null)
+                return default(T);
+
+            var type = typeof(T);
+            if (TryGetBaseTypeValue(bytes, type, out object obj))
+                return (T)obj;
+
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(bytes, 0, bytes.Length);
+                ms.Position = 0;
+                return Serializer.Deserialize<T>(ms);
+            }
+        }
+
+        /// <summary>
+        /// json bytes转object
+        /// </summary>
+        /// <param name="bytes">json bytes</param>
+        /// <param name="type">type</param>
+        /// <returns>泛型对象,class约束</returns>
+        public static object ProtoToObject(this byte[] bytes, Type type)
         {
             if (bytes == null)
                 return null;
 
-            if (type == stringType)
-            {
-                return Encoding.UTF8.GetString(bytes);
-            }
+            if(TryGetBaseTypeValue(bytes, type, out object obj))
+                return obj;
 
-            var json = Encoding.UTF8.GetString(bytes);
-            var obj = JsonConvert.DeserializeObject(json, type);
-            return obj;
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(bytes, 0, bytes.Length);
+                ms.Position = 0;
+                obj = Serializer.Deserialize(type, ms);
+                return obj;
+            }
+        }
+
+
+        public static bool TryGetBaseTypeValue(this byte[] bytes, Type type, out object value)
+        {
+            if(type == typeof(int))
+            {
+                value = BitConverter.ToInt32(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(int))
+            {
+                value = BitConverter.ToInt32(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(bool))
+            {
+                value = BitConverter.ToBoolean(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(float))
+            {
+                value = BitConverter.ToSingle(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(decimal))
+            {
+                value = BitConverter.ToDouble(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(string))
+            {
+                value = Encoding.UTF8.GetString(bytes);
+                return true;
+            }
+            else if(type == typeof(double))
+            {
+                value = BitConverter.ToDouble(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(short))
+            {
+                value = BitConverter.ToInt16(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(ushort))
+            {
+                value = BitConverter.ToUInt16(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(byte))
+            {
+                value = bytes[0];
+                return true;
+            }
+            else if(type == typeof(sbyte))
+            {
+                value = bytes[0];
+                return true;
+            }
+            else if(type == typeof(char))
+            {
+                value = BitConverter.ToChar(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(long))
+            {
+                value = BitConverter.ToInt64(bytes, 0);
+                return true;
+            }
+            else if(type == typeof(ulong))
+            {
+                value = BitConverter.ToUInt64(bytes, 0);
+                return true;
+            }
+            value = null;
+            return false;
         }
     }
 }

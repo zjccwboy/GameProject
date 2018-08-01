@@ -129,7 +129,7 @@ namespace H6Game.Base
 
             this.Session.Subscribe(this.Channel, send , (p)=> 
             {
-                var response = p.Data.ConvertToObject(typeof(T));
+                var response = p.Data.ProtoToObject(typeof(T));
                 if(response == null)
                 {
                     tcs.TrySetResult(default(T));
