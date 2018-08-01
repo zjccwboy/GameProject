@@ -18,5 +18,14 @@ namespace H6Game.Message
             }
             this.MessageCmds.AddRange(commands.Select(c=>c));
         }
+
+        public MessageCMDAttribute(params MessageCMD[] commands)
+        {
+            if (commands == null || !commands.Any())
+            {
+                throw new NullReferenceException("消息commands不能为空.");
+            }
+            this.MessageCmds.AddRange(commands.Select(c => (int)c));
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace H6Game.Base.Base.Message
 {
-    [MessageCMD((int)MessageCMD.AddInServer)]
+    [MessageCMD(MessageCMD.AddInServer)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
     {
         protected override void Dispatcher(NetEndPointMessage message, int messageId)
@@ -34,7 +34,7 @@ namespace H6Game.Base.Base.Message
         }
     }
 
-    [MessageCMD((int)MessageCMD.GetOutServer)]
+    [MessageCMD(MessageCMD.GetOutServer)]
     public class OutNetMessageSync : AHandler<string>
     {
         protected override void Dispatcher(string message, int messageId)
