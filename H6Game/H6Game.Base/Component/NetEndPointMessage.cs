@@ -10,12 +10,18 @@ namespace H6Game.Base
         //重载==运算符
         public static bool operator ==(NetEndPointMessage left, NetEndPointMessage right)
         {
+            if ((right as object) == null)
+                return ((right as object) == null);
+
             return left.GetHashCode() == right.GetHashCode();
         }
 
         //重载!=运算符
         public static bool operator !=(NetEndPointMessage left, NetEndPointMessage right)
         {
+            if ((right as object) == null)
+                return ((right as object) != null);
+
             return !(left.GetHashCode() == right.GetHashCode());
         }
 

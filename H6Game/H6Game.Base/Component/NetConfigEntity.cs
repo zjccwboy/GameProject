@@ -45,14 +45,12 @@ namespace H6Game.Base.Entity
         public string IP { get; set; }
         public string Desc { get; set; }
 
+        private NetEndPointMessage message;
         public NetEndPointMessage GetMessage()
         {
-            var message = new NetEndPointMessage
-            {
-                Port = this.Port,
-                IP = this.IP,
-            };
-            return message;
+            if(this.message == null)
+                this.message = new NetEndPointMessage{ Port = this.Port, IP = this.IP};
+            return this.message;
         }
     }
 }
