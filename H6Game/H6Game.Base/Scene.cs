@@ -7,6 +7,6 @@ namespace H6Game.Base
 {
     public class Scene
     {
-        public static Scene Instance { get; } = new Scene();
+
     }
 }

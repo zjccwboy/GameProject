@@ -55,24 +55,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 查看当前连接状态
-        /// </summary>
-        /// <returns></returns>
-        public override bool CheckConnection()
-        {
-            return Connected;
-        }
-
-        /// <summary>
-        /// 重新连接
-        /// </summary>
-        /// <returns></returns>
-        public override void ReConnecting()
-        {
-            StartConnecting();
-        }
-
-        /// <summary>
         /// 模拟TCP三次握手连接服务端
         /// </summary>
         /// <returns></returns>

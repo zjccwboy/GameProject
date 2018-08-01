@@ -56,14 +56,14 @@ namespace H6Game.Base
         {
             try
             {
+                if (Connected)
+                    return;
+
                 var now = TimeUitls.Now();
                 if (now - this.LastConnectTime < ANetChannel.ReConnectInterval)
                     return;
 
                 this.LastConnectTime = now;
-
-                if (Connected)
-                    return;
 
                 if (this.NetSocket == null)
                 {
@@ -85,35 +85,6 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartConnecting", e);
-            }
-        }
-
-        /// <summary>
-        /// 重连
-        /// </summary>
-        /// <returns></returns>
-        public override void ReConnecting()
-        {
-            if (Connected)
-                DisConnect();
-
-            StartConnecting();
-        }
-
-        /// <summary>
-        /// 检查连接状态
-        /// </summary>
-        /// <returns></returns>
-        public override bool CheckConnection()
-        {
-            try
-            {
-                return !((NetSocket.Poll(1000, SelectMode.SelectRead) && (NetSocket.Available == 0)));
-            }
-            catch (Exception e)
-            {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/CheckConnection", e);
-                return false;
             }
         }
 

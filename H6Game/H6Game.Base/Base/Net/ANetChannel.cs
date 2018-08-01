@@ -149,18 +149,6 @@ namespace H6Game.Base
         public abstract void StartConnecting();
 
         /// <summary>
-        /// 连接检测
-        /// </summary>
-        /// <returns></returns>
-        public abstract bool CheckConnection();
-
-        /// <summary>
-        /// 重新连接
-        /// </summary>
-        /// <returns></returns>
-        public abstract void ReConnecting();
-
-        /// <summary>
         /// 断开连接
         /// </summary>
         public abstract void DisConnect();
