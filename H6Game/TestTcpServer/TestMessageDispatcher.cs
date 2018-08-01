@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestTcpServer
 {
-    [MessageCMD(MessageCMD.TestCMD)]
+    [HandlerCMD(MessageCMD.TestCMD)]
     public class TestMessageDispatcher : AHandler<string>
     {
         protected override void Handler(string response, int messageId)

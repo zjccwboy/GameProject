@@ -6,11 +6,11 @@ using System.Text;
 namespace H6Game.Message
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class MessageCMDAttribute : Attribute
+    public class HandlerCMDAttribute : Attribute
     {
         public List<int> MessageCmds { get;} = new List<int>();
 
-        public MessageCMDAttribute(params int[] commands)
+        public HandlerCMDAttribute(params int[] commands)
         {
             if(commands == null || !commands.Any())
             {
@@ -19,7 +19,7 @@ namespace H6Game.Message
             this.MessageCmds.AddRange(commands.Select(c=>c));
         }
 
-        public MessageCMDAttribute(params MessageCMD[] commands)
+        public HandlerCMDAttribute(params MessageCMD[] commands)
         {
             if (commands == null || !commands.Any())
             {

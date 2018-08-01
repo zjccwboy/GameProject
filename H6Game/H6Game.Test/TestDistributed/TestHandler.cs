@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TestDistributed
 {
-    [MessageCMD(MessageCMD.TestCMD1)]
+    [HandlerCMD(MessageCMD.TestCMD1)]
     public class TestHandler : AHandler<string>
     {
         protected override void Handler(string response, int messageId)

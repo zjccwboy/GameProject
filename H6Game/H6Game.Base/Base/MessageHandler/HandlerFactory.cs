@@ -17,7 +17,7 @@ namespace H6Game.Base
             var dispatcherTypes = ObjectFactory.GetTypes<IHandler>();
             foreach (var type in dispatcherTypes)
             {
-                var attributes = type.GetCustomAttributes<MessageCMDAttribute>();
+                var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();
                 var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c=>c).Distinct().ToList();
                 var dispatcher = (IHandler)Activator.CreateInstance(type);
 
