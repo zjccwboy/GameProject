@@ -80,7 +80,7 @@ namespace H6Game.Base
                 if (this.NetSocket.ConnectAsync(this.outArgs))
                     return;
 
-                //OnConnectComplete(this.outArgs);
+                OnConnectComplete(this.outArgs);
             }
             catch (Exception e)
             {
