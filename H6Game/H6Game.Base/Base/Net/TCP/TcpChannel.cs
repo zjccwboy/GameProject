@@ -80,7 +80,7 @@ namespace H6Game.Base
                 if (this.NetSocket.ConnectAsync(this.outArgs))
                     return;
 
-                OnConnectComplete(this.outArgs);
+                //OnConnectComplete(this.outArgs);
             }
             catch (Exception e)
             {
@@ -305,10 +305,9 @@ namespace H6Game.Base
             {
                 try
                 {
-                    var packet = RecvParser.ReadBuffer();
-
-                    if (!packet.IsSuccess)
+                    if(!RecvParser.TryGetPacket(out Packet packet))
                         break;
+
                     LastRecvTime = TimeUitls.Now();
                     if (!packet.IsHeartbeat)
                     {

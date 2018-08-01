@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace H6Game.Base
@@ -10,8 +11,8 @@ namespace H6Game.Base
     public class NetMapManager
     {
         private readonly HashSet<NetEndPointMessage> connectEntities = new HashSet<NetEndPointMessage>();
-        private readonly Dictionary<int, NetEndPointMessage> channelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
-        private readonly Dictionary<int, ANetChannel> hCodeMapChannel = new Dictionary<int, ANetChannel>();
+        private readonly ConcurrentDictionary<int, NetEndPointMessage> channelIdMapMsg = new ConcurrentDictionary<int, NetEndPointMessage>();
+        private readonly ConcurrentDictionary<int, ANetChannel> hCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
 
         /// <summary>
         /// 连接消息集合
@@ -44,8 +45,8 @@ namespace H6Game.Base
             {
                 if (hCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
                 {
-                    hCodeMapChannel.Remove(message.GetHashCode());
-                    channelIdMapMsg.Remove(channel.Id);
+                    hCodeMapChannel.TryRemove(message.GetHashCode(), out ANetChannel channelVal);
+                    channelIdMapMsg.TryRemove(channel.Id, out NetEndPointMessage messageVal);
                 }
             }
         }

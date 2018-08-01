@@ -9,11 +9,10 @@ namespace TestDistributed
         {
             var netComponent = SinglePool.Get<InNetComponent>();
             var testComponent = SinglePool.Get<TestSender>();
-
             while (true)
             {
                 netComponent.Update();
-                testComponent.Update();
+                testComponent.Start();
                 Thread.Sleep(1);
             }
         }

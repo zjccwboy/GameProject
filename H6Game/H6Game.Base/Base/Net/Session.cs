@@ -36,6 +36,11 @@ namespace H6Game.Base
         private ProtocalType protocalType;
 
         /// <summary>
+        /// 客户端连接管道
+        /// </summary>
+        public ANetChannel ConnectChannel { get; private set; }
+
+        /// <summary>
         /// 连接断开回调发生在服务端
         /// </summary>
         public Action<ANetChannel> OnServerDisconnected { get; set; }
@@ -99,7 +104,8 @@ namespace H6Game.Base
             }
             this.netService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
             this.netService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
-            return this.netService.Connect();
+            this.ConnectChannel = this.netService.Connect();
+            return this.ConnectChannel;
         }
 
         /// <summary>
@@ -138,6 +144,7 @@ namespace H6Game.Base
             }
 
             netChannel = channel;
+            this.ConnectChannel = channel;
             return channel.Connected;
         }
 

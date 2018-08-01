@@ -6,6 +6,7 @@ using System.Net;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
@@ -16,11 +17,12 @@ namespace H6Game.Base
     {
         private SysConfig config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private EndPointEntity defaultCenterEndPoint;
-        private readonly Dictionary<int, Session> inConnectSessions = new Dictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Session> inConnectSessions = new ConcurrentDictionary<int, Session>();
         private Session inAcceptSession;
         private Session outAcceptSession;
         private Session centerConnectSession;
 
+        public IEnumerable<Session> ConnectSessions { get { return this.inConnectSessions.Values; } }
         public NetEndPointMessage OutNetMessage { get { return this.config.GetOutMessage(); } }
         public bool IsCenterServer { get { return this.config.IsCenterServer; } }
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
@@ -231,7 +233,7 @@ namespace H6Game.Base
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
 
-                this.inConnectSessions.Remove(hashCode);
+                this.inConnectSessions.TryRemove(hashCode, out Session value);
             };
             session.Connect();
         }

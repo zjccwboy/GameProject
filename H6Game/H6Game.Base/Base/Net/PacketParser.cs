@@ -10,11 +10,6 @@ namespace H6Game.Base
     public struct Packet
     {
         /// <summary>
-        /// 接收成功
-        /// </summary>
-        public bool IsSuccess;
-
-        /// <summary>
         /// Rpc请求标志
         /// </summary>
         internal bool IsRpc;
@@ -40,7 +35,7 @@ namespace H6Game.Base
         public byte KcpProtocal;
 
         /// <summary>
-        /// 是否时Message
+        /// 是否是Message
         /// </summary>
         internal bool IsMessage;
 
@@ -201,7 +196,7 @@ namespace H6Game.Base
         private bool isHeartbeat;
         private bool isEncrypt;
         private byte kcpProtocal;
-        private bool isActorMessage;
+        private bool isMessage;
 
         private int readLength = 0;
         private int packetSize = 0;
@@ -292,7 +287,7 @@ namespace H6Game.Base
                             }
                             else
                             {
-                                if (isActorMessage)
+                                if (isMessage)
                                 {
                                     state = ParseState.Msg;
                                 }
@@ -321,7 +316,7 @@ namespace H6Game.Base
                             }
                             readLength += RpcFlagSize;
                             rpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, HeadMinSize));
-                            if (isActorMessage)
+                            if (isMessage)
                             {
                                 state = ParseState.Msg;
                             }
@@ -410,9 +405,9 @@ namespace H6Game.Base
             isCompress = Convert.ToBoolean(flagByte >> 2 & 1);
             isEncrypt = Convert.ToBoolean(flagByte >> 3 & 1);
             kcpProtocal = (byte)(flagByte >> 4 & 3);
-            isActorMessage = Convert.ToBoolean(flagByte >> 6 & 1);
+            isMessage = Convert.ToBoolean(flagByte >> 6 & 1);
             headSize = isRpc ? HeadMinSize + RpcFlagSize : HeadMinSize;
-            headSize = isActorMessage ? headSize + MessageIdFlagSize : headSize;
+            headSize = isMessage ? headSize + MessageIdFlagSize : headSize;
         }
 
         /// <summary>
@@ -439,19 +434,18 @@ namespace H6Game.Base
             isCompress = false;
             isHeartbeat = false;
             kcpProtocal = 0;
-            isActorMessage = false;
+            isMessage = false;
             readLength = 0;
             packetSize = 0;
             headSize = 0;
             bodyBytes = null;
         }
 
-        private Packet FailedPacket = new Packet();
         /// <summary>
         /// 从缓冲区中读数据包
         /// </summary>
         /// <returns></returns>
-        public Packet ReadBuffer()
+        public bool TryGetPacket(out Packet packet)
         {
             finish = false;
             while (!finish)
@@ -459,9 +453,8 @@ namespace H6Game.Base
                 Parse();
                 if (isOk)
                 {
-                    var packet = new Packet
+                    packet = new Packet
                     {
-                        IsSuccess = true,
                         RpcId = rpcId,
                         IsRpc = isRpc,
                         IsCompress = isCompress,
@@ -471,10 +464,11 @@ namespace H6Game.Base
                         Data = bodyBytes,
                     };
                     Flush();
-                    return packet;
+                    return true;
                 }
             }
-            return FailedPacket;
+            packet = new Packet();
+            return false;
         }
 
         /// <summary>
@@ -497,19 +491,6 @@ namespace H6Game.Base
             Buffer.Write(packet.GetHeadBytes());
             if (packet.Data != null)
                 Buffer.Write(packet.Data);
-        }
-
-        private List<byte[]> packetByte = new List<byte[]> { new byte[0], new byte[0] };
-        /// <summary>
-        /// 获取一个包的字节数组
-        /// </summary>
-        /// <param name="packet"></param>
-        /// <returns></returns>
-        public List<byte[]> GetPacketBytes(Packet packet)
-        {
-            packetByte[0] = packet.GetHeadBytes();
-            packetByte[1] = packet.Data;
-            return packetByte;
         }
     }
 }

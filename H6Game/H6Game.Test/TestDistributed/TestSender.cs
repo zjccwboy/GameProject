@@ -12,18 +12,20 @@ namespace TestDistributed
     {
         private uint time = TimeUitls.Now();
 
-        public override void Update()
+        public override void Start()
         {
             Broadcast();
         }
 
         InNetComponent inNetComponent = SinglePool.Get<InNetComponent>();
-        private void Broadcast()
+        private async void Broadcast()
         {
-            if(TimeUitls.Now() - time >= 1000)
-            {                
-                inNetComponent.BroadcastMessage(Encoding.UTF8.GetBytes("Test"), (int)MessageCMD.TestCMD1);
-                time = TimeUitls.Now();
+            var sessions = inNetComponent.ConnectSessions;
+            foreach (var session in sessions)
+            {
+                var send = new TestMessage { ActorId = 10001, Message = "MessageMessageMessageMessage" };
+                var message = await inNetComponent.CallMessage<TestMessage>(session, session.ConnectChannel, send.ConvertToBytes(), (int)MessageCMD.TestCMD1);
+                LogRecord.Log(LogLevel.Debug, "RPC消息:", message.ConvertToJson());
             }
         }
     }

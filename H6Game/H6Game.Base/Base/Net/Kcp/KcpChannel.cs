@@ -139,11 +139,9 @@ namespace H6Game.Base
                 {
                     try
                     {
-                        var packet = RecvParser.ReadBuffer();
-                        if (!packet.IsSuccess)
-                        {
+                        if (!RecvParser.TryGetPacket(out Packet packet))
                             break;
-                        }
+
                         this.LastRecvTime = TimeUitls.Now();
                         if (!packet.IsHeartbeat)
                         {
