@@ -246,20 +246,6 @@ namespace H6Game.Base
             this.centerConnectSession.Broadcast(packet);
         }
 
-        private void BroadcastConnection(NetEndPointMessage message, int messageCmd)
-        {
-            if (!this.config.IsCenterServer)
-                return;
-
-            var bytes = message.ConvertToBytes();
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.inAcceptSession.Broadcast(packet);
-        }
-
         private bool IsSysMessage(int messageCmd)
         {
             return messageCmd == (int)MessageCMD.AddInServer;

@@ -8,7 +8,7 @@ namespace H6Game.Base
     [MessageCMD((int)MessageCMD.GetGateEndPoint)]
     public class OutConnectHandler : AHandler<NetEndPointMessage>
     {
-        protected override void Dispatcher(NetEndPointMessage response, int messageId)
+        protected override void Handler(NetEndPointMessage response, int messageId)
         {
             throw new NotImplementedException();
         }

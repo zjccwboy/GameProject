@@ -11,7 +11,7 @@ namespace TestTcpServer
     [MessageCMD(MessageCMD.TestCMD)]
     public class TestMessageDispatcher : AHandler<string>
     {
-        protected override void Dispatcher(string response, int messageId)
+        protected override void Handler(string response, int messageId)
         {
             this.CallBack(Encoding.UTF8.GetBytes(response));
         }

@@ -71,7 +71,7 @@ namespace H6Game.Base
             {
                 if (HandlerFactory.TryGetMessage(packet.MessageId, packet.Data, out Message message))
                 {
-                    Dispatcher(message, packet.MessageId);
+                    Handler(message, packet.MessageId);
                 }
             }
             catch(Exception e)
@@ -145,6 +145,6 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="response"></param>
         /// <param name="messageId"></param>
-        protected abstract void Dispatcher(Message message, int messageId);
+        protected abstract void Handler(Message message, int messageId);
     }
 }

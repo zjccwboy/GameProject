@@ -11,7 +11,7 @@ namespace TestDistributed
     [MessageCMD(MessageCMD.TestCMD1)]
     public class TestHandler : AHandler<string>
     {
-        protected override void Dispatcher(string response, int messageId)
+        protected override void Handler(string response, int messageId)
         {
             LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/Dispatcher", response);
         }
