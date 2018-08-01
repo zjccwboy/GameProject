@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDistributed", "H6Game.T
 		{B402DC7D-6384-4C0A-B2ED-A408D0B409D4} = {B402DC7D-6384-4C0A-B2ED-A408D0B409D4}
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerApp", "Server\ServerApp\ServerApp.csproj", "{3850AF37-2A58-4270-BA85-D84724BF2BBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{733B3765-3EE3-4416-B738-9C37C68121B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{733B3765-3EE3-4416-B738-9C37C68121B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{733B3765-3EE3-4416-B738-9C37C68121B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3850AF37-2A58-4270-BA85-D84724BF2BBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3850AF37-2A58-4270-BA85-D84724BF2BBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3850AF37-2A58-4270-BA85-D84724BF2BBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3850AF37-2A58-4270-BA85-D84724BF2BBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\H6Game.Base\Base\BaseComponent.cs" Link="Base\Net\BaseComponent.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\ComponentFactory.cs" Link="Base\Net\ComponentFactory.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\ComponentIdCreator.cs" Link="Base\Net\ComponentIdCreator.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\ComponentPool.cs" Link="Base\Net\ComponentPool.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\MessageHandler\AHandler.cs" Link="Base\MessageHandler\AHandler.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\MessageHandler\DistributedHandler.cs" Link="Base\MessageHandler\DistributedHandler.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\MessageHandler\HandlerFactory.cs" Link="Base\MessageHandler\HandlerFactory.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\MessageHandler\IHandler.cs" Link="Base\MessageHandler\IHandler.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Kcp\ConnectSender.cs" Link="Base\Net\Kcp\ConnectSender.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Kcp\Kcp.cs" Link="Base\Net\Kcp\Kcp.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Kcp\KcpChannel.cs" Link="Base\Net\Kcp\KcpChannel.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Kcp\KcpService.cs" Link="Base\Net\Kcp\KcpService.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Kcp\Segment.cs" Link="Base\Net\Kcp\Segment.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\TCP\TcpChannel.cs" Link="Base\Net\Tcp\TcpChannel.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\TCP\TcpService.cs" Link="Base\Net\Tcp\TcpService.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Uitls\IdCreator.cs" Link="Base\Net\Uitls\IdCreator.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\Net\Uitls\TimeUitls.cs" Link="Base\Net\Uitls\TimeUitls.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\ObjectFactory.cs" Link="Base\Net\ObjectFactory.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\ScenePool.cs" Link="Base\Net\ScenePool.cs" />
+    <Compile Include="..\..\H6Game.Base\Base\SinglePool.cs" Link="Base\Net\SinglePool.cs" />
+    <Compile Include="..\..\H6Game.Base\Game.cs" Link="Game.cs" />
+    <Compile Include="..\..\H6Game.Base\Scene.cs" Link="Scene.cs" />
+    <Compile Include="..\..\H6Game.Base\Utils\DataConvert.cs" Link="Utils\DataConvert.cs" />
+    <Compile Include="..\..\H6Game.Base\Utils\EncryptUtils.cs" Link="Utils\EncryptUtils.cs" />
+    <Compile Include="..\..\H6Game.Base\Utils\LogLevel.cs" Link="Utils\LogLevel.cs" />
+    <Compile Include="..\..\H6Game.Base\Utils\LogRecord.cs" Link="Utils\LogRecord.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Base\MessageHandler\" />
+    <Folder Include="Base\Net\Kcp\" />
+    <Folder Include="Base\Net\Tcp\" />
+    <Folder Include="Base\Net\Uitls\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+</Project>

@@ -53,7 +53,11 @@ namespace H6Game.Base
 
         public void Update()
         {
-
+            var components = idDictionary.Values;
+            foreach(var component in components)
+            {
+                component.Update();
+            }
         }
     }
 }
