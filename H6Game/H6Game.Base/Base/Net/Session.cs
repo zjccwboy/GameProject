@@ -107,47 +107,7 @@ namespace H6Game.Base
             this.ConnectChannel = this.netService.Connect();
             return this.ConnectChannel;
         }
-
-        /// <summary>
-        /// 连接服务器
-        /// </summary>
-        /// <param name="endPoint"></param>
-        /// <returns></returns>
-        public bool TryConnect(out ANetChannel netChannel)
-        {
-            if (this.protocalType == ProtocalType.Tcp)
-            {
-                this.netService = new TcpService(this.endPoint, this, NetServiceType.Client);
-            }
-            else if (this.protocalType == ProtocalType.Kcp)
-            {
-                this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
-            }
-            this.netService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
-            this.netService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
-            var channel = this.netService.Connect();
-            var retry = 0;
-            while (true)
-            {
-                Thread.Sleep(100);
-                this.Update();
-                if (retry > 10)//重试1秒钟
-                {
-                    netChannel = null;
-                    return false;
-                }
-
-                if (channel.Connected)
-                    break;
-
-                retry++;
-            }
-
-            netChannel = channel;
-            this.ConnectChannel = channel;
-            return channel.Connected;
-        }
-
+        
         public void Update()
         {
             try
