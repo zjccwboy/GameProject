@@ -22,6 +22,10 @@ namespace H6Game.Message
 
         #region 游戏客户端交互消息指令 200
         /// <summary>
+        /// 获取一个网关连接地址
+        /// </summary>
+        GetGateEndPoint,
+        /// <summary>
         /// 客户端登陆
         /// </summary>
         ClientLogin = 200,
@@ -29,14 +33,6 @@ namespace H6Game.Message
         /// 客户端登出
         /// </summary>
         ClientLogOut,
-        /// <summary>
-        /// 获取一个网关连接地址
-        /// </summary>
-        GetGateEndPoint,
-        /// <summary>
-        /// 发送一个网关地址给客户端
-        /// </summary>
-        SendGateEndPoint,
 
         #endregion
 

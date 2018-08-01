@@ -77,60 +77,62 @@ namespace H6Game.Base
             IsMessage = MessageId > 0;
             IsRpc = RpcId > 0;
             int headSize = IsRpc ? PacketParser.HeadMinSize + PacketParser.RpcFlagSize : PacketParser.HeadMinSize;
-            headSize = IsMessage ? headSize + PacketParser.ActorIdFlagSize : headSize;
+            headSize = IsMessage ? headSize + PacketParser.MessageIdFlagSize : headSize;
             int packetSize = headSize + bodySize;
-            var sizeBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt16(packetSize)));
+            var sizeBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(packetSize)));
             var bytes = new byte[headSize];
             bytes[0] = sizeBytes[0];
             bytes[1] = sizeBytes[1];
+            bytes[2] = sizeBytes[2];
+            bytes[3] = sizeBytes[3];
             if (IsRpc)
             {
-                bytes[2] |= 1;
+                bytes[4] |= 1;
             }
             if (IsHeartbeat)
             {
-                bytes[2] |= 1 << 1;
+                bytes[4] |= 1 << 1;
             }
             if (IsCompress)
             {
-                bytes[2] |= 1 << 2;
+                bytes[4] |= 1 << 2;
             }
             if (IsEncrypt)
             {
-                bytes[2] |= 1 << 3;
+                bytes[4] |= 1 << 3;
             }
             if (KcpProtocal > 0)
             {
-                bytes[2] |= (byte)(KcpProtocal << 4);
+                bytes[4] |= (byte)(KcpProtocal << 4);
             }
             if (IsMessage)
             {
-                bytes[2] |= 1 << 6;
+                bytes[4] |= 1 << 6;
             }
             if (IsRpc)
             {
                 var rpcBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(RpcId)));
-                bytes[3] = rpcBytes[0];
-                bytes[4] = rpcBytes[1];
-                bytes[5] = rpcBytes[2];
-                bytes[6] = rpcBytes[3];
+                bytes[5] = rpcBytes[0];
+                bytes[6] = rpcBytes[1];
+                bytes[7] = rpcBytes[2];
+                bytes[8] = rpcBytes[3];
             }
             if (IsMessage)
             {
                 var snBytes = BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder(Convert.ToInt32(MessageId)));
                 if (IsRpc)
                 {
-                    bytes[7] = snBytes[0];
-                    bytes[8] = snBytes[1];
-                    bytes[9] = snBytes[2];
-                    bytes[10] = snBytes[3];
+                    bytes[9] = snBytes[0];
+                    bytes[10] = snBytes[1];
+                    bytes[11] = snBytes[2];
+                    bytes[12] = snBytes[3];
                 }
                 else
                 {
-                    bytes[3] = snBytes[0];
-                    bytes[4] = snBytes[1];
-                    bytes[5] = snBytes[2];
-                    bytes[6] = snBytes[3];
+                    bytes[5] = snBytes[0];
+                    bytes[6] = snBytes[1];
+                    bytes[7] = snBytes[2];
+                    bytes[8] = snBytes[3];
                 }
             }
             return bytes;
@@ -143,9 +145,9 @@ namespace H6Game.Base
     public enum ParseState
     {
         /// <summary>
-        /// 包头
+        /// 开始数据包大小标志，包头16位
         /// </summary>
-        Head,
+        Size,
 
         /// <summary>
         /// RPC消息
@@ -153,9 +155,9 @@ namespace H6Game.Base
         Rpc,
 
         /// <summary>
-        /// Actor消息
+        /// 消息Msg
         /// </summary>
-        Actor,
+        Msg,
 
         /// <summary>
         /// 消息包体
@@ -211,7 +213,7 @@ namespace H6Game.Base
         /// <summary>
         /// 包头协议中表示数据包大小的第一个协议字节数，2个字节
         /// </summary>
-        public static readonly int PacketFlagSize = sizeof(short);
+        public static readonly int PacketFlagSize = sizeof(int);
         /// <summary>
         /// 包头协议中标志位的字节数，1个字节
         /// </summary>
@@ -221,9 +223,9 @@ namespace H6Game.Base
         /// </summary>
         public static readonly int RpcFlagSize = sizeof(int);
         /// <summary>
-        /// 包头协议中Actor消息Id字节数，4个字节
+        /// 包头协议中Msg消息Id字节数，4个字节
         /// </summary>
-        public static readonly int ActorIdFlagSize = sizeof(int);
+        public static readonly int MessageIdFlagSize = sizeof(int);
         /// <summary>
         /// 最小包头字节数
         /// </summary>
@@ -231,11 +233,11 @@ namespace H6Game.Base
         /// <summary>
         /// 最大包头字节数
         /// </summary>
-        public static readonly int HeadMaxSize = PacketFlagSize + BitFlagSize + RpcFlagSize + ActorIdFlagSize;
+        public static readonly int HeadMaxSize = HeadMinSize + RpcFlagSize + MessageIdFlagSize;
         /// <summary>
         /// 表示允许发送的最大单个数据包字节数
         /// </summary>
-        public static readonly int BodyMaxSize = short.MaxValue - HeadMaxSize;
+        public static readonly int BodyMaxSize = int.MaxValue - HeadMaxSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -252,7 +254,7 @@ namespace H6Game.Base
                 tryCount++;
                 switch (state)
                 {
-                    case ParseState.Head:
+                    case ParseState.Size:
                         if (readLength == 0 && Buffer.DataSize < PacketFlagSize)
                         {
                             finish = true;
@@ -274,7 +276,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(PacketFlagSize - count);
                             }
                             readLength += PacketFlagSize;
-                            packetSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(headBytes, 0));
+                            packetSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, 0));
 
                         }
                         if (Buffer.DataSize >= BitFlagSize && readLength == PacketFlagSize)//读取标志位
@@ -292,7 +294,7 @@ namespace H6Game.Base
                             {
                                 if (isActorMessage)
                                 {
-                                    state = ParseState.Actor;
+                                    state = ParseState.Msg;
                                 }
                                 else
                                 {
@@ -321,7 +323,7 @@ namespace H6Game.Base
                             rpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, HeadMinSize));
                             if (isActorMessage)
                             {
-                                state = ParseState.Actor;
+                                state = ParseState.Msg;
                             }
                             else
                             {
@@ -329,24 +331,24 @@ namespace H6Game.Base
                             }
                         }
                         break;
-                    case ParseState.Actor:
+                    case ParseState.Msg:
                         var needSize = isRpc ? HeadMinSize + RpcFlagSize : HeadMinSize;
-                        if (Buffer.DataSize >= ActorIdFlagSize && readLength == needSize)
+                        if (Buffer.DataSize >= MessageIdFlagSize && readLength == needSize)
                         {
-                            if (Buffer.FirstDataSize >= ActorIdFlagSize)
+                            if (Buffer.FirstDataSize >= MessageIdFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize, ActorIdFlagSize);
-                                Buffer.UpdateRead(ActorIdFlagSize);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize, MessageIdFlagSize);
+                                Buffer.UpdateRead(MessageIdFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize, count);
                                 Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize + count, ActorIdFlagSize - count);
-                                Buffer.UpdateRead(ActorIdFlagSize - count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize + count, MessageIdFlagSize - count);
+                                Buffer.UpdateRead(MessageIdFlagSize - count);
                             }
-                            readLength += ActorIdFlagSize;
+                            readLength += MessageIdFlagSize;
                             messageId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, needSize));
                             state = ParseState.Body;
                         }
@@ -388,7 +390,7 @@ namespace H6Game.Base
 
                 if (isOk)
                 {
-                    state = ParseState.Head;
+                    state = ParseState.Size;
                     break;
                 }
 
@@ -410,7 +412,7 @@ namespace H6Game.Base
             kcpProtocal = (byte)(flagByte >> 4 & 3);
             isActorMessage = Convert.ToBoolean(flagByte >> 6 & 1);
             headSize = isRpc ? HeadMinSize + RpcFlagSize : HeadMinSize;
-            headSize = isActorMessage ? headSize + ActorIdFlagSize : headSize;
+            headSize = isActorMessage ? headSize + MessageIdFlagSize : headSize;
         }
 
         /// <summary>
@@ -418,7 +420,7 @@ namespace H6Game.Base
         /// </summary>
         public void Clear()
         {
-            state = ParseState.Head;
+            state = ParseState.Size;
             isOk = false;
             finish = false;
             Flush();
