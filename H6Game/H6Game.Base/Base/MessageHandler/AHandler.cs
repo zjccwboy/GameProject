@@ -129,10 +129,13 @@ namespace H6Game.Base
 
             this.Session.Subscribe(this.Channel, send , (p)=> 
             {
-                if (!HandlerFactory.TryGetMessage(p.MessageId, p.Data, out T response))
+                var response = p.Data.ConvertToObject(typeof(T));
+                if(response == null)
+                {
                     tcs.TrySetResult(default(T));
-
-                tcs.TrySetResult(response);
+                    return;
+                }
+                tcs.TrySetResult((T)response);
             });
             return tcs.Task;
         }

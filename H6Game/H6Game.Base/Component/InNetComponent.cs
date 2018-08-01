@@ -79,6 +79,11 @@ namespace H6Game.Base
             session.Subscribe(channel, send, (p) =>
             {
                 var response = p.Data.ConvertToObject(typeof(T));
+                if (response == null)
+                {
+                    tcs.TrySetResult(default(T));
+                    return;
+                }
                 tcs.TrySetResult((T)response);
             });
             return tcs.Task;
