@@ -145,22 +145,6 @@ namespace H6Game.Base
             Connecting(message);
         }
 
-        public void RemoveSession(NetEndPointMessage message)
-        {
-            if (config.IsCenterServer)
-                return;
-
-            //排除中心服务
-            if (message == this.config.GetCenterMessage())
-                return;
-
-            if (inConnectSessions.TryGetValue(message.GetHashCode(), out Session session))
-            {
-                this.inConnectSessions.Remove(message.GetHashCode());
-                session.Dispose();
-            }
-        }
-
         private void HandleInAccept(NetEndPointMessage message)
         {
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
@@ -199,7 +183,8 @@ namespace H6Game.Base
             if (config.IsCenterServer)
                 return;
 
-            if (this.inConnectSessions.ContainsKey(message.GetHashCode()))
+            var hashCode = message.GetHashCode();
+            if (this.inConnectSessions.ContainsKey(hashCode))
                 return;
 
             //不连接进程内的监听端口
@@ -211,7 +196,7 @@ namespace H6Game.Base
             if (message == this.config.GetCenterMessage())
                 this.centerConnectSession = session;
             else
-                this.inConnectSessions[message.GetHashCode()] = session;
+                this.inConnectSessions[hashCode] = session;
 
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
@@ -241,7 +226,7 @@ namespace H6Game.Base
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
                     this.OutNetMapManager.Remove(outMessage);
 
-                this.inConnectSessions.Remove(message.GetHashCode());
+                this.inConnectSessions.Remove(hashCode);
             };
             session.Connect();
         }
