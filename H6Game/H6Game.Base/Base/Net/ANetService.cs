@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// <summary>
     /// 网络通讯服务抽象类
     /// </summary>
-    public abstract class ANetService
+    public abstract class ANetService : IDisposable
     {
         /// <summary>
         /// 构造函数
@@ -190,6 +190,14 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleDisConnectOnClient", e);
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach(var channel in Channels.Values)
+            {
+                channel.Dispose();
             }
         }
     }

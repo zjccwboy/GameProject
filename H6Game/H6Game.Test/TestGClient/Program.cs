@@ -13,7 +13,6 @@ namespace TestGClient
     {
         static void Main(string[] args)
         {
-            Game.Add<ConfigNetComponent>();
             Game.Add<OutNetComponent>();
             Game.Add<Scene>();
 

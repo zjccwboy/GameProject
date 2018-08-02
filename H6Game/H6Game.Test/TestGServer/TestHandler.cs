@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TestGServer
 {
     [H6Game.Message.HandlerCMD(1024)]
-    public class TestDispatcher : AHandler<TestMessage>
+    public class TestHandler : AHandler<TestMessage>
     {
         protected override void Handler(TestMessage message, int messageId)
         {

@@ -10,7 +10,7 @@ namespace H6Game.Base
     /// <summary>
     /// 通讯管道抽象类
     /// </summary>
-    public abstract class ANetChannel
+    public abstract class ANetChannel : IDisposable
     {
         /// <summary>
         /// 构造函数
@@ -188,6 +188,11 @@ namespace H6Game.Base
         public void AddRpcPacket(Packet packet, Action<Packet> recvAction)
         {
             RpcDictionarys.TryAdd(packet.RpcId, recvAction);
+        }
+
+        public void Dispose()
+        {
+            DisConnect();
         }
     }
 }
