@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="H6Game.Base">
+    <Reference Include="H6Game.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Message">

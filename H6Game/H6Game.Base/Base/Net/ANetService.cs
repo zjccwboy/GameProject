@@ -130,8 +130,6 @@ namespace H6Game.Base
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
-                    if (channel == null)
-                        continue;
 
                     if (!channel.Connected)
                         continue;

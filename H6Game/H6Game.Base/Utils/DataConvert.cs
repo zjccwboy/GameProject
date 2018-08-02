@@ -95,7 +95,7 @@ namespace H6Game.Base
         public static T ProtoToObject<T>(this byte[] bytes)
         {
             if (bytes == null)
-                return default(T);
+                return default;
 
             var type = typeof(T);
             if (TryGetBaseTypeValue(bytes, type, out object obj))

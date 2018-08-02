@@ -88,12 +88,40 @@ namespace H6Game.Base
                 var response = p.Data.ProtoToObject(typeof(T));
                 if (response == null)
                 {
-                    tcs.TrySetResult(default(T));
+                    tcs.TrySetResult(default);
                     return;
                 }
                 tcs.TrySetResult((T)response);
             });
             return tcs.Task;
+        }
+
+        /// <summary>
+        /// RPC请求
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="session"></param>
+        /// <param name="channel"></param>
+        /// <param name="bytes"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="rpcAction"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
+        public void CallMessage<T>(Session session, ANetChannel channel, byte[] bytes, int messageCmd, Action<T> rpcAction, bool isCompress = false, bool isEncrypt = false)
+        {
+            var send = new Packet
+            {
+                IsCompress = isCompress,
+                IsEncrypt = isEncrypt,
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+
+            session.Subscribe(channel, send, (p) =>
+            {
+                var response = p.Data.ProtoToObject(typeof(T));
+                rpcAction((T)response);
+            });
         }
 
         /// <summary>
