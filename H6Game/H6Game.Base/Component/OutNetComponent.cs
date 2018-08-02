@@ -1,4 +1,5 @@
 ﻿using H6Game.Base.Entity;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace H6Game.Base
 
         public bool IsConnected { get; private set; }
 
-        private OutNetComponent()
+        public OutNetComponent()
         {
             this.loginServerEndPoint = GetLoginServerEndPoint();
             this.Connecting(this.loginServerEndPoint);
@@ -46,7 +47,7 @@ namespace H6Game.Base
                 var response = p.Data.ProtoToObject(typeof(T));
                 if (response == null)
                 {
-                    tcs.TrySetResult(default(T));
+                    tcs.TrySetResult(default);
                     return;
                 }
                 tcs.TrySetResult((T)response);
@@ -68,6 +69,32 @@ namespace H6Game.Base
             {
                 MessageId = messageCmd,
                 Data = bytes,
+            });
+        }
+
+        /// <summary>
+        /// RPC请求
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="bytes"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="rpcAction"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
+        public void CallMessage<T>(byte[] bytes, int messageCmd, Action<T> rpcAction, bool isCompress = false, bool isEncrypt = false)
+        {
+            var send = new Packet
+            {
+                IsCompress = isCompress,
+                IsEncrypt = isEncrypt,
+                MessageId = messageCmd,
+                Data = bytes,
+            };
+
+            this.connectSession.Subscribe(this.connectSession.ConnectChannel, send, (p) =>
+            {
+                var response = p.Data.ProtoToObject(typeof(T));
+                rpcAction((T)response);
             });
         }
 

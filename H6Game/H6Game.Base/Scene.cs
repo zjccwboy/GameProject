@@ -5,12 +5,12 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class Scene
+    public class Scene : BaseComponent
     {
-        private static Dictionary<int, BaseComponent> idDictionary = new Dictionary<int, BaseComponent>();
-        private static Dictionary<Type, LinkedList<BaseComponent>> typeDictionary = new Dictionary<Type, LinkedList<BaseComponent>>();
+        private Dictionary<int, BaseComponent> idDictionary = new Dictionary<int, BaseComponent>();
+        private Dictionary<Type, LinkedList<BaseComponent>> typeDictionary = new Dictionary<Type, LinkedList<BaseComponent>>();
 
-        public static void Add<T>() where T : BaseComponent
+        public void Add<T>() where T : BaseComponent
         {
             var component = ComponentPool.Fetch<T>();
             idDictionary[component.Id] = component;
@@ -25,7 +25,7 @@ namespace H6Game.Base
             list.AddLast(component);
         }
 
-        public static void Remove<T>(BaseComponent component) where T : BaseComponent
+        public void Remove<T>(BaseComponent component) where T : BaseComponent
         {
             idDictionary.Remove(component.Id);
 
@@ -51,13 +51,24 @@ namespace H6Game.Base
             return (IEnumerable<T>)result;
         }
 
-        public void Update()
+        public override void Update()
         {
             var components = idDictionary.Values;
             foreach(var component in components)
             {
                 component.Update();
             }
+        }
+
+        public T Get<T>(int id) where T : BaseComponent
+        {
+            if (idDictionary.TryGetValue(id, out BaseComponent component))
+            {
+                return (T)component;
+            }
+
+            ComponentPool.TryGetComponent(id, out T value);
+            return value;
         }
     }
 }

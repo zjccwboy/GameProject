@@ -111,7 +111,7 @@ namespace H6Game.Base
                 return;
             }
 
-            if (recvCount == 3 || recvCount == 7)
+            if (recvCount == 5 || recvCount == 9)
             {
                 //握手处理
                 connectParser.WriteBuffer(recvBytes, 0, recvCount);

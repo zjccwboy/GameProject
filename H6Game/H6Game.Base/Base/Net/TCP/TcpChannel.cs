@@ -67,8 +67,10 @@ namespace H6Game.Base
 
                 if (this.NetSocket == null)
                 {
-                    this.NetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    this.NetSocket.NoDelay = true;
+                    this.NetSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+                    {
+                        NoDelay = true
+                    };
 
                     this.inArgs = new SocketAsyncEventArgs();
                     this.outArgs = new SocketAsyncEventArgs();

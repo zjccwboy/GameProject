@@ -92,6 +92,7 @@ namespace H6Game.Base
         public override void HandleRecv(byte[] bytes, int offset, int lenght)
         {
             cacheBytes = bytes;
+            this.LastRecvTime = this.TimeNow;
             this.kcp.Input(bytes, offset, lenght);
         }
 
@@ -168,7 +169,9 @@ namespace H6Game.Base
         /// <returns></returns>
         public override void StartSend()
         {
-            while(SendQueue.Count > 0)
+            this.TimeNow = TimeUitls.Now();
+
+            while (SendQueue.Count > 0)
             {
                 var packet = SendQueue.Dequeue();
                 this.SendParser.WriteBuffer(packet);
