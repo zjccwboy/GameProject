@@ -86,7 +86,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartConnecting", e);
+                this.Log(LogLevel.Warn, "StartConnecting", e);
             }
         }
 
@@ -136,7 +136,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 IsSending = false;
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartSend", e);
+                this.Log(LogLevel.Warn, "StartSend", e);
                 DisConnect();
                 return;
             }
@@ -171,7 +171,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 IsReceiving = false;
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartRecv", e);
+                this.Log(LogLevel.Warn, "StartRecv", e);
                 DisConnect();
             }
         }
@@ -211,16 +211,16 @@ namespace H6Game.Base
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Connect:
-                    OneThreadSynchronizationContext.Instance.Post(this.OnConnectComplete, e);
+                    ThreadCallbackContext.Instance.Post(this.OnConnectComplete, e);
                     break;
                 case SocketAsyncOperation.Receive:
-                    OneThreadSynchronizationContext.Instance.Post(this.OnRecvComplete, e);
+                    ThreadCallbackContext.Instance.Post(this.OnRecvComplete, e);
                     break;
                 case SocketAsyncOperation.Send:
-                    OneThreadSynchronizationContext.Instance.Post(this.OnSendComplete, e);
+                    ThreadCallbackContext.Instance.Post(this.OnSendComplete, e);
                     break;
                 case SocketAsyncOperation.Disconnect:
-                    OneThreadSynchronizationContext.Instance.Post(this.OnDisconnectComplete, e);
+                    ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, e);
                     break;
                 default:
                     throw new Exception($"socket error: {e.LastOperation}");
@@ -304,7 +304,7 @@ namespace H6Game.Base
                 catch (Exception ex)
                 {
                     DisConnect();
-                    LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/OnRecvComplete", ex);
+                    this.Log(LogLevel.Warn, "OnRecvComplete", ex);
                     return;
                 }
 

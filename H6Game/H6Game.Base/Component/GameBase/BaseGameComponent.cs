@@ -4,8 +4,8 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public interface IScene
+    public class BaseGameComponent : BaseComponent, IComponentGame
     {
-
+        
     }
 }

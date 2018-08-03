@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace H6Game.Base
 {
-    public static class ObjectFactory
+    public static class TypeFactory
     {
         private static readonly Dictionary<Type, HashSet<Type>> ObjcetDictionary = new Dictionary<Type, HashSet<Type>>();
 
-        static ObjectFactory()
+        static TypeFactory()
         {
             Load();
         }

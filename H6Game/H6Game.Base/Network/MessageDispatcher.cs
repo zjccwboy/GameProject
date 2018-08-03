@@ -23,7 +23,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Error, $"{this.GetType()}/DoReceive", e.ToString());
+                this.Log(LogLevel.Error, "DoReceive", e.ToString());
             }
         }
     }

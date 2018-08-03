@@ -68,7 +68,7 @@ namespace H6Game.Base
     }
 #endif
 
-    public class LogRecord
+    public static class LogRecord
     {
 #if SERVER
         private static ILogger logger;
@@ -99,6 +99,21 @@ namespace H6Game.Base
         public static void Log(LogLevel level, string description, Exception exception)
         {
             WriteLog(level, description, exception.ToString());
+        }
+
+        public static void Log(this object obj, LogLevel level, string description, object logRecord)
+        {
+            WriteLog(level, $"{obj.GetType()}/{description}", logRecord.ToJson());
+        }
+
+        public static void Log(this object obj, LogLevel level, string description, string logRecord)
+        {
+            WriteLog(level, $"{obj.GetType()}/{description}", logRecord);
+        }
+
+        public static void Log(this object obj, LogLevel level, string description, Exception exception)
+        {
+            WriteLog(level, $"{obj.GetType()}/{description}", exception.ToString());
         }
 
         public static void Log(string description, Exception exception)

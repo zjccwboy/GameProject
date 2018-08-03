@@ -110,12 +110,12 @@ namespace H6Game.Base
         {
             try
             {
-                OneThreadSynchronizationContext.Instance.Update();
+                ThreadCallbackContext.Instance.Update();
                 this.NService.Update();
             }
             catch(Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/Update", e);
+                this.Log(LogLevel.Debug, "Update", e);                
             }
         }
 

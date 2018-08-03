@@ -47,7 +47,7 @@ namespace H6Game.Base
                 }
                 catch(Exception e)
                 {
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Accept", e);
+                    this.Log(LogLevel.Error, "Accept", e);
                     return false;
                 }
             }
@@ -107,7 +107,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartRecv", e);
+                this.Log(LogLevel.Warn, "StartRecv", e);
                 return;
             }
 
@@ -118,7 +118,7 @@ namespace H6Game.Base
                 Packet packet = new Packet();
                 if (!connectParser.TryGetPacket(ref packet))
                 {
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/StartRecv", $"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.");
+                    this.Log(LogLevel.Error, "StartRecv", $"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.");
                     //丢弃非法数据包
                     connectParser.Buffer.Flush();
                     return;
@@ -146,7 +146,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    LogRecord.Log(LogLevel.Notice, $"{this.GetType()}/数据包异常", connectConv.ToString());
+                    this.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
                 }
             }
         }
@@ -223,11 +223,11 @@ namespace H6Game.Base
                 channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.OnReceive += channel.Handler.DoReceive;
                 OnServerConnected?.Invoke(channel);
-                LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
+                this.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleAccept", e);
+                this.Log(LogLevel.Warn, "HandleAccept", e);
             }
         }
 
@@ -250,11 +250,11 @@ namespace H6Game.Base
                 channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.OnReceive += channel.Handler.DoReceive;
                 this.OnClientConnected?.Invoke(channel);
-                LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
+                this.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleConnect", e);
+                this.Log(LogLevel.Warn, "HandleConnect", e);
             }
         }
     }

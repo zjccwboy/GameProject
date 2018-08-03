@@ -4,7 +4,7 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class BaseRommComponent : BaseSceneComponent
+    public class BaseRommComponent : BaseComponent, ICompoentRoom
     {
         public RoomType RType { get; set; }
         public GameType GType { get; set; }

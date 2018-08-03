@@ -4,9 +4,12 @@ using System.Threading;
 
 namespace H6Game.Base
 {
-    public class OneThreadSynchronizationContext : SynchronizationContext
+    /// <summary>
+    /// 多线程回调上下文执行队列
+    /// </summary>
+    public class ThreadCallbackContext : SynchronizationContext
     {
-        public static OneThreadSynchronizationContext Instance = new OneThreadSynchronizationContext();
+        public static ThreadCallbackContext Instance = new ThreadCallbackContext();
 
         // 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
         private readonly ConcurrentQueue<Action> ActionQueue = new ConcurrentQueue<Action>();

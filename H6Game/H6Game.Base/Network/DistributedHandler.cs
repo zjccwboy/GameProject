@@ -18,7 +18,7 @@ namespace H6Game.Base.Base.Message
             if (inNetComponent.IsCenterServer)
             {
                 this.BroadcastConnection(message, (int)MessageCMD.AddInServer);
-                LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/DistributedDispatcher", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
+                this.Log(LogLevel.Debug, "DistributedDispatcher", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
             }
         }
 
@@ -41,7 +41,7 @@ namespace H6Game.Base.Base.Message
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
             this.CallBack(inNetComponent.OutNetMessage.ToBytes());
-            LogRecord.Log(LogLevel.Debug, $"{this.GetType()}/OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
+            this.Log(LogLevel.Debug, "{OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }
 

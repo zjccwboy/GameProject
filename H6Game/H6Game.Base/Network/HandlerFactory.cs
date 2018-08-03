@@ -14,7 +14,7 @@ namespace H6Game.Base
 
         static HandlerFactory()
         {
-            var dispatcherTypes = ObjectFactory.GetTypes<IHandler>();
+            var dispatcherTypes = TypeFactory.GetTypes<IHandler>();
             foreach (var type in dispatcherTypes)
             {
                 var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();

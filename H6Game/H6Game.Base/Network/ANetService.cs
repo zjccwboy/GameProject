@@ -117,7 +117,7 @@ namespace H6Game.Base
                     {
                         IsHeartbeat = true
                     });
-                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
+                    this.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
                 }
             }
             else if (this.ServiceType == NetServiceType.Server)
@@ -137,7 +137,7 @@ namespace H6Game.Base
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
                     {
-                        LogRecord.Log(LogLevel.Info, $"{this.GetType()}/CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
+                        this.Log(LogLevel.Info, "CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();
                     }
                 }
@@ -164,12 +164,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnServerDisconnected?.Invoke(channel);
-                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
+                    this.Log(LogLevel.Info, "HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleDisConnectOnServer", e);
+                this.Log(LogLevel.Warn, "HandleDisConnectOnServer", e);
             }
         }
 
@@ -184,12 +184,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnClientDisconnected?.Invoke(value);
-                    LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
+                    this.Log(LogLevel.Info, "HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/HandleDisConnectOnClient", e);
+                this.Log(LogLevel.Warn, "HandleDisConnectOnClient", e);
             }
         }
 

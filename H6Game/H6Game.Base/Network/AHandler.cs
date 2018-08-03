@@ -45,8 +45,8 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", $"MessageId:{packet.MessageId}");
-                LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", e.ToString());
+                this.Log(LogLevel.Error, "Receive", $"MessageId:{packet.MessageId}");
+                this.Log(LogLevel.Error, "Receive", e.ToString());
             }
             this.Session = null;
             this.Channel = null;

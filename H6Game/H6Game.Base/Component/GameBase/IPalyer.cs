@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace H6Game.Base
 {
-    public interface IPalyer
+    public interface IPalyer : ICompoentPlayer
     {
         /// <summary>
         /// 账号类型
@@ -27,16 +24,21 @@ namespace H6Game.Base
         int AccountId { get; set; }
 
         /// <summary>
+        /// 用于检测会话安全的Key
+        /// </summary>
+        string NetSessionKey { get; set; }
+
+        /// <summary>
         /// 登陆
         /// </summary>
         /// <param name="playerId"></param>
-        void Login(int playerId);
+        void Login();
 
         /// <summary>
         /// 下线
         /// </summary>
         /// <param name="palyerId"></param>
-        void Logout(int palyerId);
+        void Logout();
 
         /// <summary>
         /// 充值
@@ -58,13 +60,18 @@ namespace H6Game.Base
         /// <summary>
         /// 进入房间
         /// </summary>
-        /// <param name="roomId"></param>
-        void EnterRoom(int roomId);
+        /// <param name="room"></param>
+        void EnterRoom(BaseRommComponent room);
 
         /// <summary>
         /// 离开房间
         /// </summary>
         /// <param name="roomId"></param>
-        void GoAway(int roomId);
+        void GoAway(BaseRommComponent room);
+    }
+
+    public interface ICompoentPlayer
+    {
+
     }
 }
