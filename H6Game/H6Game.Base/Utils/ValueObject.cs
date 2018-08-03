@@ -7,6 +7,7 @@ namespace H6Game.Base
     public class ValueObject<T>
     {
         private Dictionary<TypeCode, ValueObject<T>> valueTypes = new Dictionary<TypeCode, ValueObject<T>>();
+
         public T Value;
 
         public static ValueObject<T> Instance { get; } = new ValueObject<T>();

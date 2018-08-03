@@ -66,7 +66,7 @@ namespace H6Game.Base
                 bodySize = Data.Length;
                 if (Data.Length > PacketParser.BodyMaxSize)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("发送数据超过最大长度限制.");
                 }
             }
             IsMessage = MessageId > 0;

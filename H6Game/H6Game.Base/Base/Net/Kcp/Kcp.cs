@@ -259,7 +259,7 @@ namespace H6Game.Base
                 len += seg.data.Length;
                 fragment = (int)seg.frg;
 
-                Log(IKCP_LOG_RECV, "recv sn={0}", seg.sn);
+                //Log(IKCP_LOG_RECV, "recv sn={0}", seg.sn);
 
                 if (ispeek == 0)
                 {

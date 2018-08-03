@@ -9,9 +9,12 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Linq;
+
+#if WINDOWS
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
+#endif
 
 #if SERVER
 [assembly: XmlConfigurator(ConfigFile = "Log4net.config", Watch = true)]
@@ -19,6 +22,7 @@ using System.Threading;
 
 namespace H6Game.Base
 {
+#if WINDOWS
     public class LogEntity
     {
         public Type LogType { get; set; }
@@ -62,6 +66,7 @@ namespace H6Game.Base
             dispose = true;
         }
     }
+#endif
 
     public class LogRecord
     {
@@ -101,29 +106,27 @@ namespace H6Game.Base
             WriteLog(LogLevel.Error, description, exception.ToString());
         }
 
-        private static void WriteLog(LogLevel level, string description, string logRecord)
+        private static Level GetLogLevel(LogLevel level)
         {
-            var logLevel = GetLogLevel(level);
-            var message = $"Desc:{description} Log:{logRecord}";
-#if WINDOWS
-            WriteQueue.Instance.Post(WriteHandler, new LogEntity
+            switch (level)
             {
-                LogType = logType,
-                LogLevel = logLevel,
-                Logs = message
-            });
-#else
-            logger.Log(logType, logLevel, message, null);
-#endif
+                case LogLevel.Debug:
+                    return Level.Debug;
+                case LogLevel.Info:
+                    return Level.Info;
+                case LogLevel.Notice:
+                    return Level.Notice;
+                case LogLevel.Warn:
+                    return Level.Warn;
+                case LogLevel.Error:
+                    return Level.Error;
+                case LogLevel.Fatal:
+                    return Level.Fatal;
+            }
+            return Level.Log4Net_Debug;
         }
-
-        private static void WriteHandler(object obj)
-        {
-            var logEntity = obj as LogEntity;
-            logger.Log(logEntity.LogType, logEntity.LogLevel, logEntity.Logs, null);
-        }  
 #else
-            public static void Log(LogLevel level, string description, string logRecord)
+        public static void Log(LogLevel level, string description, string logRecord)
         {
 
         }
@@ -148,25 +151,30 @@ namespace H6Game.Base
 
         }
 #endif
-        private static Level GetLogLevel(LogLevel level)
+
+        private static void WriteLog(LogLevel level, string description, string logRecord)
         {
-            switch (level)
+            var logLevel = GetLogLevel(level);
+            var message = $"Desc:{description} Log:{logRecord}";
+#if WINDOWS
+            WriteQueue.Instance.Post(WriteHandler, new LogEntity
             {
-                case LogLevel.Debug:
-                    return Level.Debug;
-                case LogLevel.Info:
-                    return Level.Info;
-                case LogLevel.Notice:
-                    return Level.Notice;
-                case LogLevel.Warn:
-                    return Level.Warn;
-                case LogLevel.Error:
-                    return Level.Error;
-                case LogLevel.Fatal:
-                    return Level.Fatal;
-            }
-            return Level.Log4Net_Debug;
+                LogType = logType,
+                LogLevel = logLevel,
+                Logs = message
+            });
+#else
+            logger.Log(logType, logLevel, message, null);
+#endif
         }
+
+#if WINDOWS
+        private static void WriteHandler(object obj)
+        {
+            var logEntity = obj as LogEntity;
+            logger.Log(logEntity.LogType, logEntity.LogLevel, logEntity.Logs, null);
+        }
+#endif
 
     }
 }
