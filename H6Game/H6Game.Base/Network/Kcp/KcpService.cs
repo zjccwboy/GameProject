@@ -99,9 +99,7 @@ namespace H6Game.Base
             try
             {
                 if(this.Acceptor.Available == 0)
-                {
                     return;
-                }
 
                 recvCount = this.Acceptor.ReceiveFrom(ReuseRecvBytes, SocketFlags.None, ref this.ReuseEndPoint);
             }
@@ -139,15 +137,13 @@ namespace H6Game.Base
             else
             {
                 uint connectConv = BitConverter.ToUInt32(ReuseRecvBytes, 0);
-                if (this.Channels.TryGetValue(connectConv, out ANetChannel channel))
-                {
-                    channel.HandleRecv(ReuseRecvBytes, 0, recvCount);
-                    channel.StartRecv();
-                }
-                else
+                if (!this.Channels.TryGetValue(connectConv, out ANetChannel channel))
                 {
                     this.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
+                    return;
                 }
+                channel.HandleRecv(ReuseRecvBytes, 0, recvCount);
+                channel.StartRecv();
             }
         }
 
@@ -179,9 +175,8 @@ namespace H6Game.Base
         private void HandleACK(Packet packet, Socket socket, EndPoint remoteEP)
         {
             if(this.ClientChannel == null)
-            {
                 return;
-            }
+
             var channel = this.ClientChannel as KcpChannel;
             channel.RemoteEndPoint = remoteEP as IPEndPoint;
             channel.Id = packet.MessageId;
