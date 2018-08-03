@@ -44,7 +44,7 @@ namespace H6Game.Base
                 return false;
             }
 
-            response = (T)bytes.ProtoToObject(type);
+            response = bytes.ProtoToObject<T>();
             return true;
         }
 

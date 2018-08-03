@@ -85,13 +85,13 @@ namespace H6Game.Base
 
             session.Subscribe(channel, send, (p) =>
             {
-                var response = p.Data.ProtoToObject(typeof(T));
+                var response = p.Data.ProtoToObject<T>();
                 if (response == null)
                 {
                     tcs.TrySetResult(default);
                     return;
                 }
-                tcs.TrySetResult((T)response);
+                tcs.TrySetResult(response);
             });
             return tcs.Task;
         }
@@ -119,8 +119,8 @@ namespace H6Game.Base
 
             session.Subscribe(channel, send, (p) =>
             {
-                var response = p.Data.ProtoToObject(typeof(T));
-                rpcAction((T)response);
+                var response = p.Data.ProtoToObject<T>();
+                rpcAction(response);
             });
         }
 

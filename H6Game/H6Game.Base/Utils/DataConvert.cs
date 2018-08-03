@@ -3,6 +3,7 @@ using System;
 using System.Text;
 using ProtoBuf;
 using System.IO;
+using System.Collections.Generic;
 
 namespace H6Game.Base
 {
@@ -98,8 +99,11 @@ namespace H6Game.Base
                 return default;
 
             var type = typeof(T);
-            if (TryGetBaseTypeValue(bytes, type, out object obj))
-                return (T)obj;
+            if (TryGetValueType(bytes, type, out object obj))
+            {
+                var objVal = obj as ValueObject<T>;
+                return objVal.Value;
+            }
 
             using (var ms = new MemoryStream())
             {
@@ -107,6 +111,94 @@ namespace H6Game.Base
                 ms.Position = 0;
                 return Serializer.Deserialize<T>(ms);
             }
+        }
+
+        /// <summary>
+        /// 无GC装箱转换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="bytes"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool TryGetValueType(this byte[] bytes, Type type, out object value)
+        {
+            if(type == typeof(string))
+            {
+                value = Encoding.UTF8.GetString(bytes);
+                return true;
+            }
+
+            TypeCode code = Type.GetTypeCode(type);
+            switch (code)
+            {
+                case TypeCode.Int32:
+                    {
+                        var data = BitConverter.ToInt32(bytes, 0);
+                        value = ValueObject<int>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.UInt32:
+                    {
+                        var data = BitConverter.ToUInt32(bytes, 0);
+                        value = ValueObject<uint>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.Boolean:
+                    {
+                        var data = BitConverter.ToBoolean(bytes, 0);
+                        value = ValueObject<bool>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.Int64:                    
+                    {
+                        var data = BitConverter.ToInt64(bytes, 0);
+                        value = ValueObject<long>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.UInt64:
+                    {
+                        var data = BitConverter.ToUInt64(bytes, 0);
+                        value = ValueObject<ulong>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.Single:
+                    {
+                        var data = BitConverter.ToSingle(bytes, 0);
+                        value = ValueObject<float>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                    {
+                        var data = BitConverter.ToDouble(bytes, 0);
+                        value = ValueObject<double>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                    value = bytes[0];
+                    return true;
+                case TypeCode.Char:
+                    {
+                        var data = BitConverter.ToChar(bytes, 0);
+                        value = ValueObject<char>.Instance.GetValue(data);
+                        return true;
+                    }    
+                case TypeCode.Int16:
+                    {
+                        var data = BitConverter.ToInt16(bytes, 0);
+                        value = ValueObject<short>.Instance.GetValue(data);
+                        return true;
+                    }
+                case TypeCode.UInt16:
+                    {
+                        var data = BitConverter.ToUInt16(bytes, 0);
+                        value = ValueObject<ushort>.Instance.GetValue(data);
+                        return true;
+                    }
+            }
+            value = default;
+            return false;
         }
 
         /// <summary>
@@ -132,79 +224,51 @@ namespace H6Game.Base
             }
         }
 
-
         public static bool TryGetBaseTypeValue(this byte[] bytes, Type type, out object value)
         {
-            if(type == typeof(int))
+            TypeCode code = Type.GetTypeCode(type);
+            switch (code)
             {
-                value = BitConverter.ToInt32(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(int))
-            {
-                value = BitConverter.ToInt32(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(bool))
-            {
-                value = BitConverter.ToBoolean(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(float))
-            {
-                value = BitConverter.ToSingle(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(decimal))
-            {
-                value = BitConverter.ToDouble(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(string))
-            {
-                value = Encoding.UTF8.GetString(bytes);
-                return true;
-            }
-            else if(type == typeof(double))
-            {
-                value = BitConverter.ToDouble(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(short))
-            {
-                value = BitConverter.ToInt16(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(ushort))
-            {
-                value = BitConverter.ToUInt16(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(byte))
-            {
-                value = bytes[0];
-                return true;
-            }
-            else if(type == typeof(sbyte))
-            {
-                value = bytes[0];
-                return true;
-            }
-            else if(type == typeof(char))
-            {
-                value = BitConverter.ToChar(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(long))
-            {
-                value = BitConverter.ToInt64(bytes, 0);
-                return true;
-            }
-            else if(type == typeof(ulong))
-            {
-                value = BitConverter.ToUInt64(bytes, 0);
-                return true;
-            }
+                case TypeCode.Int32:
+                    value = BitConverter.ToInt32(bytes, 0);
+                    return true;
+                case TypeCode.UInt32:
+                    value = BitConverter.ToInt32(bytes, 0);
+                    return true;
+                case TypeCode.Boolean:
+                    value = BitConverter.ToBoolean(bytes, 0);
+                    return true;
+                case TypeCode.Int64:
+                    value = BitConverter.ToInt64(bytes, 0);
+                    return true;
+                case TypeCode.UInt64:
+                    value = BitConverter.ToUInt64(bytes, 0);
+                    return true;
+                case TypeCode.Single:
+                    value = BitConverter.ToSingle(bytes, 0);
+                    return true;
+                case TypeCode.Double:
+                    value = BitConverter.ToDouble(bytes, 0);
+                    return true;
+                case TypeCode.Decimal:
+                    value = BitConverter.ToDouble(bytes, 0);
+                    return true;
+                case TypeCode.Byte:
+                    value = bytes[0];
+                    return true;
+                case TypeCode.SByte:
+                    value = bytes[0];
+                    return true;
+                case TypeCode.Char:
+                    value = BitConverter.ToChar(bytes, 0);
+                    return true;
+                case TypeCode.Int16:
+                    value = BitConverter.ToInt16(bytes, 0);
+                    return true;
+                case TypeCode.UInt16:
+                    value = BitConverter.ToUInt16(bytes, 0);
+                    return true;
+            }            
             value = null;
             return false;
         }
