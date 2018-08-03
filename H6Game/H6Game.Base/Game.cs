@@ -6,12 +6,14 @@ namespace H6Game.Base
 {
     public class Game
     {
-        private static Dictionary<int, BaseComponent> idDictionary = new Dictionary<int, BaseComponent>();
+        private static Dictionary<int, BaseComponent> CmpDictionary = new Dictionary<int, BaseComponent>();
         private static Dictionary<Type, BaseComponent> typeDictionary = new Dictionary<Type, BaseComponent>();
+
+        public Scene Scene { get; } = Scene.Instance;
 
         public static void Start()
         {
-            foreach (var component in idDictionary.Values)
+            foreach (var component in CmpDictionary.Values)
             {
                 component.Start();
             }
@@ -19,7 +21,7 @@ namespace H6Game.Base
 
         public static void Update()
         {
-            foreach(var component in idDictionary.Values)
+            foreach(var component in CmpDictionary.Values)
             {
                 component.Update();
             }
@@ -28,7 +30,7 @@ namespace H6Game.Base
         public static void Add<T>() where T : BaseComponent
         {
             var component = SinglePool.Get<T>();
-            idDictionary[component.Id] = component;
+            CmpDictionary[component.Id] = component;
             typeDictionary[typeof(T)] = component;
             var type = typeof(T);
         }
@@ -38,7 +40,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (typeDictionary.TryGetValue(type, out BaseComponent component))
             {
-                idDictionary.Remove(component.Id);
+                CmpDictionary.Remove(component.Id);
                 typeDictionary.Remove(type);
             }
         }
@@ -50,7 +52,7 @@ namespace H6Game.Base
 
         public static T Get<T>(int id) where T : BaseComponent
         {
-            if(idDictionary.TryGetValue(id, out BaseComponent component))
+            if(CmpDictionary.TryGetValue(id, out BaseComponent component))
             {
                 return (T)component;
             }

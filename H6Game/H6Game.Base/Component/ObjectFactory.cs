@@ -6,7 +6,7 @@ namespace H6Game.Base
 {
     public static class ObjectFactory
     {
-        private static readonly Dictionary<Type, HashSet<Type>> dictionary = new Dictionary<Type, HashSet<Type>>();
+        private static readonly Dictionary<Type, HashSet<Type>> ObjcetDictionary = new Dictionary<Type, HashSet<Type>>();
 
         static ObjectFactory()
         {
@@ -15,7 +15,7 @@ namespace H6Game.Base
 
         public static HashSet<Type> GetTypes<T>()
         {
-            return dictionary[typeof(T)];
+            return ObjcetDictionary[typeof(T)];
         }
 
         /// <summary>
@@ -60,9 +60,9 @@ namespace H6Game.Base
                 }
             }
 
-            dictionary[messageBaseType] = messageTypes;
-            dictionary[componentBaseType] = componentBaseTypes;
-            dictionary[dispatcherType] = dispatcherTypes;
+            ObjcetDictionary[messageBaseType] = messageTypes;
+            ObjcetDictionary[componentBaseType] = componentBaseTypes;
+            ObjcetDictionary[dispatcherType] = dispatcherTypes;
         }
 
     }

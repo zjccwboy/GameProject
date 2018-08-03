@@ -28,10 +28,10 @@ namespace H6Game.Base
     /// </summary>
     public class KcpChannel : ANetChannel
     {
-        private Kcp kcp;
-        private byte[] cacheBytes;
-        private int singlePacketLimit = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
-        private uint lastCheckTime = TimeUitls.Now();
+        private Kcp Kcp;
+        private byte[] CacheBytes;
+        private int MaxPSize = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
+        private uint LastCheckTime = TimeUitls.Now();
 
         /// <summary>
         /// 构造函数,Connect
@@ -49,9 +49,9 @@ namespace H6Game.Base
 
         public void InitKcp()
         {
-            kcp = new Kcp((uint)this.Id, this);
-            kcp.SetOutput(this.Output);
-            kcp.NoDelay(1, 10, 2, 1);  //fast
+            Kcp = new Kcp((uint)this.Id, this);
+            Kcp.SetOutput(this.Output);
+            Kcp.NoDelay(1, 10, 2, 1);  //fast
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace H6Game.Base
         /// <param name="lenght"></param>
         public override void HandleRecv(byte[] bytes, int offset, int lenght)
         {
-            cacheBytes = bytes;
+            CacheBytes = bytes;
             this.LastRecvTime = this.TimeNow;
-            this.kcp.Input(bytes, offset, lenght);
+            this.Kcp.Input(bytes, offset, lenght);
         }
 
         /// <summary>
@@ -104,20 +104,20 @@ namespace H6Game.Base
             SetKcpSendTime();
             while (true)
             {
-                int n = kcp.PeekSize();
+                int n = Kcp.PeekSize();
                 if (n == 0)
                 {
                     //LogRecord.Log(LogLevel.Error, "StartRecv", $"解包失败:{this.RemoteEndPoint}");
                     return;
                 }
 
-                int count = this.kcp.Recv(cacheBytes, 0, cacheBytes.Length);
+                int count = this.Kcp.Recv(CacheBytes, 0, CacheBytes.Length);
                 if (count <= 0)
                 {
                     return;
                 }
 
-                RecvParser.WriteBuffer(cacheBytes, 0, count);
+                RecvParser.WriteBuffer(CacheBytes, 0, count);
 
                 while (true)
                 {
@@ -183,10 +183,10 @@ namespace H6Game.Base
                 {
                     var offset = this.SendParser.Buffer.FirstReadOffset;
                     var length = this.SendParser.Buffer.FirstDataSize;
-                    length = length > singlePacketLimit ? singlePacketLimit : length;
-                    kcp.Send(this.SendParser.Buffer.First, offset, length);
+                    length = length > MaxPSize ? MaxPSize : length;
+                    Kcp.Send(this.SendParser.Buffer.First, offset, length);
                     this.SendParser.Buffer.UpdateRead(length);
-                    if(length >= singlePacketLimit)
+                    if(length >= MaxPSize)
                     {
                         SetKcpSendTime();
                     }
@@ -235,10 +235,10 @@ namespace H6Game.Base
         /// </summary>
         private void SetKcpSendTime()
         {    
-            if (this.TimeNow >= this.lastCheckTime)
+            if (this.TimeNow >= this.LastCheckTime)
             {
-                kcp.Update(this.TimeNow);
-                this.lastCheckTime = this.kcp.Check(this.TimeNow);
+                Kcp.Update(this.TimeNow);
+                this.LastCheckTime = this.Kcp.Check(this.TimeNow);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace H6Game.Base
         /// <param name="netService">网络通讯服务对象</param>
         public ANetChannel(ANetService netService)
         {
-            this.netService = netService;
+            this.NetService = netService;
             Id = ChannelIdCreator.CreateId();
         }
 
@@ -29,7 +29,7 @@ namespace H6Game.Base
         /// <param name="conv">KCP连接确认号Conv</param>
         public ANetChannel(ANetService netService, int conv)
         {
-            this.netService = netService;
+            this.NetService = netService;
             Id = conv;
         }
 
@@ -90,7 +90,7 @@ namespace H6Game.Base
         /// <summary>
         /// 网络服务类
         /// </summary>
-        public ANetService netService { get; private set; }
+        public ANetService NetService { get; private set; }
 
         /// <summary>
         /// 远程IP端口

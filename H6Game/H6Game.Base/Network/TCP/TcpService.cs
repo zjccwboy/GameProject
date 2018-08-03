@@ -9,8 +9,8 @@ namespace H6Game.Base
     /// </summary>
     public class TcpService : ANetService
     {
-        private IPEndPoint endPoint;
-        private readonly SocketAsyncEventArgs innArgs = new SocketAsyncEventArgs();
+        private IPEndPoint EndPoint;
+        private readonly SocketAsyncEventArgs InnArgs = new SocketAsyncEventArgs();
 
         /// <summary>
         /// 构造函数
@@ -20,7 +20,7 @@ namespace H6Game.Base
         public TcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
         {
             this.ServiceType = serviceType;
-            this.endPoint = endPoint;
+            this.EndPoint = endPoint;
         }
 
 
@@ -30,15 +30,15 @@ namespace H6Game.Base
         /// <returns></returns>
         public override bool Accept()
         {
-            if (acceptor == null)
+            if (Acceptor == null)
             {
-                this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                this.acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                this.innArgs.Completed += this.OnComplete;
+                this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                this.Acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                this.InnArgs.Completed += this.OnComplete;
                 try
                 {
-                    this.acceptor.Bind(this.endPoint);
-                    this.acceptor.Listen(1000);
+                    this.Acceptor.Bind(this.EndPoint);
+                    this.Acceptor.Listen(1000);
                 }
                 catch(Exception e)
                 {
@@ -48,11 +48,11 @@ namespace H6Game.Base
 
             }
 
-            this.innArgs.AcceptSocket = null;
-            if (this.acceptor.AcceptAsync(this.innArgs))
+            this.InnArgs.AcceptSocket = null;
+            if (this.Acceptor.AcceptAsync(this.InnArgs))
                 return true;
 
-            OnComplete(this, this.innArgs);
+            OnComplete(this, this.InnArgs);
 
             return true;
         }
@@ -85,7 +85,7 @@ namespace H6Game.Base
 
         private void OnAcceptComplete(object o)
         {
-            if (this.acceptor == null)
+            if (this.Acceptor == null)
                 return;
 
             SocketAsyncEventArgs e = o as SocketAsyncEventArgs;
@@ -95,7 +95,7 @@ namespace H6Game.Base
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/OnAcceptComplete", $"接受连接发生错误.");
                 return;
             }
-            var channel = new TcpChannel(this.endPoint, e.AcceptSocket, this);
+            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this);
             channel.RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint;
             HandleAccept(channel);
 
@@ -110,7 +110,7 @@ namespace H6Game.Base
         {
             if(this.ClientChannel == null)
             {
-                ClientChannel = new TcpChannel(endPoint, this);
+                ClientChannel = new TcpChannel(EndPoint, this);
                 ClientChannel.OnConnect = HandleConnect;
                 ClientChannel.StartConnecting();
             }

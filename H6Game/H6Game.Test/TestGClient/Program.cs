@@ -14,7 +14,6 @@ namespace TestGClient
         static void Main(string[] args)
         {
             Game.Add<OutNetComponent>();
-            Game.Add<Scene>();
 
             while (true)
             {

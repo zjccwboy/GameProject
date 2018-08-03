@@ -15,32 +15,32 @@ namespace H6Game.Base
     /// </summary>
     public class InNetComponent : BaseComponent
     {
-        private SysConfig config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
-        private EndPointEntity defaultCenterEndPoint;
-        private readonly ConcurrentDictionary<int, Session> inConnectSessions = new ConcurrentDictionary<int, Session>();
-        private readonly ConcurrentDictionary<int, Session> disconnectSessions = new ConcurrentDictionary<int, Session>();
-        private Session inAcceptSession;
-        private Session outAcceptSession;
-        private Session centerConnectSession;
+        private SysConfig Config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+        private EndPointEntity DefaultCenterEndPoint;
+        private readonly ConcurrentDictionary<int, Session> InConnectSessions = new ConcurrentDictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Session> DisconnectSessions = new ConcurrentDictionary<int, Session>();
+        private Session InAcceptSession;
+        private Session OutAcceptSession;
+        private Session CenterConnectSession;
 
-        public IEnumerable<Session> ConnectSessions { get { return this.inConnectSessions.Values; } }
-        public NetEndPointMessage OutNetMessage { get { return this.config.GetOutMessage(); } }
-        public bool IsCenterServer { get { return this.config.IsCenterServer; } }
+        public IEnumerable<Session> ConnectSessions { get { return this.InConnectSessions.Values; } }
+        public NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
+        public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
         public override void Start()
         {
-            this.defaultCenterEndPoint = config.InNetConfig.CenterEndPoint;
-            var center = this.config.GetCenterMessage();
-            if (this.config.IsCenterServer)
+            this.DefaultCenterEndPoint = Config.InNetConfig.CenterEndPoint;
+            var center = this.Config.GetCenterMessage();
+            if (this.Config.IsCenterServer)
             {
                 HandleInAccept(center);
                 return;
             }
-            HandleInAccept(this.config.GetInMessage());
+            HandleInAccept(this.Config.GetInMessage());
             this.Connecting(center);
-            HandleOutAccept(this.config.GetOutMessage());
+            HandleOutAccept(this.Config.GetOutMessage());
         }
 
         /// <summary>
@@ -48,21 +48,21 @@ namespace H6Game.Base
         /// </summary>
         public override void Update()
         {
-            if(outAcceptSession != null)
-                outAcceptSession.Update();
+            if(OutAcceptSession != null)
+                OutAcceptSession.Update();
 
-            if (inAcceptSession != null)
-                inAcceptSession.Update();
+            if (InAcceptSession != null)
+                InAcceptSession.Update();
 
-            if (centerConnectSession != null)
-                centerConnectSession.Update();
+            if (CenterConnectSession != null)
+                CenterConnectSession.Update();
 
-            foreach(var connect in inConnectSessions.Values)
+            foreach(var connect in InConnectSessions.Values)
             {
                 connect.Update();
             }
 
-            foreach (var connect in disconnectSessions.Values)
+            foreach (var connect in DisconnectSessions.Values)
             {
                 connect.Update();
             }
@@ -151,10 +151,10 @@ namespace H6Game.Base
         public void BroadcastMessage(byte[] bytes, int messageCmd)
         {
             //中心服务只处理内部分布式连接管理消息
-            if (this.config.IsCenterServer && !IsSysMessage(messageCmd))
+            if (this.Config.IsCenterServer && !IsSysMessage(messageCmd))
                 return;
 
-            if (this.inAcceptSession == null)
+            if (this.InAcceptSession == null)
                 return;
 
             var packet = new Packet
@@ -162,24 +162,24 @@ namespace H6Game.Base
                 MessageId = messageCmd,
                 Data = bytes,
             };
-            this.inAcceptSession.Broadcast(packet);
+            this.InAcceptSession.Broadcast(packet);
         }
 
         public void AddSession(NetEndPointMessage message)
         {
-            if (config.IsCenterServer)
+            if (Config.IsCenterServer)
                 return;
 
             //判断是否是本地服务，是排除掉
-            if(message == this.config.GetInMessage())
+            if(message == this.Config.GetInMessage())
                 return;
 
             //排除中心服务
-            if (message == this.config.GetCenterMessage())
+            if (message == this.Config.GetCenterMessage())
                 return;
 
             //如果存在就不再创建新的Session
-            if (this.inConnectSessions.ContainsKey(message.GetHashCode()))
+            if (this.InConnectSessions.ContainsKey(message.GetHashCode()))
                 return;
 
             Connecting(message);
@@ -201,10 +201,10 @@ namespace H6Game.Base
                 }
             };
 
-            this.inAcceptSession = session;
+            this.InAcceptSession = session;
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听内网端口:{message.Port}成功.");
 
-            if (this.config.IsCenterServer)
+            if (this.Config.IsCenterServer)
                 LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
         }
 
@@ -214,40 +214,40 @@ namespace H6Game.Base
             if (!session.Accept())
                 throw new Exception($"服务端口被占用.");
 
-            this.outAcceptSession = session;
+            this.OutAcceptSession = session;
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleOutAccept", $"监听外网端口:{message.Port}成功.");
         }
 
         private void Connecting(NetEndPointMessage message)
         {
-            if (config.IsCenterServer)
+            if (Config.IsCenterServer)
                 return;
 
             var hashCode = message.GetHashCode();
-            if (this.inConnectSessions.ContainsKey(hashCode))
+            if (this.InConnectSessions.ContainsKey(hashCode))
                 return;
 
             //不连接进程内的监听端口
-            if(message == this.config.GetInMessage())
+            if(message == this.Config.GetInMessage())
                 return;
 
             var session = new Session(GetIPEndPoint(message), ProtocalType.Tcp);
 
-            if (message == this.config.GetCenterMessage())
-                this.centerConnectSession = session;
+            if (message == this.Config.GetCenterMessage())
+                this.CenterConnectSession = session;
             else
-                this.inConnectSessions[hashCode] = session;
+                this.InConnectSessions[hashCode] = session;
 
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
-                if (this.disconnectSessions.TryRemove(hashCode, out Session oldSession))
-                    this.inConnectSessions[hashCode] = oldSession;
+                if (this.DisconnectSessions.TryRemove(hashCode, out Session oldSession))
+                    this.InConnectSessions[hashCode] = oldSession;
 
-                var localMessage = this.config.GetInMessage();
+                var localMessage = this.Config.GetInMessage();
                 this.InNetMapManager.Add(c, message);
 
-                if (message != this.config.GetCenterMessage())
+                if (message != this.Config.GetCenterMessage())
                 {
                     var remoteOutNet = await this.CallMessage<NetEndPointMessage>(session, c, null, (int)MessageCMD.GetOutServer);
                     this.OutNetMapManager.Add(c, remoteOutNet);
@@ -259,14 +259,14 @@ namespace H6Game.Base
             //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
-                if (message == this.config.GetCenterMessage())
+                if (message == this.Config.GetCenterMessage())
                 {
                     LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
 
-                if (this.inConnectSessions.TryRemove(hashCode, out Session oldSession))
-                    this.disconnectSessions[hashCode] = oldSession;
+                if (this.InConnectSessions.TryRemove(hashCode, out Session oldSession))
+                    this.DisconnectSessions[hashCode] = oldSession;
 
                 this.InNetMapManager.Remove(message);
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))
@@ -282,7 +282,7 @@ namespace H6Game.Base
                 MessageId = messageCmd,
                 Data = bytes,
             };
-            this.centerConnectSession.Broadcast(packet);
+            this.CenterConnectSession.Broadcast(packet);
         }
 
         private bool IsSysMessage(int messageCmd)

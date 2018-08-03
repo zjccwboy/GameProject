@@ -10,9 +10,9 @@ namespace H6Game.Base
     /// </summary>
     public class NetMapManager
     {
-        private readonly HashSet<NetEndPointMessage> connectEntities = new HashSet<NetEndPointMessage>();
-        private readonly ConcurrentDictionary<int, NetEndPointMessage> channelIdMapMsg = new ConcurrentDictionary<int, NetEndPointMessage>();
-        private readonly ConcurrentDictionary<int, ANetChannel> hCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
+        private readonly HashSet<NetEndPointMessage> ConnectEntities = new HashSet<NetEndPointMessage>();
+        private readonly ConcurrentDictionary<int, NetEndPointMessage> ChannelIdMapMsg = new ConcurrentDictionary<int, NetEndPointMessage>();
+        private readonly ConcurrentDictionary<int, ANetChannel> HCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
 
         /// <summary>
         /// 判断是否存在
@@ -21,7 +21,7 @@ namespace H6Game.Base
         /// <returns></returns>
         public bool Existed(NetEndPointMessage message)
         {
-            return connectEntities.Contains(message);
+            return ConnectEntities.Contains(message);
         }
 
         /// <summary>
@@ -30,12 +30,12 @@ namespace H6Game.Base
         /// <param name="message"></param>
         public void Remove(NetEndPointMessage message)
         {
-            if (connectEntities.Remove(message))
+            if (ConnectEntities.Remove(message))
             {
-                if (hCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
+                if (HCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
                 {
-                    hCodeMapChannel.TryRemove(message.GetHashCode(), out ANetChannel channelVal);
-                    channelIdMapMsg.TryRemove(channel.Id, out NetEndPointMessage messageVal);
+                    HCodeMapChannel.TryRemove(message.GetHashCode(), out ANetChannel channelVal);
+                    ChannelIdMapMsg.TryRemove(channel.Id, out NetEndPointMessage messageVal);
                 }
             }
         }
@@ -47,12 +47,12 @@ namespace H6Game.Base
         /// <param name="message"></param>
         public void Add(ANetChannel channel, NetEndPointMessage message)
         {
-            if (connectEntities.Contains(message))
+            if (ConnectEntities.Contains(message))
                 return;
 
-            this.connectEntities.Add(message);
-            channelIdMapMsg[channel.Id] = message;
-            hCodeMapChannel[message.GetHashCode()] = channel;
+            this.ConnectEntities.Add(message);
+            ChannelIdMapMsg[channel.Id] = message;
+            HCodeMapChannel[message.GetHashCode()] = channel;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace H6Game.Base
         /// <returns></returns>
         public bool TryGetFromChannelId(ANetChannel channel, out NetEndPointMessage message)
         {
-            return channelIdMapMsg.TryGetValue(channel.Id, out message);
+            return ChannelIdMapMsg.TryGetValue(channel.Id, out message);
         }
     }
 }

@@ -7,23 +7,23 @@ namespace H6Game.Base
 {
     public class OutNetComponent : BaseComponent
     {
-        private SysConfig config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
-        private Session connectSession;
-        private IPEndPoint loginServerEndPoint;
+        private SysConfig Config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+        private Session ConnectSession;
+        private IPEndPoint LoginServerEndPoint;
 
         public bool IsConnected { get; private set; }
 
         public OutNetComponent()
         {
-            this.loginServerEndPoint = GetLoginServerEndPoint();
-            this.Connecting(this.loginServerEndPoint);
+            this.LoginServerEndPoint = GetLoginServerEndPoint();
+            this.Connecting(this.LoginServerEndPoint);
         }
 
         public override void Update()
         {
-            if(connectSession != null)
+            if(ConnectSession != null)
             {
-                connectSession.Update();
+                ConnectSession.Update();
             }
         }
 
@@ -42,7 +42,7 @@ namespace H6Game.Base
                 Data = bytes,
             };
 
-            this.connectSession.Subscribe(this.connectSession.ConnectChannel, send, (p) =>
+            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, send, (p) =>
             {
                 var response = p.Data.ProtoToObject<T>();
                 if (response == null)
@@ -65,7 +65,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void SendMessage(int messageCmd, byte[] bytes, int rpcId = 0, bool isCompress = false, bool isEncrypt = false)
         {
-            this.connectSession.Notice(this.connectSession.ConnectChannel, new Packet
+            this.ConnectSession.Notice(this.ConnectSession.ConnectChannel, new Packet
             {
                 MessageId = messageCmd,
                 Data = bytes,
@@ -91,7 +91,7 @@ namespace H6Game.Base
                 Data = bytes,
             };
 
-            this.connectSession.Subscribe(this.connectSession.ConnectChannel, send, (p) =>
+            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, send, (p) =>
             {
                 var response = p.Data.ProtoToObject<T>();
                 rpcAction(response);
@@ -100,21 +100,21 @@ namespace H6Game.Base
 
         private void Connecting(IPEndPoint endPoint)
         {
-            if(connectSession != null)
+            if(ConnectSession != null)
             {
-                connectSession.Dispose();
+                ConnectSession.Dispose();
             }
-            connectSession = new Session(endPoint, ProtocalType.Kcp);
-            connectSession.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
-            connectSession.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
-            connectSession.Connect();
+            ConnectSession = new Session(endPoint, ProtocalType.Kcp);
+            ConnectSession.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
+            ConnectSession.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
+            ConnectSession.Connect();
         }
 
         private IPEndPoint GetLoginServerEndPoint()
         {
-            var hostInfo = Dns.GetHostEntry(config.OuNetHost);
+            var hostInfo = Dns.GetHostEntry(Config.OuNetHost);
             IPAddress ipAddress = hostInfo.AddressList[0];
-            var endPoint = new IPEndPoint(ipAddress, config.OuNetConfig.Port);
+            var endPoint = new IPEndPoint(ipAddress, Config.OuNetConfig.Port);
             return endPoint;
         }
     }

@@ -36,7 +36,7 @@ namespace H6Game.Base
         /// <summary>
         /// 接受连接请求Socket
         /// </summary>
-        protected Socket acceptor;
+        protected Socket Acceptor;
 
         /// <summary>
         /// 网络服务类型

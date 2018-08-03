@@ -1,7 +1,5 @@
-﻿
-using System.Net;
+﻿using System.Net;
 using System;
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,9 +29,9 @@ namespace H6Game.Base
     /// </summary>
     public class Session : IDisposable
     {
-        private ANetService netService;
-        private IPEndPoint endPoint;
-        private ProtocalType protocalType;
+        private ANetService NService;
+        private IPEndPoint EPoint;
+        private ProtocalType PType;
 
         /// <summary>
         /// 客户端连接管道
@@ -62,8 +60,8 @@ namespace H6Game.Base
 
         public Session(IPEndPoint endPoint, ProtocalType protocalType)
         {
-            this.endPoint = endPoint;
-            this.protocalType = protocalType;
+            this.EPoint = endPoint;
+            this.PType = protocalType;
         }
 
         /// <summary>
@@ -72,19 +70,19 @@ namespace H6Game.Base
         /// <param name="endPoint"></param>
         public bool Accept()
         {
-            if(this.protocalType == ProtocalType.Tcp)
+            if(this.PType == ProtocalType.Tcp)
             {
-                this.netService = new TcpService(this.endPoint, this, NetServiceType.Server);
+                this.NService = new TcpService(this.EPoint, this, NetServiceType.Server);
             }
-            else if(this.protocalType == ProtocalType.Kcp)
+            else if(this.PType == ProtocalType.Kcp)
             {
-                this.netService = new KcpService(this.endPoint, this, NetServiceType.Server);
+                this.NService = new KcpService(this.EPoint, this, NetServiceType.Server);
             }
 
-            this.netService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c); };
-            this.netService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c); };
+            this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c); };
+            this.NService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c); };
 
-            return this.netService.Accept();
+            return this.NService.Accept();
         }
 
         /// <summary>
@@ -94,17 +92,17 @@ namespace H6Game.Base
         /// <returns></returns>
         public ANetChannel Connect()
         {
-            if (this.protocalType == ProtocalType.Tcp)
+            if (this.PType == ProtocalType.Tcp)
             {
-                this.netService = new TcpService(this.endPoint, this, NetServiceType.Client);
+                this.NService = new TcpService(this.EPoint, this, NetServiceType.Client);
             }
-            else if (this.protocalType == ProtocalType.Kcp)
+            else if (this.PType == ProtocalType.Kcp)
             {
-                this.netService = new KcpService(this.endPoint, this, NetServiceType.Client);
+                this.NService = new KcpService(this.EPoint, this, NetServiceType.Client);
             }
-            this.netService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
-            this.netService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
-            this.ConnectChannel = this.netService.Connect();
+            this.NService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
+            this.NService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
+            this.ConnectChannel = this.NService.Connect();
             return this.ConnectChannel;
         }
         
@@ -113,7 +111,7 @@ namespace H6Game.Base
             try
             {
                 OneThreadSynchronizationContext.Instance.Update();
-                this.netService.Update();
+                this.NService.Update();
             }
             catch(Exception e)
             {
@@ -153,7 +151,7 @@ namespace H6Game.Base
         /// <param name="packet"></param>
         public void Broadcast(Packet packet)
         {
-            var channels = this.netService.Channels.Values;
+            var channels = this.NService.Channels.Values;
             foreach(var channel in channels)
                 Notice(channel, packet);
         }
@@ -170,13 +168,13 @@ namespace H6Game.Base
 
         public void Dispose()
         {
-            var channels = this.netService.Channels.Values.ToList();
+            var channels = this.NService.Channels.Values.ToList();
             foreach(var channel in channels)
             {
                 if (channel.Connected)
                     channel.DisConnect();
             }
-            this.netService = null;
+            this.NService = null;
         }
     }
 }

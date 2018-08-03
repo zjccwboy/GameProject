@@ -31,19 +31,19 @@ namespace H6Game.Base
         /// <returns></returns>
         public override bool Accept()
         {
-            if (this.acceptor == null)
+            if (this.Acceptor == null)
             {
-                this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 if (this.ServiceType == NetServiceType.Server)
                 {
                     uint IOC_IN = 0x80000000;
                     uint IOC_VENDOR = 0x18000000;
                     uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                    this.acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+                    this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
                 }
                 try
                 {
-                    acceptor.Bind(this.endPoint);
+                    Acceptor.Bind(this.endPoint);
                 }
                 catch(Exception e)
                 {
@@ -60,10 +60,10 @@ namespace H6Game.Base
         /// <returns></returns>
         public override ANetChannel Connect()
         {
-            if(this.acceptor == null)
+            if(this.Acceptor == null)
             {
-                this.acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                this.ClientChannel = new KcpChannel(this.acceptor, this.endPoint, this, 1000);
+                this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                this.ClientChannel = new KcpChannel(this.Acceptor, this.endPoint, this, 1000);
                 this.ClientChannel.StartConnecting();
             }
             return this.ClientChannel;
@@ -98,12 +98,12 @@ namespace H6Game.Base
             int recvCount = 0;
             try
             {
-                if(this.acceptor.Available == 0)
+                if(this.Acceptor.Available == 0)
                 {
                     return;
                 }
 
-                recvCount = this.acceptor.ReceiveFrom(recvBytes, SocketFlags.None, ref this.ipEndPoint);
+                recvCount = this.Acceptor.ReceiveFrom(recvBytes, SocketFlags.None, ref this.ipEndPoint);
             }
             catch (Exception e)
             {
@@ -118,18 +118,18 @@ namespace H6Game.Base
                 Packet packet = new Packet();
                 if (!connectParser.TryGetPacket(ref packet))
                 {
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/StartRecv", $"丢弃非法数据包:{this.acceptor.RemoteEndPoint}.");
+                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/StartRecv", $"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.");
                     //丢弃非法数据包
                     connectParser.Buffer.Flush();
                     return;
                 }
                 if (packet.KcpProtocal == KcpNetProtocal.SYN)
                 {
-                    HandleSYN(this.acceptor, this.ipEndPoint as IPEndPoint);
+                    HandleSYN(this.Acceptor, this.ipEndPoint as IPEndPoint);
                 }
                 else if (packet.KcpProtocal == KcpNetProtocal.ACK)
                 {
-                    HandleACK(packet, this.acceptor, this.ipEndPoint as IPEndPoint);
+                    HandleACK(packet, this.Acceptor, this.ipEndPoint as IPEndPoint);
                 }
                 else if (packet.KcpProtocal == KcpNetProtocal.FIN)
                 {
@@ -167,7 +167,7 @@ namespace H6Game.Base
             channel.InitKcp();
             channel.OnConnect = HandleAccept;
             channel.OnConnect?.Invoke(channel);
-            ConnectSender.SendACK(this.acceptor, channel.RemoteEndPoint, conv);
+            ConnectSender.SendACK(this.Acceptor, channel.RemoteEndPoint, conv);
         }
 
         /// <summary>

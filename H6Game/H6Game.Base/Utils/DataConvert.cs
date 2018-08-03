@@ -12,11 +12,11 @@ namespace H6Game.Base
     /// </summary>
     public static class DataConvert
     {
-        private static Type stringType = typeof(string);
-        private readonly static JsonSerializerSettings settings = new JsonSerializerSettings();
+        private static Type SType = typeof(string);
+        private readonly static JsonSerializerSettings JsonSettings = new JsonSerializerSettings();
         static DataConvert()
         {
-            settings.NullValueHandling = NullValueHandling.Ignore;
+            JsonSettings.NullValueHandling = NullValueHandling.Ignore;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace H6Game.Base
             if (obj == null)
                 return null;
 
-            var json = JsonConvert.SerializeObject(obj, typeof(T), settings);
+            var json = JsonConvert.SerializeObject(obj, typeof(T), JsonSettings);
             return json;
         }
 
@@ -46,7 +46,7 @@ namespace H6Game.Base
             if(obj == null)
                 return null;
 
-            var json = JsonConvert.SerializeObject(obj,typeof(T), formatting, settings);
+            var json = JsonConvert.SerializeObject(obj,typeof(T), formatting, JsonSettings);
             return json;
         }
 
@@ -61,7 +61,7 @@ namespace H6Game.Base
             if (string.IsNullOrEmpty(json))
                 return null;
 
-            var obj = JsonConvert.DeserializeObject<T>(json, settings);
+            var obj = JsonConvert.DeserializeObject<T>(json, JsonSettings);
             return obj;
         }
 
@@ -122,7 +122,7 @@ namespace H6Game.Base
         /// <returns></returns>
         public static bool TryGetValueType(this byte[] bytes, Type type, out object value)
         {
-            if(type == typeof(string))
+            if(type == SType)
             {
                 value = Encoding.UTF8.GetString(bytes);
                 return true;

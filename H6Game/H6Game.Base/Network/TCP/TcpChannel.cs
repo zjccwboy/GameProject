@@ -9,18 +9,18 @@ namespace H6Game.Base
     /// </summary>
     public class TcpChannel : ANetChannel
     {
-        private SocketAsyncEventArgs inArgs;
-        private SocketAsyncEventArgs outArgs;
+        private SocketAsyncEventArgs InArgs;
+        private SocketAsyncEventArgs OutArgs;
 
         /// <summary>
         /// 发送状态机
         /// </summary>
-        private bool isSending;
+        private bool IsSending;
 
         /// <summary>
         /// 接收状态机
         /// </summary>
-        private bool isReceiving;
+        private bool IsReceiving;
 
         /// <summary>
         /// 构造函数,Connect
@@ -42,10 +42,10 @@ namespace H6Game.Base
         {
             this.LocalEndPoint = endPoint;
             this.NetSocket = socket;
-            this.inArgs = new SocketAsyncEventArgs();
-            this.outArgs = new SocketAsyncEventArgs();
-            this.inArgs.Completed += OnComplete;
-            this.outArgs.Completed += OnComplete;
+            this.InArgs = new SocketAsyncEventArgs();
+            this.OutArgs = new SocketAsyncEventArgs();
+            this.InArgs.Completed += OnComplete;
+            this.OutArgs.Completed += OnComplete;
         }
 
         /// <summary>
@@ -72,17 +72,17 @@ namespace H6Game.Base
                         NoDelay = true
                     };
 
-                    this.inArgs = new SocketAsyncEventArgs();
-                    this.outArgs = new SocketAsyncEventArgs();
-                    this.inArgs.Completed += OnComplete;
-                    this.outArgs.Completed += OnComplete;
+                    this.InArgs = new SocketAsyncEventArgs();
+                    this.OutArgs = new SocketAsyncEventArgs();
+                    this.InArgs.Completed += OnComplete;
+                    this.OutArgs.Completed += OnComplete;
                 }
 
-                this.outArgs.RemoteEndPoint = this.RemoteEndPoint;
-                if (this.NetSocket.ConnectAsync(this.outArgs))
+                this.OutArgs.RemoteEndPoint = this.RemoteEndPoint;
+                if (this.NetSocket.ConnectAsync(this.OutArgs))
                     return;
 
-                OnConnectComplete(this.outArgs);
+                OnConnectComplete(this.OutArgs);
             }
             catch (Exception e)
             {
@@ -99,7 +99,7 @@ namespace H6Game.Base
             if (!Connected)
                 return;
 
-            if (isSending)
+            if (IsSending)
                 return;
 
             while (SendQueue.Count > 0)
@@ -113,34 +113,34 @@ namespace H6Game.Base
 
         private void SendData()
         {
-            isSending = true;
+            IsSending = true;
 
             if (!Connected)
             {
-                isSending = false;
+                IsSending = false;
                 return;
             }
 
             if (SendParser.Buffer.DataSize <= 0)
             {
-                isSending = false;
+                IsSending = false;
                 return;
             }
 
-            this.outArgs.SetBuffer(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+            this.OutArgs.SetBuffer(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
             try
             {
-                if (this.NetSocket.SendAsync(this.outArgs))
+                if (this.NetSocket.SendAsync(this.OutArgs))
                     return;
             }
             catch (Exception e)
             {
-                isSending = false;
+                IsSending = false;
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartSend", e);
                 DisConnect();
                 return;
             }
-            OnSendComplete(this.outArgs);
+            OnSendComplete(this.OutArgs);
         }
 
         /// <summary>
@@ -150,27 +150,27 @@ namespace H6Game.Base
         {
             try
             {
-                if (isReceiving)
+                if (IsReceiving)
                     return;
 
-                isReceiving = true;
+                IsReceiving = true;
 
                 if (!Connected)
                 {
-                    isReceiving = false;
+                    IsReceiving = false;
                     return;
                 }
 
-                this.inArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
-                if (this.NetSocket.ReceiveAsync(this.inArgs))
+                this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
+                if (this.NetSocket.ReceiveAsync(this.InArgs))
                 {
                     return;
                 }
-                OnRecvComplete(this.inArgs);
+                OnRecvComplete(this.InArgs);
             }
             catch (Exception e)
             {
-                isReceiving = false;
+                IsReceiving = false;
                 LogRecord.Log(LogLevel.Warn, $"{this.GetType()}/StartRecv", e);
                 DisConnect();
             }
@@ -200,8 +200,8 @@ namespace H6Game.Base
                 NetSocket.Dispose();
                 NetSocket = null;
 
-                this.inArgs.Dispose();
-                this.outArgs.Dispose();
+                this.InArgs.Dispose();
+                this.OutArgs.Dispose();
             }
             catch { }
         }
@@ -253,7 +253,7 @@ namespace H6Game.Base
 
         private void OnRecvComplete(object o)
         {
-            isReceiving = false;
+            IsReceiving = false;
             if (this.NetSocket == null)
                 return;
 
@@ -316,7 +316,7 @@ namespace H6Game.Base
         {
             this.LastSendTime = TimeUitls.Now();
 
-            isSending = false;
+            IsSending = false;
 
             if (this.NetSocket == null)
                 return;

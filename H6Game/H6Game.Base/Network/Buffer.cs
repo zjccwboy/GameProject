@@ -12,17 +12,17 @@ namespace H6Game.Base
         /// <summary>
         /// 缓冲区块大小
         /// </summary>
-        private int blockSize = 8192;
+        private int BlockSize = 8192;
 
         /// <summary>
         /// 缓冲区队列队列
         /// </summary>
-        private readonly Queue<byte[]> bufferQueue = new Queue<byte[]>();
+        private readonly Queue<byte[]> QueueBuffer = new Queue<byte[]>();
 
         /// <summary>
         /// 用于复用的缓冲区队列
         /// </summary>
-        private readonly Queue<byte[]> bufferCache = new Queue<byte[]>();
+        private readonly Queue<byte[]> CacheBuffer = new Queue<byte[]>();
 
         /// <summary>
         /// 构造函数，默认分配缓冲区块大小8192字节
@@ -30,7 +30,7 @@ namespace H6Game.Base
         public BufferQueue()
         {
             //默认分配一块缓冲区
-            bufferQueue.Enqueue(new byte[blockSize]);
+            QueueBuffer.Enqueue(new byte[BlockSize]);
         }
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace H6Game.Base
         /// <param name="blockSize">指定缓冲区块大小</param>
         public BufferQueue(int blockSize)
         {
-            this.blockSize = blockSize;
+            this.BlockSize = blockSize;
             //默认分配一块缓冲区
-            bufferQueue.Enqueue(new byte[blockSize]);
+            QueueBuffer.Enqueue(new byte[blockSize]);
         }
 
         /// <summary>
@@ -61,15 +61,15 @@ namespace H6Game.Base
         public void UpdateRead(int addValue)
         {
             FirstReadOffset += addValue;
-            if (FirstReadOffset > blockSize)
+            if (FirstReadOffset > BlockSize)
             {
                 throw new ArgumentOutOfRangeException("缓冲区索引超出有效范围.");
             }
 
-            if (FirstReadOffset == blockSize)
+            if (FirstReadOffset == BlockSize)
             {
                 FirstReadOffset = 0;
-                bufferCache.Enqueue(bufferQueue.Dequeue());
+                CacheBuffer.Enqueue(QueueBuffer.Dequeue());
             }
         }
 
@@ -80,21 +80,21 @@ namespace H6Game.Base
         public void UpdateWrite(int addValue)
         {
             LastWriteOffset += addValue;
-            if (LastWriteOffset > blockSize)
+            if (LastWriteOffset > BlockSize)
             {
                 throw new ArgumentOutOfRangeException("缓冲区索引超出有效范围.");
             }
 
-            if (LastWriteOffset == blockSize)
+            if (LastWriteOffset == BlockSize)
             {
                 LastWriteOffset = 0;
-                if (bufferCache.Count > 0)
+                if (CacheBuffer.Count > 0)
                 {
-                    bufferQueue.Enqueue(bufferCache.Dequeue());
+                    QueueBuffer.Enqueue(CacheBuffer.Dequeue());
                 }
                 else
                 {
-                    bufferQueue.Enqueue(new byte[blockSize]);
+                    QueueBuffer.Enqueue(new byte[BlockSize]);
                 }
             }
         }
@@ -107,13 +107,13 @@ namespace H6Game.Base
             get
             {
                 var result = 0;
-                if(bufferQueue.Count == 1)
+                if(QueueBuffer.Count == 1)
                 {
                     result = LastWriteOffset - FirstReadOffset;
                 }
                 else
                 {
-                    result = blockSize - FirstReadOffset;
+                    result = BlockSize - FirstReadOffset;
                 }
 
                 if(result < 0)
@@ -132,7 +132,7 @@ namespace H6Game.Base
         {
             get
             {
-                return blockSize - LastWriteOffset;
+                return BlockSize - LastWriteOffset;
             }
         }
 
@@ -144,17 +144,17 @@ namespace H6Game.Base
             get
             {
                 int size = 0;
-                if (bufferQueue.Count == 0)
+                if (QueueBuffer.Count == 0)
                 {
                     return size;
                 }
-                else if(bufferQueue.Count == 1)
+                else if(QueueBuffer.Count == 1)
                 {
                     size = LastWriteOffset - FirstReadOffset;
                 }
                 else
                 {
-                    size = bufferQueue.Count * blockSize - FirstReadOffset - LastCapacity;
+                    size = QueueBuffer.Count * BlockSize - FirstReadOffset - LastCapacity;
                 }
                 if (size < 0)
                 {
@@ -198,7 +198,7 @@ namespace H6Game.Base
         {
             get
             {
-                return bufferQueue.Last();
+                return QueueBuffer.Last();
             }
         }
 
@@ -209,7 +209,7 @@ namespace H6Game.Base
         {
             get
             {
-                return bufferQueue.Peek();
+                return QueueBuffer.Peek();
             }
         }
 
@@ -220,15 +220,15 @@ namespace H6Game.Base
         {
             FirstReadOffset = 0;
             LastWriteOffset = 0;
-            while (bufferQueue.Count > 1)
+            while (QueueBuffer.Count > 1)
             {
-                bufferQueue.Dequeue();
+                QueueBuffer.Dequeue();
             }
             for(var i = 0; i < First.Length; i++)
             {
                 First[i] = 0;
             }
-            bufferCache.Clear();
+            CacheBuffer.Clear();
         }
     }
 }
