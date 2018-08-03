@@ -27,29 +27,25 @@ namespace H6Game.Base
             }
         }
 
-        public override void Receive(Session session, ANetChannel channel, Packet packet)
+        public override void OnReceive(Session session, ANetChannel channel, Packet packet)
         {
-            this.Session = session;
-            this.Channel = channel;
-            this.Conditions.IsCompress = packet.IsCompress;
-            this.Conditions.IsEncrypt = packet.IsEncrypt;
-            this.Conditions.IsRpc = packet.IsRpc;
-            this.MessageId = packet.MessageId;
-            this.RpcId = packet.RpcId;
             try
             {
                 if (HandlerFactory.TryGetMessage(packet.MessageId, packet.Data, out Message message))
                 {
                     Handler(message, packet.MessageId);
+                    return;
                 }
+
+                throw new Exception("错误的消息分发.");
             }
             catch (Exception e)
             {
                 this.Log(LogLevel.Error, "Receive", $"MessageId:{packet.MessageId}");
                 this.Log(LogLevel.Error, "Receive", e.ToString());
+
+                throw e;
             }
-            this.Session = null;
-            this.Channel = null;
         }
 
         /// <summary>
@@ -92,13 +88,30 @@ namespace H6Game.Base
         /// </summary>
         public virtual Type ResponseType { get; }
 
+        public void Receive(Session session, ANetChannel channel, Packet packet)
+        {
+            this.Session = session;
+            this.Channel = channel;
+            this.Conditions.IsCompress = packet.IsCompress;
+            this.Conditions.IsEncrypt = packet.IsEncrypt;
+            this.Conditions.IsRpc = packet.IsRpc;
+            this.MessageId = packet.MessageId;
+            this.RpcId = packet.RpcId;
+
+            OnReceive(session, channel, packet);
+
+            this.Session = null;
+            this.Channel = null;
+        }
+
+
         /// <summary>
         /// 接收处理接口
         /// </summary>
         /// <param name="session"></param>
         /// <param name="channel"></param>
         /// <param name="packet"></param>
-        public abstract void Receive(Session session, ANetChannel channel, Packet packet);
+        public abstract void OnReceive(Session session, ANetChannel channel, Packet packet);
 
         /// <summary>
         /// 应答消息

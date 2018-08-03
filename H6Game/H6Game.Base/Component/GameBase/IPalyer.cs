@@ -31,13 +31,11 @@ namespace H6Game.Base
         /// <summary>
         /// 登陆
         /// </summary>
-        /// <param name="playerId"></param>
         void Login();
 
         /// <summary>
         /// 下线
         /// </summary>
-        /// <param name="palyerId"></param>
         void Logout();
 
         /// <summary>

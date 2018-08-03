@@ -9,5 +9,6 @@ namespace H6Game.Base
     {
         public SceneType SceneType { get; set; }
         private ConcurrentDictionary<int, BasePlayerComponent> PalyerDictionary = new ConcurrentDictionary<int, BasePlayerComponent>();
+        private ConcurrentDictionary<int, BaseSceneComponent> SceneDictionary = new ConcurrentDictionary<int, BaseSceneComponent>();
     }
 }

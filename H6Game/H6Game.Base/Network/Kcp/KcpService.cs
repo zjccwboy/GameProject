@@ -9,10 +9,10 @@ namespace H6Game.Base
     /// </summary>
     public class KcpService : ANetService
     {
-        private readonly PacketParser connectParser = new PacketParser(7);
-        private IPEndPoint endPoint;
-        private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
-        private readonly byte[] recvBytes = new byte[1400];
+        private readonly PacketParser ConnectParser = new PacketParser(7);
+        private IPEndPoint EndPoint;
+        private EndPoint ReuseEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        private readonly byte[] ReuseRecvBytes = new byte[1400];
 
         /// <summary>
         /// 构造函数 
@@ -22,7 +22,7 @@ namespace H6Game.Base
         public KcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
         {
             this.ServiceType = serviceType;
-            this.endPoint = endPoint;
+            this.EndPoint = endPoint;
         }
         
         /// <summary>
@@ -43,7 +43,7 @@ namespace H6Game.Base
                 }
                 try
                 {
-                    Acceptor.Bind(this.endPoint);
+                    Acceptor.Bind(this.EndPoint);
                 }
                 catch(Exception e)
                 {
@@ -63,7 +63,7 @@ namespace H6Game.Base
             if(this.Acceptor == null)
             {
                 this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                this.ClientChannel = new KcpChannel(this.Acceptor, this.endPoint, this, 1000);
+                this.ClientChannel = new KcpChannel(this.Acceptor, this.EndPoint, this, 1000);
                 this.ClientChannel.StartConnecting();
             }
             return this.ClientChannel;
@@ -103,7 +103,7 @@ namespace H6Game.Base
                     return;
                 }
 
-                recvCount = this.Acceptor.ReceiveFrom(recvBytes, SocketFlags.None, ref this.ipEndPoint);
+                recvCount = this.Acceptor.ReceiveFrom(ReuseRecvBytes, SocketFlags.None, ref this.ReuseEndPoint);
             }
             catch (Exception e)
             {
@@ -114,34 +114,34 @@ namespace H6Game.Base
             if (recvCount == 5 || recvCount == 9)
             {
                 //握手处理
-                connectParser.WriteBuffer(recvBytes, 0, recvCount);
+                ConnectParser.WriteBuffer(ReuseRecvBytes, 0, recvCount);
                 Packet packet = new Packet();
-                if (!connectParser.TryGetPacket(ref packet))
+                if (!ConnectParser.TryGetPacket(ref packet))
                 {
                     this.Log(LogLevel.Error, "StartRecv", $"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.");
                     //丢弃非法数据包
-                    connectParser.Buffer.Flush();
+                    ConnectParser.Buffer.Flush();
                     return;
                 }
                 if (packet.KcpProtocal == KcpNetProtocal.SYN)
                 {
-                    HandleSYN(this.Acceptor, this.ipEndPoint as IPEndPoint);
+                    HandleSYN(this.Acceptor, this.ReuseEndPoint as IPEndPoint);
                 }
                 else if (packet.KcpProtocal == KcpNetProtocal.ACK)
                 {
-                    HandleACK(packet, this.Acceptor, this.ipEndPoint as IPEndPoint);
+                    HandleACK(packet, this.Acceptor, this.ReuseEndPoint as IPEndPoint);
                 }
                 else if (packet.KcpProtocal == KcpNetProtocal.FIN)
                 {
-                    HandleFIN(packet, this.ipEndPoint as IPEndPoint);
+                    HandleFIN(packet, this.ReuseEndPoint as IPEndPoint);
                 }
             }
             else
             {
-                uint connectConv = BitConverter.ToUInt32(recvBytes, 0);
+                uint connectConv = BitConverter.ToUInt32(ReuseRecvBytes, 0);
                 if (this.Channels.TryGetValue(connectConv, out ANetChannel channel))
                 {
-                    channel.HandleRecv(recvBytes, 0, recvCount);
+                    channel.HandleRecv(ReuseRecvBytes, 0, recvCount);
                     channel.StartRecv();
                 }
                 else
