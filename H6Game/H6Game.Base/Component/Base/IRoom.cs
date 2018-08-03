@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component.Base
 {
-    public class PlayerComponent : BaseComponent
+    public interface IRoom
     {
 
     }

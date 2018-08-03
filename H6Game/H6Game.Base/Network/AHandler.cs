@@ -14,37 +14,12 @@ namespace H6Game.Base
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
     /// <typeparam name="Response"></typeparam>
-    public abstract class AHandler<Message> : IHandler<Message>
+    public abstract class AHandler<Message> : AHandler, IHandler<Message>
     {
-        /// <summary>
-        /// 网络会话管理对象
-        /// </summary>
-        protected Session Session { get; private set; }
-
-        /// <summary>
-        /// 网络连接管道
-        /// </summary>
-        protected ANetChannel Channel { get; private set; }
-
-        /// <summary>
-        /// 返回的当前消息条件
-        /// </summary>
-        protected Condition Conditions { get;} = new Condition();
-
-        /// <summary>
-        /// RpcId
-        /// </summary>
-        protected int RpcId { get; private set; }
-
-        /// <summary>
-        /// 消息Id
-        /// </summary>
-        protected int MessageId { get; private set; }
-
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public Type ResponseType
+        public override Type ResponseType
         {
             get
             {
@@ -52,13 +27,7 @@ namespace H6Game.Base
             }
         }
 
-        /// <summary>
-        /// 接收处理接口
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="channel"></param>
-        /// <param name="packet"></param>
-        public virtual void Receive(Session session, ANetChannel channel, Packet packet)
+        public override void Receive(Session session, ANetChannel channel, Packet packet)
         {
             this.Session = session;
             this.Channel = channel;
@@ -74,7 +43,7 @@ namespace H6Game.Base
                     Handler(message, packet.MessageId);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", $"MessageId:{packet.MessageId}");
                 LogRecord.Log(LogLevel.Error, $"{this.GetType()}/Receive", e.ToString());
@@ -82,6 +51,54 @@ namespace H6Game.Base
             this.Session = null;
             this.Channel = null;
         }
+
+        /// <summary>
+        /// 消息分发接口
+        /// </summary>
+        /// <param name="response"></param>
+        /// <param name="messageId"></param>
+        protected abstract void Handler(Message message, int messageId);
+    }
+
+    public abstract class AHandler : IHandler
+    {
+        /// <summary>
+        /// 网络会话管理对象
+        /// </summary>
+        protected Session Session { get; set; }
+
+        /// <summary>
+        /// 网络连接管道
+        /// </summary>
+        protected ANetChannel Channel { get; set; }
+
+        /// <summary>
+        /// 返回的当前消息条件
+        /// </summary>
+        protected Condition Conditions { get; } = new Condition();
+
+        /// <summary>
+        /// RpcId
+        /// </summary>
+        protected int RpcId { get; set; }
+
+        /// <summary>
+        /// 消息Id
+        /// </summary>
+        protected int MessageId { get; set; }
+
+        /// <summary>
+        /// 返回数据约定类型
+        /// </summary>
+        public virtual Type ResponseType { get; }
+
+        /// <summary>
+        /// 接收处理接口
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="channel"></param>
+        /// <param name="packet"></param>
+        public abstract void Receive(Session session, ANetChannel channel, Packet packet);
 
         /// <summary>
         /// 应答消息
@@ -127,10 +144,10 @@ namespace H6Game.Base
                 Data = bytes,
             };
 
-            this.Session.Subscribe(this.Channel, send , (p)=> 
+            this.Session.Subscribe(this.Channel, send, (p) =>
             {
                 var response = p.Data.ProtoToObject<T>();
-                if(response == null)
+                if (response == null)
                 {
                     tcs.TrySetResult(default);
                     return;
@@ -139,12 +156,5 @@ namespace H6Game.Base
             });
             return tcs.Task;
         }
-
-        /// <summary>
-        /// 消息分发接口
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="messageId"></param>
-        protected abstract void Handler(Message message, int messageId);
     }
 }

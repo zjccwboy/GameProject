@@ -4,8 +4,11 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class BaseGame : BaseComponent
+    public enum AgentLevel
     {
-
+        None,
+        Level1,
+        Level2,
+        Level3,
     }
 }

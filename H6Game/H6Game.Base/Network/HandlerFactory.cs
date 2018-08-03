@@ -33,14 +33,14 @@ namespace H6Game.Base
         {
             if (!MeesageCmdDictionary.TryGetValue(messageCmd, out Type cmdType))
             {
-                response = default(T);
+                response = default;
                 return false;
             }
 
             var type = typeof(T);
             if (cmdType != type)
             {
-                response = default(T);
+                response = default;
                 return false;
             }
 

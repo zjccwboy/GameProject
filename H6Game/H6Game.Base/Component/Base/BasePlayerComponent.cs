@@ -5,10 +5,10 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class BasePlayer : BaseComponent
+    public class BasePlayerComponent : BaseComponent
     {
-        private readonly ConcurrentDictionary<int, BaseScene> SceneDictionary = new ConcurrentDictionary<int, BaseScene>();
-        
+        private readonly ConcurrentDictionary<int, BaseSceneComponent> SceneDictionary = new ConcurrentDictionary<int, BaseSceneComponent>();
+
         public int SceneId { get; set; }
         public int RoomId { get; set; }
         public int PalyerId { get; set; }
