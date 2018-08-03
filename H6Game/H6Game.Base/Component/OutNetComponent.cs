@@ -16,6 +16,10 @@ namespace H6Game.Base
         public OutNetComponent()
         {
             this.LoginServerEndPoint = GetLoginServerEndPoint();
+        }
+
+        public override void Start()
+        {
             this.Connecting(this.LoginServerEndPoint);
         }
 

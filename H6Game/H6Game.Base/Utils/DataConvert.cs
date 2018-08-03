@@ -95,7 +95,7 @@ namespace H6Game.Base
         /// <returns>泛型对象,class约束</returns>
         public static T ProtoToObject<T>(this byte[] bytes)
         {
-            if (bytes == null)
+            if (bytes == null || bytes.Length == 0)
                 return default;
 
             var type = typeof(T);
