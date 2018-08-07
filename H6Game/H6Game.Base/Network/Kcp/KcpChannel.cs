@@ -115,6 +115,7 @@ namespace H6Game.Base
                     return;
                 }
 
+                this.RecvParser = this.RecvParser ?? new PacketParser(1400);
                 RecvParser.WriteBuffer(CacheBytes, 0, count);
 
                 while (true)

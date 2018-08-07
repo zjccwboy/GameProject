@@ -132,6 +132,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send<T>(ANetChannel channel, T data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -149,6 +150,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, string data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -166,6 +168,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, int data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -183,6 +186,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, uint data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -200,6 +204,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, bool data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -217,6 +222,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, long data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -234,6 +240,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, ulong data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -251,6 +258,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, float data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -268,6 +276,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, double data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -285,6 +294,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, decimal data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -302,6 +312,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, byte data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -319,6 +330,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, sbyte data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -336,6 +348,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, char data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -353,6 +366,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, short data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -370,6 +384,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Send(ANetChannel channel, ushort data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             packet.WriteTo(data);
@@ -401,6 +416,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -425,6 +441,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -449,6 +466,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -473,6 +491,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -496,6 +515,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -519,6 +539,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -542,6 +563,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -565,6 +587,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -588,6 +611,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -611,6 +635,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -634,6 +659,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -657,6 +683,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -680,6 +707,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -703,6 +731,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -726,6 +755,7 @@ namespace H6Game.Base
             if (!channel.Connected)
                 return;
 
+            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             var rpcId = channel.RpcId;
             SetHead(packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -960,8 +990,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -981,8 +1010,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1002,8 +1030,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1023,8 +1050,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1044,8 +1070,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1065,8 +1090,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1086,8 +1110,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1107,8 +1130,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1128,8 +1150,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1149,8 +1170,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1170,8 +1190,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1191,8 +1210,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1212,8 +1230,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1233,8 +1250,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 
@@ -1254,8 +1270,7 @@ namespace H6Game.Base
         {
             foreach (var channel in channels)
             {
-                var packet = channel.SendParser.Packet;
-                Send(channel, packet, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+                Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
             }
         }
 

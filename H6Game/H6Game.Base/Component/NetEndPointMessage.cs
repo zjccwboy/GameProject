@@ -12,7 +12,6 @@ namespace H6Game.Base
         [ProtoMember(2)]
         public string IP { get; set; }
 
-        //重载==运算符
         public static bool operator ==(NetEndPointMessage left, NetEndPointMessage right)
         {
             if ((right as object) == null)
@@ -21,7 +20,6 @@ namespace H6Game.Base
             return left.GetHashCode() == right.GetHashCode();
         }
 
-        //重载!=运算符
         public static bool operator !=(NetEndPointMessage left, NetEndPointMessage right)
         {
             if ((right as object) == null)

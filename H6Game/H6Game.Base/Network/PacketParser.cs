@@ -5,7 +5,7 @@ using System.Net;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 数据包体结构
+    /// 数据包
     /// </summary>
     public class Packet : IDisposable
     {
@@ -57,7 +57,7 @@ namespace H6Game.Base
         /// <summary>
         /// BodyStream
         /// </summary>
-        public MemoryStream BodyStream { get; } = new MemoryStream(8192);
+        public MemoryStream BodyStream { get; }
 
         /// <summary>
         /// 解包缓冲区
@@ -70,6 +70,7 @@ namespace H6Game.Base
         /// <param name="parser"></param>
         public Packet(PacketParser parser)
         {
+            this.BodyStream = new MemoryStream(parser.BlockSize);
             this.Parser = parser;
         }
 
@@ -91,9 +92,6 @@ namespace H6Game.Base
             MessageId = 0;
             RpcId = 0;
             ActorId = 0;
-
-            for(var i = 0; i < HeadBytes.Length; i++)
-                HeadBytes[i] = 0;
 
             this.BodyStream.Seek(0, SeekOrigin.Begin);
             this.BodyStream.SetLength(0);
@@ -213,6 +211,7 @@ namespace H6Game.Base
         /// <param name="blockSize">指定缓冲区块大小</param>
         public PacketParser(int blockSize)
         {
+            this.BlockSize = blockSize;
             Buffer = new BufferQueue(blockSize);
             Packet = new Packet(this);
         }
@@ -222,6 +221,7 @@ namespace H6Game.Base
         /// </summary>
         public BufferQueue Buffer { get; private set; }
         public Packet Packet { get; private set; }
+        public int BlockSize { get;} = 8192;
 
         private int readLength = 0;
         private int packetSize = 0;

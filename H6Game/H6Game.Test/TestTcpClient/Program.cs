@@ -5,14 +5,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestTcpClient
 {
+
     class Program
     {
+
         static void Main(string[] args)
         {
             var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8989);
@@ -26,7 +29,6 @@ namespace TestTcpClient
                 Thread.Sleep(1);
             }
         }
-
 
         static Stopwatch stopwatch = new Stopwatch();
         static int sendCount = 0;
@@ -60,12 +62,9 @@ namespace TestTcpClient
                     var data = packet.Read<string>();
                     if (data != send)
                     {
-                        Console.WriteLine($"解包出错:{data}");
-                        //Console.Read();
-                    }
+                        Console.WriteLine($"解包出错:{data}");                    }
                     if (recvCount % 1000 == 0)
                     {
-                        //Console.WriteLine($"当前线程ID:{Thread.CurrentThread.ManagedThreadId}");
                         LogRecord.Log(LogLevel.Info, "数据响应测试", $"响应:{1000}个包耗时{stopwatch.ElapsedMilliseconds}毫秒");
                         Thread.Sleep(1000);
                         stopwatch.Restart();

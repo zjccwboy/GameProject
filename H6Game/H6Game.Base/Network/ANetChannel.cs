@@ -80,17 +80,17 @@ namespace H6Game.Base
         /// <summary>
         /// 接收包缓冲区解析器
         /// </summary>
-        public PacketParser RecvParser { get; } = new PacketParser();
+        public PacketParser RecvParser { get; protected set; }
 
         /// <summary>
         /// 发送包缓冲区解析器
         /// </summary>
-        public PacketParser SendParser { get; } = new PacketParser();
+        public PacketParser SendParser { get; set; }
 
         /// <summary>
         /// 网络服务类
         /// </summary>
-        public ANetService NetService { get; private set; }
+        public ANetService NetService { get; set; }
 
         /// <summary>
         /// 远程IP端口

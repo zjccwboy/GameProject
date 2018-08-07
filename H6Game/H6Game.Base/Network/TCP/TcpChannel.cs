@@ -102,6 +102,9 @@ namespace H6Game.Base
             if (IsSending)
                 return;
 
+            if (this.SendParser == null)
+                return;
+
             SendData();
         }
 
@@ -154,6 +157,8 @@ namespace H6Game.Base
                     IsReceiving = false;
                     return;
                 }
+
+                this.RecvParser = this.RecvParser ?? new PacketParser();
 
                 this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
                 if (this.NetSocket.ReceiveAsync(this.InArgs))

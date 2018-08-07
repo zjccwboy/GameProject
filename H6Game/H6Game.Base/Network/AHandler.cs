@@ -68,6 +68,9 @@ namespace H6Game.Base
         /// </summary>
         protected ANetChannel Channel { get; set; }
 
+        /// <summary>
+        /// 数据包
+        /// </summary>
         protected Packet Packet { get; set; }
 
         /// <summary>
