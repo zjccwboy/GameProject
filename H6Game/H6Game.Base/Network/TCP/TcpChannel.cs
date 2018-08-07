@@ -102,12 +102,6 @@ namespace H6Game.Base
             if (IsSending)
                 return;
 
-            while (SendQueue.Count > 0)
-            {
-                var packet = SendQueue.Dequeue();
-                SendParser.WriteBuffer(packet);
-            }
-
             SendData();
         }
 
@@ -188,7 +182,8 @@ namespace H6Game.Base
                 if (NetSocket == null)
                     return;
 
-                OnDisConnect?.Invoke(this);
+                //OnDisConnect?.Invoke(this);
+                ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, this.OutArgs);
             }
             catch { }
 
@@ -276,8 +271,8 @@ namespace H6Game.Base
             {
                 try
                 {
-                    var packet = new Packet();
-                    if (!RecvParser.TryGetPacket(ref packet))
+                    var packet = this.RecvParser.Packet;
+                    if (!RecvParser.TryRead())
                         break;
 
                     LastRecvTime = TimeUitls.Now();
@@ -300,6 +295,9 @@ namespace H6Game.Base
                             OnReceive?.Invoke(packet);
                         }
                     }
+
+                    packet.BodyStream.SetLength(0);
+                    packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 }
                 catch (Exception ex)
                 {

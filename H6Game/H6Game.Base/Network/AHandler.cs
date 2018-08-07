@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using H6Game.Base;
 
 namespace H6Game.Base
 {
@@ -27,13 +28,14 @@ namespace H6Game.Base
             }
         }
 
-        public override void OnReceive(Session session, ANetChannel channel, Packet packet)
+        public override void OnReceive(Session session, ANetChannel channel)
         {
             try
             {
-                if (HandlerFactory.TryGetMessage(packet.MessageId, packet.Data, out Message message))
+                var packet = channel.RecvParser.Packet;
+                if (packet.TryGetMessage(out Message message))
                 {
-                    Handler(message, packet.MessageId);
+                    Handler(message);
                     return;
                 }
 
@@ -41,9 +43,8 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Error, "Receive", $"MessageId:{packet.MessageId}");
+                this.Log(LogLevel.Error, "Receive", $"Packet:{this.Packet.ToJson()}");
                 this.Log(LogLevel.Error, "Receive", e.ToString());
-
                 throw e;
             }
         }
@@ -52,8 +53,7 @@ namespace H6Game.Base
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        /// <param name="messageId"></param>
-        protected abstract void Handler(Message message, int messageId);
+        protected abstract void Handler(Message message);
     }
 
     public abstract class AHandler : IHandler
@@ -68,37 +68,21 @@ namespace H6Game.Base
         /// </summary>
         protected ANetChannel Channel { get; set; }
 
-        /// <summary>
-        /// 返回的当前消息条件
-        /// </summary>
-        protected Condition Conditions { get; } = new Condition();
-
-        /// <summary>
-        /// RpcId
-        /// </summary>
-        protected int RpcId { get; set; }
-
-        /// <summary>
-        /// 消息Id
-        /// </summary>
-        protected int MessageId { get; set; }
+        protected Packet Packet { get; set; }
 
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
         public virtual Type ResponseType { get; }
 
-        public void Receive(Session session, ANetChannel channel, Packet packet)
+        public void Receive(Session session, ANetChannel channel)
         {
+            var packet = channel.RecvParser.Packet;
             this.Session = session;
             this.Channel = channel;
-            this.Conditions.IsCompress = packet.IsCompress;
-            this.Conditions.IsEncrypt = packet.IsEncrypt;
-            this.Conditions.IsRpc = packet.IsRpc;
-            this.MessageId = packet.MessageId;
-            this.RpcId = packet.RpcId;
+            this.Packet = channel.RecvParser.Packet;
 
-            OnReceive(session, channel, packet);
+            OnReceive(session, channel);
 
             this.Session = null;
             this.Channel = null;
@@ -110,64 +94,6 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="session"></param>
         /// <param name="channel"></param>
-        /// <param name="packet"></param>
-        public abstract void OnReceive(Session session, ANetChannel channel, Packet packet);
-
-        /// <summary>
-        /// 应答消息
-        /// </summary>
-        /// <param name="bytes"></param>
-        protected virtual void CallBack(byte[] bytes)
-        {
-            Send(bytes, this.MessageId, this.RpcId, this.Conditions.IsCompress, this.Conditions.IsEncrypt);
-        }
-
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="rpcId"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        protected virtual void Send(byte[] bytes, int messageCmd, int rpcId = 0, bool isCompress = false, bool isEncrypt = false)
-        {
-            this.Session.Notice(this.Channel, new Packet
-            {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                RpcId = rpcId,
-                MessageId = messageCmd,
-                Data = bytes,
-            });
-        }
-
-        /// <summary>
-        /// RPC请求
-        /// </summary>
-        /// <returns></returns>
-        protected virtual Task<T> CallMessage<T>(byte[] bytes, int messageCmd, bool isCompress = false, bool isEncrypt = false)
-        {
-            var tcs = new TaskCompletionSource<T>();
-            var send = new Packet
-            {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-
-            this.Session.Subscribe(this.Channel, send, (p) =>
-            {
-                var response = p.Data.ProtoToObject<T>();
-                if (response == null)
-                {
-                    tcs.TrySetResult(default);
-                    return;
-                }
-                tcs.TrySetResult(response);
-            });
-            return tcs.Task;
-        }
+        public abstract void OnReceive(Session session, ANetChannel channel);
     }
 }

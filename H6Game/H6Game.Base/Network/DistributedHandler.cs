@@ -7,7 +7,7 @@ namespace H6Game.Base.Base.Message
     [HandlerCMD(MessageCMD.AddInServer)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
     {
-        protected override void Handler(NetEndPointMessage message, int messageId)
+        protected override void Handler(NetEndPointMessage message)
         {          
             var inNetComponent = SinglePool.Get<InNetComponent>();
 
@@ -24,23 +24,17 @@ namespace H6Game.Base.Base.Message
 
         private void BroadcastConnection(NetEndPointMessage message, int messageCmd)
         {
-            var bytes = message.ToBytes();
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.Session.Broadcast(packet);
+            this.Session.Broadcast(message, messageCmd);
         }
     }
 
     [HandlerCMD(MessageCMD.GetOutServer)]
     public class OutNetMessageSync : AHandler<string>
     {
-        protected override void Handler(string message, int messageId)
+        protected override void Handler(string message)
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
-            this.CallBack(inNetComponent.OutNetMessage.ToBytes());
+            this.Session.Send(this.Channel, message, this.Packet.MessageId, this.Packet.RpcId);
             this.Log(LogLevel.Debug, "{OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }

@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public class KcpService : ANetService
     {
-        private readonly PacketParser ConnectParser = new PacketParser(7);
+        private readonly PacketParser ConnectParser = new PacketParser(17);
         private IPEndPoint EndPoint;
         private EndPoint ReuseEndPoint = new IPEndPoint(IPAddress.Any, 0);
         private readonly byte[] ReuseRecvBytes = new byte[1400];
@@ -113,8 +113,8 @@ namespace H6Game.Base
             {
                 //握手处理
                 ConnectParser.WriteBuffer(ReuseRecvBytes, 0, recvCount);
-                Packet packet = new Packet();
-                if (!ConnectParser.TryGetPacket(ref packet))
+                var packet = this.ConnectParser.Packet;
+                if (!ConnectParser.TryRead())
                 {
                     this.Log(LogLevel.Error, "StartRecv", $"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.");
                     //丢弃非法数据包
@@ -142,7 +142,7 @@ namespace H6Game.Base
                     this.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
                     return;
                 }
-                channel.HandleRecv(ReuseRecvBytes, 0, recvCount);
+                (channel as KcpChannel).HandleRecv(ReuseRecvBytes, 0, recvCount);
                 channel.StartRecv();
             }
         }
@@ -163,7 +163,7 @@ namespace H6Game.Base
             channel.InitKcp();
             channel.OnConnect = HandleAccept;
             channel.OnConnect?.Invoke(channel);
-            ConnectSender.SendACK(this.Acceptor, channel.RemoteEndPoint, conv);
+            ConnectSender.SendACK(channel, this.Acceptor, channel.RemoteEndPoint, conv);
         }
 
         /// <summary>

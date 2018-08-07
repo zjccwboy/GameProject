@@ -19,7 +19,7 @@ namespace H6Game.Base
             try
             {
                 var handler = HandlerFactory.Get(packet.MessageId);
-                handler.Receive(this.Session, this.Channel, packet);
+                handler.Receive(this.Session, this.Channel);
             }
             catch (Exception e)
             {

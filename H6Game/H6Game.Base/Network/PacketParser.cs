@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Net;
 
 namespace H6Game.Base
@@ -7,12 +7,12 @@ namespace H6Game.Base
     /// <summary>
     /// 数据包体结构
     /// </summary>
-    public struct Packet
+    public class Packet : IDisposable
     {
         /// <summary>
         /// Rpc请求标志
         /// </summary>
-        internal bool IsRpc;
+        internal bool IsRpc { get { return RpcId > 0; } }
 
         /// <summary>
         /// 心跳标志
@@ -35,9 +35,9 @@ namespace H6Game.Base
         public byte KcpProtocal;
 
         /// <summary>
-        /// 是否是Message
+        /// MessageId
         /// </summary>
-        internal bool IsMessage;
+        public int MessageId;
 
         /// <summary>
         /// Rpc请求标识
@@ -45,92 +45,120 @@ namespace H6Game.Base
         public int RpcId;
 
         /// <summary>
-        /// MessageId
+        /// Actor消息
         /// </summary>
-        public int MessageId;
+        public int ActorId;
 
         /// <summary>
-        /// 数据包
+        /// 包头字节数组
         /// </summary>
-        public byte[] Data;
+        public byte[] HeadBytes = new byte[PacketParser.HeadSize];
+
+        /// <summary>
+        /// BodyStream
+        /// </summary>
+        public MemoryStream BodyStream { get; } = new MemoryStream(8192);
+
+        /// <summary>
+        /// 解包缓冲区
+        /// </summary>
+        private PacketParser Parser { get; set; }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="parser"></param>
+        public Packet(PacketParser parser)
+        {
+            this.Parser = parser;
+        }
+
+        public void WriteBuffer()
+        {
+            this.Parser.WriteBuffer(this);
+            this.Flush();
+        }
+
+        /// <summary>
+        /// 重置数据包
+        /// </summary>
+        internal void Flush()
+        {
+            IsEncrypt = false;
+            IsCompress = false;
+            IsHeartbeat = false;
+            KcpProtocal = 0;
+            MessageId = 0;
+            RpcId = 0;
+            ActorId = 0;
+
+            for(var i = 0; i < HeadBytes.Length; i++)
+                HeadBytes[i] = 0;
+
+            this.BodyStream.Seek(0, SeekOrigin.Begin);
+            this.BodyStream.SetLength(0);
+        }
 
         /// <summary>
         /// 获取包头的字节数组
         /// </summary>
         /// <returns></returns>
-        public byte[] GetHeadBytes()
+        internal byte[] GetHeadBytes(int bodySize)
         {
-            var bodySize = 0;
-            if (Data != null)
-            {
-                bodySize = Data.Length;
-                if (Data.Length > PacketParser.BodyMaxSize)
-                {
-                    throw new ArgumentOutOfRangeException("发送数据超过最大长度限制.");
-                }
-            }
-            IsMessage = MessageId > 0;
-            IsRpc = RpcId > 0;
-            int headSize = IsRpc ? PacketParser.HeadMinSize + PacketParser.RpcFlagSize : PacketParser.HeadMinSize;
-            headSize = IsMessage ? headSize + PacketParser.MessageIdFlagSize : headSize;
-            int packetSize = headSize + bodySize;
-            var sizeBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(packetSize)));
-            var bytes = new byte[headSize];
-            bytes[0] = sizeBytes[0];
-            bytes[1] = sizeBytes[1];
-            bytes[2] = sizeBytes[2];
-            bytes[3] = sizeBytes[3];
-            if (IsRpc)
-            {
-                bytes[4] |= 1;
-            }
+            //写包大小
+            int PacketSize = PacketParser.HeadSize + bodySize;
+            var bodySizeBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(PacketSize)));
+            HeadBytes[0] = bodySizeBytes[0];
+            HeadBytes[1] = bodySizeBytes[1];
+            HeadBytes[2] = bodySizeBytes[2];
+            HeadBytes[3] = bodySizeBytes[3];
+
+            //写标志位
             if (IsHeartbeat)
             {
-                bytes[4] |= 1 << 1;
+                HeadBytes[4] |= 1;
             }
             if (IsCompress)
             {
-                bytes[4] |= 1 << 2;
+                HeadBytes[4] |= 1 << 1;
             }
             if (IsEncrypt)
             {
-                bytes[4] |= 1 << 3;
+                HeadBytes[4] |= 1 << 2;
             }
             if (KcpProtocal > 0)
             {
-                bytes[4] |= (byte)(KcpProtocal << 4);
+                HeadBytes[4] |= (byte)(KcpProtocal << 3);
             }
-            if (IsMessage)
-            {
-                bytes[4] |= 1 << 6;
-            }
-            if (IsRpc)
-            {
-                var rpcBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(RpcId)));
-                bytes[5] = rpcBytes[0];
-                bytes[6] = rpcBytes[1];
-                bytes[7] = rpcBytes[2];
-                bytes[8] = rpcBytes[3];
-            }
-            if (IsMessage)
-            {
-                var snBytes = BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder(Convert.ToInt32(MessageId)));
-                if (IsRpc)
-                {
-                    bytes[9] = snBytes[0];
-                    bytes[10] = snBytes[1];
-                    bytes[11] = snBytes[2];
-                    bytes[12] = snBytes[3];
-                }
-                else
-                {
-                    bytes[5] = snBytes[0];
-                    bytes[6] = snBytes[1];
-                    bytes[7] = snBytes[2];
-                    bytes[8] = snBytes[3];
-                }
-            }
-            return bytes;
+
+            //写MessageId
+            var rpcBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(MessageId)));
+            HeadBytes[5] = rpcBytes[0];
+            HeadBytes[6] = rpcBytes[1];
+            HeadBytes[7] = rpcBytes[2];
+            HeadBytes[8] = rpcBytes[3];
+
+            //写RpcId
+            var snBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(RpcId)));
+            HeadBytes[9] = snBytes[0];
+            HeadBytes[10] = snBytes[1];
+            HeadBytes[11] = snBytes[2];
+            HeadBytes[12] = snBytes[3];
+
+            //写ActorId
+            var actorBytes = BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Convert.ToInt32(ActorId)));
+            HeadBytes[13] = actorBytes[0];
+            HeadBytes[14] = actorBytes[1];
+            HeadBytes[15] = actorBytes[2];
+            HeadBytes[16] = actorBytes[3];
+
+            return HeadBytes;
+        }
+
+        public void Dispose()
+        {            
+            this.BodyStream.Close();
+            this.BodyStream.Dispose();
         }
     }
 
@@ -145,14 +173,19 @@ namespace H6Game.Base
         Size,
 
         /// <summary>
-        /// RPC消息
+        /// 消息Msg字段
+        /// </summary>
+        Msg,
+
+        /// <summary>
+        /// RPC消息字段
         /// </summary>
         Rpc,
 
         /// <summary>
-        /// 消息Msg
+        /// ActorId消息字段
         /// </summary>
-        Msg,
+        Actor,
 
         /// <summary>
         /// 消息包体
@@ -171,6 +204,7 @@ namespace H6Game.Base
         public PacketParser()
         {
             Buffer = new BufferQueue();
+            Packet = new Packet(this);
         }
 
         /// <summary>
@@ -180,27 +214,17 @@ namespace H6Game.Base
         public PacketParser(int blockSize)
         {
             Buffer = new BufferQueue(blockSize);
+            Packet = new Packet(this);
         }
 
         /// <summary>
         /// 缓冲区对象
         /// </summary>
-        internal readonly BufferQueue Buffer;
-
-        private byte[] bodyBytes = new byte[0];
-        private byte[] headBytes = new byte[HeadMaxSize];
-        private int rpcId;
-        private int messageId;
-        private bool isRpc;
-        private bool isCompress;
-        private bool isHeartbeat;
-        private bool isEncrypt;
-        private byte kcpProtocal;
-        private bool isMessage;
+        public BufferQueue Buffer { get; private set; }
+        public Packet Packet { get; private set; }
 
         private int readLength = 0;
         private int packetSize = 0;
-        private int headSize = 0;
         private ParseState state;
         private bool isOk;
         private bool finish;
@@ -222,17 +246,13 @@ namespace H6Game.Base
         /// </summary>
         public static readonly int MessageIdFlagSize = sizeof(int);
         /// <summary>
-        /// 最小包头字节数
+        /// Actor消息Id字节数，4个字节
         /// </summary>
-        public static readonly int HeadMinSize = PacketFlagSize + BitFlagSize;
+        public static readonly int ActorIdFlagSize = sizeof(int);
         /// <summary>
-        /// 最大包头字节数
+        /// 包头大小
         /// </summary>
-        public static readonly int HeadMaxSize = HeadMinSize + RpcFlagSize + MessageIdFlagSize;
-        /// <summary>
-        /// 表示允许发送的最大单个数据包字节数
-        /// </summary>
-        public static readonly int BodyMaxSize = int.MaxValue - HeadMaxSize;
+        public static readonly int HeadSize = PacketFlagSize + BitFlagSize + RpcFlagSize + MessageIdFlagSize + ActorIdFlagSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -243,135 +263,137 @@ namespace H6Game.Base
             isOk = false;
             while (true)
             {
-                if (tryCount > 4)
+                if (tryCount > 5)
                     throw new Exception("解包错误，数据包非法.");
 
                 tryCount++;
                 switch (state)
                 {
                     case ParseState.Size:
-                        if (readLength == 0 && Buffer.DataSize < PacketFlagSize)
                         {
-                            finish = true;
-                            return;
-                        }
-                        if (Buffer.DataSize >= PacketFlagSize && readLength == 0)//读取包长度
-                        {
+                            if (readLength == 0 && Buffer.DataSize < HeadSize)
+                            {
+                                finish = true;
+                                return;
+                            }
+
                             if (Buffer.FirstDataSize >= PacketFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, 0, PacketFlagSize);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, PacketFlagSize);
                                 Buffer.UpdateRead(PacketFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, 0, count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, count);
                                 Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, count, PacketFlagSize - count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, PacketFlagSize - count);
                                 Buffer.UpdateRead(PacketFlagSize - count);
                             }
                             readLength += PacketFlagSize;
-                            packetSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, 0));
+                            packetSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, 0));
 
-                        }
-                        if (Buffer.DataSize >= BitFlagSize && readLength == PacketFlagSize)//读取标志位
-                        {
-                            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, PacketFlagSize, BitFlagSize);
+                            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, PacketFlagSize, BitFlagSize);
                             Buffer.UpdateRead(BitFlagSize);
                             readLength += BitFlagSize;
-                            SetBitFlag(headBytes[PacketFlagSize]);
-                            bodyBytes = new byte[packetSize - headSize];
-                            if (isRpc)
-                            {
-                                state = ParseState.Rpc;
-                            }
-                            else
-                            {
-                                if (isMessage)
-                                {
-                                    state = ParseState.Msg;
-                                }
-                                else
-                                {
-                                    state = ParseState.Body;
-                                }
-                            }
-                        }
-                        break;
-                    case ParseState.Rpc:
-                        if (Buffer.DataSize >= RpcFlagSize && readLength == HeadMinSize)//读取Rpc标志位
-                        {
-                            if (Buffer.FirstDataSize >= RpcFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, HeadMinSize, RpcFlagSize);
-                                Buffer.UpdateRead(RpcFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, HeadMinSize, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, HeadMinSize + count, RpcFlagSize - count);
-                                Buffer.UpdateRead(RpcFlagSize - count);
-                            }
-                            readLength += RpcFlagSize;
-                            rpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, HeadMinSize));
-                            if (isMessage)
-                            {
-                                state = ParseState.Msg;
-                            }
-                            else
-                            {
-                                state = ParseState.Body;
-                            }
-                        }
-                        break;
+                            SetBitFlag(Packet.HeadBytes[PacketFlagSize]);
+                            state = ParseState.Msg;
+                            break;
+                        }                        
                     case ParseState.Msg:
-                        var needSize = isRpc ? HeadMinSize + RpcFlagSize : HeadMinSize;
-                        if (Buffer.DataSize >= MessageIdFlagSize && readLength == needSize)
                         {
+                            var offset = PacketFlagSize + BitFlagSize;
                             if (Buffer.FirstDataSize >= MessageIdFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize, MessageIdFlagSize);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MessageIdFlagSize);
                                 Buffer.UpdateRead(MessageIdFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize, count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                                 Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, headBytes, needSize + count, MessageIdFlagSize - count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MessageIdFlagSize - count);
                                 Buffer.UpdateRead(MessageIdFlagSize - count);
                             }
                             readLength += MessageIdFlagSize;
-                            messageId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(headBytes, needSize));
-                            state = ParseState.Body;
+                            Packet.MessageId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            state = ParseState.Rpc;
+                            break;
                         }
-                        break;
-                    case ParseState.Body:
-                        needSize = packetSize - readLength;
-                        if (Buffer.DataSize >= needSize)
+                    case ParseState.Rpc:
                         {
-                            if (Buffer.FirstDataSize >= needSize)
+                            var offset = PacketFlagSize + BitFlagSize + MessageIdFlagSize;
+                            if (Buffer.FirstDataSize >= RpcFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, bodyBytes, readLength - headSize, needSize);
-                                Buffer.UpdateRead(needSize);
-                                readLength += needSize;
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
+                                Buffer.UpdateRead(RpcFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, bodyBytes, readLength - headSize, count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                                 Buffer.UpdateRead(count);
-                                readLength += count;
-                                needSize -= count;
-                                count = needSize > Buffer.FirstDataSize ? Buffer.FirstDataSize : needSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, bodyBytes, readLength - headSize, count);
-                                Buffer.UpdateRead(count);
-                                readLength += count;
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
+                                Buffer.UpdateRead(RpcFlagSize - count);
                             }
+                            readLength += RpcFlagSize;
+                            Packet.RpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            state = ParseState.Actor;
+                            break;
                         }
-                        break;
+                    case ParseState.Actor:
+                        {
+                            var offset = PacketFlagSize + BitFlagSize + MessageIdFlagSize + ActorIdFlagSize;
+                            if (Buffer.FirstDataSize >= ActorIdFlagSize)
+                            {
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, ActorIdFlagSize);
+                                Buffer.UpdateRead(RpcFlagSize);
+                            }
+                            else
+                            {
+                                var count = Buffer.FirstDataSize;
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                                Buffer.UpdateRead(count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, ActorIdFlagSize - count);
+                                Buffer.UpdateRead(RpcFlagSize - count);
+                            }
+                            readLength += ActorIdFlagSize;
+                            Packet.ActorId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            state = ParseState.Body;
+                            break;
+                        }
+                    case ParseState.Body:
+                        {
+                            var needSize = packetSize - readLength;
+                            if (Buffer.DataSize >= needSize)
+                            {
+                                Packet.BodyStream.Seek(0, SeekOrigin.Begin);
+                                if (Buffer.FirstDataSize >= needSize)
+                                {
+                                    Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, needSize);
+                                    Buffer.UpdateRead(needSize);
+                                    readLength += needSize;
+                                }
+                                else
+                                {
+                                    while (readLength < packetSize)
+                                    {
+                                        var count = Buffer.FirstDataSize;
+                                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
+                                        Buffer.UpdateRead(count);
+                                        readLength += count;
+                                        needSize -= count;
+                                        count = needSize > Buffer.FirstDataSize ? Buffer.FirstDataSize : needSize;
+                                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
+                                        Buffer.UpdateRead(count);
+                                        readLength += count;
+                                    }
+                                }
+                                Packet.BodyStream.Seek(0, SeekOrigin.Begin);
+                            }
+                            break;
+                        }                        
                 }
 
                 if (Buffer.DataSize == 0)
@@ -400,20 +422,16 @@ namespace H6Game.Base
         /// <param name="flagByte"></param>
         private void SetBitFlag(byte flagByte)
         {
-            isRpc = Convert.ToBoolean(flagByte & 1);
-            isHeartbeat = Convert.ToBoolean(flagByte >> 1 & 1);
-            isCompress = Convert.ToBoolean(flagByte >> 2 & 1);
-            isEncrypt = Convert.ToBoolean(flagByte >> 3 & 1);
-            kcpProtocal = (byte)(flagByte >> 4 & 3);
-            isMessage = Convert.ToBoolean(flagByte >> 6 & 1);
-            headSize = isRpc ? HeadMinSize + RpcFlagSize : HeadMinSize;
-            headSize = isMessage ? headSize + MessageIdFlagSize : headSize;
+            Packet.IsHeartbeat = Convert.ToBoolean(flagByte >> 1 & 1);
+            Packet.IsCompress = Convert.ToBoolean(flagByte >> 2 & 1);
+            Packet.IsEncrypt = Convert.ToBoolean(flagByte >> 3 & 1);
+            Packet.KcpProtocal = (byte)(flagByte >> 4 & 3);
         }
 
         /// <summary>
         /// 重置当前解析器所有状态
         /// </summary>
-        public void Clear()
+        internal void Clear()
         {
             state = ParseState.Size;
             isOk = false;
@@ -427,40 +445,26 @@ namespace H6Game.Base
         /// </summary>
         private void Flush()
         {
-            rpcId = 0;
-            messageId = 0;
-            isRpc = false;
-            isEncrypt = false;
-            isCompress = false;
-            isHeartbeat = false;
-            kcpProtocal = 0;
-            isMessage = false;
+            Packet.Flush();
             readLength = 0;
             packetSize = 0;
-            headSize = 0;
-            bodyBytes = null;
         }
 
         /// <summary>
         /// 从缓冲区中读数据包
         /// </summary>
         /// <returns></returns>
-        public bool TryGetPacket(ref Packet packet)
+        internal bool TryRead()
         {
+            if (isOk)
+                Flush();
+
             finish = false;
             while (!finish)
             {
                 Parse();
                 if (isOk)
                 {
-                    packet.RpcId = rpcId;
-                    packet.IsRpc = isRpc;
-                    packet.IsCompress = isCompress;
-                    packet.IsHeartbeat = isHeartbeat;
-                    packet.KcpProtocal = kcpProtocal;
-                    packet.MessageId = messageId;
-                    packet.Data = bodyBytes;
-                    Flush();
                     return true;
                 }
             }
@@ -484,9 +488,13 @@ namespace H6Game.Base
         /// <param name="packet"></param>
         public void WriteBuffer(Packet packet)
         {
-            Buffer.Write(packet.GetHeadBytes());
-            if (packet.Data != null)
-                Buffer.Write(packet.Data);
+            var bodySize = (int)packet.BodyStream.Length;
+            Buffer.Write(Packet.GetHeadBytes(bodySize));
+            if (bodySize > 0)
+            {
+                var bytes = packet.BodyStream.GetBuffer();
+                Buffer.Write(bytes, 0, bodySize);
+            }
         }
     }
 }

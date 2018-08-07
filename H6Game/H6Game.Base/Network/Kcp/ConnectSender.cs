@@ -13,16 +13,14 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
-        public static void SendSYN(Socket socket, IPEndPoint endPoint)
+        public static void SendSYN(ANetChannel channel, Socket socket, IPEndPoint endPoint)
         {
             //发送SYN包
-            var synPacket = new Packet
-            {
-                KcpProtocal = KcpNetProtocal.SYN,
-            };
+            var packet = channel.SendParser.Packet;
+            packet.KcpProtocal = KcpNetProtocal.SYN;
 
             //握手包不要经过KCP发送
-            var bytes = synPacket.GetHeadBytes();
+            var bytes = packet.GetHeadBytes(0);
             socket.SendTo(bytes, 0, bytes.Length,SocketFlags.None,  endPoint);
         }
 
@@ -32,16 +30,14 @@ namespace H6Game.Base
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendACK(Socket socket, IPEndPoint endPoint, int conv)
+        public static void SendACK(ANetChannel channel, Socket socket, IPEndPoint endPoint, int conv)
         {
-            var finPacket = new Packet
-            {
-                KcpProtocal = KcpNetProtocal.ACK,
-                MessageId = conv,
-            };
+            var packet = channel.SendParser.Packet;
+            packet.KcpProtocal = KcpNetProtocal.ACK;
+            packet.MessageId = conv;
 
             //握手包不经过KCP发送
-            var bytes = finPacket.GetHeadBytes();
+            var bytes = packet.GetHeadBytes(0);
             socket.SendTo(bytes, bytes.Length, SocketFlags.None,  endPoint);
         }
 
@@ -51,16 +47,14 @@ namespace H6Game.Base
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendFIN(Socket socket, IPEndPoint endPoint, int conv)
+        public static void SendFIN(ANetChannel channel, Socket socket, IPEndPoint endPoint, int conv)
         {
-            var finPacket = new Packet
-            {
-                KcpProtocal = KcpNetProtocal.FIN,
-                MessageId = conv,
-            };
+            var packet = channel.SendParser.Packet;
+            packet.KcpProtocal = KcpNetProtocal.FIN;
+            packet.MessageId = conv;
 
             //握手包不经过KCP发送
-            var bytes = finPacket.GetHeadBytes();
+            var bytes = packet.GetHeadBytes(0);
             socket.SendTo(bytes, bytes.Length, SocketFlags.None, endPoint);
         }
     }

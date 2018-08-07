@@ -29,9 +29,9 @@ namespace H6Game.Base
             }
         }
 
-        public static bool TryGetMessage<T>(int messageCmd, byte[] bytes, out T response)
+        public static bool TryGetMessage<T>(this Packet packet, out T response)
         {
-            if (!MeesageCmdDictionary.TryGetValue(messageCmd, out Type cmdType))
+            if (!MeesageCmdDictionary.TryGetValue(packet.MessageId, out Type cmdType))
             {
                 response = default;
                 return false;
@@ -44,7 +44,7 @@ namespace H6Game.Base
                 return false;
             }
 
-            response = bytes.ProtoToObject<T>();
+            response = packet.Read<T>();
             return true;
         }
 

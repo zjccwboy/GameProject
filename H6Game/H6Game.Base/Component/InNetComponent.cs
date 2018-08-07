@@ -70,97 +70,33 @@ namespace H6Game.Base
         /// RPC请求
         /// </summary>
         /// <returns></returns>
-        public Task<T> CallMessage<T>(Session session, ANetChannel channel, byte[] bytes, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+        public Task<T> CallMessage<T>(Session session, ANetChannel channel, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
         {
             var tcs = new TaskCompletionSource<T>();
-            var send = new Packet
+            session.Subscribe(channel, data, (p) =>
             {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-
-            session.Subscribe(channel, send, (p) =>
-            {
-                var response = p.Data.ProtoToObject<T>();
+                var response = p.Read<T>();
                 if (response == null)
                 {
                     tcs.TrySetResult(default);
                     return;
                 }
                 tcs.TrySetResult(response);
-            });
+            }, messageCmd);
             return tcs.Task;
         }
 
         /// <summary>
         /// RPC请求
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="session"></param>
-        /// <param name="channel"></param>
-        /// <param name="bytes"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="rpcAction"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        public void CallMessage<T>(Session session, ANetChannel channel, byte[] bytes, int messageCmd, Action<T> rpcAction, bool isCompress = false, bool isEncrypt = false)
+        /// <returns></returns>
+        public void CallMessage<T,P>(Session session, ANetChannel channel, T data, int messageCmd, Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
         {
-            var send = new Packet
+            session.Subscribe(channel, data, (p) =>
             {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-
-            session.Subscribe(channel, send, (p) =>
-            {
-                var response = p.Data.ProtoToObject<T>();
-                rpcAction(response);
-            });
-        }
-
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="channel"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="bytes"></param>
-        /// <param name="rpcId"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        public void SendMessage(Session session, ANetChannel channel, int messageCmd, byte[] bytes, int rpcId = 0, bool isCompress = false, bool isEncrypt = false)
-        {
-            session.Notice(channel, new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            });
-        }
-
-        /// <summary>
-        /// 广播内部消息
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="messageCmd"></param>
-        public void BroadcastMessage(byte[] bytes, int messageCmd)
-        {
-            //中心服务只处理内部分布式连接管理消息
-            if (this.Config.IsCenterServer && !IsSysMessage(messageCmd))
-                return;
-
-            if (this.InAcceptSession == null)
-                return;
-
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.InAcceptSession.Broadcast(packet);
+                var response = p.Read<P>();
+                notificationAction(response);
+            }, messageCmd);
         }
 
         public void AddSession(NetEndPointMessage message)
@@ -251,7 +187,7 @@ namespace H6Game.Base
                     this.OutNetMapManager.Add(c, remoteOutNet);
                 }
 
-                SendToCenter(localMessage.ToBytes(), (int)MessageCMD.AddInServer);
+                SendToCenter(localMessage, (int)MessageCMD.AddInServer);
             };
 
             //注册连接断开回调
@@ -273,14 +209,9 @@ namespace H6Game.Base
             session.Connect();
         }
 
-        private void SendToCenter(byte[] bytes, int messageCmd)
+        private void SendToCenter<T>(T data, int messageCmd)
         {
-            var packet = new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-            this.CenterConnectSession.Broadcast(packet);
+            this.CenterConnectSession.Broadcast(data, messageCmd);
         }
 
         private bool IsSysMessage(int messageCmd)

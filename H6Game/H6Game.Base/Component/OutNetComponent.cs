@@ -34,72 +34,27 @@ namespace H6Game.Base
         /// <summary>
         /// RPC请求
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="data"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
         /// <returns></returns>
-        public Task<T> CallMessage<T>(byte[] bytes, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+        public Task<T> CallMessage<T>(T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
         {
             var tcs = new TaskCompletionSource<T>();
-            var send = new Packet
-            {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                MessageId = messageCmd,
-                Data = bytes,
-            };
 
-            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, send, (p) =>
+            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, data, (p) =>
             {
-                var response = p.Data.ProtoToObject<T>();
+                var response = p.Read<T>();
                 if (response == null)
                 {
                     tcs.TrySetResult(default);
                     return;
                 }
                 tcs.TrySetResult(response);
-            });
+            }, messageCmd);
             return tcs.Task;
-        }
-
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="messageCmd"></param>
-        /// <param name="bytes"></param>
-        /// <param name="rpcId"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        public void SendMessage(int messageCmd, byte[] bytes, int rpcId = 0, bool isCompress = false, bool isEncrypt = false)
-        {
-            this.ConnectSession.Notice(this.ConnectSession.ConnectChannel, new Packet
-            {
-                MessageId = messageCmd,
-                Data = bytes,
-            });
-        }
-
-        /// <summary>
-        /// RPC请求
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="bytes"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="rpcAction"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        public void CallMessage<T>(byte[] bytes, int messageCmd, Action<T> rpcAction, bool isCompress = false, bool isEncrypt = false)
-        {
-            var send = new Packet
-            {
-                IsCompress = isCompress,
-                IsEncrypt = isEncrypt,
-                MessageId = messageCmd,
-                Data = bytes,
-            };
-
-            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, send, (p) =>
-            {
-                var response = p.Data.ProtoToObject<T>();
-                rpcAction(response);
-            });
         }
 
         private void Connecting(IPEndPoint endPoint)

@@ -43,8 +43,6 @@ namespace H6Game.Base
         {
             this.RemoteEndPoint = endPoint;
             this.NetSocket = socket;
-            RecvParser = new PacketParser();
-            SendParser = new PacketParser();
         }
 
         public void InitKcp()
@@ -75,7 +73,7 @@ namespace H6Game.Base
                     return;
                 }
 
-                ConnectSender.SendSYN(this.NetSocket, this.RemoteEndPoint);
+                ConnectSender.SendSYN(this, this.NetSocket, this.RemoteEndPoint);
             }
             catch (Exception e)
             {
@@ -89,7 +87,7 @@ namespace H6Game.Base
         /// <param name="bytes"></param>
         /// <param name="offset"></param>
         /// <param name="lenght"></param>
-        public override void HandleRecv(byte[] bytes, int offset, int lenght)
+        public void HandleRecv(byte[] bytes, int offset, int lenght)
         {
             CacheBytes = bytes;
             this.LastRecvTime = this.TimeNow;
@@ -123,8 +121,8 @@ namespace H6Game.Base
                 {
                     try
                     {
-                        Packet packet = new Packet();
-                        if (!RecvParser.TryGetPacket(ref packet))
+                        var packet = this.RecvParser.Packet;
+                        if (!RecvParser.TryRead())
                             break;
 
                         this.LastRecvTime = TimeUitls.Now();
@@ -152,6 +150,9 @@ namespace H6Game.Base
                         {
                             this.Log(LogLevel.Warn, "HandleRecv", $"接收到客户端:{this.RemoteEndPoint}心跳包.");
                         }
+
+                        packet.BodyStream.SetLength(0);
+                        packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                     }
                     catch (Exception e)
                     {
@@ -170,13 +171,6 @@ namespace H6Game.Base
         public override void StartSend()
         {
             this.TimeNow = TimeUitls.Now();
-
-            while (SendQueue.Count > 0)
-            {
-                var packet = SendQueue.Dequeue();
-                this.SendParser.WriteBuffer(packet);
-            }
-
             if (Connected)
             {
                 while (this.SendParser.Buffer.DataSize > 0)
@@ -204,7 +198,7 @@ namespace H6Game.Base
             try
             {
                 Connected = false;
-                ConnectSender.SendFIN(this.NetSocket, this.RemoteEndPoint, this.Id);
+                ConnectSender.SendFIN(this, this.NetSocket, this.RemoteEndPoint, this.Id);
                 OnDisConnect?.Invoke(this);
             }
             catch { }

@@ -11,9 +11,9 @@ namespace TestTcpServer
     [HandlerCMD(MessageCMD.TestCMD)]
     public class TestMessageDispatcher : AHandler<string>
     {
-        protected override void Handler(string response, int messageId)
+        protected override void Handler(string response)
         {
-            this.CallBack(Encoding.UTF8.GetBytes(response));
+            this.Session.Send(Channel, response, this.Packet.MessageId, this.Packet.RpcId);
         }
     }
 }

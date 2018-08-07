@@ -50,20 +50,15 @@ namespace TestTcpClient
                 return;
             }
 
-            var send = new Packet
-            {
-                Data = Encoding.UTF8.GetBytes("111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999") ,
-                MessageId = (int)MessageCMD.TestCMD,
-            };
+            var send = "111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999";
             for (var i = 1; i <= 1000; i++)
             {
                 sendCount++;
                 session.Subscribe(channel, send, (packet) =>
                 {
                     recvCount++;
-                    var data = Encoding.UTF8.GetString(packet.Data);//BitConverter.ToInt32(packet.Data, 0);
-                                                                    //Console.WriteLine($"接收数据包:{data}");
-                    if (data != "111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999")
+                    var data = packet.Read<string>();
+                    if (data != send)
                     {
                         Console.WriteLine($"解包出错:{data}");
                         //Console.Read();
@@ -75,7 +70,7 @@ namespace TestTcpClient
                         Thread.Sleep(1000);
                         stopwatch.Restart();
                     }
-                });
+                }, (int)MessageCMD.TestCMD);
             }
         }
     }

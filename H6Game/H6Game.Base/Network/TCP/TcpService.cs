@@ -45,7 +45,6 @@ namespace H6Game.Base
                     this.Log(LogLevel.Error, $"Accept", e);
                     return false;
                 }
-
             }
 
             this.InnArgs.AcceptSocket = null;

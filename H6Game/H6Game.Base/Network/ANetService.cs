@@ -113,10 +113,8 @@ namespace H6Game.Base
                 if (timeSendSpan > HeartbeatTime)
                 {
                     this.ClientChannel.LastSendTime = TimeUitls.Now();
-                    this.Session.Notice(this.ClientChannel, new Packet
-                    {
-                        IsHeartbeat = true
-                    });
+                    this.ClientChannel.SendParser.Packet.IsHeartbeat = true;
+                    this.ClientChannel.SendParser.Packet.WriteTo(null);
                     this.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
                 }
             }

@@ -14,7 +14,16 @@ namespace TestGClient
         static void Main(string[] args)
         {
             Game.Add<OutNetComponent>();
+            TestCallBack();
+            while (true)
+            {
+                Game.Update();
+                Thread.Sleep(1);
+            }
+        }
 
+        static async void TestCallBack()
+        {
             while (true)
             {
                 var send = new TestMessage
@@ -22,16 +31,11 @@ namespace TestGClient
                     Actor = 1020201,
                     Message = "我是客户端",
                 };
-                Game.Get<OutNetComponent>().CallMessage<TestMessage>(send.ToBytes(), 1024, (p) =>
-                {
-                    LogRecord.Log(LogLevel.Debug, "测试:", p.ToJson());
-                });
-
-                Game.Update();
-                Thread.Sleep(1);
+                var result = await Game.Get<OutNetComponent>().CallMessage(send, 1024);
             }
         }
     }
+
 
     [ProtoBuf.ProtoContract]
     public class TestMessage : IMessage

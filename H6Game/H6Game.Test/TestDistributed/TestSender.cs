@@ -42,10 +42,11 @@ namespace TestDistributed
                     ActorId = 10001,
                     Message = "MessageMessageMessageMessage"
                 };
-                inNetComponent.CallMessage<TestMessage>(session, session.ConnectChannel, send.ToBytes(), (int)MessageCMD.TestCMD1,(m)=> 
+
+                inNetComponent.CallMessage<TestMessage, TestMessage>(session, session.ConnectChannel, send, (int)MessageCMD.TestCMD1,(m)=> 
                 {
                     Count++;
-                    size += m.ToBytes().Length;
+                    size += m.ToJson().Length;
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
@@ -53,7 +54,6 @@ namespace TestDistributed
                         Count = 0;
                         size = 0;
                     }
-
                 });
             }
         }

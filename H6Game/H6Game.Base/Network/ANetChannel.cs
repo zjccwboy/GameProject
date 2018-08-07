@@ -59,14 +59,9 @@ namespace H6Game.Base
         public MessageDispatcher Handler { get; set; }
 
         /// <summary>
-        /// 接收包缓冲区解析器
+        /// RPC字典
         /// </summary>
-        protected PacketParser RecvParser = new PacketParser();
-
-        /// <summary>
-        /// 发送包缓冲区解析器
-        /// </summary>
-        protected PacketParser SendParser = new PacketParser();
+        protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionarys = new ConcurrentDictionary<int, Action<Packet>>();
 
         private int rpcId;
         /// <summary>
@@ -83,9 +78,14 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// RPC字典
+        /// 接收包缓冲区解析器
         /// </summary>
-        protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionarys = new ConcurrentDictionary<int, Action<Packet>>();
+        public PacketParser RecvParser { get; } = new PacketParser();
+
+        /// <summary>
+        /// 发送包缓冲区解析器
+        /// </summary>
+        public PacketParser SendParser { get; } = new PacketParser();
 
         /// <summary>
         /// 网络服务类
@@ -163,22 +163,6 @@ namespace H6Game.Base
         /// </summary>
         /// <returns></returns>
         public abstract void StartRecv();
-
-        /// <summary>
-        /// 发送队列
-        /// </summary>
-        public Queue<Packet> SendQueue { get; } = new Queue<Packet>();
-
-        /// <summary>
-        /// 处理KCP接收
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="offset"></param>
-        /// <param name="lenght"></param>
-        public virtual void HandleRecv(byte[] bytes, int offset, int lenght)
-        {
-
-        }
 
         /// <summary>
         /// 添加一个发送数据包到发送缓冲区队列中
