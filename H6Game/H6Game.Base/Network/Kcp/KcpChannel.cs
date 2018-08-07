@@ -73,6 +73,7 @@ namespace H6Game.Base
                     return;
                 }
 
+                this.SendParser = this.SendParser ?? new PacketParser(1400);
                 ConnectSender.SendSYN(this, this.NetSocket, this.RemoteEndPoint);
             }
             catch (Exception e)
