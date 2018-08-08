@@ -14,25 +14,23 @@ namespace TestGClient
         static void Main(string[] args)
         {
             Game.Add<OutNetComponent>();
-            TestCallBack();
             while (true)
             {
                 Game.Update();
+                TestCallBack();
                 Thread.Sleep(1);
             }
         }
 
         static async void TestCallBack()
         {
-            while (true)
+            var send = new TestMessage
             {
-                var send = new TestMessage
-                {
-                    Actor = 1020201,
-                    Message = "我是客户端",
-                };
-                var result = await Game.Get<OutNetComponent>().CallMessage(send, 1024);
-            }
+                Actor = 1020201,
+                Message = "我是客户端",
+            };
+            var result = await Game.Get<OutNetComponent>().CallMessage(send, 1024);
+            LogRecord.Log(LogLevel.Info, "CallBack", result.ToJson());
         }
     }
 

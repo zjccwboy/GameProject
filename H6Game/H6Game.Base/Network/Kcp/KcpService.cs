@@ -109,7 +109,7 @@ namespace H6Game.Base
                 return;
             }
 
-            if (recvCount == 5 || recvCount == 9)
+            if (recvCount == 17)
             {
                 //握手处理
                 ConnectParser.WriteBuffer(ReuseRecvBytes, 0, recvCount);
@@ -159,11 +159,7 @@ namespace H6Game.Base
             {
                 conv = KcpConvIdCreator.CreateId();
             }
-            var channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, conv);
-            channel.InitKcp();
-            channel.OnConnect = HandleAccept;
-            channel.OnConnect?.Invoke(channel);
-            ConnectSender.SendACK(channel, this.Acceptor, channel.RemoteEndPoint, conv);
+            ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, conv);
         }
 
         /// <summary>
@@ -174,15 +170,26 @@ namespace H6Game.Base
         /// <param name="remoteEP"></param>
         private void HandleACK(Packet packet, Socket socket, EndPoint remoteEP)
         {
-            if(this.ClientChannel == null)
-                return;
+            KcpChannel channel;
+            if(this.ServiceType == NetServiceType.Client)
+            {
+                if (this.ClientChannel == null)
+                    return;
 
-            var channel = this.ClientChannel as KcpChannel;
-            channel.RemoteEndPoint = remoteEP as IPEndPoint;
-            channel.Id = packet.MessageId;
+                channel = this.ClientChannel as KcpChannel;
+                channel.RemoteEndPoint = remoteEP as IPEndPoint;
+                channel.Id = packet.MessageId;
+                channel.OnConnect = HandleConnect;
+                ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.MessageId);
+            }
+            else
+            {
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.MessageId);
+                channel.OnConnect = HandleAccept;
+            }
+
             channel.InitKcp();
-            channel.OnConnect = HandleConnect;
-            channel.OnConnect?.Invoke(this.ClientChannel);
+            channel.OnConnect?.Invoke(channel);
         }
 
         /// <summary>

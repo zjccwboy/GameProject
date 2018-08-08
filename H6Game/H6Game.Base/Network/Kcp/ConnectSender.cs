@@ -11,12 +11,12 @@ namespace H6Game.Base
         /// <summary>
         /// 发送SYN连接请求
         /// </summary>
+        /// <param name="packet"></param>
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
-        public static void SendSYN(ANetChannel channel, Socket socket, IPEndPoint endPoint)
+        public static void SendSYN(Packet packet, Socket socket, EndPoint endPoint)
         {
             //发送SYN包
-            var packet = channel.SendParser.Packet;
             packet.KcpProtocal = KcpNetProtocal.SYN;
 
             //握手包不要经过KCP发送
@@ -27,12 +27,12 @@ namespace H6Game.Base
         /// <summary>
         /// 发送ACK应答请求
         /// </summary>
+        /// <param name="packet"></param>
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendACK(ANetChannel channel, Socket socket, IPEndPoint endPoint, int conv)
+        public static void SendACK(Packet packet, Socket socket, EndPoint endPoint, int conv)
         {
-            var packet = channel.SendParser.Packet;
             packet.KcpProtocal = KcpNetProtocal.ACK;
             packet.MessageId = conv;
 
@@ -44,12 +44,12 @@ namespace H6Game.Base
         /// <summary>
         /// 发送FIN连接断开请求
         /// </summary>
+        /// <param name="packet"></param>
         /// <param name="socket"></param>
         /// <param name="endPoint"></param>
         /// <param name="conv"></param>
-        public static void SendFIN(ANetChannel channel, Socket socket, IPEndPoint endPoint, int conv)
+        public static void SendFIN(Packet packet, Socket socket, EndPoint endPoint, int conv)
         {
-            var packet = channel.SendParser.Packet;
             packet.KcpProtocal = KcpNetProtocal.FIN;
             packet.MessageId = conv;
 

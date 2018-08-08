@@ -116,6 +116,9 @@ public static class BufferHelper
 
     public static T Read<T>(this Packet packet)
     {
+        if (packet == null)
+            return default;
+
         if (packet.BodyStream.Length == 0)
             return default;
 

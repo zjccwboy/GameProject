@@ -50,6 +50,7 @@ namespace H6Game.Base
             Kcp = new Kcp((uint)this.Id, this);
             Kcp.SetOutput(this.Output);
             Kcp.NoDelay(1, 10, 2, 1);  //fast
+            this.SendParser = this.SendParser ?? new PacketParser(1400);
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace H6Game.Base
                 }
 
                 this.SendParser = this.SendParser ?? new PacketParser(1400);
-                ConnectSender.SendSYN(this, this.NetSocket, this.RemoteEndPoint);
+                ConnectSender.SendSYN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint);
             }
             catch (Exception e)
             {
@@ -172,6 +173,9 @@ namespace H6Game.Base
         /// <returns></returns>
         public override void StartSend()
         {
+            if (this.SendParser == null)
+                return;
+
             this.TimeNow = TimeUitls.Now();
             if (Connected)
             {
@@ -200,7 +204,7 @@ namespace H6Game.Base
             try
             {
                 Connected = false;
-                ConnectSender.SendFIN(this, this.NetSocket, this.RemoteEndPoint, this.Id);
+                ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);
                 OnDisConnect?.Invoke(this);
             }
             catch { }

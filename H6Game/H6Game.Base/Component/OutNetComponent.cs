@@ -43,7 +43,6 @@ namespace H6Game.Base
         public Task<T> CallMessage<T>(T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
         {
             var tcs = new TaskCompletionSource<T>();
-
             this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, data, (p) =>
             {
                 var response = p.Read<T>();

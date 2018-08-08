@@ -111,6 +111,7 @@ namespace H6Game.Base
             HeadBytes[2] = bodySizeBytes[2];
             HeadBytes[3] = bodySizeBytes[3];
 
+            HeadBytes[4] = 0;
             //写标志位
             if (IsHeartbeat)
             {
@@ -126,7 +127,7 @@ namespace H6Game.Base
             }
             if (KcpProtocal > 0)
             {
-                HeadBytes[4] |= (byte)(KcpProtocal << 3);
+                HeadBytes[4] |= (byte)(KcpProtocal << 4);
             }
 
             //写MessageId
