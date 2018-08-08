@@ -53,9 +53,10 @@ namespace H6Game.Base
             {
                 while (!dispose)
                 {
-                    if (actionsQueue.TryDequeue(out Action action))
+                    while(actionsQueue.TryDequeue(out Action action))
+                    {
                         action();
-
+                    }
                     Thread.Sleep(1);
                 }
             });

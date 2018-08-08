@@ -414,7 +414,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -439,7 +442,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -464,7 +470,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -489,7 +498,10 @@ namespace H6Game.Base
             , int messageCmd,int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -513,7 +525,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -537,7 +552,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -561,7 +579,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -585,7 +606,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -609,7 +633,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -633,7 +660,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -657,7 +687,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -681,7 +714,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -705,7 +741,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -729,7 +768,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -753,7 +795,10 @@ namespace H6Game.Base
             , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
         {
             if (!channel.Connected)
+            {
+                notificationAction(default);
                 return;
+            }
 
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;

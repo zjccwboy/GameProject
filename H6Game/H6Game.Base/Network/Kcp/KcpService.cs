@@ -140,6 +140,7 @@ namespace H6Game.Base
                 if (!this.Channels.TryGetValue(connectConv, out ANetChannel channel))
                 {
                     this.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
+                    ConnectSender.SendFIN(this.ConnectParser.Packet, this.Acceptor, this.ReuseEndPoint, (int)connectConv);
                     return;
                 }
                 (channel as KcpChannel).HandleRecv(ReuseRecvBytes, 0, recvCount);
