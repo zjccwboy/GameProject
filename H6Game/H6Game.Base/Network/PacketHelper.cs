@@ -3,7 +3,7 @@ using ProtoBuf;
 using System;
 using System.Text;
 
-public static class BufferHelper
+public static class PacketHelper
 {
     public static void WriteTo<T>(this Packet packet, T obj)
     {

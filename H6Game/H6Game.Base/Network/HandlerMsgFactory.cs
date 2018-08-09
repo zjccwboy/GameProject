@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using H6Game.Message;
 using System.Reflection;
 using System.Linq;
-using System.Text;
 
 namespace H6Game.Base
 {
-    public static class HandlerFactory
+    public static class HandlerMSGFactory
     {
         private static Dictionary<int, IHandler> HandlerDictionary = new Dictionary<int, IHandler>();
         private static Dictionary<int, Type> MeesageCmdDictionary = new Dictionary<int, Type>();
 
-        static HandlerFactory()
+        static HandlerMSGFactory()
         {
             var dispatcherTypes = TypeFactory.GetTypes<IHandler>();
             foreach (var type in dispatcherTypes)
@@ -51,7 +50,7 @@ namespace H6Game.Base
         public static IHandler Get(int messageCmd)
         {
             if (!HandlerDictionary.TryGetValue(messageCmd, out IHandler handler))
-                throw new Exception($"CMD:{messageCmd}没有在IDispatcher实现类中加入MessageCMDAttribute.");
+                throw new Exception($"CMD:{messageCmd}没有在Handler实现类中加入MessageCMDAttribute.");
 
             return handler;
         }
