@@ -50,7 +50,7 @@ namespace H6Game.Base
             Kcp = new Kcp((uint)this.Id, this);
             Kcp.SetOutput(this.Output);
             Kcp.NoDelay(1, 10, 2, 1);  //fast
-            this.SendParser = this.SendParser ?? new PacketParser(1400);
+            //this.SendParser = this.SendParser ?? new PacketParser(1400);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace H6Game.Base
         public void HandleRecv(byte[] bytes, int offset, int lenght)
         {
             CacheBytes = bytes;
-            this.LastRecvTime = this.TimeNow;
+            this.LastRecvTime = TimeUitls.Now();
             this.Kcp.Input(bytes, offset, lenght);
         }
 
@@ -101,13 +101,13 @@ namespace H6Game.Base
         /// </summary>
         public override void StartRecv()
         {
+            this.TimeNow = TimeUitls.Now();
             SetKcpSendTime();
             while (true)
             {
                 int n = Kcp.PeekSize();
                 if (n == 0)
                 {
-                    //LogRecord.Log(LogLevel.Error, "StartRecv", $"解包失败:{this.RemoteEndPoint}");
                     return;
                 }
 
@@ -128,15 +128,12 @@ namespace H6Game.Base
                         if (!RecvParser.TryRead())
                             break;
 
-                        this.LastRecvTime = TimeUitls.Now();
                         if (!packet.IsHeartbeat)
                         {
-                            //LogRecord.Log(LogLevel.Error, "StartRecv", $"收到远程电脑:{this.RemoteEndPoint}");
                             if (packet.IsRpc)
                             {
                                 if (RpcDictionarys.TryRemove(packet.RpcId, out Action<Packet> action))
                                 {
-                                    //执行RPC请求回调
                                     action(packet);
                                 }
                                 else
@@ -164,7 +161,7 @@ namespace H6Game.Base
                         return;
                     }
                 }
-            }            
+            }
         }        
 
         /// <summary>
@@ -176,11 +173,15 @@ namespace H6Game.Base
             if (this.SendParser == null)
                 return;
 
-            this.TimeNow = TimeUitls.Now();
+            if (!this.Connected)
+                return;
+
             if (Connected)
             {
                 while (this.SendParser.Buffer.DataSize > 0)
                 {
+                    this.TimeNow = TimeUitls.Now();
+                    this.LastSendTime = this.TimeNow;
                     var offset = this.SendParser.Buffer.FirstReadOffset;
                     var length = this.SendParser.Buffer.FirstDataSize;
                     length = length > MaxPSize ? MaxPSize : length;
@@ -194,7 +195,6 @@ namespace H6Game.Base
                 SetKcpSendTime();
             }
         }
-
 
         /// <summary>
         /// 断开连接
@@ -221,7 +221,6 @@ namespace H6Game.Base
             try
             {
                 this.NetSocket.SendTo(bytes, 0, count, SocketFlags.None, this.RemoteEndPoint);
-                this.LastSendTime = TimeUitls.Now();
             }
             catch(Exception e)
             {

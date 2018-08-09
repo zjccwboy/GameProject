@@ -266,9 +266,9 @@ namespace H6Game.Base
         /// <param name="flagByte"></param>
         private void SetBitFlag(byte flagByte)
         {
-            Packet.IsHeartbeat = Convert.ToBoolean(flagByte >> 1 & 1);
-            Packet.IsCompress = Convert.ToBoolean(flagByte >> 2 & 1);
-            Packet.IsEncrypt = Convert.ToBoolean(flagByte >> 3 & 1);
+            Packet.IsHeartbeat = Convert.ToBoolean(flagByte & 1);
+            Packet.IsCompress = Convert.ToBoolean(flagByte >> 1 & 1);
+            Packet.IsEncrypt = Convert.ToBoolean(flagByte >> 2 & 1);
             Packet.KcpProtocal = (byte)(flagByte >> 4 & 3);
         }
 

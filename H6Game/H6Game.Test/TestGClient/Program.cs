@@ -17,7 +17,7 @@ namespace TestGClient
             while (true)
             {
                 Game.Update();
-                TestCallBack();
+                //TestCallBack();
                 Thread.Sleep(1);
             }
         }
@@ -29,8 +29,10 @@ namespace TestGClient
                 Actor = 1020201,
                 Message = "我是客户端",
             };
+
             var result = await Game.Get<OutNetComponent>().CallMessage(send, 1024);
-            LogRecord.Log(LogLevel.Info, "CallBack", result.ToJson());
+            if(result != null)
+                LogRecord.Log(LogLevel.Info, "CallBack", result.ToJson());
         }
     }
 

@@ -22,15 +22,15 @@ namespace H6Game.Base
         /// <summary>
         /// 最后一次检测心跳的时间
         /// </summary>
-        private uint LastCheckTime = TimeUitls.Now();
+        private uint LastCheckHeadbeatTime = TimeUitls.Now();
 
         /// <summary>
         /// 心跳超时时长，服务端6秒,客户端20秒
         /// </summary>
 #if SERVER
-        public static uint HeartbeatTime = 1000 * 4;
+        public const uint HeartbeatTime = 1000 * 4;
 #else
-        public static uint HeartbeatTime = 1000 * 20;
+        public const uint HeartbeatTime = 1000 * 20;
 #endif
 
         /// <summary>
@@ -120,15 +120,14 @@ namespace H6Game.Base
             }
             else if (this.ServiceType == NetServiceType.Server)
             {
-                var lastCheckSpan = now - this.LastCheckTime;
+                var lastCheckSpan = now - this.LastCheckHeadbeatTime;
                 if (lastCheckSpan < HeartbeatTime)
                     return;
-                LastCheckTime = now;
+                LastCheckHeadbeatTime = now;
 
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
-
                     if (!channel.Connected)
                         continue;
 

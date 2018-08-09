@@ -15,11 +15,12 @@ public static class PacketHelper
 
     public static void WriteTo(this Packet packet, string data)
     {
-        if (data == null)
-            return;
+        if (!string.IsNullOrEmpty(data))
+        {
+            var bytes = Encoding.UTF8.GetBytes(data);
+            packet.BodyStream.Write(bytes, 0, bytes.Length);
+        }
 
-        var bytes = Encoding.UTF8.GetBytes(data);
-        packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
@@ -129,6 +130,40 @@ public static class PacketHelper
             return objVal.Value;
         }
         return Serializer.Deserialize<T>(packet.BodyStream);
+    }
+
+    public static bool TryRead<T>(this Packet packet, out T data)
+    {
+        if (packet == null)
+        {
+            data = default;
+            return false;
+        }
+
+        if (packet.BodyStream.Length == 0)
+        {
+            data = default;
+            return false;
+        }
+
+        var type = typeof(T);
+        if (TryGetValueType(packet, type, out object obj))
+        {
+            var objVal = obj as ValueObject<T>;
+            data = objVal.Value;
+            return true;
+        }
+
+        try
+        {
+            data = Serializer.Deserialize<T>(packet.BodyStream);
+            return true;
+        }
+        catch
+        {
+            data = default;
+            return false;
+        }
     }
 
     private static Type SType = typeof(string);

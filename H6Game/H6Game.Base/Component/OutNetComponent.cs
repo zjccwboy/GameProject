@@ -46,11 +46,6 @@ namespace H6Game.Base
             this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, data, (p) =>
             {
                 var response = p.Read<T>();
-                if (response == null)
-                {
-                    tcs.TrySetResult(default);
-                    return;
-                }
                 tcs.TrySetResult(response);
             }, messageCmd);
             return tcs.Task;

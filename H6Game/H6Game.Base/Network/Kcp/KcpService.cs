@@ -139,7 +139,7 @@ namespace H6Game.Base
                 uint connectConv = BitConverter.ToUInt32(ReuseRecvBytes, 0);
                 if (!this.Channels.TryGetValue(connectConv, out ANetChannel channel))
                 {
-                    this.Log(LogLevel.Notice, "数据包异常", connectConv.ToString());
+                    this.Log(LogLevel.Warn, "数据包异常", connectConv.ToString());
                     ConnectSender.SendFIN(this.ConnectParser.Packet, this.Acceptor, this.ReuseEndPoint, (int)connectConv);
                     return;
                 }
