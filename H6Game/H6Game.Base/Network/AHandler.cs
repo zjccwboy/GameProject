@@ -26,7 +26,7 @@ namespace H6Game.Base
             }
         }
 
-        public override void OnReceive(Network1 network)
+        public override void OnReceive(Network network)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace H6Game.Base
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Handler(Network1 network, Message message);
+        protected abstract void Handler(Network network, Message message);
     }
 
     public abstract class AHandler : IHandler
@@ -64,7 +64,7 @@ namespace H6Game.Base
         /// 接收处理
         /// </summary>
         /// <param name="network"></param>
-        public void Receive(Network1 network)
+        public void Receive(Network network)
         {
             OnReceive(network);
         }
@@ -74,6 +74,6 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="session"></param>
         /// <param name="channel"></param>
-        public abstract void OnReceive(Network1 network);
+        public abstract void OnReceive(Network network);
     }
 }

@@ -10,14 +10,14 @@ namespace H6Game.Base
         private ANetChannel Channel { get;}
         private ANetService NetService { get;}
         private Session Session { get;}
-        public Network1 Network { get;}
+        public Network Network { get;}
 
         public NetworkDispatcher(Session session, ANetService netService, ANetChannel channel)
         {
             this.Session = session;
             this.NetService = netService;
             this.Channel = channel;
-            this.Network = new Network1(this.Session, this.NetService, this.Channel);
+            this.Network = new Network(this.Session, this.NetService, this.Channel);
         }
 
         public void DoReceive(Packet packet)

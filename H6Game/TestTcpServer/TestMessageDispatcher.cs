@@ -11,7 +11,7 @@ namespace TestTcpServer
     [HandlerCMD(MessageCMD.TestCMD)]
     public class TestMessageDispatcher : AHandler<string>
     {
-        protected override void Handler(Network1 network, string response)
+        protected override void Handler(Network network, string response)
         {
             network.RpcCallBack(response);
         }

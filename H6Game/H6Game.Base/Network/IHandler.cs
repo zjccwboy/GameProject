@@ -15,6 +15,6 @@ namespace H6Game.Base
     public interface IHandler
     {
         Type ResponseType { get; }
-        void Receive(Network1 network);
+        void Receive(Network network);
     }
 }

@@ -10,7 +10,7 @@ namespace H6Game.Base
         private SysConfig Config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private Session ConnectSession;
         private IPEndPoint LoginServerEndPoint;
-        public Network1 Network { get { return this.ConnectSession.ConnectChannel.Handler.Network; } }
+        public Network Network { get { return this.ConnectSession.ConnectChannel.Handler.Network; } }
 
         public bool IsConnected { get; private set; }
 
@@ -38,7 +38,7 @@ namespace H6Game.Base
             {
                 ConnectSession.Dispose();
             }
-            ConnectSession = Network1.CreateSession(endPoint, ProtocalType.Kcp);
+            ConnectSession = Network.CreateSession(endPoint, ProtocalType.Kcp);
             ConnectSession.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
             ConnectSession.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
             ConnectSession.Connect();

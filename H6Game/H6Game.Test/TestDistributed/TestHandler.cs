@@ -11,7 +11,7 @@ namespace TestDistributed
     [HandlerCMD(MessageCMD.TestCMD1)]
     public class TestHandler : AHandler<TestMessage>
     {
-        protected override void Handler(Network1 network, TestMessage message)
+        protected override void Handler(Network network, TestMessage message)
         {
             network.RpcCallBack(message);
         }
