@@ -43,7 +43,7 @@ namespace TestDistributed
                     Message = "MessageMessageMessageMessage"
                 };
 
-                inNetComponent.CallMessage<TestMessage, TestMessage>(session, session.ConnectChannel, send, (int)MessageCMD.TestCMD1,(m)=> 
+                inNetComponent.CallMessage<TestMessage, TestMessage>(session.ConnectChannel, send, (int)MessageCMD.TestCMD1,(m)=> 
                 {
                     Count++;
                     size += m.ToJson().Length;

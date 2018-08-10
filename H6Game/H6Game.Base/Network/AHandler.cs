@@ -76,7 +76,7 @@ namespace H6Game.Base
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public virtual Type ResponseType { get; }
+        public abstract Type ResponseType { get; }
 
         public void Receive(Session session, ANetChannel channel)
         {

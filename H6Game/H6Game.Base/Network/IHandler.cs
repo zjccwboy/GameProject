@@ -3,6 +3,7 @@ using System;
 
 namespace H6Game.Base
 {
+
     /// <summary>
     /// 消息分发接口
     /// </summary>

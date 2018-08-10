@@ -44,6 +44,11 @@ namespace H6Game.Base
         public Socket NetSocket { get; protected set; }
 
         /// <summary>
+        /// 会话类
+        /// </summary>
+        public Session Session { get { return this.NetService.Session; } }
+
+        /// <summary>
         /// 最后连接时间
         /// </summary>
         public uint LastConnectTime { get; protected set; } = 0;

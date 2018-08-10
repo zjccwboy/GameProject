@@ -17,7 +17,7 @@ namespace TestGClient
             while (true)
             {
                 Game.Update();
-                //TestCallBack();
+                TestCallBack();
                 Thread.Sleep(1);
             }
         }

@@ -69,11 +69,17 @@ namespace H6Game.Base
         /// <summary>
         /// RPC请求
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
         /// <returns></returns>
-        public Task<T> CallMessage<T>(Session session, ANetChannel channel, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+        public Task<T> CallMessage<T>(ANetChannel channel, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
         {
             var tcs = new TaskCompletionSource<T>();
-            session.Subscribe(channel, data, (p) =>
+            channel.Session.Subscribe(channel, data, (p) =>
             {
                 var response = p.Read<T>();
                 if (response == null)
@@ -89,10 +95,17 @@ namespace H6Game.Base
         /// <summary>
         /// RPC请求
         /// </summary>
-        /// <returns></returns>
-        public void CallMessage<T,P>(Session session, ANetChannel channel, T data, int messageCmd, Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="P"></typeparam>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="notificationAction"></param>
+        /// <param name="isCompress"></param>
+        /// <param name="isEncrypt"></param>
+        public void CallMessage<T,P>(ANetChannel channel, T data, int messageCmd, Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
         {
-            session.Subscribe(channel, data, (p) =>
+            channel.Session.Subscribe(channel, data, (p) =>
             {
                 var response = p.Read<P>();
                 notificationAction(response);
@@ -183,7 +196,7 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    var remoteOutNet = await this.CallMessage<NetEndPointMessage>(session, c, null, (int)MessageCMD.GetOutServer);
+                    var remoteOutNet = await this.CallMessage<NetEndPointMessage>(c, null, (int)MessageCMD.GetOutServer);
                     this.OutNetMapManager.Add(c, remoteOutNet);
                 }
 

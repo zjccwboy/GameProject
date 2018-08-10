@@ -34,7 +34,7 @@ namespace H6Game.Base.Base.Message
         protected override void Handler(string message)
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
-            this.Session.Send(this.Channel, message, this.Packet.MessageId, this.Packet.RpcId);
+            this.Session.Send(this.Channel, inNetComponent.OutNetMessage, this.Packet.MessageId, this.Packet.RpcId);
             this.Log(LogLevel.Debug, "{OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }

@@ -6,7 +6,7 @@ namespace H6Game.Base
 {
     public class ValueObject<T>
     {
-        private Dictionary<TypeCode, ValueObject<T>> ValueTypes = new Dictionary<TypeCode, ValueObject<T>>();
+        //private Dictionary<TypeCode, ValueObject<T>> ValueTypes = new Dictionary<TypeCode, ValueObject<T>>();
 
         public T Value;
 
@@ -15,17 +15,21 @@ namespace H6Game.Base
         //免GC装箱
         public ValueObject<T> GetValue(T value)
         {
-            lock (this)
-            {
-                var code = Type.GetTypeCode(value.GetType());
-                if (!ValueTypes.TryGetValue(code, out ValueObject<T> valueObj))
-                {
-                    valueObj = new ValueObject<T>();
-                    ValueTypes[code] = valueObj;
-                }
-                valueObj.Value = value;
-                return valueObj;
-            }
+            this.Value = value;
+            return this;
+
+            //lock (this)
+            //{
+            //    //var code = Type.GetTypeCode(value.GetType());
+            //    //if (!ValueTypes.TryGetValue(code, out ValueObject<T> valueObj))
+            //    //{
+            //    //    valueObj = new ValueObject<T>();
+            //    //    ValueTypes[code] = valueObj;
+            //    //}
+            //    //valueObj.Value = value;
+            //    this.Value = value;
+            //    return this;
+            //}
         }
     }
 }
