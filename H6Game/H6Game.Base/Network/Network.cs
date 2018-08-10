@@ -6,7 +6,7 @@ namespace H6Game.Base
     /// <summary>
     /// 消息发送处理类
     /// </summary>
-    public class Network : IDisposable
+    public sealed class Network : IDisposable
     {
         public ANetChannel Channel { get;}
         public ANetService NetService { get;}
