@@ -45,8 +45,11 @@ namespace TestDistributed
 
                 inNetComponent.CallMessage<TestMessage, TestMessage>(session.ConnectChannel, send, (int)MessageCMD.TestCMD1,(m)=> 
                 {
+                    if (m == null)
+                        return;
+
                     Count++;
-                    size += m.ToJson().Length;
+                    size += 50;
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
