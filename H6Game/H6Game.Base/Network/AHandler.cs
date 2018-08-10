@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using H6Game.Base;
 
 namespace H6Game.Base
 {
@@ -28,14 +26,13 @@ namespace H6Game.Base
             }
         }
 
-        public override void OnReceive(Session session, ANetChannel channel)
+        public override void OnReceive(Network network)
         {
             try
             {
-                var packet = channel.RecvParser.Packet;
-                if (packet.TryGetMessage(out Message message))
+                if (network.RecvPacket.TryGetMessage(out Message message))
                 {
-                    Handler(message);
+                    Handler(network, message);
                     return;
                 }
 
@@ -43,7 +40,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Error, "Receive", $"Packet:{this.Packet.ToJson()}");
+                this.Log(LogLevel.Error, "Receive", $"Packet:{network.RecvPacket.ToJson()}");
                 this.Log(LogLevel.Error, "Receive", e.ToString());
                 throw e;
             }
@@ -53,50 +50,30 @@ namespace H6Game.Base
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Handler(Message message);
+        protected abstract void Handler(Network network, Message message);
     }
 
     public abstract class AHandler : IHandler
     {
         /// <summary>
-        /// 网络会话管理对象
-        /// </summary>
-        protected Session Session { get; set; }
-
-        /// <summary>
-        /// 网络连接管道
-        /// </summary>
-        protected ANetChannel Channel { get; set; }
-
-        /// <summary>
-        /// 数据包
-        /// </summary>
-        protected Packet Packet { get; set; }
-
-        /// <summary>
         /// 返回数据约定类型
         /// </summary>
         public abstract Type ResponseType { get; }
 
-        public void Receive(Session session, ANetChannel channel)
+        /// <summary>
+        /// 接收处理
+        /// </summary>
+        /// <param name="network"></param>
+        public void Receive(Network network)
         {
-            var packet = channel.RecvParser.Packet;
-            this.Session = session;
-            this.Channel = channel;
-            this.Packet = channel.RecvParser.Packet;
-
-            OnReceive(session, channel);
-
-            this.Session = null;
-            this.Channel = null;
+            OnReceive(network);
         }
-
 
         /// <summary>
         /// 接收处理接口
         /// </summary>
         /// <param name="session"></param>
         /// <param name="channel"></param>
-        public abstract void OnReceive(Session session, ANetChannel channel);
+        public abstract void OnReceive(Network network);
     }
 }

@@ -7,7 +7,7 @@ namespace H6Game.Base.Base.Message
     [HandlerCMD(MessageCMD.AddInServer)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
     {
-        protected override void Handler(NetEndPointMessage message)
+        protected override void Handler(Network network, NetEndPointMessage message)
         {          
             var inNetComponent = SinglePool.Get<InNetComponent>();
 
@@ -17,24 +17,19 @@ namespace H6Game.Base.Base.Message
             inNetComponent.AddSession(message);
             if (inNetComponent.IsCenterServer)
             {
-                this.BroadcastConnection(message, (int)MessageCMD.AddInServer);
+                network.Broadcast(message, (int)MessageCMD.AddInServer);
                 this.Log(LogLevel.Debug, "DistributedDispatcher", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
             }
-        }
-
-        private void BroadcastConnection(NetEndPointMessage message, int messageCmd)
-        {
-            this.Session.Broadcast(message, messageCmd);
         }
     }
 
     [HandlerCMD(MessageCMD.GetOutServer)]
     public class OutNetMessageSync : AHandler<string>
     {
-        protected override void Handler(string message)
+        protected override void Handler(Network network, string message)
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
-            this.Session.Send(this.Channel, inNetComponent.OutNetMessage, this.Packet.MessageId, this.Packet.RpcId);
+            network.RpcCallBack(inNetComponent.OutNetMessage);
             this.Log(LogLevel.Debug, "{OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }

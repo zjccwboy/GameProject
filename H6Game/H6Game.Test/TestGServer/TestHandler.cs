@@ -11,11 +11,9 @@ namespace TestGServer
     [H6Game.Message.HandlerCMD(1024)]
     public class TestHandler : AHandler<TestMessage>
     {
-        protected override void Handler(TestMessage message)
+        protected override void Handler(Network network, TestMessage message)
         {
-            //LogRecord.Log(LogLevel.Notice, $"{this.GetType()}/Handler", message.ToJson());
-            ///CallBack(message.ToBytes());
-            this.Session.Send(this.Channel, message, this.Packet.MessageId, this.Packet.RpcId);
+            network.RpcCallBack(message);
         }
     }
 

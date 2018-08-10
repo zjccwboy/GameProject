@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace H6Game.Base
@@ -7,7 +8,7 @@ namespace H6Game.Base
     /// <summary>
     /// 消息发送处理类
     /// </summary>
-    public class NetWork
+    public class Network
     {
         public ANetChannel Channel { get;}
         public ANetService NetService { get;}
@@ -15,13 +16,17 @@ namespace H6Game.Base
         public Packet SendPacket { get { return this.Channel.SendParser.Packet; } }
         public Packet RecvPacket { get { return this.Channel.RecvParser.Packet; } }
 
-        public NetWork(Session session, ANetService netService, ANetChannel channel)
+        public Network(Session session, ANetService netService, ANetChannel channel)
         {
             this.Session = session;
             this.NetService = netService;
             this.Channel = channel;
         }
 
-
+        public static Session CreateSession(IPEndPoint endPoint, ProtocalType protocalType)
+        {
+            var session = new Session(endPoint, protocalType);
+            return session;
+        }
     }
 }

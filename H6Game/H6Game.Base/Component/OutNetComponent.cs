@@ -57,7 +57,7 @@ namespace H6Game.Base
             {
                 ConnectSession.Dispose();
             }
-            ConnectSession = new Session(endPoint, ProtocalType.Kcp);
+            ConnectSession = Network.CreateSession(endPoint, ProtocalType.Kcp);
             ConnectSession.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
             ConnectSession.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
             ConnectSession.Connect();

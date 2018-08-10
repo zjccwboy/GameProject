@@ -5,19 +5,19 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发给所有订阅MessageCmd的Hadler类
     /// </summary>
-    public class MessageDispatcher
+    public class NetworkDispatcher
     {
         private ANetChannel Channel { get;}
         private ANetService NetService { get;}
         private Session Session { get;}
-        private NetWork NetWork { get;}
+        public Network Network { get;}
 
-        public MessageDispatcher(Session session, ANetService netService, ANetChannel channel)
+        public NetworkDispatcher(Session session, ANetService netService, ANetChannel channel)
         {
             this.Session = session;
             this.NetService = netService;
             this.Channel = channel;
-            this.NetWork = new NetWork(this.Session, this.NetService, this.Channel);
+            this.Network = new Network(this.Session, this.NetService, this.Channel);
         }
 
         public void DoReceive(Packet packet)
@@ -25,7 +25,7 @@ namespace H6Game.Base
             try
             {
                 var handler = HandlerMSGFactory.Get(packet.MessageId);
-                handler.Receive(this.Session, this.Channel);
+                handler.Receive(this.Network);
             }
             catch (Exception e)
             {
