@@ -527,6 +527,24 @@ public static class NetworkHelper
     /// 发送Rpc请求
     /// </summary>
     /// <param name="network">网络类</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    /// <param name="isCompress">是否压缩数据包</param>
+    /// <param name="isEncrypt">是否加密数据包</param>
+    public static void RpcCall(this Network network, Action<Packet> notificationAction
+        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, null, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
@@ -778,8 +796,8 @@ public static class NetworkHelper
     /// <summary>
     /// RPC请求，有GC不建议使用
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <typeparam name="K"></typeparam>
+    /// <typeparam name="Rquest"></typeparam>
+    /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="isCompress"></param>
@@ -790,6 +808,33 @@ public static class NetworkHelper
     {
         var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
         network.RpcCall(data, (p) =>
+        {
+            Tuple<Response, bool> tuple;
+            if (p.TryRead(out Response response))
+            {
+                tuple = new Tuple<Response, bool>(response, true);
+            }
+            else
+            {
+                tuple = new Tuple<Response, bool>(response, false);
+            }
+            tcs.TrySetResult(tuple);
+        }, messageCmd);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="messageCmd"></param>
+    /// <param name="isCompress"></param>
+    /// <param name="isEncrypt"></param>
+    /// <returns></returns>
+    public static Task<Tuple<Response, bool>> CallMessage<Response>(this Network network, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+    {
+        var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
+        network.RpcCall((p) =>
         {
             Tuple<Response, bool> tuple;
             if (p.TryRead(out Response response))

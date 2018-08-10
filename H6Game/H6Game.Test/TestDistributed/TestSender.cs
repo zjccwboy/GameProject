@@ -30,12 +30,12 @@ namespace TestDistributed
             if (inNetComponent.IsCenterServer)
                 return;
 
-            var sessions = inNetComponent.ConnectSessions;
+            var networks = inNetComponent.InConnNets;
 
-            if (!sessions.Any())
+            if (!networks.Any())
                 return;
 
-            foreach (var session in sessions)
+            foreach (var network in networks)
             {
                 var send = new TestMessage
                 {
@@ -43,7 +43,7 @@ namespace TestDistributed
                     Message = "MessageMessageMessageMessage"
                 };
 
-                inNetComponent.CallMessage<TestMessage, TestMessage>(session.ConnectChannel, send, (int)MessageCMD.TestCMD1,(m)=> 
+                network.RpcCall(send, (m) =>
                 {
                     if (m == null)
                         return;
@@ -57,7 +57,7 @@ namespace TestDistributed
                         Count = 0;
                         size = 0;
                     }
-                });
+                },(int)MessageCMD.TestCMD1);
             }
         }
     }

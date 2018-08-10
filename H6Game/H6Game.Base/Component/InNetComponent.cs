@@ -17,11 +17,29 @@ namespace H6Game.Base
         private EndPointEntity DefaultCenterEndPoint;
         private readonly ConcurrentDictionary<int, Session> InConnectSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Session> DisconnectSessions = new ConcurrentDictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Network> InConnectNetworks = new ConcurrentDictionary<int, Network>();
+        private readonly ConcurrentDictionary<int, Network> InAcceptNetworks = new ConcurrentDictionary<int, Network>();
+        private readonly ConcurrentDictionary<int, Network> OuAcceptNetworks = new ConcurrentDictionary<int, Network>();
+
         private Session InAcceptSession;
         private Session OutAcceptSession;
         private Session CenterConnectSession;
 
-        public IEnumerable<Session> ConnectSessions { get { return this.InConnectSessions.Values; } }
+        /// <summary>
+        /// 内网所有客户端连接网络对象集合
+        /// </summary>
+        public IEnumerable<Network> InConnNets { get { return InConnectNetworks.Values; } }
+
+        /// <summary>
+        /// 内网服务端所有监听连接网络对象集合
+        /// </summary>
+        public IEnumerable<Network> InAccNets { get { return InAcceptNetworks.Values; } }
+
+        /// <summary>
+        /// 外网服务端所有监听连接网络对象集合
+        /// </summary>
+        public IEnumerable<Network> OuAccNets { get { return OuAcceptNetworks.Values; } }
+
         public NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
         public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
@@ -66,55 +84,6 @@ namespace H6Game.Base
             }
         }
 
-        /// <summary>
-        /// RPC请求
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        /// <returns></returns>
-        public Task<T> CallMessage<T>(ANetChannel channel, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
-            where T : class
-        {
-            var tcs = new TaskCompletionSource<T>();
-            channel.Session.Subscribe(channel, data, (p) =>
-            {
-                var response = p.Read<T>();
-                if (response == null)
-                {
-                    tcs.TrySetResult(default);
-                    return;
-                }
-                tcs.TrySetResult(response);
-            }, messageCmd);
-            return tcs.Task;
-        }
-
-        /// <summary>
-        /// RPC请求
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="P"></typeparam>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="notificationAction"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        public void CallMessage<T,P>(ANetChannel channel, T data, int messageCmd
-            , Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
-            where T : class
-        {
-            channel.Session.Subscribe(channel, data, (p) =>
-            {
-                var response = p.Read<P>();
-                notificationAction(response);
-            }, messageCmd);
-        }
-
         public void AddSession(NetEndPointMessage message)
         {
             if (Config.IsCenterServer)
@@ -143,8 +112,15 @@ namespace H6Game.Base
                 throw new Exception($"服务端口被占用.");
             }
 
+            session.OnServerConnected = (c) =>
+            {
+                InAcceptNetworks.TryAdd(c.Id, c.Handler.Network);
+            };
+
             session.OnServerDisconnected = (c) =>
             {
+                InAcceptNetworks.TryRemove(c.Id, out Network network);
+
                 if (this.InNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage inMessage))
                 {
                     this.InNetMapManager.Remove(inMessage);
@@ -163,6 +139,9 @@ namespace H6Game.Base
             var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
                 throw new Exception($"服务端口被占用.");
+
+            session.OnServerConnected = (c) =>{ OuAcceptNetworks.TryAdd(c.Id, c.Handler.Network); };
+            session.OnServerDisconnected = (c) => { OuAcceptNetworks.TryRemove(c.Id, out Network network); };
 
             this.OutAcceptSession = session;
             LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleOutAccept", $"监听外网端口:{message.Port}成功.");
@@ -199,8 +178,13 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    var remoteOutNet = await this.CallMessage<NetEndPointMessage>(c, null, (int)MessageCMD.GetOutServer);
-                    this.OutNetMapManager.Add(c, remoteOutNet);
+                    InConnectNetworks.TryAdd(c.Id, c.Handler.Network);
+
+                    var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServer);
+                    if (tuple.Item2)
+                    {
+                        this.OutNetMapManager.Add(c, tuple.Item1);
+                    }
                 }
 
                 SendToCenter(localMessage, (int)MessageCMD.AddInServer);
@@ -214,6 +198,8 @@ namespace H6Game.Base
                     LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
+
+                InConnectNetworks.TryRemove(c.Id, out Network network);
 
                 if (this.InConnectSessions.TryRemove(hashCode, out Session oldSession))
                     this.DisconnectSessions[hashCode] = oldSession;
