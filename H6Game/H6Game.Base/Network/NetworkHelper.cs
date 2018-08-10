@@ -283,6 +283,21 @@ public static class NetworkHelper
     /// 发送消息
     /// </summary>
     /// <param name="network">网络类</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息指令</param>
+    /// <param name="isCompress">是否压缩数据包</param>
+    /// <param name="isEncrypt">是否对数据包加密</param>
+    public static void Send(this Network network, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, null, messageCmd, 0, actorId, isCompress, isEncrypt);
+    }
+
+    /// <summary>
+    /// 发送消息
+    /// </summary>
+    /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
     /// <param name="actorId">Actor消息指令</param>
@@ -871,6 +886,20 @@ public static class NetworkHelper
     /// 给所有客户端广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    /// <param name="isCompress"></param>
+    /// <param name="isEncrypt"></param>
+    public static void Broadcast(this Network network, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    {
+        var session = network.Session;
+        session.Broadcast(null, messageCmd, 0, actorId, isCompress, isEncrypt);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
@@ -1079,6 +1108,23 @@ public static class NetworkHelper
         foreach (var net in networks)
         {
             net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    /// <param name="isCompress"></param>
+    /// <param name="isEncrypt"></param>
+    public static void Broadcast(this IEnumerable<Network> networks
+        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(messageCmd, actorId, isCompress, isEncrypt);
         }
     }
 
