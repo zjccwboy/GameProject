@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
+﻿using System.Net;
+using System;
 
 namespace H6Game.Base
 {
     /// <summary>
     /// 消息发送处理类
     /// </summary>
-    public class Network
+    public class Network : IDisposable
     {
         public ANetChannel Channel { get;}
         public ANetService NetService { get;}
@@ -23,10 +21,20 @@ namespace H6Game.Base
             this.Channel = channel;
         }
 
+        public void Update()
+        {
+            Session.Update();
+        }
+
         public static Session CreateSession(IPEndPoint endPoint, ProtocalType protocalType)
         {
             var session = new Session(endPoint, protocalType);
             return session;
+        }
+
+        public void Dispose()
+        {
+            Session.Dispose();
         }
     }
 }

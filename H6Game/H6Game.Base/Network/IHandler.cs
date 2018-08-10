@@ -1,5 +1,4 @@
-﻿using H6Game.Message;
-using System;
+﻿using System;
 
 namespace H6Game.Base
 {

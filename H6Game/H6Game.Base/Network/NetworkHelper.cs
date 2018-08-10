@@ -1,7 +1,6 @@
 ﻿using H6Game.Base;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 public static class NetworkHelper
@@ -780,25 +779,26 @@ public static class NetworkHelper
     /// RPC请求，有GC不建议使用
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <typeparam name="K"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="isCompress"></param>
     /// <param name="isEncrypt"></param>
     /// <returns></returns>
-    public static Task<Tuple<T,bool>> CallMessage<T>(this Network network, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
-        where T : class
+    public static Task<Tuple<Response, bool>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+        where Rquest : class
     {
-        var tcs = new TaskCompletionSource<Tuple<T, bool>>();
+        var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
         network.RpcCall(data, (p) =>
         {
-            Tuple<T, bool> tuple;
-            if (p.TryRead(out T response))
+            Tuple<Response, bool> tuple;
+            if (p.TryRead(out Response response))
             {
-                tuple = new Tuple<T, bool>(response, true);
+                tuple = new Tuple<Response, bool>(response, true);
             }
             else
             {
-                tuple = new Tuple<T, bool>(response, false);
+                tuple = new Tuple<Response, bool>(response, false);
             }
             tcs.TrySetResult(tuple);
         }, messageCmd);

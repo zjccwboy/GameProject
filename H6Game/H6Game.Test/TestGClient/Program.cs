@@ -24,15 +24,19 @@ namespace TestGClient
 
         static async void TestCallBack()
         {
+            var network = Game.Get<OutNetComponent>().Network;
+            if (network == null)
+                return;
+
             var send = new TestMessage
             {
                 Actor = 1020201,
                 Message = "我是客户端",
             };
 
-            var result = await Game.Get<OutNetComponent>().Network.CallMessage(send, 1024);
-            if(result != null)
-                LogRecord.Log(LogLevel.Info, "CallBack", result.ToJson());
+            var result = await network.CallMessage<TestMessage, TestMessage>(send, 1024);
+            if(result.Item2)
+                LogRecord.Log(LogLevel.Info, "CallBack", result.Item1.ToJson());
         }
     }
 

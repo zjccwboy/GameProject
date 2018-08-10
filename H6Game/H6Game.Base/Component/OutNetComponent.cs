@@ -10,7 +10,16 @@ namespace H6Game.Base
         private SysConfig Config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private Session ConnectSession;
         private IPEndPoint LoginServerEndPoint;
-        public Network Network { get { return this.ConnectSession.ConnectChannel.Handler.Network; } }
+        public Network Network
+        {
+            get
+            {
+                if (this.ConnectSession.ConnectChannel.Handler == null)
+                    return null;
+
+                return this.ConnectSession.ConnectChannel.Handler.Network;
+            }
+        }
 
         public bool IsConnected { get; private set; }
 
