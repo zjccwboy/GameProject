@@ -137,7 +137,7 @@ namespace H6Game.Base
 
         private void HandleInAccept(NetEndPointMessage message)
         {
-            var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
+            var session = Network1.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
             if (!session.Accept())
             {
                 throw new Exception($"服务端口被占用.");
@@ -160,7 +160,7 @@ namespace H6Game.Base
 
         private void HandleOutAccept(NetEndPointMessage message)
         {
-            var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Kcp);
+            var session = Network1.CreateSession(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
                 throw new Exception($"服务端口被占用.");
 
@@ -181,7 +181,7 @@ namespace H6Game.Base
             if(message == this.Config.GetInMessage())
                 return;
 
-            var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
+            var session = Network1.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
 
             if (message == this.Config.GetCenterMessage())
                 this.CenterConnectSession = session;

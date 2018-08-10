@@ -11,7 +11,7 @@ namespace TestGServer
     [H6Game.Message.HandlerCMD(1024)]
     public class TestHandler : AHandler<TestMessage>
     {
-        protected override void Handler(Network network, TestMessage message)
+        protected override void Handler(Network1 network, TestMessage message)
         {
             network.RpcCallBack(message);
         }

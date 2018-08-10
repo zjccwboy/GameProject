@@ -7,7 +7,7 @@ namespace H6Game.Base.Base.Message
     [HandlerCMD(MessageCMD.AddInServer)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
     {
-        protected override void Handler(Network network, NetEndPointMessage message)
+        protected override void Handler(Network1 network, NetEndPointMessage message)
         {          
             var inNetComponent = SinglePool.Get<InNetComponent>();
 
@@ -26,7 +26,7 @@ namespace H6Game.Base.Base.Message
     [HandlerCMD(MessageCMD.GetOutServer)]
     public class OutNetMessageSync : AHandler<string>
     {
-        protected override void Handler(Network network, string message)
+        protected override void Handler(Network1 network, string message)
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
