@@ -3,13 +3,22 @@
 namespace H6Game.Base
 {
     /// <summary>
-    /// 消息分发
+    /// 消息分发给所有订阅MessageCmd的Hadler类
     /// </summary>
     public class MessageDispatcher
     {
-        public ANetChannel Channel { get; set; }
-        public ANetService NetService { get; set; }
-        public Session Session { get; set; }
+        private ANetChannel Channel { get;}
+        private ANetService NetService { get;}
+        private Session Session { get;}
+        private NetWork NetWork { get;}
+
+        public MessageDispatcher(Session session, ANetService netService, ANetChannel channel)
+        {
+            this.Session = session;
+            this.NetService = netService;
+            this.Channel = channel;
+            this.NetWork = new NetWork(this.Session, this.NetService, this.Channel);
+        }
 
         public void DoReceive(Packet packet)
         {

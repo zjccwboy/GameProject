@@ -216,12 +216,7 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new MessageDispatcher
-                {
-                    Session = this.Session,
-                    Channel = channel,
-                    NetService = this,
-                };
+                channel.Handler = new MessageDispatcher(this.Session, this, channel);
                 AddChannel(channel);
                 channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.OnReceive += channel.Handler.DoReceive;
@@ -243,12 +238,7 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new MessageDispatcher
-                {
-                    Session = this.Session,
-                    Channel = channel,
-                    NetService = this,
-                };
+                channel.Handler = new MessageDispatcher(this.Session, this, channel);
                 this.AddChannel(channel);
                 channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.OnReceive += channel.Handler.DoReceive;
