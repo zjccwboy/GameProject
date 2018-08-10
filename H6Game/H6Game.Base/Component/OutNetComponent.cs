@@ -10,6 +10,7 @@ namespace H6Game.Base
         private SysConfig Config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
         private Session ConnectSession;
         private IPEndPoint LoginServerEndPoint;
+        public Network Network { get { return this.ConnectSession.ConnectChannel.Handler.Network; } }
 
         public bool IsConnected { get; private set; }
 
@@ -29,26 +30,6 @@ namespace H6Game.Base
             {
                 ConnectSession.Update();
             }
-        }
-
-        /// <summary>
-        /// RPC请求
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <param name="messageCmd"></param>
-        /// <param name="isCompress"></param>
-        /// <param name="isEncrypt"></param>
-        /// <returns></returns>
-        public Task<T> CallMessage<T>(T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
-        {
-            var tcs = new TaskCompletionSource<T>();
-            this.ConnectSession.Subscribe(this.ConnectSession.ConnectChannel, data, (p) =>
-            {
-                var response = p.Read<T>();
-                tcs.TrySetResult(response);
-            }, messageCmd);
-            return tcs.Task;
         }
 
         private void Connecting(IPEndPoint endPoint)

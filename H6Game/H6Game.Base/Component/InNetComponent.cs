@@ -77,6 +77,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         /// <returns></returns>
         public Task<T> CallMessage<T>(ANetChannel channel, T data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+            where T : class
         {
             var tcs = new TaskCompletionSource<T>();
             channel.Session.Subscribe(channel, data, (p) =>
@@ -103,7 +104,9 @@ namespace H6Game.Base
         /// <param name="notificationAction"></param>
         /// <param name="isCompress"></param>
         /// <param name="isEncrypt"></param>
-        public void CallMessage<T,P>(ANetChannel channel, T data, int messageCmd, Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
+        public void CallMessage<T,P>(ANetChannel channel, T data, int messageCmd
+            , Action<P> notificationAction, bool isCompress = false, bool isEncrypt = false)
+            where T : class
         {
             channel.Session.Subscribe(channel, data, (p) =>
             {
@@ -222,7 +225,7 @@ namespace H6Game.Base
             session.Connect();
         }
 
-        private void SendToCenter<T>(T data, int messageCmd)
+        private void SendToCenter<T>(T data, int messageCmd) where T : class
         {
             this.CenterConnectSession.Broadcast(data, messageCmd);
         }

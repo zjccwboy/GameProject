@@ -30,7 +30,7 @@ namespace TestGClient
                 Message = "我是客户端",
             };
 
-            var result = await Game.Get<OutNetComponent>().CallMessage(send, 1024);
+            var result = await Game.Get<OutNetComponent>().Network.CallMessage(send, 1024);
             if(result != null)
                 LogRecord.Log(LogLevel.Info, "CallBack", result.ToJson());
         }

@@ -131,6 +131,7 @@ namespace H6Game.Base
         /// <param name="isCompress"></param>
         /// <param name="isEncrypt"></param>
         public void Send<T>(ANetChannel channel, T data, int messageCmd, int rpcId, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+            where T : class
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -411,7 +412,7 @@ namespace H6Game.Base
         /// <param name="isCompress"></param>
         /// <param name="isEncrypt"></param>
         public void Subscribe<T>(ANetChannel channel, T data, Action<Packet> notificationAction
-            , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+            , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false) where T:class
         {
             if (!channel.Connected)
             {
@@ -819,6 +820,7 @@ namespace H6Game.Base
         /// <param name="isCompress"></param>
         /// <param name="isEncrypt"></param>
         public void Broadcast<T>(T data, int messageCmd, int rpcId = 0, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+            where T : class
         {
             var channels = this.NService.Channels.Values;
             Broadcast(channels, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
@@ -1032,6 +1034,7 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         public void Broadcast<T>(IEnumerable<ANetChannel> channels ,T data
             , int messageCmd, int rpcId = 0, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+            where T : class
         {
             foreach (var channel in channels)
             {

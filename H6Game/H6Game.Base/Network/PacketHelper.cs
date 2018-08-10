@@ -5,7 +5,7 @@ using System.Text;
 
 public static class PacketHelper
 {
-    public static void WriteTo<T>(this Packet packet, T obj)
+    public static void WriteTo<T>(this Packet packet, T obj) where T : class
     {
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
