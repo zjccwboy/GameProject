@@ -181,7 +181,10 @@ public static class PacketHelper
             var objVal = obj as ValueObject<T>;
             return objVal.Value;
         }
-        return Serializer.Deserialize<T>(packet.BodyStream);
+
+        var result = Serializer.Deserialize<T>(packet.BodyStream);
+        packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+        return result;
     }
 
     public static bool TryRead<T>(this Packet packet, out T data)

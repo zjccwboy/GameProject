@@ -220,11 +220,6 @@ namespace H6Game.Base
             this.CenterConnectSession.Broadcast(data, messageCmd);
         }
 
-        private bool IsSysMessage(int messageCmd)
-        {
-            return messageCmd == (int)MessageCMD.AddInServer;
-        }
-
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)
         {
             var ip = IPAddress.Parse(message.IP);

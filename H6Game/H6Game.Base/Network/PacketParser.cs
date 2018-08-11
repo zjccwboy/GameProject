@@ -212,7 +212,6 @@ namespace H6Game.Base
                             var needSize = packetSize - readLength;
                             if (Buffer.DataSize >= needSize)
                             {
-                                Packet.BodyStream.Seek(0, SeekOrigin.Begin);
                                 if (Buffer.FirstDataSize >= needSize)
                                 {
                                     Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, needSize);
@@ -234,7 +233,6 @@ namespace H6Game.Base
                                         readLength += count;
                                     }
                                 }
-                                Packet.BodyStream.Seek(0, SeekOrigin.Begin);
                             }
                             break;
                         }                        
@@ -251,6 +249,8 @@ namespace H6Game.Base
 
                 if (isOk)
                 {
+                    Packet.BodyStream.Seek(0, SeekOrigin.Begin);
+                    Packet.BodyStream.SetLength(packetSize - HeadSize);
                     state = ParseState.Size;
                     break;
                 }

@@ -202,7 +202,11 @@ namespace H6Game.Base
                 NetSocket.Close();
                 NetSocket.Dispose();
                 NetSocket = null;
+            }
+            catch { }
 
+            try
+            {
                 this.InArgs.Dispose();
                 this.OutArgs.Dispose();
             }
