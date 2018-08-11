@@ -13,7 +13,7 @@ namespace H6Game.Base
 
     public interface IHandler
     {
-        Type ResponseType { get; }
+        Type MessageType { get; }
         void Receive(Network network);
     }
 }

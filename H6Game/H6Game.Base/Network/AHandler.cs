@@ -2,13 +2,6 @@
 
 namespace H6Game.Base
 {
-    public class Condition
-    {
-        public bool IsRpc;
-        public bool IsCompress;
-        public bool IsEncrypt;
-    }
-
     /// <summary>
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
@@ -18,7 +11,7 @@ namespace H6Game.Base
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public override Type ResponseType
+        public new Type MessageType
         {
             get
             {
@@ -58,7 +51,7 @@ namespace H6Game.Base
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public abstract Type ResponseType { get; }
+        public Type MessageType { get { return null; } }
 
         /// <summary>
         /// 接收处理

@@ -23,7 +23,7 @@ namespace H6Game.Base
                 foreach (var cmd in cmds)
                 {
                     HandlerDictionary[cmd] = dispatcher;
-                    MeesageCmdDictionary[cmd] = dispatcher.ResponseType;
+                    MeesageCmdDictionary[cmd] = dispatcher.MessageType;
                 }
             }
         }

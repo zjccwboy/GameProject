@@ -194,8 +194,8 @@ namespace H6Game.Base
 
             try
             {
-                SendParser.Clear();
-                RecvParser.Clear();
+                //SendParser.Clear();
+                //RecvParser.Clear();
                 NetSocket.Close();
                 NetSocket.Dispose();
                 NetSocket = null;
