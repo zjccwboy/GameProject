@@ -10,7 +10,7 @@ namespace H6Game.Base
     public class KcpService : ANetService
     {
         private readonly PacketParser ConnectParser = new PacketParser(17);
-        private IPEndPoint EndPoint;
+        private readonly IPEndPoint EndPoint;
         private EndPoint ReuseEndPoint = new IPEndPoint(IPAddress.Any, 0);
         private readonly byte[] ReuseRecvBytes = new byte[1400];
 
@@ -185,8 +185,10 @@ namespace H6Game.Base
             }
             else
             {
-                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.MessageId);
-                channel.OnConnect = HandleAccept;
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.MessageId)
+                {
+                    OnConnect = HandleAccept
+                };
             }
 
             channel.InitKcp();

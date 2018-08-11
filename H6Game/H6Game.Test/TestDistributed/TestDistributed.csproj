@@ -30,6 +30,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="H6Game.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -38,9 +41,6 @@
     </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Uitls">
-      <HintPath>..\..\H6Game.Uitls\bin\Debug\netstandard2.0\H6Game.Uitls.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>

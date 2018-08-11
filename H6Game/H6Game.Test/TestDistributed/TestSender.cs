@@ -40,8 +40,10 @@ namespace TestDistributed
                 var send = new TestMessage
                 {
                     ActorId = 10001,
-                    Message = "MessageMessageMessageMessage"
+                    Message = "MessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessage"
                 };
+
+                //var size = send.ToJson().Length;
 
                 network.RpcCall(send, (m) =>
                 {
@@ -49,7 +51,7 @@ namespace TestDistributed
                         return;
 
                     Count++;
-                    size += 50;
+                    size += 140;
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");

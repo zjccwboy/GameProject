@@ -30,7 +30,7 @@ namespace H6Game.Base
     {
         private Kcp Kcp;
         private byte[] CacheBytes;
-        private int MaxPSize = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
+        private readonly int MaxPSize = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
         private uint LastCheckTime = TimeUitls.Now();
 
         /// <summary>

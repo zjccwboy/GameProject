@@ -23,8 +23,7 @@ namespace H6Game.Base
         {
             while (true)
             {
-                Action action;
-                if (!this.ActionQueue.TryDequeue(out action))
+                if (!this.ActionQueue.TryDequeue(out Action action))
                     return;
 
                 action();

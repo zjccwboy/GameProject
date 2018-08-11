@@ -218,7 +218,7 @@ public static class PacketHelper
         }
     }
 
-    private static Type SType = typeof(string);
+    private static readonly Type SType = typeof(string);
     private static bool TryGetValueType(Packet packet, Type type, out object value)
     {
         var bytes = packet.BodyStream.GetBuffer();

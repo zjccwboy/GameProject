@@ -1,8 +1,6 @@
 ﻿using H6Game.Message;
-using System;
-using System.Collections.Generic;
 
-namespace H6Game.Base.Base.Message
+namespace H6Game.Base
 {
     [HandlerCMD(MessageCMD.AddInServer)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
@@ -18,7 +16,7 @@ namespace H6Game.Base.Base.Message
             if (inNetComponent.IsCenterServer)
             {
                 network.Broadcast(message, (int)MessageCMD.AddInServer);
-                this.Log(LogLevel.Debug, "DistributedDispatcher", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
+                this.Log(LogLevel.Debug, "Handler", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
             }
         }
     }
@@ -30,7 +28,7 @@ namespace H6Game.Base.Base.Message
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
-            this.Log(LogLevel.Debug, "{OutNetMessageTrans", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
+            this.Log(LogLevel.Debug, "{Handler", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }
 

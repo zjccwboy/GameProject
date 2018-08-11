@@ -6,7 +6,7 @@ using System;
 /// </summary>
 public static class DataConvert
 {
-    private static Type SType = typeof(string);
+    private static readonly Type SType = typeof(string);
     private readonly static JsonSerializerSettings JsonSettings = new JsonSerializerSettings();
     static DataConvert()
     {

@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public class TcpService : ANetService
     {
-        private IPEndPoint EndPoint;
+        private readonly IPEndPoint EndPoint;
         private readonly SocketAsyncEventArgs InnArgs = new SocketAsyncEventArgs();
 
         /// <summary>
@@ -94,8 +94,10 @@ namespace H6Game.Base
                 this.Log(LogLevel.Warn, "OnAcceptComplete", $"接受连接发生错误.");
                 return;
             }
-            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this);
-            channel.RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint;
+            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
+            {
+                RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
+            };
             HandleAccept(channel);
 
             this.Accept();
@@ -109,8 +111,10 @@ namespace H6Game.Base
         {
             if(this.ClientChannel == null)
             {
-                ClientChannel = new TcpChannel(EndPoint, this);
-                ClientChannel.OnConnect = HandleConnect;
+                ClientChannel = new TcpChannel(EndPoint, this)
+                {
+                    OnConnect = HandleConnect
+                };
                 ClientChannel.StartConnecting();
             }
             return ClientChannel;

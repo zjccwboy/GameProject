@@ -30,8 +30,8 @@ namespace H6Game.Base
     public class Session : IDisposable
     {
         private ANetService NService;
-        private IPEndPoint EPoint;
-        private ProtocalType PType;
+        private readonly IPEndPoint EPoint;
+        private readonly ProtocalType PType;
 
         /// <summary>
         /// 客户端连接管道

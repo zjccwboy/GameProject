@@ -10,6 +10,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>7.3</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;SERVER;WINDOWS</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />

@@ -12,7 +12,7 @@ namespace H6Game.Base
         /// <summary>
         /// 缓冲区块大小
         /// </summary>
-        private int BlockSize = 8192;
+        private int BlockSize { get; } = 8192;
 
         /// <summary>
         /// 缓冲区队列队列
