@@ -1,4 +1,5 @@
 ﻿using H6Game.Message;
+using System;
 
 namespace H6Game.Base
 {
@@ -28,7 +29,18 @@ namespace H6Game.Base
         {
             var inNetComponent = SinglePool.Get<InNetComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
-            this.Log(LogLevel.Debug, "{Handler", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
+            this.Log(LogLevel.Debug, "Handler", $"回发外网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
+        }
+    }
+
+    [HandlerCMD(MessageCMD.GetInServer)]
+    public class InNetMessageSync : AHandler<string>
+    {
+        protected override void Handler(Network network, string message)
+        {
+            var inNetComponent = SinglePool.Get<InNetComponent>();
+            network.RpcCallBack(inNetComponent.InNetMessage);
+            this.Log(LogLevel.Debug, "Handler", $"回发内网连接信息:{inNetComponent.OutNetMessage.ToJson()}");
         }
     }
 

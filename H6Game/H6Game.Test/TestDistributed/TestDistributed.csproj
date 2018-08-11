@@ -21,6 +21,7 @@
     <DefineConstants>TRACE;DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,7 +40,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Message">
+    <Reference Include="H6Game.Message, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

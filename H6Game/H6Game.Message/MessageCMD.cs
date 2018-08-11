@@ -18,6 +18,10 @@ namespace H6Game.Message
         /// 请求获取外网连接信息
         /// </summary>
         GetOutServer,
+        /// <summary>
+        /// 请求获取内网连接信息
+        /// </summary>
+        GetInServer,
         #endregion
 
         #region 游戏客户端交互消息指令 200

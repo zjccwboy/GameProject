@@ -21,22 +21,13 @@ namespace H6Game.Base
 
         public override void OnReceive(Network network)
         {
-            try
+            if (network.RecvPacket.TryGetMessage(out Message message))
             {
-                if (network.RecvPacket.TryGetMessage(out Message message))
-                {
-                    Handler(network, message);
-                    return;
-                }
+                Handler(network, message);
+                return;
+            }
 
-                throw new Exception("错误的消息分发.");
-            }
-            catch (Exception e)
-            {
-                this.Log(LogLevel.Error, "Receive", $"Packet:{network.RecvPacket.ToJson()}");
-                this.Log(LogLevel.Error, "Receive", e.ToString());
-                throw e;
-            }
+            throw new Exception("错误的消息分发.");
         }
 
         /// <summary>

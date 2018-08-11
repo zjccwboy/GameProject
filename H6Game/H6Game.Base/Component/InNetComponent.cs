@@ -40,6 +40,7 @@ namespace H6Game.Base
         /// </summary>
         public IEnumerable<Network> OuAccNets { get { return OuAcceptNetworks.Values; } }
 
+        public NetEndPointMessage InNetMessage { get { return this.Config.GetInMessage(); } }
         public NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
         public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
@@ -80,6 +81,9 @@ namespace H6Game.Base
 
             foreach (var connect in DisconnectSessions.Values)
             {
+                if (connect.ConnectChannel.Connected)
+                    continue;
+
                 connect.Update();
             }
         }
@@ -97,10 +101,6 @@ namespace H6Game.Base
             if (message == this.Config.GetCenterMessage())
                 return;
 
-            //如果存在就不再创建新的Session
-            if (this.InConnectSessions.ContainsKey(message.GetHashCode()))
-                return;
-
             Connecting(message);
         }
 
@@ -114,7 +114,7 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                InAcceptNetworks.TryAdd(c.Id, c.Handler.Network);
+                InAcceptNetworks.AddOrUpdate(c.Id, c.Handler.Network,(id, val)=> { return c.Handler.Network; });
             };
 
             session.OnServerDisconnected = (c) =>
@@ -140,7 +140,7 @@ namespace H6Game.Base
             if (!session.Accept())
                 throw new Exception($"服务端口:{message.Port}被占用.");
 
-            session.OnServerConnected = (c) =>{ OuAcceptNetworks.TryAdd(c.Id, c.Handler.Network); };
+            session.OnServerConnected = (c) =>{ OuAcceptNetworks.AddOrUpdate(c.Id, c.Handler.Network, (id, val)=> { return c.Handler.Network; }); };
             session.OnServerDisconnected = (c) => { OuAcceptNetworks.TryRemove(c.Id, out Network network); };
 
             this.OutAcceptSession = session;
@@ -149,15 +149,19 @@ namespace H6Game.Base
 
         private void Connecting(NetEndPointMessage message)
         {
-            if (Config.IsCenterServer)
-                return;
-
             var hashCode = message.GetHashCode();
             if (this.InConnectSessions.ContainsKey(hashCode))
                 return;
 
+            //如果存在就不再创建新的Session
+            if (this.DisconnectSessions.ContainsKey(hashCode))
+                return;
+
+            if (Config.IsCenterServer)
+                return;
+
             //不连接进程内的监听端口
-            if(message == this.Config.GetInMessage())
+            if (message == this.Config.GetInMessage())
                 return;
 
             var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
@@ -178,7 +182,7 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    InConnectNetworks.TryAdd(c.Id, c.Handler.Network);
+                    InConnectNetworks.AddOrUpdate(c.Id, c.Handler.Network, (a, val)=> { return c.Handler.Network; });
 
                     var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServer);
                     if (tuple.Item2)
