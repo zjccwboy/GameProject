@@ -63,8 +63,8 @@ namespace H6Game.Base
         /// <summary>
         /// 缓冲区对象
         /// </summary>
-        public BufferQueue Buffer { get; private set; }
-        public Packet Packet { get; private set; }
+        public BufferQueue Buffer { get; }
+        public Packet Packet { get; }
         public int BlockSize { get;} = 8192;
 
         private int readLength = 0;

@@ -52,7 +52,7 @@ namespace H6Game.Base
         /// <summary>
         /// 包头字节数组
         /// </summary>
-        public byte[] HeadBytes = new byte[PacketParser.HeadSize];
+        public byte[] HeadBytes { get; } = new byte[PacketParser.HeadSize];
 
         /// <summary>
         /// BodyStream
@@ -62,7 +62,7 @@ namespace H6Game.Base
         /// <summary>
         /// 解包缓冲区
         /// </summary>
-        private PacketParser Parser { get; set; }
+        private PacketParser Parser { get; }
 
         /// <summary>
         /// 构造函数

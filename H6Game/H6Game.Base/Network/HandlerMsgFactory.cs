@@ -8,8 +8,8 @@ namespace H6Game.Base
 {
     public static class HandlerMSGFactory
     {
-        private static Dictionary<int, IHandler> HandlerDictionary = new Dictionary<int, IHandler>();
-        private static Dictionary<int, Type> MeesageCmdDictionary = new Dictionary<int, Type>();
+        private static Dictionary<int, IHandler> HandlerDictionary { get; } = new Dictionary<int, IHandler>();
+        private static Dictionary<int, Type> MeesageCmdDictionary { get; } = new Dictionary<int, Type>();
 
         static HandlerMSGFactory()
         {

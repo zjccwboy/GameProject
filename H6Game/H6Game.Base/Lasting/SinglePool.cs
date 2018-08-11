@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// </summary>
     public static class SinglePool
     {
-        private static ConcurrentDictionary<Type, BaseComponent> TypeDictionary = new ConcurrentDictionary<Type, BaseComponent>();
+        private static ConcurrentDictionary<Type, BaseComponent> TypeDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
 
         public static T Get<T>() where T:BaseComponent
         {
