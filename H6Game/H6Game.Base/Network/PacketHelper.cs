@@ -1,10 +1,62 @@
 ﻿using H6Game.Base;
 using ProtoBuf;
 using System;
+using System.Net;
 using System.Text;
 
 public static class PacketHelper
 {
+
+    /// <summary>
+    /// 获取包头的字节数组
+    /// </summary>
+    /// <returns></returns>
+    public static byte[] GetHeadBytes(this Packet packet, int bodySize)
+    {
+        //写包大小
+        var packetSize = PacketParser.HeadSize + bodySize;
+        packetSize.WriteTo(packet.HeadBytes, 0);
+
+        packet.HeadBytes[4] = 0;
+        //写标志位
+        if (packet.IsHeartbeat)
+        {
+            packet.HeadBytes[4] |= 1;
+        }
+        if (packet.IsCompress)
+        {
+            packet.HeadBytes[4] |= 1 << 1;
+        }
+        if (packet.IsEncrypt)
+        {
+            packet.HeadBytes[4] |= 1 << 2;
+        }
+        if (packet.KcpProtocal > 0)
+        {
+            packet.HeadBytes[4] |= (byte)(packet.KcpProtocal << 4);
+        }
+
+        //写MessageId
+        packet.MessageId.WriteTo(packet.HeadBytes, 5);
+
+        //写RpcId
+        packet.RpcId.WriteTo(packet.HeadBytes, 9);
+
+        //写ActorId
+        packet.ActorId.WriteTo(packet.HeadBytes, 13);
+
+        return packet.HeadBytes;
+    }
+
+    public static void WriteTo(this int value, byte[] bytes, int offset)
+    {
+        var netIntVal = IPAddress.HostToNetworkOrder(Convert.ToInt32(value));
+        for (var i = 0; i < 4; i++)
+        {
+            bytes[i + offset] = (byte)(netIntVal >> i * 8);
+        }
+    }
+
     public static void WriteTo<T>(this Packet packet, T obj) where T : class
     {
         if (obj != default)
