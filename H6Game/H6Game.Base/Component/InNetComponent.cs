@@ -109,7 +109,7 @@ namespace H6Game.Base
             var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
             if (!session.Accept())
             {
-                throw new Exception($"服务端口被占用.");
+                throw new Exception($"服务端口:{message.Port}被占用.");
             }
 
             session.OnServerConnected = (c) =>
@@ -128,23 +128,23 @@ namespace H6Game.Base
             };
 
             this.InAcceptSession = session;
-            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"监听内网端口:{message.Port}成功.");
+            this.Log(LogLevel.Info, "HandleInAccept", $"监听内网端口:{message.Port}成功.");
 
             if (this.Config.IsCenterServer)
-                LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleInAccept", $"中心服务启动成功.");
+                this.Log(LogLevel.Info, "HandleInAccept", $"中心服务启动成功.");
         }
 
         private void HandleOutAccept(NetEndPointMessage message)
         {
             var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Kcp);
             if (!session.Accept())
-                throw new Exception($"服务端口被占用.");
+                throw new Exception($"服务端口:{message.Port}被占用.");
 
             session.OnServerConnected = (c) =>{ OuAcceptNetworks.TryAdd(c.Id, c.Handler.Network); };
             session.OnServerDisconnected = (c) => { OuAcceptNetworks.TryRemove(c.Id, out Network network); };
 
             this.OutAcceptSession = session;
-            LogRecord.Log(LogLevel.Info, $"{this.GetType()}/HandleOutAccept", $"监听外网端口:{message.Port}成功.");
+            this.Log(LogLevel.Info, "HandleOutAccept", $"监听外网端口:{message.Port}成功.");
         }
 
         private void Connecting(NetEndPointMessage message)
@@ -195,7 +195,7 @@ namespace H6Game.Base
             {
                 if (message == this.Config.GetCenterMessage())
                 {
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/ConnectToCenter", $"当前中心服务挂掉.");
+                    this.Log(LogLevel.Error, "ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
 
