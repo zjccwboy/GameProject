@@ -65,11 +65,11 @@ namespace H6Game.Base
             foreach (var type in handlerTypes)
             {
                 var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();
-                if (!type.IsAbstract)
-                {
-                    if (!attributes.Any())
-                        throw new Exception("Handler类型必须有HandlerCMDAttribute特性器指定订阅消息类型.");
-                }
+                if (type.IsAbstract)
+                    continue;
+
+                if (!attributes.Any())
+                    throw new Exception("AHandler或者AHandler<T>继承类中必须有HandlerCMDAttribute特性器指定订阅消息类型.");
 
                 var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c => c).Distinct().ToList();
                 var handler = (IHandler)Activator.CreateInstance(type);
