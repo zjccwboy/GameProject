@@ -8,49 +8,39 @@ namespace H6Game.Base
     public class OutNetComponent : BaseComponent
     {
         private SysConfig Config { get;} = SinglePool.Get<NetConfigComponent>().ConfigEntity;
-        private Session ConnectSession;
-        private IPEndPoint LoginServerEndPoint;
-        public Network Network
-        {
-            get
-            {
-                if (this.ConnectSession.ConnectChannel.Handler == null)
-                    return null;
 
-                return this.ConnectSession.ConnectChannel.Handler.Network;
-            }
-        }
-
+        public Network Network { get; private set; }
         public bool IsConnected { get; private set; }
-
-        public OutNetComponent()
-        {
-            this.LoginServerEndPoint = GetLoginServerEndPoint();
-        }
 
         public override void Start()
         {
-            this.Connecting(this.LoginServerEndPoint);
+            this.Connecting(GetLoginServerEndPoint());
         }
 
         public override void Update()
         {
-            if(ConnectSession != null)
+            if(Network != null)
             {
-                ConnectSession.Update();
+                Network.Update();
             }
+        }
+
+        public void ReConnect()
+        {
+            if (this.Network != null)
+                this.Network.Session.Dispose();
+
+            this.Network = null;
+
+            Connecting(GetLoginServerEndPoint());
         }
 
         private void Connecting(IPEndPoint endPoint)
         {
-            if(ConnectSession != null)
-            {
-                ConnectSession.Dispose();
-            }
-            ConnectSession = Network.CreateSession(endPoint, ProtocalType.Kcp);
-            ConnectSession.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
-            ConnectSession.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
-            ConnectSession.Connect();
+            this.Network = Network.CreateConnecting(endPoint, ProtocalType.Kcp);
+            this.Network.Session.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
+            this.Network.Session.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
+            this.Network.Session.Connect();
         }
 
         private IPEndPoint GetLoginServerEndPoint()

@@ -35,23 +35,21 @@ namespace TestDistributed
             if (!networks.Any())
                 return;
 
+            var send = new TestMessage
+            {
+                ActorId = 10001,
+                Message = "Message"
+            };
+
             foreach (var network in networks)
             {
-                var send = new TestMessage
-                {
-                    ActorId = 10001,
-                    Message = "MessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessageMessage"
-                };
-
-                //var size = send.ToJson().Length;
-
                 network.CallRpc(send, (m) =>
                 {
                     if (m == null)
                         return;
 
                     Count++;
-                    size += 140;
+                    size += 35;
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
