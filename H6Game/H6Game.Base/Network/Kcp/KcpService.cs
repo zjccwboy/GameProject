@@ -36,10 +36,12 @@ namespace H6Game.Base
                 this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 if (this.ServiceType == NetServiceType.Server)
                 {
+#if WINDOWS
                     uint IOC_IN = 0x80000000;
                     uint IOC_VENDOR = 0x18000000;
                     uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
                     this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+#endif
                 }
                 try
                 {
@@ -63,6 +65,12 @@ namespace H6Game.Base
             if(this.Acceptor == null)
             {
                 this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+#if WINDOWS
+                uint IOC_IN = 0x80000000;
+                uint IOC_VENDOR = 0x18000000;
+                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+                this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+#endif
                 this.ClientChannel = new KcpChannel(this.Acceptor, this.EndPoint, this, 1000);
                 this.ClientChannel.StartConnecting();
             }
@@ -109,7 +117,7 @@ namespace H6Game.Base
                 return;
             }
 
-            if (recvCount == 17)
+            if (recvCount == 21)
             {
                 //握手处理
                 ConnectParser.WriteBuffer(ReuseRecvBytes, 0, recvCount);

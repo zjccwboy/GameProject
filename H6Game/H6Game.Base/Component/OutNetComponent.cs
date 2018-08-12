@@ -10,7 +10,8 @@ namespace H6Game.Base
         private SysConfig Config { get;} = SinglePool.Get<NetConfigComponent>().ConfigEntity;
 
         public Network Network { get; private set; }
-        public bool IsConnected { get; private set; }
+
+        public bool IsConnected { get { return this.Network.Channel.Connected; } }
 
         public override void Start()
         {
@@ -38,9 +39,6 @@ namespace H6Game.Base
         private void Connecting(IPEndPoint endPoint)
         {
             this.Network = Network.CreateConnecting(endPoint, ProtocalType.Kcp);
-            this.Network.Session.OnClientConnected = (c) => { this.IsConnected = c.Connected; };
-            this.Network.Session.OnClientDisconnected = (c) => { this.IsConnected = c.Connected; };
-            this.Network.Session.Connect();
         }
 
         private IPEndPoint GetLoginServerEndPoint()
