@@ -21,7 +21,7 @@ namespace TestDistributed
         }
         public override void Start()
         {
-            for(var i=0;i<100;i++)
+            for(var i=0;i<1;i++)
                 Broadcast();
         }
 

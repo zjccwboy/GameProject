@@ -206,6 +206,7 @@ namespace H6Game.Base
                     var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServer);
                     if (tuple.Item2)
                     {
+                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Item1.ToJson()}");
                         this.OutNetMapManager.Add(c, tuple.Item1);
                     }
                 }
