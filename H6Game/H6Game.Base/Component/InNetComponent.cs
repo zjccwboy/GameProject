@@ -210,6 +210,10 @@ namespace H6Game.Base
                         this.OutNetMapManager.Add(c, tuple.Item1);
                     }
                 }
+                else
+                {
+                    this.Log(LogLevel.Warn, "Connecting", "连接中心服务成功.");
+                }
 
                 SendToCenter(localMessage, (int)MessageCMD.AddInServer);
             };
