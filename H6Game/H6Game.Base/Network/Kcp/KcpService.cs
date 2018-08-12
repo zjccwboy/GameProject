@@ -146,6 +146,8 @@ namespace H6Game.Base
                 (channel as KcpChannel).HandleRecv(ReuseRecvBytes, 0, recvCount);
                 channel.StartRecv();
             }
+
+            this.StartRecv();
         }
 
         /// <summary>
