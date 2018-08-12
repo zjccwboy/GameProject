@@ -40,10 +40,29 @@ namespace H6Game.Base
         /// </summary>
         public IEnumerable<Network> OuAccNets { get { return OuAcceptNetworks.Values; } }
 
+        /// <summary>
+        /// 内网监听IP端口消息类
+        /// </summary>
         public NetEndPointMessage InNetMessage { get { return this.Config.GetInMessage(); } }
+
+        /// <summary>
+        /// 外网监听IP端口消息类
+        /// </summary>
         public NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
+
+        /// <summary>
+        /// 是否是中心服务
+        /// </summary>
         public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
+
+        /// <summary>
+        /// 内网消息映射管理类接口
+        /// </summary>
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
+
+        /// <summary>
+        /// 外网消息映射管理类接口
+        /// </summary>
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
         public override void Start()

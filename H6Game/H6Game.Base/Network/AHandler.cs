@@ -9,6 +9,7 @@ namespace H6Game.Base
     /// <typeparam name="Response"></typeparam>
     public abstract class AHandler<Message> : AHandler, IHandler<Message>
     {
+        private Type MsgType;
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
@@ -16,19 +17,29 @@ namespace H6Game.Base
         {
             get
             {
-                return typeof(Message);
+                MsgType = MsgType ?? typeof(Message);
+                return MsgType;
+            }
+        }
+
+        public int MsgTypeCode
+        {
+            get
+            {
+                return HandlerMSGFactory.GetTypeCode(this.MessageType);
             }
         }
 
         public override void OnReceive(Network network)
         {
-            if (network.RecvPacket.TryGetMessage(out Message message))
-            {
-                Handler(network, message);
+            if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
                 return;
-            }
 
-            throw new Exception("错误的消息分发.");
+            if (!network.RecvPacket.IsValidMessage(this.MessageType))
+                return;
+
+            var message = network.RecvPacket.GetMessage<Message>();
+            Handler(network, message);
         }
 
         /// <summary>

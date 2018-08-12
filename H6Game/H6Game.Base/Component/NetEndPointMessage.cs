@@ -4,6 +4,7 @@ using ProtoBuf;
 namespace H6Game.Base
 {
     [ProtoContract]
+    [MessageType(MessageType.NetEndPointMessage)]
     public class NetEndPointMessage : IMessage
     {
         [ProtoMember(1)]

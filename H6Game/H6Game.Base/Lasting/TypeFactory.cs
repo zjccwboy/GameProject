@@ -7,6 +7,7 @@ namespace H6Game.Base
     public static class TypeFactory
     {
         private static Dictionary<Type, HashSet<Type>> ObjcetDictionary { get; } = new Dictionary<Type, HashSet<Type>>();
+        private static Dictionary<Type, MessageType> MsgTypeDictionary { get; } = new Dictionary<Type, MessageType>();
 
         static TypeFactory()
         {

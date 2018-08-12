@@ -30,6 +30,11 @@ namespace H6Game.Base
         Actor,
 
         /// <summary>
+        /// 消息类型
+        /// </summary>
+        MsgType,
+
+        /// <summary>
         /// 消息包体
         /// </summary>
         Body,
@@ -94,9 +99,13 @@ namespace H6Game.Base
         /// </summary>
         public static readonly int ActorIdFlagSize = sizeof(int);
         /// <summary>
+        /// 消息类型,4个字节
+        /// </summary>
+        public static readonly int MsgTypeSize = sizeof(int);
+        /// <summary>
         /// 包头大小
         /// </summary>
-        public static readonly int HeadSize = PacketFlagSize + BitFlagSize + RpcFlagSize + MessageIdFlagSize + ActorIdFlagSize;
+        public static readonly int HeadSize = PacketFlagSize + BitFlagSize + RpcFlagSize + MessageIdFlagSize + ActorIdFlagSize + MsgTypeSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -107,7 +116,7 @@ namespace H6Game.Base
             isOk = false;
             while (true)
             {
-                if (tryCount > 5)
+                if (tryCount > 6)
                     throw new Exception("解包错误，数据包非法.");
 
                 tryCount++;
@@ -192,7 +201,7 @@ namespace H6Game.Base
                             if (Buffer.FirstDataSize >= ActorIdFlagSize)
                             {
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, ActorIdFlagSize);
-                                Buffer.UpdateRead(RpcFlagSize);
+                                Buffer.UpdateRead(ActorIdFlagSize);
                             }
                             else
                             {
@@ -200,10 +209,31 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                                 Buffer.UpdateRead(count);
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, ActorIdFlagSize - count);
-                                Buffer.UpdateRead(RpcFlagSize - count);
+                                Buffer.UpdateRead(ActorIdFlagSize - count);
                             }
                             readLength += ActorIdFlagSize;
                             Packet.ActorId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            state = ParseState.MsgType;
+                            break;
+                        }
+                    case ParseState.MsgType:
+                        {
+                            var offset = PacketFlagSize + BitFlagSize + MessageIdFlagSize + ActorIdFlagSize + MsgTypeSize;
+                            if (Buffer.FirstDataSize >= MsgTypeSize)
+                            {
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeSize);
+                                Buffer.UpdateRead(MsgTypeSize);
+                            }
+                            else
+                            {
+                                var count = Buffer.FirstDataSize;
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                                Buffer.UpdateRead(count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeSize - count);
+                                Buffer.UpdateRead(MsgTypeSize - count);
+                            }
+                            readLength += MsgTypeSize;
+                            Packet.MsgTypeCode = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
                             state = ParseState.Body;
                             break;
                         }

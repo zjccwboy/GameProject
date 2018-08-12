@@ -205,8 +205,6 @@ namespace H6Game.Base
             {
                 this.SendParser.Clear();
                 this.RecvParser.Clear();
-                this.SendParser = null;
-                this.RecvParser = null;
                 
                 Connected = false;
                 ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);

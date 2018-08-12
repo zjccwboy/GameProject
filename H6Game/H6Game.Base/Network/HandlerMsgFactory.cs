@@ -8,51 +8,151 @@ namespace H6Game.Base
 {
     public static class HandlerMSGFactory
     {
-        private static Dictionary<int, IHandler> HandlerDictionary { get; } = new Dictionary<int, IHandler>();
-        private static Dictionary<int, Type> MeesageCmdDictionary { get; } = new Dictionary<int, Type>();
+        private static Dictionary<int, HashSet<IHandler>> HandlerDictionary { get; } = new Dictionary<int, HashSet<IHandler>>();
+        private static Dictionary<int, HashSet<IActorHandler>> ActorHandlerDictionary { get; } = new Dictionary<int, HashSet<IActorHandler>>();
+        private static Dictionary<int, HashSet<Type>> CmdTypeDictionary { get; } = new Dictionary<int, HashSet<Type>>();
+        private static Dictionary<Type, HashSet<int>> TypeCmdDictionary { get; } = new Dictionary<Type, HashSet<int>>();
+        private static Dictionary<Type, int> MsgCodeDictionary { get; } = new Dictionary<Type, int>();
 
         static HandlerMSGFactory()
         {
-            var dispatcherTypes = TypeFactory.GetTypes<IHandler>();
-            foreach (var type in dispatcherTypes)
+            LoadHandler();
+            LoadMessageType();
+        }
+
+        private static void LoadMessageType()
+        {
+            var msgTypes = TypeFactory.GetTypes<IMessage>();
+            foreach(var type in msgTypes)
+            {
+                var attributes = type.GetCustomAttributes<MessageTypeAttribute>();
+                if (!attributes.Any())
+                    throw new Exception("自定义消息必须有MessageTypeAttribute特性器指定消息类型.");
+                MsgCodeDictionary[type] = attributes.FirstOrDefault().TypeCode;
+            }
+
+            var valTypes = GetValueTypeCode();
+            foreach(var val in valTypes)
+            {
+                MsgCodeDictionary[val.Key] = (int)val.Value;
+            }
+        }
+
+        private static IDictionary<Type, MessageType> GetValueTypeCode()
+        {
+            var result = new Dictionary<Type, MessageType>();
+            result.Add(typeof(string), MessageType.String);
+            result.Add(typeof(int), MessageType.Int);
+            result.Add(typeof(uint), MessageType.Uint);
+            result.Add(typeof(long), MessageType.Long);
+            result.Add(typeof(ulong), MessageType.ULong);
+            result.Add(typeof(short), MessageType.Short);
+            result.Add(typeof(ushort), MessageType.UShort);
+            result.Add(typeof(byte), MessageType.Byte);
+            result.Add(typeof(sbyte), MessageType.Sbyte);
+            result.Add(typeof(float), MessageType.Float);
+            result.Add(typeof(double), MessageType.Double);
+            result.Add(typeof(decimal), MessageType.Decimal);
+            result.Add(typeof(char), MessageType.Char);
+            result.Add(typeof(bool), MessageType.BooLean);
+            result.Add(typeof(Guid), MessageType.Guid);
+            return result;
+        }
+
+        private static void LoadHandler()
+        {
+            var handlerTypes = TypeFactory.GetTypes<IHandler>();
+            foreach (var type in handlerTypes)
             {
                 var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();
-                var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c=>c).Distinct().ToList();
-                var dispatcher = (IHandler)Activator.CreateInstance(type);
+                if (!type.IsAbstract)
+                {
+                    if (!attributes.Any())
+                        throw new Exception("Handler类型必须有HandlerCMDAttribute特性器指定订阅消息类型.");
+                }
+
+                var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c => c).Distinct().ToList();
+                var handler = (IHandler)Activator.CreateInstance(type);
 
                 foreach (var cmd in cmds)
                 {
-                    HandlerDictionary[cmd] = dispatcher;
-                    MeesageCmdDictionary[cmd] = dispatcher.MessageType;
+                    if (handler is IActorHandler)
+                    {
+                        if (!ActorHandlerDictionary.TryGetValue(cmd, out HashSet<IActorHandler> handlers))
+                        {
+                            handlers = new HashSet<IActorHandler>();
+                            ActorHandlerDictionary[cmd] = handlers;
+                        }
+                        handlers.Add(handler as IActorHandler);
+                    }
+                    else
+                    {
+                        if (!HandlerDictionary.TryGetValue(cmd, out HashSet<IHandler> handlers))
+                        {
+                            handlers = new HashSet<IHandler>();
+                            HandlerDictionary[cmd] = handlers;
+                        }
+                        handlers.Add(handler);
+                    }
+
+                    if (!CmdTypeDictionary.TryGetValue(cmd, out HashSet<Type> types))
+                    {
+                        types = new HashSet<Type>();
+                        CmdTypeDictionary[cmd] = types;
+                    }
+                    types.Add(handler.MessageType);
+
+                    if (!TypeCmdDictionary.TryGetValue(handler.MessageType, out HashSet<int> msgCmds))
+                    {
+                        msgCmds = new HashSet<int>();
+                        TypeCmdDictionary[handler.MessageType] = msgCmds;
+                    }
+                    msgCmds.Add(cmd);
                 }
             }
         }
 
-        public static bool TryGetMessage<T>(this Packet packet, out T response)
+        public static int GetTypeCode(Type type)
         {
-            if (!MeesageCmdDictionary.TryGetValue(packet.MessageId, out Type cmdType))
-            {
-                response = default;
-                return false;
-            }
-
-            var type = typeof(T);
-            if (cmdType != type)
-            {
-                response = default;
-                return false;
-            }
-
-            response = packet.Read<T>();
-            return true;
+            return MsgCodeDictionary[type];
         }
 
-        public static IHandler Get(int messageCmd)
+        public static bool IsValidMessage(this Packet packet, Type type)
         {
-            if (!HandlerDictionary.TryGetValue(messageCmd, out IHandler handler))
-                throw new Exception($"CMD:{messageCmd}没有在Handler实现类中加入MessageCMDAttribute.");
+            return ExistCmd(type, packet.MessageId) && ExistType(packet.MessageId, type);
+        }
 
-            return handler;
+        private static bool ExistType(int messageCmd, Type type)
+        {
+            if (!CmdTypeDictionary.TryGetValue(messageCmd, out HashSet<Type> types))
+            {
+                return false;
+            }
+            return types.Contains(type);
+        }
+
+        private static bool ExistCmd(Type type, int messageCmd)
+        {
+            if(!TypeCmdDictionary.TryGetValue(type, out HashSet<int> cmds))
+            {
+                return false;
+            }
+            return cmds.Contains(messageCmd);
+        }
+
+        public static IEnumerable<IHandler> GetHandler(int messageCmd)
+        {
+            return HandlerDictionary[messageCmd];
+        }
+
+        public static IEnumerable<IActorHandler> GetActorHandler(int messageCmd)
+        {
+            return ActorHandlerDictionary[messageCmd];
+        }
+
+        public static T GetMessage<T>(this Packet packet)
+        {
+            return packet.Read<T>();
         }
     }
 }

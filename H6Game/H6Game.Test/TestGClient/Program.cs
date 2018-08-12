@@ -42,6 +42,7 @@ namespace TestGClient
 
 
     [ProtoBuf.ProtoContract]
+    [MessageType(MessageType.TestGServerTestMessage)]
     public class TestMessage : IMessage
     {
         [ProtoBuf.ProtoMember(1)]

@@ -24,8 +24,25 @@ namespace H6Game.Base
         {
             try
             {
-                var handler = HandlerMSGFactory.Get(packet.MessageId);
-                handler.Receive(this.Network);
+                if(packet.ActorId > 0)
+                {
+                    var handlers = HandlerMSGFactory.GetActorHandler(packet.MessageId);
+                    foreach(var handler in handlers)
+                    {
+                        handler.Receive(this.Network);
+                    }
+                    return;
+                }
+                else
+                {
+                    var handlers = HandlerMSGFactory.GetHandler(packet.MessageId);
+                    foreach (var handler in handlers)
+                    {
+                        handler.Receive(this.Network);
+                    }
+                    return;
+                }
+                throw new Exception($"CMD:{packet.MessageId}没有在Handler实现类中加入MessageCMDAttribute.");
             }
             catch (Exception e)
             {

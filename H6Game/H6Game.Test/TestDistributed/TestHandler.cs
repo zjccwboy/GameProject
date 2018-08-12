@@ -18,6 +18,7 @@ namespace TestDistributed
     }
 
     [ProtoBuf.ProtoContract]
+    [MessageType( MessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [ProtoBuf.ProtoMember(1)]

@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Message;
 using ProtoBuf;
 using System;
 using System.Net;
@@ -45,6 +46,9 @@ public static class PacketHelper
         //写ActorId
         packet.ActorId.WriteTo(packet.HeadBytes, 13);
 
+        //写MsgTypeCode
+        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 17);
+
         return packet.HeadBytes;
     }
 
@@ -62,6 +66,7 @@ public static class PacketHelper
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
 
+        packet.MsgTypeCode = GetTypeCode(typeof(T));
         packet.WriteBuffer();
     }
 
@@ -72,7 +77,7 @@ public static class PacketHelper
             var bytes = Encoding.UTF8.GetBytes(data);
             packet.BodyStream.Write(bytes, 0, bytes.Length);
         }
-
+        packet.MsgTypeCode = GetTypeCode(typeof(string));
         packet.WriteBuffer();
     }
 
@@ -80,6 +85,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(int));
         packet.WriteBuffer();
     }
 
@@ -87,6 +93,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(uint));
         packet.WriteBuffer();
     }
 
@@ -94,6 +101,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(bool));
         packet.WriteBuffer();
     }
 
@@ -101,6 +109,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(long));
         packet.WriteBuffer();
     }
 
@@ -108,6 +117,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(ulong));
         packet.WriteBuffer();
     }
 
@@ -115,6 +125,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(float));
         packet.WriteBuffer();
     }
 
@@ -122,6 +133,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(double));
         packet.WriteBuffer();
     }
 
@@ -129,6 +141,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes((double)data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(decimal));
         packet.WriteBuffer();
     }
 
@@ -136,6 +149,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(byte));
         packet.WriteBuffer();
     }
 
@@ -143,6 +157,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(sbyte));
         packet.WriteBuffer();
     }
 
@@ -150,6 +165,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(char));
         packet.WriteBuffer();
     }
 
@@ -157,6 +173,7 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(short));
         packet.WriteBuffer();
     }
 
@@ -164,7 +181,13 @@ public static class PacketHelper
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
+        packet.MsgTypeCode = GetTypeCode(typeof(ushort));
         packet.WriteBuffer();
+    }
+
+    private static int GetTypeCode(Type type)
+    {
+        return HandlerMSGFactory.GetTypeCode(type);
     }
 
     public static T Read<T>(this Packet packet)
