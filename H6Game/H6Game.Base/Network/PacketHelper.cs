@@ -11,7 +11,7 @@ public static class PacketHelper
     /// 获取包头的字节数组
     /// </summary>
     /// <returns></returns>
-    public static byte[] GetHeadBytes(this Packet packet, int bodySize)
+    internal static byte[] GetHeadBytes(this Packet packet, int bodySize)
     {
         //写包大小
         var packetSize = PacketParser.HeadSize + bodySize;
@@ -48,7 +48,7 @@ public static class PacketHelper
         return packet.HeadBytes;
     }
 
-    public static void WriteTo(this int value, byte[] bytes, int offset)
+    internal static void WriteTo(this int value, byte[] bytes, int offset)
     {
         var netIntVal = IPAddress.HostToNetworkOrder(Convert.ToInt32(value));
         for (var i = 0; i < 4; i++)
@@ -57,7 +57,7 @@ public static class PacketHelper
         }
     }
 
-    public static void WriteTo<T>(this Packet packet, T obj) where T : class
+    internal static void WriteTo<T>(this Packet packet, T obj) where T : class
     {
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
@@ -65,7 +65,7 @@ public static class PacketHelper
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, string data)
+    internal static void WriteTo(this Packet packet, string data)
     {
         if (!string.IsNullOrEmpty(data))
         {
@@ -76,98 +76,98 @@ public static class PacketHelper
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, int data)
+    internal static void WriteTo(this Packet packet, int data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, uint data)
+    internal static void WriteTo(this Packet packet, uint data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, bool data)
+    internal static void WriteTo(this Packet packet, bool data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, long data)
+    internal static void WriteTo(this Packet packet, long data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, ulong data)
+    internal static void WriteTo(this Packet packet, ulong data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, float data)
+    internal static void WriteTo(this Packet packet, float data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, double data)
+    internal static void WriteTo(this Packet packet, double data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, decimal data)
+    internal static void WriteTo(this Packet packet, decimal data)
     {
         var bytes = BitConverter.GetBytes((double)data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, byte data)
+    internal static void WriteTo(this Packet packet, byte data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, sbyte data)
+    internal static void WriteTo(this Packet packet, sbyte data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, char data)
+    internal static void WriteTo(this Packet packet, char data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, short data)
+    internal static void WriteTo(this Packet packet, short data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static void WriteTo(this Packet packet, ushort data)
+    internal static void WriteTo(this Packet packet, ushort data)
     {
         var bytes = BitConverter.GetBytes(data);
         packet.BodyStream.Write(bytes, 0, bytes.Length);
         packet.WriteBuffer();
     }
 
-    public static T Read<T>(this Packet packet)
+    internal static T Read<T>(this Packet packet)
     {
         if (packet == null)
             return default;
@@ -187,7 +187,7 @@ public static class PacketHelper
         return result;
     }
 
-    public static bool TryRead<T>(this Packet packet, out T data)
+    internal static bool TryRead<T>(this Packet packet, out T data)
     {
         if (packet == null)
         {

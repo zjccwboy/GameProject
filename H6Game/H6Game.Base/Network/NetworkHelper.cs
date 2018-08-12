@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 public static class NetworkHelper
 {
+    #region RpcCallBack
     /// <summary>
     /// 回发消息，回发的消息所有的协议与接收到的消息保持一致
     /// </summary>
@@ -18,9 +19,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -35,9 +34,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -52,9 +49,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -69,9 +64,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -86,9 +79,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -103,9 +94,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -120,9 +109,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -137,9 +124,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -154,9 +139,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -171,9 +154,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -188,9 +169,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -205,9 +184,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -222,9 +199,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -239,9 +214,7 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
 
     /// <summary>
@@ -256,11 +229,11 @@ public static class NetworkHelper
         var messageCmd = network.RecvPacket.MessageId;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
-        var isCompress = network.RecvPacket.IsCompress;
-        var isEncrypt = network.RecvPacket.IsEncrypt;
-        session.Send(channel, data, messageCmd, rpcId, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, rpcId, actorId);
     }
+    #endregion RpcCallBack
 
+    #region Send
     /// <summary>
     /// 发送消息
     /// </summary>
@@ -268,15 +241,12 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send<T>(this Network network, T data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send<T>(this Network network, T data, int messageCmd)
         where T : class
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -284,30 +254,11 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, null, messageCmd, 0, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, string data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, null, messageCmd, 0);
     }
 
     /// <summary>
@@ -317,13 +268,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
     /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, int data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, string data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -332,14 +281,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, uint data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, int data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -348,14 +294,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, long data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, uint data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -364,14 +307,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, ulong data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, long data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -380,14 +320,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, float data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, ulong data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -396,14 +333,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, double data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+   public static void Send(this Network network, float data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -412,14 +346,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, decimal data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, double data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -428,14 +359,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, byte data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, decimal data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -444,14 +372,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, sbyte data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, byte data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -460,14 +385,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, bool data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, sbyte data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -476,14 +398,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, char data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, bool data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -492,14 +411,11 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, short data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, char data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
     /// <summary>
@@ -508,16 +424,255 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息指令</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否对数据包加密</param>
-    public static void Send(this Network network, ushort data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void Send(this Network network, short data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Send(channel, data, messageCmd, 0);
     }
 
+    /// <summary>
+    /// 发送消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    public static void Send(this Network network, ushort data, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0);
+    }
+    #endregion Send
+
+    #region SendActor
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor<T>(this Network network, T data, int messageCmd, int actorId)
+        where T : class
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, string.Empty, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, string data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, int data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, uint data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, long data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, ulong data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, float data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, double data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, decimal data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, byte data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, sbyte data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, bool data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, char data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, short data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">表示这条消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void SendActor(this Network network, ushort data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Send(channel, data, messageCmd, 0, actorId);
+    }
+    #endregion
+
+    #region  CallRpc
     /// <summary>
     /// 发送Rpc请求
     /// </summary>
@@ -526,16 +681,12 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall<T>(this Network network, T data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false) where T : class
+    public static void CallRpc<T>(this Network network, T data, Action<Packet> notificationAction, int messageCmd) where T : class
 
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -544,16 +695,111 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, Action<Packet> notificationAction
+        , int messageCmd)
 
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, null, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, null, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, string data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, int data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, uint data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, bool data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, long data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, ulong data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc(this Network network, float data, Action<Packet> notificationAction, int messageCmd)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -566,12 +812,11 @@ public static class NetworkHelper
     /// <param name="actorId">Actor消息Id</param>
     /// <param name="isCompress">是否压缩数据包</param>
     /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, string data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, double data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -581,15 +826,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, int data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, decimal data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -599,15 +840,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, uint data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, byte data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -617,15 +854,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, bool data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, sbyte data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -635,15 +868,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, long data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, char data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -653,15 +882,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, ulong data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, short data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
 
     /// <summary>
@@ -671,143 +896,15 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, float data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void CallRpc(this Network network, ushort data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
+        session.Subscribe(channel, data, notificationAction, messageCmd);
     }
+    #endregion CallRpc
 
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, double data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, decimal data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, byte data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, sbyte data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, char data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, short data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
-    public static void RpcCall(this Network network, ushort data, Action<Packet> notificationAction
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd, actorId, isCompress, isEncrypt);
-    }
-
+    #region CallMessage
     /// <summary>
     /// RPC请求，有GC不建议使用
     /// </summary>
@@ -815,14 +912,12 @@ public static class NetworkHelper
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
     /// <returns></returns>
-    public static Task<Tuple<Response, bool>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+    public static Task<Tuple<Response, bool>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd)
         where Rquest : class
     {
         var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
-        network.RpcCall(data, (p) =>
+        network.CallRpc(data, (p) =>
         {
             Tuple<Response, bool> tuple;
             if (p.TryRead(out Response response))
@@ -843,13 +938,11 @@ public static class NetworkHelper
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
     /// <returns></returns>
-    public static Task<Tuple<Response, bool>> CallMessage<Response>(this Network network, int messageCmd, bool isCompress = false, bool isEncrypt = false)
+    public static Task<Tuple<Response, bool>> CallMessage<Response>(this Network network, int messageCmd)
     {
         var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
-        network.RpcCall((p) =>
+        network.CallRpc((p) =>
         {
             Tuple<Response, bool> tuple;
             if (p.TryRead(out Response response))
@@ -864,7 +957,452 @@ public static class NetworkHelper
         }, messageCmd);
         return tcs.Task;
     }
+    #endregion
 
+    #region CallActor
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<T>(this Network network, T data, Action<Packet> notificationAction
+        , int messageCmd, int actorId) where T : class
+
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, string.Empty, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, string data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, int data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, uint data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, bool data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, long data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, ulong data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, float data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, double data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, decimal data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, byte data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, sbyte data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, char data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, short data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor(this Network network, ushort data, Action<Packet> notificationAction
+        , int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+    #endregion CallActor
+
+    #region Broadcast all clients
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast<T>(this Network network, T data, int messageCmd)
+        where T : class
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(string.Empty, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, string data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, int data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, uint data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, bool data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, float data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, double data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, decimal data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, long data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, ulong data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, byte data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, sbyte data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, short data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this Network network, ushort data, int messageCmd)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0);
+    }
+    #endregion Broadcast
+
+    #region BroadcastActor all clients
     /// <summary>
     /// 给所有客户端广播一条消息
     /// </summary>
@@ -873,13 +1411,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast<T>(this Network network, T data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor<T>(this Network network, T data, int messageCmd, int actorId)
         where T : class
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -888,27 +1424,10 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(null, messageCmd, 0, actorId, isCompress, isEncrypt);
-    }
-
-    /// <summary>
-    /// 给所有客户端广播一条消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, string data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(string.Empty, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -918,12 +1437,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, int data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, string data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -933,12 +1450,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, uint data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, int data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -948,12 +1463,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, bool data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, uint data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -963,12 +1476,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, float data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, bool data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -978,12 +1489,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, double data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, float data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -993,12 +1502,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, decimal data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, double data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1008,12 +1515,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, long data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, decimal data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1023,12 +1528,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, ulong data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, long data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1038,12 +1541,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, byte data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, ulong data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1053,12 +1554,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, sbyte data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, byte data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1068,12 +1567,10 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, short data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, sbyte data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -1083,14 +1580,254 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this Network network, ushort data, int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this Network network, short data, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0, actorId, isCompress, isEncrypt);
+        session.Broadcast(data, messageCmd, 0, actorId);
     }
 
+    /// <summary>
+    /// 给所有客户端广播一条消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void BroadcastActor(this Network network, ushort data, int messageCmd, int actorId)
+    {
+        var session = network.Session;
+        session.Broadcast(data, messageCmd, 0, actorId);
+    }
+    #endregion Broadcast
+
+    #region Broadcast list clients
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast<T>(this IEnumerable<Network> networks, T data, int messageCmd)
+        where T : class
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(string.Empty, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, string data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, int data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, uint data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, bool data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, long data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, ulong data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, float data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, double data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, decimal data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, byte data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, sbyte data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, char data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, short data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void Broadcast(this IEnumerable<Network> networks, ushort data, int messageCmd)
+    {
+        foreach (var net in networks)
+        {
+            net.Send(data, messageCmd);
+        }
+    }
+    #endregion
+
+    #region BroadcastActor list clients
     /// <summary>
     /// 给一组连接网络广播一条消息
     /// </summary>
@@ -1099,15 +1836,12 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast<T>(this IEnumerable<Network> networks, T data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor<T>(this IEnumerable<Network> networks, T data, int messageCmd, int actorId)
         where T : class
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1117,32 +1851,11 @@ public static class NetworkHelper
     /// <param name="networks">一组网络</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(messageCmd, actorId, isCompress, isEncrypt);
-        }
-    }
-
-    /// <summary>
-    /// 给一组连接网络广播一条消息
-    /// </summary>
-    /// <param name="networks">一组网络</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, string data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
-    {
-        foreach (var net in networks)
-        {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(string.Empty, messageCmd, actorId);
         }
     }
 
@@ -1153,14 +1866,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, int data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, string data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1171,14 +1881,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, uint data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, int data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1189,14 +1896,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, bool data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, uint data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1207,14 +1911,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, long data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, bool data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1225,14 +1926,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, ulong data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, long data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1243,14 +1941,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, float data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, ulong data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1261,14 +1956,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, double data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, float data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1279,14 +1971,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, decimal data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, double data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1297,14 +1986,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, byte data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, decimal data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1315,14 +2001,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, sbyte data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, byte data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1333,14 +2016,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, char data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, sbyte data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1351,14 +2031,11 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, short data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, char data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
 
@@ -1369,14 +2046,27 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress"></param>
-    /// <param name="isEncrypt"></param>
-    public static void Broadcast(this IEnumerable<Network> networks, ushort data
-        , int messageCmd, int actorId = 0, bool isCompress = false, bool isEncrypt = false)
+    public static void BroadcastActor(this IEnumerable<Network> networks, short data, int messageCmd, int actorId)
     {
         foreach (var net in networks)
         {
-            net.Send(data, messageCmd, actorId, isCompress, isEncrypt);
+            net.SendActor(data, messageCmd, actorId);
         }
     }
+
+    /// <summary>
+    /// 给一组连接网络广播一条消息
+    /// </summary>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor消息Id</param>
+    public static void BroadcastActor(this IEnumerable<Network> networks, ushort data, int messageCmd, int actorId)
+    {
+        foreach (var net in networks)
+        {
+            net.SendActor(data, messageCmd, actorId);
+        }
+    }
+    #endregion
 }

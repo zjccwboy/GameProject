@@ -13,7 +13,7 @@ namespace H6Game.Base
     /// </summary>
     public class InNetComponent : BaseComponent
     {
-        private SysConfig Config { get; } = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+        private SysConfig Config { get; } = SinglePool.Get<NetConfigComponent>().ConfigEntity;
         private EndPointEntity DefaultCenterEndPoint;
         private readonly ConcurrentDictionary<int, Session> InConnectSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Session> DisconnectSessions = new ConcurrentDictionary<int, Session>();

@@ -4,9 +4,11 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class ValueObject<T>
+    public sealed class ValueObject<T>
     {
         public T Value;
+
+        private ValueObject(){}
         public static ValueObject<T> Instance { get; } = new ValueObject<T>();
 
         //免GC装箱

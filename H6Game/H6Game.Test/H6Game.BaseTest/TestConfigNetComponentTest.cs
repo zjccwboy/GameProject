@@ -9,7 +9,7 @@ namespace H6Game.BaseTest
         [Fact]
         public void ConfigNetComponentTest()
         {
-            var configComponent = new ConfigNetComponent();
+            var configComponent = new NetConfigComponent();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public class ConfigNetComponent : BaseComponent
+    public class NetConfigComponent : BaseComponent
     {
         public SysConfig ConfigEntity { get; private set; }
 
@@ -45,6 +45,8 @@ namespace H6Game.Base
             {
                 IsCenterServer = true,
                 OuNetHost = "payapi.test.com",
+                IsCompress = false,
+                IsEncrypt = false,
 
                 InNetConfig = new InNetConfigEntity
                 {

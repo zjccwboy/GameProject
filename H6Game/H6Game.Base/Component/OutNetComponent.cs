@@ -7,7 +7,7 @@ namespace H6Game.Base
 {
     public class OutNetComponent : BaseComponent
     {
-        private SysConfig Config { get;} = SinglePool.Get<ConfigNetComponent>().ConfigEntity;
+        private SysConfig Config { get;} = SinglePool.Get<NetConfigComponent>().ConfigEntity;
         private Session ConnectSession;
         private IPEndPoint LoginServerEndPoint;
         public Network Network

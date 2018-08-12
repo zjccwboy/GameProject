@@ -45,7 +45,7 @@ namespace TestDistributed
 
                 //var size = send.ToJson().Length;
 
-                network.RpcCall(send, (m) =>
+                network.CallRpc(send, (m) =>
                 {
                     if (m == null)
                         return;

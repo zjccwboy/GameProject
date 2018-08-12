@@ -7,7 +7,8 @@ namespace H6Game.Base.Entity
         public string OuNetHost { get; set; }
         public InNetConfigEntity InNetConfig { get; set; }
         public EndPointEntity OuNetConfig { get; set; }
-
+        public bool IsCompress { get; set; }
+        public bool IsEncrypt { get; set; }
         public NetEndPointMessage GetCenterMessage()
         {
             return this.InNetConfig.CenterEndPoint.GetMessage();

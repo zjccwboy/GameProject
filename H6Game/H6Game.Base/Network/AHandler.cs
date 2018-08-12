@@ -22,14 +22,6 @@ namespace H6Game.Base
 
         public override void OnReceive(Network network)
         {
-            if(network.RecvPacket.MessageId == (int)MessageCMD.AddInServer)
-            {
-                this.Log(LogLevel.Info, "OnReceive", $"接收消息长度:{network.RecvPacket.BodyStream.Length}");
-
-                //var data = network.RecvPacket.Read<Message>();
-                //this.Log(LogLevel.Info, "OnReceive", $"接收消息长度:{data}");
-            }
-
             if (network.RecvPacket.TryGetMessage(out Message message))
             {
                 Handler(network, message);
