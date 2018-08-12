@@ -1184,8 +1184,7 @@ namespace H6Game.Base
             var channels = this.NService.Channels.Values.ToList();
             foreach(var channel in channels)
             {
-                if (channel.Connected)
-                    channel.DisConnect();
+                channel.DisConnect();
             }
             this.NService = null;
         }

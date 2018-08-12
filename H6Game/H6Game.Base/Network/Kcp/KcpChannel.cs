@@ -203,6 +203,9 @@ namespace H6Game.Base
         {
             try
             {
+                if (!this.Connected)
+                    return;
+
                 this.SendParser.Clear();
                 this.RecvParser.Clear();
                 

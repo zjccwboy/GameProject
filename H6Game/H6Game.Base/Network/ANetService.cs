@@ -128,9 +128,6 @@ namespace H6Game.Base
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
-                    if (!channel.Connected)
-                        continue;
-
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
                     {

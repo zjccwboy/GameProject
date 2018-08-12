@@ -183,6 +183,9 @@ namespace H6Game.Base
         {
             try
             {
+                if (!this.Connected)
+                    return;
+
                 Connected = false;
                 if (NetSocket == null)
                     return;
