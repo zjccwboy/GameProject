@@ -11,6 +11,6 @@ namespace H6Game.Base
 
     public interface IActorHandler : IHandler
     {
-        int GetActorId();
+
     }
 }
