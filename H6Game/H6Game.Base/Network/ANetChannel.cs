@@ -85,7 +85,7 @@ namespace H6Game.Base
         /// <summary>
         /// 接收包缓冲区解析器
         /// </summary>
-        public PacketParser RecvParser { get; protected set; }
+        public PacketParser RecvParser { get; set; }
 
         /// <summary>
         /// 发送包缓冲区解析器

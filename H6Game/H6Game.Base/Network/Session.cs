@@ -29,14 +29,14 @@ namespace H6Game.Base
     /// </summary>
     public class Session : IDisposable
     {
-        private ANetService NService;
+        public ANetService NService;
         private IPEndPoint EPoint { get; }
         private ProtocalType PType { get; }
 
         /// <summary>
         /// 客户端连接管道
         /// </summary>
-        public ANetChannel ConnectChannel { get; private set; }
+        public ANetChannel ConnectChannel { get; set; }
 
         /// <summary>
         /// 连接断开回调发生在服务端

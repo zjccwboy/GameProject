@@ -19,13 +19,12 @@ namespace TestTcpClient
         static void Main(string[] args)
         {
             var endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8989);
-            var session = new Session(endPoint, ProtocalType.Tcp);
-            var channel = session.Connect();
+            var network = Network.CreateConnecting(endPoint, ProtocalType.Tcp);
             stopwatch.Start();
             while (true)
             {
-                Subscribe(session, channel);
-                session.Update();
+                Subscribe(network);
+                network.Update();
                 Thread.Sleep(1);
             }
         }
@@ -33,7 +32,7 @@ namespace TestTcpClient
         static Stopwatch stopwatch = new Stopwatch();
         static int sendCount = 0;
         static int recvCount = 0;
-        static void Subscribe(Session session, ANetChannel channel)
+        static void Subscribe(Network network)
         {
             //优先处理完接收的包
             if (sendCount - recvCount > 0)
@@ -47,7 +46,7 @@ namespace TestTcpClient
                 return;
             }
 
-            if (!channel.Connected)
+            if (!network.Channel.Connected)
             {
                 return;
             }
@@ -56,7 +55,7 @@ namespace TestTcpClient
             for (var i = 1; i <= 1000; i++)
             {
                 sendCount++;
-                session.Subscribe(channel, send, (packet) =>
+                network.CallRpc(send, (packet) =>
                 {
                     recvCount++;
                     var data = packet.Read<string>();

@@ -32,6 +32,32 @@ namespace H6Game.Base
             return session;
         }
 
+        public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType)
+        {
+            var session = new Session(endPoint, protocalType);
+            session.Accept();
+            var network = new Network(session, session.NService, null);
+            return network;
+        }
+
+        public static Network CreateConnecting(IPEndPoint endPoint, ProtocalType protocalType)
+        {
+            var session = new Session(endPoint, protocalType);
+            var channel = session.Connect();
+            if(protocalType == ProtocalType.Kcp)
+            {
+                channel.RecvParser = new PacketParser(1400);
+                channel.SendParser = new PacketParser(1400);
+            }
+            else if( protocalType == ProtocalType.Tcp)
+            {
+                channel.RecvParser = new PacketParser();
+                channel.SendParser = new PacketParser();
+            }
+            var network = new Network(session, session.NService, channel);
+            return network;
+        }
+
         public void Dispose()
         {
             Session.Dispose();

@@ -167,7 +167,7 @@ public static class PacketHelper
         packet.WriteBuffer();
     }
 
-    internal static T Read<T>(this Packet packet)
+    public static T Read<T>(this Packet packet)
     {
         if (packet == null)
             return default;
@@ -187,7 +187,7 @@ public static class PacketHelper
         return result;
     }
 
-    internal static bool TryRead<T>(this Packet packet, out T data)
+    public static bool TryRead<T>(this Packet packet, out T data)
     {
         if (packet == null)
         {
