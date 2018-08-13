@@ -56,6 +56,7 @@ namespace H6Game.Base
             result.Add(typeof(char), MessageType.Char);
             result.Add(typeof(bool), MessageType.BooLean);
             result.Add(typeof(Guid), MessageType.Guid);
+            result.Add(typeof(DateTime), MessageType.DateTime);
             return result;
         }
 
