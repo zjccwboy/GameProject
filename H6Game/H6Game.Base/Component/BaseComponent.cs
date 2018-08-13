@@ -6,35 +6,27 @@ namespace H6Game.Base
 {
     public abstract class BaseComponent
     {
-        private ConcurrentDictionary<Type, HashSet<int>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<int>>();
-        private ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        protected ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
+        protected ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
 
-        public void AddNew<T>() where T:BaseComponent
+        public IEnumerable<Type> GetTypes()
         {
-            var component = ManyPool.Add<T>();
-            IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-            var type = typeof(T);
-            if(!TypeComponent.TryGetValue(type, out HashSet<int> ids))
-            {
-                ids = new HashSet<int>();
-                TypeComponent[type] = ids;
-            }
-            ids.Add(component.Id);
+            return this.TypeComponent.Keys;
         }
 
-        public void Add<T>(T component) where T : BaseComponent
+        public virtual void Add<T>(T component) where T : BaseComponent
         {
             IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
             var type = typeof(T);
-            if (!TypeComponent.TryGetValue(type, out HashSet<int> ids))
+            if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
             {
-                ids = new HashSet<int>();
-                TypeComponent[type] = ids;
+                components = new HashSet<BaseComponent>();
+                TypeComponent[type] = components;
             }
-            ids.Add(component.Id);
+            components.Add(component);
         }
 
-        public bool TryGet<T>(out HashSet<int> value) where T:BaseComponent
+        public bool TryGet<T>(out HashSet<BaseComponent> value) where T:BaseComponent
         {
             return TypeComponent.TryGetValue(typeof(T), out value);
         }
@@ -50,22 +42,25 @@ namespace H6Game.Base
             return false;
         }
 
-        public void Remove(int componentId)
+        public void Remove(BaseComponent component)
         {
-            if(IdComponent.TryGetValue(componentId, out BaseComponent value))
+            if(IdComponent.TryGetValue(component.Id, out BaseComponent value))
             {
                 var type = value.GetType();
-                if(TypeComponent.TryGetValue(type, out HashSet<int> hashVal))
+                if(TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
                 {
-                    hashVal.Remove(componentId);
+                    hashVal.Remove(component);
                 }
             }
         }
 
+        public virtual void Awake() { }
         public virtual void Start() { }
         public virtual void Update() { }
         public int Id { get; set; }
-        public virtual void Stop()
+        public bool IsStart { get; set; }
+        public bool IsAwake { get; set; }
+        public virtual void Close()
         {
             this.PutBack();
         }

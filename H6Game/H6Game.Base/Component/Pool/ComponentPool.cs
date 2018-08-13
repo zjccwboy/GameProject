@@ -39,7 +39,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k,v)=> { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -61,7 +60,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -83,7 +81,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1, k2);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -105,7 +102,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -127,7 +123,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -149,7 +144,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -171,7 +165,6 @@ namespace H6Game.Base
                 result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5, k6);
             }
             componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
-            result.Start();
             return (T)result;
         }
 
@@ -180,6 +173,8 @@ namespace H6Game.Base
             var baseComponent = component as BaseComponent;
             componentDictionary.TryRemove(component.Id, out BaseComponent value);
             value.Id = 0;
+            value.IsStart = false;
+            value.IsAwake = false;
         }
 
     }

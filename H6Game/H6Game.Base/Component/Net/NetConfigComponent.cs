@@ -3,11 +3,12 @@ using System.IO;
 
 namespace H6Game.Base
 {
+    [Event(EventType.Awake)]
     public class NetConfigComponent : BaseComponent
     {
         public SysConfig ConfigEntity { get; private set; }
 
-        public override void Start()
+        public override void Awake()
         {
             var path = $"{Directory.GetCurrentDirectory()}\\SysConfig.json";
             if (!ReadConfigFile(path))

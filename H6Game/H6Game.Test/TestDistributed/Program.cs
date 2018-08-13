@@ -7,14 +7,11 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
-            HandlerMSGFactory.GetHandler(101);
-
-            var netComponent = SinglePool.Get<InNetComponent>();
-            var testComponent = SinglePool.Get<TestSender>();
+            var eventCpt = SinglePool.Get<EventComponent>();
+            var test = SinglePool.Get<TestSender>();
             while (true)
             {
-                netComponent.Update();
-                testComponent.Start();
+                eventCpt.Update();
                 Thread.Sleep(1);
             }
         }

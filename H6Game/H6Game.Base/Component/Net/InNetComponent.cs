@@ -10,6 +10,7 @@ namespace H6Game.Base
     /// <summary>
     /// 内网分布式连接核心组件
     /// </summary>
+    [Event(EventType.Awake | EventType.Update)]
     public class InNetComponent : BaseComponent
     {
         private SysConfig Config { get; } = SinglePool.Get<NetConfigComponent>().ConfigEntity;
@@ -64,7 +65,7 @@ namespace H6Game.Base
         /// </summary>
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
-        public override void Start()
+        public override void Awake()
         {
             this.DefaultCenterEndPoint = Config.InNetConfig.CenterEndPoint;
             var center = this.Config.GetCenterMessage();

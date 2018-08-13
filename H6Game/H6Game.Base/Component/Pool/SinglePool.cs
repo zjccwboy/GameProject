@@ -9,6 +9,13 @@ namespace H6Game.Base
     public static class SinglePool
     {
         private static ConcurrentDictionary<Type, BaseComponent> TypeDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
+        private static EventComponent EventComponent { get; }
+        static SinglePool()
+        {
+            EventComponent = ManyPool.EventComponent;
+            var type = EventComponent.GetType();
+            TypeDictionary[type] = EventComponent;
+        }
 
         public static T Get<T>() where T:BaseComponent
         {
@@ -17,7 +24,7 @@ namespace H6Game.Base
             {
                 value =  ManyPool.Add<T>();
                 TypeDictionary[type] = value;
-            }
+            }            
             return (T)value;
         }
 

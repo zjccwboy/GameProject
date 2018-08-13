@@ -240,6 +240,9 @@ namespace H6Game.Base
             if (this.NetSocket == null)
                 return;
 
+            if (!this.NetSocket.Connected)
+                return;
+
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
             if (e.SocketError != SocketError.Success)
             {

@@ -9,17 +9,19 @@ using System.Threading.Tasks;
 
 namespace TestDistributed
 {
+    [Event(EventType.Awake | EventType.Update)]
     public class TestSender : BaseComponent
     {
-        InNetComponent inNetComponent = SinglePool.Get<InNetComponent>();
         private Stopwatch stopWatch = new Stopwatch();
         private int Count = 0;
         private long size = 0;
-        public TestSender()
+
+        public override void Awake()
         {
             stopWatch.Start();
         }
-        public override void Start()
+
+        public override void Update()
         {
             for(var i=0;i<50;i++)
                 Broadcast();
@@ -27,6 +29,8 @@ namespace TestDistributed
 
         private void Broadcast()
         {
+            var inNetComponent = SinglePool.Get<InNetComponent>();
+
             if (inNetComponent.IsCenterServer)
                 return;
 
