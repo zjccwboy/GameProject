@@ -35,19 +35,20 @@ namespace TestDistributed
             if (!networks.Any())
                 return;
 
+            var send = new TestMessage
+            {
+                ActorId = 10001,
+                Message = "Message",
+                LongData = 29999,
+                ULongData = 30000011,
+                ByteData = 200,
+                SByteData = 80,
+                UIntData = 191919191,
+                ListIntData = new List<int> { 1, 2, 3, 4, 5, 6, },
+            };
+
             foreach (var network in networks)
             {
-                var send = new TestMessage
-                {
-                    ActorId = 10001,
-                    Message = "Message",
-                    LongData = 29999,
-                    ULongData = 30000011,
-                    ByteData = 200,
-                    SByteData = 80,
-                    UIntData = 191919191,
-                    ListIntData = new List<int> { 1, 2, 3, 4, 5, 6, },
-                };
 
                 network.CallRpc(send, (m) =>
                 {
@@ -59,6 +60,7 @@ namespace TestDistributed
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
+                        LogRecord.Log(LogLevel.Debug, "接收到数据:", $"JSON:{send.ToJson()}");
                         stopWatch.Restart();
                         Count = 0;
                         size = 0;
