@@ -17,11 +17,15 @@ namespace H6Game.Base
             }
         }
 
+        private int typeCode;
         public int MsgTypeCode
         {
             get
             {
-                return HandlerMSGFactory.GetTypeCode(this.MessageType);
+                if(typeCode <=0)
+                    typeCode = HandlerMSGFactory.GetTypeCode(this.MessageType);
+
+                return typeCode;
             }
         }
 

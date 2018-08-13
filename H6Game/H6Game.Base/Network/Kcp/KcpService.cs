@@ -23,6 +23,7 @@ namespace H6Game.Base
         {
             this.ServiceType = serviceType;
             this.EndPoint = endPoint;
+            this.ProtocalType = ProtocalType.Kcp;
         }
         
         /// <summary>

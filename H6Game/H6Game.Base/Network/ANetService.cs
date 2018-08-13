@@ -24,14 +24,31 @@ namespace H6Game.Base
         /// </summary>
         private uint LastCheckHeadbeatTime = TimeUitls.Now();
 
+        private const uint KcpHeartbeatTime = 20 * 1000;
+        private const uint TcpHeartbeatTime = 6 * 1000;
         /// <summary>
         /// 心跳超时时长，服务端6秒,客户端20秒
         /// </summary>
-#if SERVER
-        public const uint HeartbeatTime = 1000 * 4;
-#else
-        public const uint HeartbeatTime = 1000 * 20;
-#endif
+        public uint HeartbeatTime
+        {
+            get
+            {
+                if (ProtocalType == ProtocalType.Kcp)
+                {
+                    return KcpHeartbeatTime;
+                }
+                else if(ProtocalType == ProtocalType.Tcp)
+                {
+                    return TcpHeartbeatTime;
+                }
+                return 99999 * 1000;
+            }
+        }
+
+        /// <summary>
+        /// 通讯协议类型
+        /// </summary>
+        protected ProtocalType ProtocalType { get; set; }
 
         /// <summary>
         /// 接受连接请求Socket
