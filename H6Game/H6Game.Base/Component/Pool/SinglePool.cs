@@ -15,7 +15,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if(!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value =  ComponentPool.Fetch<T>();
+                value =  ManyPool.Add<T>();
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -26,7 +26,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1>(k1);
+                value = ManyPool.Add<T, K1>(k1);
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -37,7 +37,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1,K2>(k1, k2);
+                value = ManyPool.Add<T, K1,K2>(k1, k2);
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -48,7 +48,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1, K2, K3>(k1, k2, k3);
+                value = ManyPool.Add<T, K1, K2, K3>(k1, k2, k3);
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -59,7 +59,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1, K2, K3, K4>(k1, k2, k3, k4);
+                value = ManyPool.Add<T, K1, K2, K3, K4>(k1, k2, k3, k4);
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -70,7 +70,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
+                value = ManyPool.Add<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
                 TypeDictionary[type] = value;
             }
             return (T)value;
@@ -81,7 +81,7 @@ namespace H6Game.Base
             var type = typeof(T);
             if (!TypeDictionary.TryGetValue(type, out BaseComponent value))
             {
-                value = ComponentPool.Fetch<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
+                value = ManyPool.Add<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
                 TypeDictionary[type] = value;
             }
             return (T)value;

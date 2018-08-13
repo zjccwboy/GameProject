@@ -21,17 +21,6 @@ namespace H6Game.Base
             }
         }
 
-        public static bool TryGetComponent<T>(int componentId, out T value) where T : BaseComponent
-        {
-            if (componentDictionary.TryGetValue(componentId, out BaseComponent result))
-            {
-                value = (T)result;
-                return true;
-            }
-            value = null;
-            return false;
-        }
-
         public static T Fetch<T>() where T: BaseComponent
         {
             var type = typeof(T);

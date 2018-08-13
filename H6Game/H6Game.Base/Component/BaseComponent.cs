@@ -9,11 +9,24 @@ namespace H6Game.Base
         private ConcurrentDictionary<Type, HashSet<int>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<int>>();
         private ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
 
-        public void Add<T>(T component) where T:BaseComponent
+        public void AddNew<T>() where T:BaseComponent
         {
+            var component = ManyPool.Add<T>();
             IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
             var type = typeof(T);
             if(!TypeComponent.TryGetValue(type, out HashSet<int> ids))
+            {
+                ids = new HashSet<int>();
+                TypeComponent[type] = ids;
+            }
+            ids.Add(component.Id);
+        }
+
+        public void Add<T>(T component) where T : BaseComponent
+        {
+            IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+            var type = typeof(T);
+            if (!TypeComponent.TryGetValue(type, out HashSet<int> ids))
             {
                 ids = new HashSet<int>();
                 TypeComponent[type] = ids;
@@ -51,12 +64,9 @@ namespace H6Game.Base
 
         public virtual void Start() { }
         public virtual void Update() { }
-        public virtual void Stop() { }
-
         public int Id { get; set; }
-        public void Close()
+        public virtual void Stop()
         {
-            Stop();
             this.PutBack();
         }
     }

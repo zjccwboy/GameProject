@@ -50,15 +50,5 @@ namespace H6Game.Base
             return (T)typeDictionary[typeof(T)];
         }
 
-        public static T Get<T>(int id) where T : BaseComponent
-        {
-            if(CmpDictionary.TryGetValue(id, out BaseComponent component))
-            {
-                return (T)component;
-            }
-
-            ComponentPool.TryGetComponent(id, out T value);
-            return value;
-        }
     }
 }
