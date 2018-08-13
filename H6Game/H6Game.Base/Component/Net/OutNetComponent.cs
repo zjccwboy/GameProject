@@ -1,7 +1,5 @@
 ﻿using H6Game.Base.Entity;
-using System;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace H6Game.Base
 {

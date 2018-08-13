@@ -9,7 +9,7 @@ namespace H6Game.Base
 
         static ComponentFactory()
         {
-            CmponentTypes = TypeFactory.GetTypes<BaseComponent>();
+            CmponentTypes = TypePool.GetTypes<BaseComponent>();
         }
 
         public static BaseComponent CreateComponent(Type type)

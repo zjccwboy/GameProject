@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 单例的组件池,适合生命周期一直存在的对象
+    /// 单例的组件池,一个类型只能被实例化一次，并且实例化以后的类型对象在系统中是唯一的，适合生命周期一直存在的对象
     /// </summary>
     public static class SinglePool
     {
@@ -85,15 +85,6 @@ namespace H6Game.Base
                 TypeDictionary[type] = value;
             }
             return (T)value;
-        }
-
-        public static void Remove<T>(this T component) where T : BaseComponent
-        {
-            var type = typeof(T);
-            if(TypeDictionary.TryRemove(type, out BaseComponent value))
-            {
-                value.Close();
-            }
         }
     }
 }

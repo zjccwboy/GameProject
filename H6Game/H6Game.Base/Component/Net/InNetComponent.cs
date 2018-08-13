@@ -3,7 +3,6 @@ using H6Game.Message;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Collections.Concurrent;
 
 namespace H6Game.Base

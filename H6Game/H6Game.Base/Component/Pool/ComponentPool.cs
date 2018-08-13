@@ -189,8 +189,8 @@ namespace H6Game.Base
         public static void PutBack<T>(this T component) where T : BaseComponent
         {
             var baseComponent = component as BaseComponent;
-            baseComponent.Id = 0;
             componentDictionary.TryRemove(component.Id, out BaseComponent value);
+            value.Id = 0;
         }
 
     }
