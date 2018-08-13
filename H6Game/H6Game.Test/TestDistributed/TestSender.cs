@@ -35,14 +35,20 @@ namespace TestDistributed
             if (!networks.Any())
                 return;
 
-            var send = new TestMessage
-            {
-                ActorId = 10001,
-                Message = "Message"
-            };
-
             foreach (var network in networks)
             {
+                var send = new TestMessage
+                {
+                    ActorId = 10001,
+                    Message = "Message",
+                    LongData = 29999,
+                    ULongData = 30000011,
+                    ByteData = 200,
+                    SByteData = 80,
+                    UIntData = 191919191,
+                    ListIntData = new List<int> { 1, 2, 3, 4, 5, 6, },
+                };
+
                 network.CallRpc(send, (m) =>
                 {
                     if (m == null)

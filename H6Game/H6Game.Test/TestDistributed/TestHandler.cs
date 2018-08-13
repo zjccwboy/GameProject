@@ -26,5 +26,23 @@ namespace TestDistributed
 
         [ProtoBuf.ProtoMember(2)]
         public string Message { get; set; }
+
+        [ProtoBuf.ProtoMember(3)]
+        public long LongData { get; set; }
+
+        [ProtoBuf.ProtoMember(4)]
+        public ulong ULongData { get; set; }
+
+        [ProtoBuf.ProtoMember(5)]
+        public byte ByteData { get; set; }
+
+        [ProtoBuf.ProtoMember(6)]
+        public sbyte SByteData { get; set; }
+
+        [ProtoBuf.ProtoMember(7)]
+        public uint UIntData { get; set; }
+
+        [ProtoBuf.ProtoMember(8)]
+        public List<int> ListIntData { get; set; }
     }
 }
