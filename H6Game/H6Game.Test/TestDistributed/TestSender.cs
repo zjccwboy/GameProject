@@ -21,7 +21,7 @@ namespace TestDistributed
         }
         public override void Start()
         {
-            for(var i=0;i<100;i++)
+            for(var i=0;i<50;i++)
                 Broadcast();
         }
 
@@ -49,7 +49,6 @@ namespace TestDistributed
 
             foreach (var network in networks)
             {
-
                 network.CallRpc(send, (m) =>
                 {
                     if (m == null)

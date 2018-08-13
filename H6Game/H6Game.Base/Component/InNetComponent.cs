@@ -212,7 +212,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    this.Log(LogLevel.Warn, "Connecting", "连接中心服务成功.");
+                    this.Log(LogLevel.Info, "Connecting", "连接中心服务成功.");
                 }
 
                 SendToCenter(localMessage, (int)MessageCMD.AddInServer);
