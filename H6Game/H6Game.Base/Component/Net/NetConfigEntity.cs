@@ -1,7 +1,7 @@
 ﻿
 using H6Game.Message;
 
-namespace H6Game.Base.Entity
+namespace H6Game.Base
 {
     public class SysConfig
     {

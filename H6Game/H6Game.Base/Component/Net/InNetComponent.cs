@@ -1,5 +1,4 @@
-﻿using H6Game.Base.Entity;
-using H6Game.Message;
+﻿using H6Game.Message;
 using System;
 using System.Collections.Generic;
 using System.Net;

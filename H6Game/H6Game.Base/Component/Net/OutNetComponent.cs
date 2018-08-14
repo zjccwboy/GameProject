@@ -1,5 +1,4 @@
-﻿using H6Game.Base.Entity;
-using System.Net;
+﻿using System.Net;
 
 namespace H6Game.Base
 {

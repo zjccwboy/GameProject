@@ -1,5 +1,4 @@
-﻿using H6Game.Base.Entity;
-using System.IO;
+﻿using System.IO;
 
 namespace H6Game.Base
 {
@@ -64,7 +63,7 @@ namespace H6Game.Base
 #if SERVER
                 DbConfig = new DbConfigEntity
                 {
-                    ConnectionString = string.Empty,
+                    ConnectionString = "mongodb://localhost:27017",
                 },
 #endif
             };
