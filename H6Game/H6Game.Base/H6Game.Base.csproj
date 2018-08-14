@@ -25,6 +25,9 @@
     <Reference Include="H6Game.Message">
       <HintPath>..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
+    <Reference Include="ThirdParty">
+      <HintPath>..\ThirdParty\bin\Debug\netstandard2.0\ThirdParty.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,6 @@
 ﻿
+using H6Game.Message;
+
 namespace H6Game.Base.Entity
 {
     public class SysConfig

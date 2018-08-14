@@ -9,4 +9,10 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="ThirdParty">
+      <HintPath>..\ThirdParty\bin\Debug\netstandard2.0\ThirdParty.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

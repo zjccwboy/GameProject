@@ -1,7 +1,6 @@
-﻿using H6Game.Message;
-using ProtoBuf;
+﻿using ProtoBuf;
 
-namespace H6Game.Base
+namespace H6Game.Message
 {
     [ProtoContract]
     [MessageType(MessageType.NetEndPointMessage)]

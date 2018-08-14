@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using H6Game.Message;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace H6Game.Base
