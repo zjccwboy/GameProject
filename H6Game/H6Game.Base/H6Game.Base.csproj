@@ -22,11 +22,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Google.Protobuf">
+      <HintPath>..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
+    </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
-    <Reference Include="ThirdParty">
-      <HintPath>..\ThirdParty\bin\Debug\netstandard2.0\ThirdParty.dll</HintPath>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\obj\Debug\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\obj\Debug\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

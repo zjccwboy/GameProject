@@ -10,8 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="ThirdParty">
-      <HintPath>..\ThirdParty\bin\Debug\netstandard2.0\ThirdParty.dll</HintPath>
+    <Reference Include="Google.Protobuf">
+      <HintPath>..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
     </Reference>
   </ItemGroup>
 
