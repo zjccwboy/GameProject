@@ -8,6 +8,7 @@ namespace H6Game.Base
     /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Dispose，会统一注册到该类中统一处理。
     /// 注册事件使用EventAttirbute特性器注册。
     /// </summary>
+    [SingletCase]
     public class EventComponent : BaseComponent
     {
         private ConcurrentDictionary<Type, HashSet<BaseComponent>> UpdateDictionary { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();

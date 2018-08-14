@@ -3,6 +3,7 @@
 namespace H6Game.Base
 {
     [Event(EventType.Awake | EventType.Update)]
+    [SingletCase]
     public class OutNetComponent : BaseComponent
     {
         private SysConfig Config { get;} = SinglePool.Get<NetConfigComponent>().ConfigEntity;

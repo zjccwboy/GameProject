@@ -10,6 +10,7 @@ namespace H6Game.Base
     /// 内网分布式连接核心组件
     /// </summary>
     [Event(EventType.Awake | EventType.Update)]
+    [SingletCase]
     public class InNetComponent : BaseComponent
     {
         private SysConfig Config { get; } = SinglePool.Get<NetConfigComponent>().ConfigEntity;
