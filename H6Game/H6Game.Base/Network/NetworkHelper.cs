@@ -906,7 +906,7 @@ public static class NetworkHelper
 
     #region CallMessage
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Rquest"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -934,7 +934,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -960,7 +960,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -986,7 +986,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1012,7 +1012,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1038,7 +1038,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1064,7 +1064,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1090,7 +1090,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1116,7 +1116,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1142,7 +1142,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1168,7 +1168,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1194,7 +1194,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1220,7 +1220,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1246,7 +1246,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1272,7 +1272,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
@@ -1559,7 +1559,7 @@ public static class NetworkHelper
 
     #region CallActorMessage
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Rquest"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -1588,7 +1588,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1615,7 +1615,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1642,7 +1642,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1669,7 +1669,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1696,7 +1696,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1723,7 +1723,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1750,7 +1750,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1777,7 +1777,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1804,7 +1804,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1831,7 +1831,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1858,7 +1858,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1885,7 +1885,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1912,7 +1912,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -1939,7 +1939,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议使用
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
@@ -1967,7 +1967,7 @@ public static class NetworkHelper
 
     #region Broadcast all connections
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="network">网络类</param>
@@ -1981,7 +1981,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="messageCmd">消息指令</param>
@@ -1992,7 +1992,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2004,7 +2004,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2016,7 +2016,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2028,7 +2028,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2040,7 +2040,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2052,7 +2052,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2064,7 +2064,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2076,7 +2076,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2088,7 +2088,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2100,7 +2100,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2112,7 +2112,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2124,7 +2124,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2136,7 +2136,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2150,7 +2150,7 @@ public static class NetworkHelper
 
     #region BroadcastActor all connections
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="network">网络类</param>
@@ -2165,7 +2165,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="messageCmd">消息指令</param>
@@ -2177,7 +2177,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2190,7 +2190,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2203,7 +2203,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2216,7 +2216,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2229,7 +2229,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2242,7 +2242,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2255,7 +2255,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2268,7 +2268,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2281,7 +2281,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2294,7 +2294,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2307,7 +2307,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2320,7 +2320,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2333,7 +2333,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给所有客户端广播一条消息
+    /// 给所有Socket连接广播一条Actor消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -2348,7 +2348,7 @@ public static class NetworkHelper
 
     #region Broadcast list connections
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="networks">一组网络</param>
@@ -2364,7 +2364,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="messageCmd">消息指令</param>
@@ -2377,7 +2377,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2391,7 +2391,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2405,7 +2405,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2419,7 +2419,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2433,7 +2433,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2447,7 +2447,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2461,7 +2461,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2475,7 +2475,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2489,7 +2489,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2503,7 +2503,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2517,7 +2517,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2531,7 +2531,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2545,7 +2545,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2559,7 +2559,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2575,7 +2575,7 @@ public static class NetworkHelper
 
     #region BroadcastActor list connections
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="networks">一组网络</param>
@@ -2592,7 +2592,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="messageCmd">消息指令</param>
@@ -2606,7 +2606,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2621,7 +2621,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2636,7 +2636,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2651,7 +2651,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2666,7 +2666,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2681,7 +2681,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2696,7 +2696,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2711,7 +2711,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2726,7 +2726,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2741,7 +2741,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2756,7 +2756,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2771,7 +2771,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2786,7 +2786,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
@@ -2801,7 +2801,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 给一组连接网络广播一条消息
+    /// 给一组Socket连接网络广播一条Actor消息
     /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
