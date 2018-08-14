@@ -174,8 +174,6 @@ namespace H6Game.Base
             componentDictionary.TryRemove(component.Id, out BaseComponent value);
             value.Id = 0;
             value.IsStart = false;
-            value.IsAwake = false;
         }
-
     }
 }
