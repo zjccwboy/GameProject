@@ -12,7 +12,7 @@ namespace H6Game.Base
 
         public bool IsConnected { get { return this.Network.Channel.Connected; } }
 
-        public override void Start()
+        public override void Awake()
         {
             this.Connecting(GetLoginServerEndPoint());
         }

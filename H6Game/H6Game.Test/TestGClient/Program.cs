@@ -13,7 +13,7 @@ namespace TestGClient
     {
         static void Main(string[] args)
         {
-            Game.Add<OutNetComponent>();
+            Game.Scene.AddComponent<OutNetComponent>();
             while (true)
             {
                 Game.Update();
@@ -24,7 +24,7 @@ namespace TestGClient
 
         static async void TestCallBack()
         {
-            var network = Game.Get<OutNetComponent>().Network;
+            var network = SinglePool.Get<OutNetComponent>().Network;
             if (network == null)
                 return;
 

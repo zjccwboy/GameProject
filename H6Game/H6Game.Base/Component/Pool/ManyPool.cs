@@ -24,7 +24,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T>();
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -32,7 +32,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1>(k1);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -40,7 +40,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1, K2>(k1, k2);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -48,7 +48,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1, K2, K3>(k1, k2, k3);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -56,7 +56,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1, K2, K3, K4>(k1, k2, k3, k4);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -64,7 +64,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 
@@ -72,7 +72,7 @@ namespace H6Game.Base
         {
             var value = ComponentPool.Fetch<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
             IdDictionary.AddOrUpdate(value.Id, value, (k, v) => { return value; });
-            EventComponent.Add(value);
+            EventComponent.AddComponent(value);
             return value;
         }
 

@@ -7,11 +7,11 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
-            var eventCpt = SinglePool.Get<EventComponent>();
-            var test = SinglePool.Get<TestSender>();
+            Game.Scene.AddComponent<InNetComponent>();
+            Game.Scene.AddComponent<TestSender>();
             while (true)
             {
-                eventCpt.Update();
+                Game.Update();
                 Thread.Sleep(1);
             }
         }

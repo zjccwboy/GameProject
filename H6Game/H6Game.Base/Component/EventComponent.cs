@@ -26,7 +26,7 @@ namespace H6Game.Base
             }
         }
 
-        public override void Add<T>(T component)
+        public override void AddComponent<T>(T component)
         {
             var type = typeof(T);
 

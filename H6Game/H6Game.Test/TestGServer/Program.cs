@@ -13,7 +13,7 @@ namespace TestGServer
     {
         static void Main(string[] args)
         {
-            Game.Add<InNetComponent>();
+            Game.Scene.AddComponent<InNetComponent>();
             while (true)
             {
                 Game.Update();
