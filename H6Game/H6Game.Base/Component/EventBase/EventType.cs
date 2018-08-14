@@ -7,6 +7,6 @@ namespace H6Game.Base
         Awake = 1,
         Start = 1 << 1,
         Update = 1 << 2,
-        Close = 1 << 3,
+        Dispose = 1 << 3,
     }
 }

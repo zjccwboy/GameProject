@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace H6Game.Base
 {
-    public abstract class BaseComponent
+    public abstract class BaseComponent : IDisposable
     {
         protected ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
         protected ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
@@ -60,7 +60,7 @@ namespace H6Game.Base
         public int Id { get; set; }
         public bool IsStart { get; set; }
         public bool IsAwake { get; set; }
-        public virtual void Close()
+        public virtual void Dispose()
         {
             this.PutBack();
         }

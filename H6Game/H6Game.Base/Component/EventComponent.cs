@@ -5,12 +5,12 @@ using System.Collections.Generic;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Close事件，应该注册到该类中统一处理。
+    /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Dispose，应该注册到该类中统一处理。
     /// </summary>
     public class EventComponent : BaseComponent
     {
         private ConcurrentDictionary<Type, HashSet<BaseComponent>> UpdateDictionary { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
-        private ConcurrentDictionary<int, BaseComponent> CloseDictionary { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        private ConcurrentDictionary<int, BaseComponent> DisposeDictionary { get; } = new ConcurrentDictionary<int, BaseComponent>();
 
         public override void Update()
         {
@@ -46,7 +46,7 @@ namespace H6Game.Base
             HandlerEvent(component, eventType & EventType.Awake);
             HandlerEvent(component, eventType & EventType.Start);
             HandlerEvent(component, eventType & EventType.Update);
-            HandlerEvent(component, eventType & EventType.Close);
+            HandlerEvent(component, eventType & EventType.Dispose);
         }
 
         public override void Remove(BaseComponent component)
@@ -61,8 +61,8 @@ namespace H6Game.Base
             if (UpdateDictionary.TryGetValue(type, out hashVal))
                 hashVal.Remove(component);
 
-            if (CloseDictionary.TryRemove(component.Id, out value))
-                value.Close();
+            if (DisposeDictionary.TryRemove(component.Id, out value))
+                value.Dispose();
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)
@@ -93,9 +93,9 @@ namespace H6Game.Base
                 }
                 hashVal.Add(component);
             }
-            else if((eventType & EventType.Close) == EventType.Close)
+            else if((eventType & EventType.Dispose) == EventType.Dispose)
             {
-                CloseDictionary.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                DisposeDictionary.AddOrUpdate(component.Id, component, (k, v) => { return component; });
             }
         }
 
