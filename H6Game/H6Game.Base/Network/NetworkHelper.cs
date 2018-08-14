@@ -913,22 +913,22 @@ public static class NetworkHelper
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<Tuple<Response, bool>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd)
         where Rquest : class
     {
-        var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            Tuple<Response, bool> tuple;
+            CallResult<Response> result;
             if (p.TryRead(out Response response))
             {
-                tuple = new Tuple<Response, bool>(response, true);
+                result = new CallResult<Response>(response, true);
             }
             else
             {
-                tuple = new Tuple<Response, bool>(response, false);
+                result = new CallResult<Response>(response, false);
             }
-            tcs.TrySetResult(tuple);
+            tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
     }
@@ -939,21 +939,21 @@ public static class NetworkHelper
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<Tuple<Response, bool>> CallMessage<Response>(this Network network, int messageCmd)
+    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int messageCmd)
     {
-        var tcs = new TaskCompletionSource<Tuple<Response, bool>>();
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc((p) =>
         {
-            Tuple<Response, bool> tuple;
+            CallResult<Response> result;
             if (p.TryRead(out Response response))
             {
-                tuple = new Tuple<Response, bool>(response, true);
+                result = new CallResult<Response>(response, true);
             }
             else
             {
-                tuple = new Tuple<Response, bool>(response, false);
+                result = new CallResult<Response>(response, false);
             }
-            tcs.TrySetResult(tuple);
+            tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
     }

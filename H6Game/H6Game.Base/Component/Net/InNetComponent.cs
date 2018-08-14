@@ -204,10 +204,10 @@ namespace H6Game.Base
                     InConnectNetworks.AddOrUpdate(c.Id, c.Handler.Network, (a, val)=> { return c.Handler.Network; });
 
                     var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServer);
-                    if (tuple.Item2)
+                    if (tuple.Result)
                     {
-                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Item1.ToJson()}");
-                        this.OutNetMapManager.Add(c, tuple.Item1);
+                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Content.ToJson()}");
+                        this.OutNetMapManager.Add(c, tuple.Content);
                     }
                 }
                 else

@@ -35,8 +35,8 @@ namespace TestGClient
             };
 
             var result = await network.CallMessage<TestMessage, TestMessage>(send, 1024);
-            if(result.Item2)
-                LogRecord.Log(LogLevel.Info, "CallBack", result.Item1.ToJson());
+            if(result.Result)
+                LogRecord.Log(LogLevel.Info, "CallBack", result.Content.ToJson());
         }
     }
 
