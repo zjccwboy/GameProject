@@ -5,7 +5,7 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
+    /// <typeparam name="Message"></typeparam>
     public abstract class AHandler<Message> : IHandler<Message>
     {
         private Type MsgType;
