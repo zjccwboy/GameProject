@@ -1965,7 +1965,7 @@ public static class NetworkHelper
     }
     #endregion
 
-    #region Broadcast all clients
+    #region Broadcast all connections
     /// <summary>
     /// 给所有客户端广播一条消息
     /// </summary>
@@ -2148,7 +2148,7 @@ public static class NetworkHelper
     }
     #endregion Broadcast
 
-    #region BroadcastActor all clients
+    #region BroadcastActor all connections
     /// <summary>
     /// 给所有客户端广播一条消息
     /// </summary>
@@ -2346,7 +2346,7 @@ public static class NetworkHelper
     }
     #endregion Broadcast
 
-    #region Broadcast list clients
+    #region Broadcast list connections
     /// <summary>
     /// 给一组连接网络广播一条消息
     /// </summary>
@@ -2573,7 +2573,7 @@ public static class NetworkHelper
     }
     #endregion
 
-    #region BroadcastActor list clients
+    #region BroadcastActor list connections
     /// <summary>
     /// 给一组连接网络广播一条消息
     /// </summary>
