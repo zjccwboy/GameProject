@@ -1,20 +1,27 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace H6Game.Base
 {
+    /// <summary>
+    /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Close事件，应该注册到该类中统一处理。
+    /// </summary>
     public class EventComponent : BaseComponent
     {
+        private ConcurrentDictionary<Type, HashSet<BaseComponent>> UpdateDictionary { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
+        private ConcurrentDictionary<int, BaseComponent> CloseDictionary { get; } = new ConcurrentDictionary<int, BaseComponent>();
+
         public override void Update()
         {
-            var keyVals = this.TypeComponent;
+            var keyVals = this.UpdateDictionary;
             foreach(var kv in keyVals)
             {
                 var doEvent = TypePool.GetEvent(kv.Key);
                 var values = keyVals[kv.Key];
                 foreach(var val in values)
                 {
-                    HandlerEvent(val, doEvent & EventType.Update);
+                    val.Update();
                 }
             }
         }
@@ -36,32 +43,59 @@ namespace H6Game.Base
             }
             ids.Add(component);
 
-            if (component.IsAwake)
-                return;
-
             HandlerEvent(component, eventType & EventType.Awake);
             HandlerEvent(component, eventType & EventType.Start);
+            HandlerEvent(component, eventType & EventType.Update);
+            HandlerEvent(component, eventType & EventType.Close);
+        }
+
+        public override void Remove(BaseComponent component)
+        {
+            if (!IdComponent.TryGetValue(component.Id, out BaseComponent value))
+                return;
+
+            var type = value.GetType();
+            if (TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
+                hashVal.Remove(component);
+
+            if (UpdateDictionary.TryGetValue(type, out hashVal))
+                hashVal.Remove(component);
+
+            if (CloseDictionary.TryRemove(component.Id, out value))
+                value.Close();
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)
         {
             if((eventType & EventType.Awake) == EventType.Awake)
             {
+                if (component.IsAwake)
+                    return;
+
                 component.Awake();
                 component.IsAwake = true;
             }
             else if((eventType & EventType.Start) == EventType.Start)
             {
+                if (component.IsStart)
+                    return;
+
                 component.Start();
                 component.IsStart = true;
             }
             else if((eventType & EventType.Update) == EventType.Update)
             {
-                component.Update();
+                var type = component.GetType();
+                if(!UpdateDictionary.TryGetValue(type, out HashSet<BaseComponent> hashVal))
+                {
+                    hashVal = new HashSet<BaseComponent>();
+                    UpdateDictionary[type] = hashVal;
+                }
+                hashVal.Add(component);
             }
             else if((eventType & EventType.Close) == EventType.Close)
             {
-                component.Close();
+                CloseDictionary.AddOrUpdate(component.Id, component, (k, v) => { return component; });
             }
         }
 

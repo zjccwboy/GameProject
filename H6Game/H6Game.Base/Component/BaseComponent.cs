@@ -42,7 +42,7 @@ namespace H6Game.Base
             return false;
         }
 
-        public void Remove(BaseComponent component)
+        public virtual void Remove(BaseComponent component)
         {
             if(IdComponent.TryGetValue(component.Id, out BaseComponent value))
             {
