@@ -24,7 +24,7 @@ namespace TestGClient
 
         static async void TestCallBack()
         {
-            var network = SinglePool.Get<OutNetComponent>().Network;
+            var network = Game.Scene.GetComponent<OutNetComponent>().Network;
             if (network == null)
                 return;
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace H6Game.Base
 {
@@ -17,6 +15,12 @@ namespace H6Game.Base
                 TypeComponent[type] = components;
             }
             components.Add(component);
+        }
+
+        public T GetComponent<T>() where T : BaseComponent
+        {
+            var component = SinglePool.Get<T>();
+            return component;
         }
     }
 }
