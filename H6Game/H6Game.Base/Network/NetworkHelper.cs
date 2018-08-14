@@ -1275,6 +1275,32 @@ public static class NetworkHelper
     /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
     /// </summary>
     /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, bool data, int messageCmd)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallRpc(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
     public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int messageCmd)
@@ -1920,6 +1946,33 @@ public static class NetworkHelper
     /// <param name="actorId"></param>
     /// <returns></returns>
     public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, char data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, bool data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
