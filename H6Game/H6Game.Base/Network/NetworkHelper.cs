@@ -1299,6 +1299,412 @@ public static class NetworkHelper
 
     #region CallActor
     /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Rquest"></typeparam>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Rquest, Response>(this Network network, Rquest data, int messageCmd, int actorId)
+        where Rquest : class
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data,(p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, string data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, int data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, uint data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, long data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, ulong data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, float data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, double data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, decimal data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, short data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, ushort data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, byte data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, sbyte data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="data"></param>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, char data, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议使用
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="messageCmd"></param>
+    /// <param name="actorId"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, int messageCmd, int actorId)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallActor((p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd, actorId);
+        return tcs.Task;
+    }
+
+    /// <summary>
     /// 发送Actor Rpc请求
     /// </summary>
     /// <typeparam name="T"></typeparam>
