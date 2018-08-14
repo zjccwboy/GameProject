@@ -5,7 +5,8 @@ using System.Collections.Generic;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Dispose，应该注册到该类中统一处理。
+    /// 事件驱动组件，如果实现了组件基本的Awake,Start,Update,Dispose，会统一注册到该类中统一处理。
+    /// 注册事件使用EventAttirbute特性器注册。
     /// </summary>
     public class EventComponent : BaseComponent
     {
