@@ -6,6 +6,7 @@ using MongoDB.Driver;
 
 namespace H6Game.Base
 {
+    [Event(EventType.Awake)]
     public class MongoDBComponent : BaseComponent
     {
         private SysConfig Config { get; set; }
