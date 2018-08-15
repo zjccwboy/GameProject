@@ -7,6 +7,7 @@ using MongoDB.Driver;
 namespace H6Game.Base
 {
     [Event(EventType.Awake)]
+    [SingletCase]
     public sealed class MongoDBComponent : BaseComponent
     {
         private SysConfig Config { get; set; }
@@ -20,21 +21,6 @@ namespace H6Game.Base
             this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
             this.DBClient = new MongoClient(Config.DbConfig.ConnectionString);
             this.Database = this.DBClient.GetDatabase("H6Game");
-        }
-
-        public void Insert<T>(T data)
-        {
-
-        }
-
-        public void Modfiy<T>(T data)
-        {
-
-        }
-
-        public void Delete<T>(T data)
-        {
-
         }
     }
 }

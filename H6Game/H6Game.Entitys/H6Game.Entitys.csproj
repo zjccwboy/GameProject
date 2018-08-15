@@ -9,4 +9,10 @@
     <Folder Include="Game\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

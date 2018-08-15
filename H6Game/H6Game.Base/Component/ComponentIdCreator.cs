@@ -8,7 +8,7 @@ namespace H6Game.Base
         public static int CreateId()
         {
             Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 0, int.MaxValue);
+            Interlocked.CompareExchange(ref id, 1, int.MaxValue);
             return id;
         }
     }
