@@ -56,8 +56,12 @@ namespace H6Game.Base
             {
                 var type = component.GetType();
                 Updates.Remove(component);
-                if (!ComponentPool.IsSingleType(type))
-                    component.Dispose();
+                result &= Disposes.Remove(component);
+                if (result)
+                {
+                    if (!ComponentPool.IsSingleType(type))
+                        component.Dispose();
+                }
             }
             return result;
         }
