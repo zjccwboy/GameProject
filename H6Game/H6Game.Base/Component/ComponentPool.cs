@@ -270,9 +270,17 @@ namespace H6Game.Base
         public static void PutBack<T>(this T component) where T : BaseComponent
         {
             var baseComponent = component as BaseComponent;
-            componentDictionary.TryRemove(component.Id, out BaseComponent value);
+            if (!componentDictionary.TryRemove(component.Id, out BaseComponent value))
+                return;
+
+            var type = typeof(T);
+            if (!componentTypeDictionary.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
+                return;
+
             value.Id = 0;
             value.IsStart = false;
+
+            queue.Enqueue(component);
         }
     }
 }
