@@ -9,7 +9,10 @@ using H6Game.Entitys;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace TestMogodb
 {
@@ -67,8 +70,18 @@ namespace TestMogodb
                 using (var writer = new BsonBinaryWriter(stream))
                 {
                     BsonSerializer.Serialize(writer, typeof(T), data);
-                    return writer.ToString();
+                    UTF8Encoding uTF8Encoding = new UTF8Encoding(false);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    using (var reader = new MongoDB.Bson.IO.BsonBinaryReader(stream))
+                    {
+                        var context = BsonDeserializationContext.CreateRoot(reader);
+                        BsonDocument doc = BsonDocumentSerializer.Instance.Deserialize(context);
+                        return doc.ToString();
+                    }
                 }
+
+
+
                 //stream.Seek(0, SeekOrigin.Begin);
                 //using (var reader = new Newtonsoft.Json.Bson.BsonReader(stream))
                 //{
@@ -87,9 +100,13 @@ namespace TestMogodb
 
     public class TestAccount : BaseEntity
     {
+        [BsonElement]
         public string FAccount { get; set; }
+        [BsonElement]
         public decimal FAmt { get; set; }
+        [BsonElement]
         public DateTime FCreateTime { get; set; }
+        [BsonElement]
         public byte FVIPLevel { get; set; }
     }
 }
