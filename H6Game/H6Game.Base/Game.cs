@@ -13,6 +13,7 @@ namespace H6Game.Base
         {
             Scene = ComponentPool.Fetch<SceneComponent>();
             Event = ComponentPool.Fetch<EventComponent>();
+            Scene.AddComponent<NetConfigComponent>();
         }
 
         public static void Update()
