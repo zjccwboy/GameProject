@@ -2,7 +2,8 @@
 
 namespace H6Game.Base
 {
-    public class SceneComponent : BaseComponent
+    [SingletCase]
+    public sealed class SceneComponent : BaseComponent
     {
         /// <summary>
         /// 新建并添加一个组件到该组件中.

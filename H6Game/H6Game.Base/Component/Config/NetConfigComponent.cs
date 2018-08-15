@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     [Event(EventType.Awake)]
     [SingletCase]
-    public class NetConfigComponent : BaseComponent
+    public sealed class NetConfigComponent : BaseComponent
     {
         public SysConfig ConfigEntity { get; private set; }
 

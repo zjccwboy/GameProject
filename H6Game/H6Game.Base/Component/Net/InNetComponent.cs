@@ -11,7 +11,7 @@ namespace H6Game.Base
     /// </summary>
     [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
-    public class InNetComponent : BaseComponent
+    public sealed class InNetComponent : BaseComponent
     {
         private SysConfig Config { get; set; }
         private EndPointEntity DefaultCenterEndPoint { get; set; }

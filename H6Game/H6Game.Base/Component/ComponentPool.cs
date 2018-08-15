@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace H6Game.Base
 {
-    public static class ComponentPool
+    internal static class ComponentPool
     {
         private static ConcurrentDictionary<int, BaseComponent> componentDictionary { get; } = new ConcurrentDictionary<int, BaseComponent>();
         private static ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>> componentTypeDictionary { get; } = new ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>>();

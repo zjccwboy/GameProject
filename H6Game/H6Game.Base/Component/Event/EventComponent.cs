@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// 注册事件使用EventAttirbute特性器注册。
     /// </summary>
     [SingletCase]
-    public class EventComponent : BaseComponent
+    public sealed class EventComponent : BaseComponent
     {
         private HashSet<BaseComponent> Disposes { get; } = new HashSet<BaseComponent>();
         private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
