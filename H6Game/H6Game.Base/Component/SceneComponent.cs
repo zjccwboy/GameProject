@@ -4,22 +4,29 @@ namespace H6Game.Base
 {
     public class SceneComponent : BaseComponent
     {
-        public void AddComponent<T>() where T : BaseComponent
+        /// <summary>
+        /// 新建并添加一个组件到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        public override bool AddComponent<T>(T component)
         {
-            var component = SinglePool.Get<T>();
-            IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-            var type = typeof(T);
-            if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+            if (base.AddComponent(component))
             {
-                components = new HashSet<BaseComponent>();
-                TypeComponent[type] = components;
+                Game.Event.AddComponent(component);
+                return true;
             }
-            components.Add(component);
+            return false;
         }
 
-        public T GetComponent<T>() where T : BaseComponent
+        /// <summary>
+        /// 新建或者从组件池中获取一个单例组件添加到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public override T AddComponent<T>()
         {
-            var component = SinglePool.Get<T>();
+            var component = base.AddComponent<T>();
+            Game.Event.AddComponent(component);
             return component;
         }
     }

@@ -11,60 +11,59 @@ namespace H6Game.Base
     [SingletCase]
     public class EventComponent : BaseComponent
     {
-        private ConcurrentDictionary<Type, HashSet<BaseComponent>> UpdateDictionary { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
-        private ConcurrentDictionary<int, BaseComponent> DisposeDictionary { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        private HashSet<BaseComponent> Disposes { get; } = new HashSet<BaseComponent>();
+        private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
+        private HashSet<BaseComponent> Starts { get; } = new HashSet<BaseComponent>();
 
         public override void Update()
         {
-            var keyVals = this.UpdateDictionary;
-            foreach(var kv in keyVals)
+            foreach(var component in Starts)
             {
-                var doEvent = TypePool.GetEvent(kv.Key);
-                var values = keyVals[kv.Key];
-                foreach(var val in values)
-                {
-                    val.Update();
-                }
+                component.Start();
+                component.IsStart = true;
+            }
+
+            Starts.Clear();
+
+            foreach (var component in Updates)
+            {
+                component.Update();
             }
         }
 
-        public override void AddComponent<T>(T component)
+        public override bool AddComponent<T>(T component)
         {
             var type = typeof(T);
 
             var eventType = TypePool.GetEvent(type);
             if (eventType == EventType.None)
-                return;
+                return false;
 
-            IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-
-            if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> ids))
-            {
-                ids = new HashSet<BaseComponent>();
-                TypeComponent[type] = ids;
-            }
-            ids.Add(component);
+            if (!base.AddComponent(component))
+                return false;
 
             HandlerEvent(component, eventType & EventType.Awake);
             HandlerEvent(component, eventType & EventType.Start);
             HandlerEvent(component, eventType & EventType.Update);
             HandlerEvent(component, eventType & EventType.Dispose);
+            return true;
         }
 
-        public override void Remove(BaseComponent component)
+        public override bool Remove(BaseComponent component)
         {
-            if (!IdComponent.TryGetValue(component.Id, out BaseComponent value))
-                return;
-
-            var type = value.GetType();
-            if (TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
-                hashVal.Remove(component);
-
-            if (UpdateDictionary.TryGetValue(type, out hashVal))
-                hashVal.Remove(component);
-
-            if (DisposeDictionary.TryRemove(component.Id, out value))
-                value.Dispose();
+            var result = false;
+            if (base.Remove(component))
+            {
+                var type = component.GetType();
+                result &= Updates.Remove(component);
+                result &= Disposes.Remove(component);
+                if (result)
+                {
+                    if(!ComponentPool.IsSingleType(type))
+                        component.Dispose();
+                }
+            }
+            return result;
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)
@@ -81,23 +80,15 @@ namespace H6Game.Base
             {
                 if (component.IsStart)
                     return;
-
-                component.Start();
-                component.IsStart = true;
+                Starts.Add(component);
             }
             else if((eventType & EventType.Update) == EventType.Update)
             {
-                var type = component.GetType();
-                if(!UpdateDictionary.TryGetValue(type, out HashSet<BaseComponent> hashVal))
-                {
-                    hashVal = new HashSet<BaseComponent>();
-                    UpdateDictionary[type] = hashVal;
-                }
-                hashVal.Add(component);
+                Updates.Add(component);
             }
             else if((eventType & EventType.Dispose) == EventType.Dispose)
             {
-                DisposeDictionary.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                Updates.Add(component);
             }
         }
 

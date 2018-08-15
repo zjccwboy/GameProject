@@ -29,7 +29,7 @@ namespace TestDistributed
 
         private void Broadcast()
         {
-            var inNetComponent = SinglePool.Get<InNetComponent>();
+            var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
 
             if (inNetComponent.IsCenterServer)
                 return;

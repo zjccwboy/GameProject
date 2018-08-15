@@ -78,7 +78,7 @@ namespace H6Game.Base
             this.BodyStream = new MemoryStream(parser.BlockSize);
             this.Parser = parser;
 
-            var config = SinglePool.Get<NetConfigComponent>().ConfigEntity;
+            var config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
             this.IsCompress = config.IsCompress;
             this.IsEncrypt = config.IsEncrypt;
         }

@@ -6,52 +6,141 @@ namespace H6Game.Base
 {
     public abstract class BaseComponent : IDisposable
     {
-        protected ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
-        protected ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        private ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
+        private ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        private ConcurrentDictionary<Type, BaseComponent> SingleDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
 
-        public IEnumerable<Type> GetTypes()
+        /// <summary>
+        /// 新建并添加一个组件到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        public virtual bool AddComponent<T>(T component) where T : BaseComponent
         {
-            return this.TypeComponent.Keys;
-        }
-
-        public virtual void AddComponent<T>(T component) where T : BaseComponent
-        {
-            IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
             var type = typeof(T);
-            if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+            var isSingle = ComponentPool.IsSingleType(type);
+            if (isSingle)
             {
-                components = new HashSet<BaseComponent>();
-                TypeComponent[type] = components;
+                return SingleDictionary.TryAdd(type, component);
             }
-            components.Add(component);
-        }
-
-        public bool TryGet<T>(out HashSet<BaseComponent> value) where T:BaseComponent
-        {
-            return TypeComponent.TryGetValue(typeof(T), out value);
-        }
-
-        public bool TryGet<T>(int id, out T value) where T:BaseComponent
-        {
-            if(IdComponent.TryGetValue(id, out BaseComponent component))
+            else
             {
-                value = (T)component;
-                return true;
-            }
-            value = null;
-            return false;
-        }
-
-        public virtual void Remove(BaseComponent component)
-        {
-            if(IdComponent.TryGetValue(component.Id, out BaseComponent value))
-            {
-                var type = value.GetType();
-                if(TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
+                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
                 {
-                    hashVal.Remove(component);
+                    components = new HashSet<BaseComponent>();
+                    TypeComponent[type] = components;
+                }
+                return components.Add(component);
+            }
+        }
+
+        /// <summary>
+        /// 新建或者从组件池中获取一个单例组件添加到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public virtual T AddComponent<T>() where T : BaseComponent
+        {
+            var type = typeof(T);
+            var isSingle = ComponentPool.IsSingleType(type);
+            var component = ComponentPool.Fetch<T>();
+            if (isSingle)
+            {
+                SingleDictionary[type] = component;
+            }
+            else
+            {
+                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+                {
+                    components = new HashSet<BaseComponent>();
+                    TypeComponent[type] = components;
+                }
+                components.Add(component);
+            }
+
+            return component;
+        }
+
+        /// <summary>
+        /// 获取一个SingleCase组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public virtual T GetComponent<T>() where T : BaseComponent
+        {
+            var type = typeof(T);
+            var isSingle = ComponentPool.IsSingleType(type);
+            if (!isSingle)
+                throw new Exception("不允许获取非SingleCase的Component,你可以通过调用GetComponents<T>(int Id)方法来获取非SingleCase组件集合.");
+
+            if (!SingleDictionary.TryGetValue(type, out BaseComponent component))
+                throw new Exception($"类型:{type}没有加到该组件中.");
+
+            return (T)component;
+        }
+
+        /// <summary>
+        /// 获取一个组件集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual HashSet<BaseComponent> GetComponents<T>() where T:BaseComponent
+        {
+            var type = typeof(T);
+            var isSingle = ComponentPool.IsSingleType(type);
+            if (isSingle)
+                throw new Exception("该方法不支持获取单例组件，如果需要获取单例组件请调用GetComponent<T>()方法.");
+
+            if(!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+            {
+                throw new Exception($"类型:{type}没有加到该组件中.");
+            }
+
+            return components;
+        }
+
+        /// <summary>
+        /// 获取一个组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual T GetComponent<T>(int id) where T:BaseComponent
+        {
+            var type = typeof(T);
+            var isSingle = ComponentPool.IsSingleType(type);
+            if (isSingle)
+                throw new Exception("该方法不支持获取单例组件，如果需要获取单例组件请调用GetSingleComponent<T>方法.");
+
+            if (IdComponent.TryGetValue(id, out BaseComponent component))
+            {
+                return (T)component;
+            }
+            throw new Exception($"类型:{type} ID:{id}组件没有加到该组件中.");
+        }
+
+        public virtual bool Remove(BaseComponent component)
+        {
+            var type = component.GetType();
+            var isSingle = ComponentPool.IsSingleType(type);
+            if (isSingle)
+            {
+                return SingleDictionary.TryRemove(type, out BaseComponent value);
+            }
+            else
+            {
+                if (IdComponent.TryGetValue(component.Id, out BaseComponent value))
+                {
+                    if (TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
+                    {
+                        return hashVal.Remove(component);
+                    }
                 }
             }
+            return false;
         }
 
         /// <summary>

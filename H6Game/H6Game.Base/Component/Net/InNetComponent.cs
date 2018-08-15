@@ -9,12 +9,13 @@ namespace H6Game.Base
     /// <summary>
     /// 内网分布式连接核心组件
     /// </summary>
-    [Event(EventType.Awake | EventType.Update)]
+    [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
     public class InNetComponent : BaseComponent
     {
-        private SysConfig Config { get; } = SinglePool.Get<NetConfigComponent>().ConfigEntity;
-        private EndPointEntity DefaultCenterEndPoint;
+        private SysConfig Config { get; set; }
+        private EndPointEntity DefaultCenterEndPoint { get; set; }
+
         private readonly ConcurrentDictionary<int, Session> InConnectSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Session> DisconnectSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Network> InConnectNetworks = new ConcurrentDictionary<int, Network>();
@@ -66,6 +67,11 @@ namespace H6Game.Base
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
         public override void Awake()
+        {
+            this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
+        }
+
+        public override void Start()
         {
             this.DefaultCenterEndPoint = Config.InNetConfig.CenterEndPoint;
             var center = this.Config.GetCenterMessage();

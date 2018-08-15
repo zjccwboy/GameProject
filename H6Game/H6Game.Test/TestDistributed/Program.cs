@@ -7,6 +7,7 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
+            Game.Scene.AddComponent<NetConfigComponent>();
             Game.Scene.AddComponent<InNetComponent>();
             Game.Scene.AddComponent<TestSender>();
             while (true)

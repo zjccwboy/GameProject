@@ -17,6 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Component\Pool\ManyPool.cs" />
+    <Compile Remove="Component\Pool\SinglePool.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>

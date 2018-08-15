@@ -6,8 +6,14 @@ namespace H6Game.Base
 {
     public class Game
     {
-        public static SceneComponent Scene { get; } = SinglePool.Get<SceneComponent>();
-        private static EventComponent Event { get; } = SinglePool.Get<EventComponent>();
+        public static SceneComponent Scene { get; }
+        public static EventComponent Event { get;}
+
+        static Game()
+        {
+            Scene = ComponentPool.Fetch<SceneComponent>();
+            Event = ComponentPool.Fetch<EventComponent>();
+        }
 
         public static void Update()
         {

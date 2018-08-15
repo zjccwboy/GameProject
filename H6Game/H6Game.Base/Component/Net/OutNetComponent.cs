@@ -2,17 +2,22 @@
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake | EventType.Update)]
+    [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
     public class OutNetComponent : BaseComponent
     {
-        private SysConfig Config { get;} = SinglePool.Get<NetConfigComponent>().ConfigEntity;
+        private SysConfig Config { get; set; }
 
         public Network Network { get; private set; }
 
         public bool IsConnected { get { return this.Network.Channel.Connected; } }
 
         public override void Awake()
+        {
+            this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
+        }
+
+        public override void Start()
         {
             this.Connecting(GetLoginServerEndPoint());
         }
