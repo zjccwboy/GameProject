@@ -51,17 +51,13 @@ namespace H6Game.Base
 
         public override bool Remove(BaseComponent component)
         {
-            var result = false;
-            if (base.Remove(component))
+            var result = base.Remove(component);
+            if (result)
             {
                 var type = component.GetType();
-                result &= Updates.Remove(component);
-                result &= Disposes.Remove(component);
-                if (result)
-                {
-                    if(!ComponentPool.IsSingleType(type))
-                        component.Dispose();
-                }
+                Updates.Remove(component);
+                if (!ComponentPool.IsSingleType(type))
+                    component.Dispose();
             }
             return result;
         }
@@ -88,7 +84,7 @@ namespace H6Game.Base
             }
             else if((eventType & EventType.Dispose) == EventType.Dispose)
             {
-                Updates.Add(component);
+                Disposes.Add(component);
             }
         }
 

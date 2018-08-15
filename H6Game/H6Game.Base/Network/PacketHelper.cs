@@ -1,5 +1,4 @@
 ﻿using H6Game.Base;
-using H6Game.Message;
 using ProtoBuf;
 using System;
 using System.Net;
