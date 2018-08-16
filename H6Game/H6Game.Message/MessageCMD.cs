@@ -27,10 +27,6 @@ namespace H6Game.Message
         /// </summary>
         AddActorCmd,
         /// <summary>
-        /// 更新Actor消息Cmd
-        /// </summary>
-        UpdateActorCmd,
-        /// <summary>
         /// 删除Actor消息Cmd
         /// </summary>
         RemoveActorCmd,

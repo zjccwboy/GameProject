@@ -5,7 +5,7 @@ using System.Text;
 namespace H6Game.Base
 {
     [SingletCase]
-    public class SceneActorComponent : BaseComponent
+    public class SceneActorComponent : BaseActorComponent
     {
 
     }

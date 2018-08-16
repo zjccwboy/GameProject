@@ -7,25 +7,25 @@ namespace H6Game.Message
     [MessageType(MessageType.PlayerActorMessage)]
     public class PlayerActorMessage : ActorMessage
     {
-        public PlayerType PlayerType { get; set; }
+
     }
 
     [MessageType(MessageType.RoomActorMessage)]
     public class RoomActorMessage : ActorMessage
     {
-        public RoomType RoomType { get; set; }
+
     }
 
     [MessageType(MessageType.SceneActorMessage)]
     public class SceneActorMessage : ActorMessage
     {
-        public SceneType SceneType { get; set; }
+
     }
 
     [MessageType(MessageType.GameActorMessage)]
     public class GameActorMessage : ActorMessage
     {
-        public GameType GameType { get; set; }
+
     }
 
     [MessageType(MessageType.None)]
@@ -33,6 +33,6 @@ namespace H6Game.Message
     {
 
         [ProtoMember(1)]
-        public string Id { get; set; }
+        public string ObjectId { get; set; }
     }
 }

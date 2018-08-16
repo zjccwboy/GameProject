@@ -5,9 +5,8 @@ using System.Text;
 namespace H6Game.Base
 {
     [SingletCase]
-    public class PlayerActorComponent : BaseComponent
+    public class PlayerActorComponent : BaseActorComponent
     {
-
-
+        
     }
 }

@@ -72,7 +72,7 @@ namespace H6Game.Base
             var type = typeof(T);
             var isSingle = ComponentPool.IsSingleType(type);
             if (!isSingle)
-                throw new Exception("不允许获取非SingleCase的Component,你可以通过调用GetComponents<T>(int Id)方法来获取非SingleCase组件集合.");
+                throw new Exception($"类型:{type}非SingleCase组件不允许获取.");
 
             if (!SingleDictionary.TryGetValue(type, out BaseComponent component))
                 throw new Exception($"类型:{type}没有加到该组件中.");
@@ -91,7 +91,7 @@ namespace H6Game.Base
             var type = typeof(T);
             var isSingle = ComponentPool.IsSingleType(type);
             if (isSingle)
-                throw new Exception("该方法不支持获取单例组件，如果需要获取单例组件请调用GetComponent<T>()方法.");
+                throw new Exception($"类型:{type}是SingleCase组件不允许获取.");
 
             if(!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
             {
@@ -102,18 +102,18 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 获取一个组件
+        /// 获取一个组件，不允许获取SingleCase
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
+        /// <returns></returns>        
         public virtual T GetComponent<T>(int id) where T:BaseComponent
         {
             var type = typeof(T);
             var isSingle = ComponentPool.IsSingleType(type);
             if (isSingle)
-                throw new Exception("该方法不支持获取单例组件，如果需要获取单例组件请调用GetSingleComponent<T>方法.");
+                throw new Exception($"类型:{type}是SingleCase组件不允许获取.");
 
             if (IdComponent.TryGetValue(id, out BaseComponent component))
             {
