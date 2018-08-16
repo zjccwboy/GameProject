@@ -676,12 +676,12 @@ public static class NetworkHelper
     /// <summary>
     /// 发送Rpc请求
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<T>(this Network network, T data, Action<Packet> notificationAction, int messageCmd) where T : class
+    public static void CallRpc<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd) where Request : class
 
     {
         var session = network.Session;
@@ -809,9 +809,6 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    /// <param name="isCompress">是否压缩数据包</param>
-    /// <param name="isEncrypt">是否加密数据包</param>
     public static void CallRpc(this Network network, double data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
@@ -902,6 +899,263 @@ public static class NetworkHelper
         var channel = network.Channel;
         session.Subscribe(channel, data, notificationAction, messageCmd);
     }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Request"></typeparam>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Request,Response>(this Network network, Request data, Action<Response> notificationAction, int messageCmd) where Request:class
+    {
+        network.CallRpc(data, (p)=> {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc((p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, string data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, int data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, uint data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, bool data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, long data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, ulong data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, float data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, double data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, decimal data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, byte data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, sbyte data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, char data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, short data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    /// <summary>
+    /// 发送Rpc请求
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallRpc<Response>(this Network network, ushort data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallRpc(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
     #endregion CallRpc
 
     #region CallMessage
@@ -1327,14 +1581,14 @@ public static class NetworkHelper
     /// <summary>
     /// 发送Actor Rpc请求
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<T>(this Network network, T data, Action<Packet> notificationAction
-        , int messageCmd, int actorId) where T : class
+    public static void CallActor<Request>(this Network network, Request data, Action<Packet> notificationAction
+        , int messageCmd, int actorId) where Request : class
 
     {
         var session = network.Session;
@@ -1580,6 +1834,309 @@ public static class NetworkHelper
         var session = network.Session;
         var channel = network.Channel;
         session.Subscribe(channel, data, notificationAction, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Request"></typeparam>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Request, Response>(this Network network, Request data, Action<Response> notificationAction
+        , int messageCmd, int actorId) where Request : class
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, Action<Response> notificationAction, int messageCmd, int actorId)
+    {
+        network.CallActor((p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, string data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, int data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, uint data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, bool data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, long data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, ulong data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, float data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, double data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, decimal data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, byte data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, sbyte data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, char data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, short data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
+    }
+
+    /// <summary>
+    /// 发送Actor Rpc请求
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">消息指令</param>
+    public static void CallActor<Response>(this Network network, ushort data, Action<Response> notificationAction
+        , int messageCmd, int actorId)
+    {
+        network.CallActor(data, (p) =>
+        {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd, actorId);
     }
     #endregion CallActor
 
