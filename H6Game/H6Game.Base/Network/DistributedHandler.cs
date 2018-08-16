@@ -3,7 +3,7 @@ using MongoDB.Bson;
 
 namespace H6Game.Base
 {
-    [HandlerCMD(MessageCMD.AddInServer)]
+    [HandlerCMD(MessageCMD.AddInServerCmd)]
     public class DistributedHandler : AHandler<NetEndPointMessage>
     {
         protected override void Handler(Network network, NetEndPointMessage message)
@@ -16,13 +16,13 @@ namespace H6Game.Base
             inNetComponent.AddSession(message);
             if (inNetComponent.IsCenterServer)
             {
-                network.Broadcast(message, (int)MessageCMD.AddInServer);
-                this.Log(LogLevel.Debug, "Handler", $"广播分布式连接消息:{MessageCMD.AddInServer} 消息内容:{message.ToJson()}");
+                network.Broadcast(message, (int)MessageCMD.AddInServerCmd);
+                this.Log(LogLevel.Debug, "Handler", $"广播分布式连接消息:{MessageCMD.AddInServerCmd} 消息内容:{message.ToJson()}");
             }
         }
     }
 
-    [HandlerCMD(MessageCMD.GetOutServer)]
+    [HandlerCMD(MessageCMD.GetOutServerCmd)]
     public class OutNetMessageSync : AHandler<string>
     {
         protected override void Handler(Network network, string message)
@@ -33,7 +33,7 @@ namespace H6Game.Base
         }
     }
 
-    [HandlerCMD(MessageCMD.GetInServer)]
+    [HandlerCMD(MessageCMD.GetInServerCmd)]
     public class InNetMessageSync : AHandler<string>
     {
         protected override void Handler(Network network, string message)

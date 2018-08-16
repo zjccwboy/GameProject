@@ -210,7 +210,7 @@ namespace H6Game.Base
                 {
                     InConnectNetworks.AddOrUpdate(c.Id, c.Handler.Network, (a, val)=> { return c.Handler.Network; });
 
-                    var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServer);
+                    var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
                     if (tuple.Result)
                     {
                         this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Content.ToJson()}");
@@ -222,7 +222,7 @@ namespace H6Game.Base
                     this.Log(LogLevel.Info, "Connecting", "连接中心服务成功.");
                 }
 
-                SendToCenter(localMessage, (int)MessageCMD.AddInServer);
+                SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
             };
 
             //注册连接断开回调

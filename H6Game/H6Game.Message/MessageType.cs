@@ -6,7 +6,7 @@ namespace H6Game.Message
 {
     public enum MessageType
     {
-        Empty,
+        None,
 
         #region 值类型 1-100
         String,
@@ -30,6 +30,13 @@ namespace H6Game.Message
         #region 框架自带类型 101 - 200
         NetEndPointMessage = 101,
 
+        #endregion
+
+        #region ActorMessage 1001 - 2000
+        PlayerActorMessage = 1001,
+        RoomActorMessage,
+        SceneActorMessage,
+        GameActorMessage,
         #endregion
 
         #region 测试类型 10000001-20000000

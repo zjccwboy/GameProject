@@ -9,19 +9,31 @@ namespace H6Game.Message
     /// </summary>
     public enum MessageCMD
     {
-        #region 服务端分布式消息指令 100开始
+        #region 服务端分布式消息指令 1开始
         /// <summary>
         /// 新增一个监听内网服务连接
         /// </summary>
-        AddInServer = 100,
+        AddInServerCmd = 1,
         /// <summary>
         /// 请求获取外网连接信息
         /// </summary>
-        GetOutServer,
+        GetOutServerCmd,
         /// <summary>
         /// 请求获取内网连接信息
         /// </summary>
-        GetInServer,
+        GetInServerCmd,
+        /// <summary>
+        /// 新增Actor消息Cmd
+        /// </summary>
+        AddActorCmd,
+        /// <summary>
+        /// 更新Actor消息Cmd
+        /// </summary>
+        UpdateActorCmd,
+        /// <summary>
+        /// 删除Actor消息Cmd
+        /// </summary>
+        RemoveActorCmd,
         #endregion
 
         #region 游戏客户端交互消息指令 200
@@ -40,9 +52,9 @@ namespace H6Game.Message
 
         #endregion
 
-
+        #region 测试指令 100000开始
         TestCMD = 100000,
-
         TestCMD1,
+        #endregion
     }
 }

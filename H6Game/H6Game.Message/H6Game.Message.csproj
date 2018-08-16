@@ -13,6 +13,9 @@
     <Reference Include="Google.Protobuf">
       <HintPath>..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Entitys">
+      <HintPath>..\H6Game.Entitys\bin\Debug\netstandard2.0\H6Game.Entitys.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
     </Reference>
