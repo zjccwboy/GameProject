@@ -4,7 +4,7 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class BaseGameComponent : BaseComponent, IComponentGame
+    public class GameComponent : BaseComponent
     {
         
     }

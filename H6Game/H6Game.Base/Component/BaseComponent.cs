@@ -1,6 +1,9 @@
-﻿using System;
+﻿using H6Game.Entitys;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base
 {
