@@ -7,60 +7,12 @@ using System.Text;
 namespace H6Game.Base
 {
     [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class PlayerActorMessageHandler : AActorHandler<PlayerActorMessage>
+    public class ActorMessageHandler : AActorHandler<ActorMessage>
     {
-        protected override void Handler(Network network, PlayerActorMessage message)
+        private ActorComponent Component { get; set; }
+        protected override void Handler(Network network, ActorMessage message)
         {
-            var cmd = (MessageCMD)network.RecvPacket.MessageId;
-            switch (cmd)
-            {
-                case MessageCMD.AddActorCmd:
-                    break;
-                case MessageCMD.RemoveActorCmd:
-                    break;
-            }
-        }
-    }
-
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class RoomActorMessageHandler : AActorHandler<RoomActorMessage>
-    {
-        protected override void Handler(Network network, RoomActorMessage message)
-        {
-            var cmd = (MessageCMD)network.RecvPacket.MessageId;
-            switch (cmd)
-            {
-                case MessageCMD.AddActorCmd:
-                    break;
-                case MessageCMD.RemoveActorCmd:
-                    break;
-            }
-        }
-    }
-
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class SceneActorMessageHandler : AActorHandler<SceneActorMessage>
-    {
-        protected override void Handler(Network network, SceneActorMessage message)
-        {
-            var cmd = (MessageCMD)network.RecvPacket.MessageId;
-            switch (cmd)
-            {
-                case MessageCMD.AddActorCmd:
-                    break;
-                case MessageCMD.RemoveActorCmd:
-                    break;
-            }
-        }
-    }
-
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class GameActorMessageHandler : AActorHandler<GameActorMessage>
-    {
-        private GameActorComponent Component { get; set; } 
-        protected override void Handler(Network network, GameActorMessage message)
-        {
-            Component = Component ?? Game.Scene.GetComponent<GameActorComponent>();
+            Component = Component ?? Game.Scene.GetComponent<ActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             switch (cmd)
             {

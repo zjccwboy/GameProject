@@ -1,37 +1,13 @@
-﻿using H6Game.Entitys;
-using ProtoBuf;
+﻿using ProtoBuf;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Message
 {
-
-    [MessageType(MessageType.PlayerActorMessage)]
-    public class PlayerActorMessage : ActorMessage
+    [MessageType(MessageType.ActorMessage)]
+    public class ActorMessage : IMessage
     {
-
-    }
-
-    [MessageType(MessageType.RoomActorMessage)]
-    public class RoomActorMessage : ActorMessage
-    {
-
-    }
-
-    [MessageType(MessageType.SceneActorMessage)]
-    public class SceneActorMessage : ActorMessage
-    {
-
-    }
-
-    [MessageType(MessageType.GameActorMessage)]
-    public class GameActorMessage : ActorMessage
-    {
-
-    }
-
-    [MessageType(MessageType.None)]
-    public abstract class ActorMessage : IMessage
-    {
-
+        [BsonElement]
         [ProtoMember(1)]
         public string ObjectId { get; set; }
     }

@@ -7,7 +7,9 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public abstract class BaseActorComponent : BaseComponent
+    [SingletCase]
+    [Event(EventType.Awake)]
+    public class ActorComponent : BaseComponent
     {
         private ConcurrentDictionary<long, ActorInfoEntity> EntitiesDictionary { get; } = new ConcurrentDictionary<long, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
@@ -66,7 +68,7 @@ namespace H6Game.Base
         private void NotifyAllServerAdd(ActorInfoEntity entity)
         {
             var networks = InNetComponent.InAccNets;
-            var message = new GameActorMessage
+            var message = new ActorMessage
             {
                 ObjectId = entity.Id,
             };
@@ -76,7 +78,7 @@ namespace H6Game.Base
         private void NotifyAllServerRemove(ActorInfoEntity entity)
         {
             var networks = InNetComponent.InAccNets;
-            var message = new GameActorMessage
+            var message = new ActorMessage
             {
                 ObjectId = entity.Id,
             };
