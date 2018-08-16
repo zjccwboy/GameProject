@@ -1,4 +1,6 @@
 ﻿using ProtoBuf;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Message
 {
@@ -6,9 +8,11 @@ namespace H6Game.Message
     [MessageType(MessageType.NetEndPointMessage)]
     public class NetEndPointMessage : IMessage
     {
+        [BsonElement]
         [ProtoMember(1)]
         public int Port { get; set; }
 
+        [BsonElement]
         [ProtoMember(2)]
         public string IP { get; set; }
 

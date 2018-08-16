@@ -1,5 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Message;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;

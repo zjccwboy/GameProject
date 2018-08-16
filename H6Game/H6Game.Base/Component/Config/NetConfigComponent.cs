@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using MongoDB.Bson;
+using System.IO;
 
 namespace H6Game.Base
 {
@@ -73,7 +74,7 @@ namespace H6Game.Base
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = ConfigEntity.ToJson(Newtonsoft.Json.Formatting.Indented);
+                    var json = ConfigEntity.ToJson();
                     sr.Write(json);
                     LogRecord.Log(LogLevel.Error, $"{this.GetType()}/SaveConfigile", $"未配置服务IP地址端口信息.");
                 }

@@ -12,7 +12,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 
 namespace TestMogodb
 {
@@ -32,12 +31,6 @@ namespace TestMogodb
 
         static async void Insert(IMongoDatabase database)
         {
-            //var collection = database.GetCollection<BsonDocument>("TAccount");
-            //await collection.InsertOneAsync(new BsonDocument("Name", "Jack"));
-
-            //var list = await collection.Find(new BsonDocument("Name", "Jack"))
-            //    .ToListAsync();
-
             var collection = database.GetCollection<TestAccount>("TestAccount");
 
             var accountInfo = new TestAccount
@@ -47,12 +40,11 @@ namespace TestMogodb
                 FCreateTime = DateTime.Now,
                 FVIPLevel = 1,
             };
-
-            var doc = new BsonDocument ( "name", "fuck" );
-            var bson = doc.ToString();
-
-            var json = ToJson(accountInfo);
+            
             await collection.InsertOneAsync(accountInfo);
+
+            var bson = accountInfo.ToJson();
+            var obj = BsonToObject<TestAccount>(bson);
 
             var list = await collection.Find(new BsonDocument("FAccount", "Sam"))
                 .ToListAsync();
@@ -63,38 +55,33 @@ namespace TestMogodb
             }
         }
 
-        public static string ToJson<T>(T data)
+        //public static string ToBson<T>(T data) where T : class
+        //{
+        //    data.ToBson()
+
+        //    var result = data.ToJson();
+        //    return result;
+
+        //    //using (var stream = new MemoryStream())
+        //    //{
+        //    //    using (var writer = new BsonBinaryWriter(stream))
+        //    //    {
+        //    //        BsonSerializer.Serialize(writer, typeof(T), data);
+        //    //        stream.Seek(0, SeekOrigin.Begin);
+        //    //        using (var reader = new BsonBinaryReader(stream))
+        //    //        {
+        //    //            var context = BsonDeserializationContext.CreateRoot(reader);
+        //    //            BsonDocument doc = BsonDocumentSerializer.Instance.Deserialize(context);
+        //    //            return doc.ToString();
+        //    //        }
+        //    //    }
+        //    //}
+        //}
+
+        public static T BsonToObject<T>(string bson)
         {
-            using (var stream = new MemoryStream())
-            {
-                using (var writer = new BsonBinaryWriter(stream))
-                {
-                    BsonSerializer.Serialize(writer, typeof(T), data);
-                    UTF8Encoding uTF8Encoding = new UTF8Encoding(false);
-                    stream.Seek(0, SeekOrigin.Begin);
-                    using (var reader = new MongoDB.Bson.IO.BsonBinaryReader(stream))
-                    {
-                        var context = BsonDeserializationContext.CreateRoot(reader);
-                        BsonDocument doc = BsonDocumentSerializer.Instance.Deserialize(context);
-                        return doc.ToString();
-                    }
-                }
-
-
-
-                //stream.Seek(0, SeekOrigin.Begin);
-                //using (var reader = new Newtonsoft.Json.Bson.BsonReader(stream))
-                //{
-                //    var sb = new StringBuilder();
-                //    var sw = new StringWriter(sb);
-                //    using (var jWriter = new JsonTextWriter(sw))
-                //    {
-                //        jWriter.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                //        jWriter.WriteToken(reader);
-                //    }
-                //    return sb.ToString();
-                //}
-            }
+            var retsult = BsonSerializer.Deserialize(bson, typeof(T));
+            return (T)retsult;
         }
     }
 

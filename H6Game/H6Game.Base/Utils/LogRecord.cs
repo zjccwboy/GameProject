@@ -14,6 +14,7 @@ using System.Linq;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
+using MongoDB.Bson;
 #endif
 
 #if SERVER

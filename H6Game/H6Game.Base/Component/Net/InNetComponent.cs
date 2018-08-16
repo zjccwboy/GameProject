@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Collections.Concurrent;
+using MongoDB.Bson;
 
 namespace H6Game.Base
 {
