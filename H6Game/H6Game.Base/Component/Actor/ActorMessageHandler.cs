@@ -5,7 +5,7 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd)]
+    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd, MessageCMD.GetActorInfoCmd)]
     public class PlayerActorMessageHandler : AActorHandler<PlayerActorMessage>
     {
         protected override void Handler(Network network, PlayerActorMessage message)
@@ -19,11 +19,13 @@ namespace H6Game.Base
                     break;
                 case MessageCMD.RemoveActorCmd:
                     break;
+                case MessageCMD.GetActorInfoCmd:
+                    break;
             }
         }
     }
 
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd)]
+    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd, MessageCMD.GetActorInfoCmd)]
     public class RoomActorMessageHandler : AActorHandler<RoomActorMessage>
     {
         protected override void Handler(Network network, RoomActorMessage message)
@@ -37,11 +39,13 @@ namespace H6Game.Base
                     break;
                 case MessageCMD.RemoveActorCmd:
                     break;
+                case MessageCMD.GetActorInfoCmd:
+                    break;
             }
         }
     }
 
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd)]
+    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd, MessageCMD.GetActorInfoCmd)]
     public class SceneActorMessageHandler : AActorHandler<SceneActorMessage>
     {
         protected override void Handler(Network network, SceneActorMessage message)
@@ -55,11 +59,13 @@ namespace H6Game.Base
                     break;
                 case MessageCMD.RemoveActorCmd:
                     break;
+                case MessageCMD.GetActorInfoCmd:
+                    break;
             }
         }
     }
 
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd)]
+    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.UpdateActorCmd, MessageCMD.RemoveActorCmd, MessageCMD.GetActorInfoCmd)]
     public class GameActorMessageHandler : AActorHandler<GameActorMessage>
     {
         protected override void Handler(Network network, GameActorMessage message)
@@ -72,6 +78,8 @@ namespace H6Game.Base
                 case MessageCMD.UpdateActorCmd:
                     break;
                 case MessageCMD.RemoveActorCmd:
+                    break;
+                case MessageCMD.GetActorInfoCmd:
                     break;
             }
         }

@@ -34,6 +34,10 @@ namespace H6Game.Message
         /// 删除Actor消息Cmd
         /// </summary>
         RemoveActorCmd,
+        /// <summary>
+        /// 获取Actor信息
+        /// </summary>
+        GetActorInfoCmd,
         #endregion
 
         #region 游戏客户端交互消息指令 200

@@ -31,10 +31,8 @@ namespace H6Game.Message
     [MessageType(MessageType.None)]
     public abstract class ActorMessage : IMessage
     {
-        [ProtoMember(1)]
-        public ActorType ActorType { get; set; }
 
-        [ProtoMember(2)]
+        [ProtoMember(1)]
         public string Id { get; set; }
     }
 }
