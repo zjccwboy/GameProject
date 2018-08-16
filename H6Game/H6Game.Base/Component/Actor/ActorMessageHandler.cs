@@ -9,10 +9,9 @@ namespace H6Game.Base
     [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
     public class ActorMessageHandler : AActorHandler<ActorMessage>
     {
-        private ActorComponent Component { get; set; }
         protected override void Handler(Network network, ActorMessage message)
         {
-            Component = Component ?? Game.Scene.GetComponent<ActorComponent>();
+            var component = Game.Scene.GetComponent<ActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             switch (cmd)
             {
@@ -23,11 +22,11 @@ namespace H6Game.Base
                         Network = network,
                         Id = message.ObjectId,
                     };
-                    Component.AddNetEntity(entity);
+                    component.AddNetEntity(entity);
                     break;
 
                 case MessageCMD.RemoveActorCmd:
-                    Component.RemoveFromNet(message.ObjectId);
+                    component.RemoveFromNet(message.ObjectId);
                     break;
             }
         }
