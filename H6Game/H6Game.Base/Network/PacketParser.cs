@@ -7,37 +7,37 @@ namespace H6Game.Base
     /// <summary>
     /// 包状态
     /// </summary>
-    public enum ParseState
+    public class ParseState
     {
         /// <summary>
         /// 开始数据包大小标志，包头16位
         /// </summary>
-        Size,
+        public const int Size = 1;
 
         /// <summary>
         /// 消息Msg字段
         /// </summary>
-        Msg,
+        public const int Msg = 2;
 
         /// <summary>
         /// RPC消息字段
         /// </summary>
-        Rpc,
+        public const int Rpc = 3;
 
         /// <summary>
         /// ActorId消息字段
         /// </summary>
-        Actor,
+        public const int Actor = 4;
 
         /// <summary>
         /// 消息类型
         /// </summary>
-        MsgType,
+        public const int MsgType = 5;
 
         /// <summary>
         /// 消息包体
         /// </summary>
-        Body,
+        public const int Body = 6;
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ namespace H6Game.Base
 
         private int readLength = 0;
         private int packetSize = 0;
-        private ParseState state;
+        private int state = ParseState.Size;
         private bool isOk;
         private bool finish;
 
