@@ -57,9 +57,10 @@ namespace H6Game.Base
     [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
     public class GameActorMessageHandler : AActorHandler<GameActorMessage>
     {
-        private GameActorComponent Component { get; } = Game.Scene.GetComponent<GameActorComponent>();
+        private GameActorComponent Component { get; set; } 
         protected override void Handler(Network network, GameActorMessage message)
         {
+            Component = Component ?? Game.Scene.GetComponent<GameActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             switch (cmd)
             {
