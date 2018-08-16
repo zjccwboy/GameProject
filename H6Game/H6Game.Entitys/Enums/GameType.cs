@@ -7,6 +7,6 @@ namespace H6Game.Entitys
     public enum GameType
     {
         None,
-        H6Game,
+        Hao6,
     }
 }

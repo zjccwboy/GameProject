@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Message
+namespace H6Game.Entitys
 {
     public enum AccountType
     {

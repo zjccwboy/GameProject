@@ -1,4 +1,6 @@
 ﻿
+using H6Game.Entitys;
+
 namespace H6Game.Base
 {
     public interface IGame : IComponentGame

@@ -7,6 +7,29 @@ namespace H6Game.Entitys
     public enum RoomType
     {
         None,
-        H6Game,
+        /// <summary>
+        /// 金币房
+        /// </summary>
+        God,
+        /// <summary>
+        /// VIP金币房
+        /// </summary>
+        VIPGod,
+        /// <summary>
+        /// 房卡房
+        /// </summary>
+        Card,
+        /// <summary>
+        /// VIP房卡房
+        /// </summary>
+        VIPCard,
+        /// <summary>
+        /// 代理金币
+        /// </summary>
+        AgentGod,
+        /// <summary>
+        /// 代理房卡
+        /// </summary>
+        AgentCard,
     }
 }
