@@ -1,15 +1,19 @@
 ﻿using H6Game.Entitys;
 using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
     public interface IContext
     {
-        IMongoDatabase Database { get; set; }
+        IMongoDatabase Database { get;}
 
         void Insert<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
         Task InsertAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
+
+        void InsertMany<DBEntity>(IEnumerable<DBEntity> entities) where DBEntity : BaseEntity;
+        Task InsertManyAsync<DBEntity>(IEnumerable<DBEntity> entities) where DBEntity : BaseEntity;
 
         void Remove<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
         Task RemoveAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
@@ -20,10 +24,7 @@ namespace H6Game.Base
         DBEntity Query<DBEntity>(string objectId) where DBEntity : BaseEntity;
         Task<DBEntity> QueryAsync<DBEntity>(string objectId) where DBEntity : BaseEntity;
 
-        void Modify<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
-        Task ModifyAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
-
-        void SaveChanges();
-        Task SaveChangesAsync();
+        bool Modify<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
+        Task<bool> ModifyAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
     }
 }

@@ -13,7 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>obj\Debug\</OutputPath>
+    <DocumentationFile>obj\Debug\MongoDB.Driver.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

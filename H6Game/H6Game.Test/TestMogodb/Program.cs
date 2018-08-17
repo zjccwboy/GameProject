@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using H6Game.Base;
@@ -40,20 +41,33 @@ namespace TestMogodb
                 FCreateTime = DateTime.Now,
                 FVIPLevel = 1,
             };
-            
+
+            Console.WriteLine(accountInfo.ToJson());
+
             await collection.InsertOneAsync(accountInfo);
 
             var bson = accountInfo.ToJson();
             var obj = BsonToObject<TestAccount>(bson);
 
-            var list = await collection.Find(new BsonDocument("FAccount", "Sam"))
-                .ToListAsync();
+            //通过Document查找
+            var doc = accountInfo.ToBsonDocument();
+            var list = await collection.Find(doc).ToListAsync();
+
+            //通过_id查找
+            var objectId = new ObjectId(accountInfo.Id);
+            list = await collection.Find(new BsonDocument("_id", objectId)).ToListAsync();
+
+            var filter = Builders<TestAccount>.Filter.Eq("_id", objectId);
+            var update = Builders<TestAccount>.Update.Set("FVIPLevel", 110);
+            collection.UpdateOne(filter, update);
+
 
             foreach (var document in list)
             {
-                Console.WriteLine(document.FAccount);
+                Console.WriteLine(document.ToJson());
             }
         }
+
 
         //public static string ToBson<T>(T data) where T : class
         //{

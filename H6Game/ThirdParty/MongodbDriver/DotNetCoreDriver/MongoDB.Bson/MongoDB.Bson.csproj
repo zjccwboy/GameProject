@@ -13,7 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
+    <OutputPath>obj\Debug\</OutputPath>
+    <DocumentationFile>obj\Debug\MongoDB.Bson.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

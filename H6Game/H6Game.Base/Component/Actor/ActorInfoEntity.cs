@@ -1,9 +1,6 @@
-﻿using H6Game.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using H6Game.Entitys;
 
-namespace H6Game.Entitys
+namespace H6Game.Base
 {
     public class ActorInfoEntity : BaseEntity
     {
