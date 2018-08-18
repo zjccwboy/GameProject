@@ -95,7 +95,7 @@ namespace H6Game.Base
             {
                 ObjectId = entity.Id,
             };
-            InNetComponent.InAccNets.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
+            InNetComponent.InConnNets.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
         }
 
         private void NotifyAllServerRemove(ActorInfoEntity entity)
@@ -104,7 +104,7 @@ namespace H6Game.Base
             {
                 ObjectId = entity.Id,
             };
-            InNetComponent.InAccNets.BroadcastActor(message, (int)MessageCMD.RemoveActorCmd, entity.ActorId);
+            InNetComponent.InConnNets.BroadcastActor(message, (int)MessageCMD.RemoveActorCmd, entity.ActorId);
         }
     }
 }

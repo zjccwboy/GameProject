@@ -81,38 +81,48 @@ namespace H6Game.Base
 
                 foreach (var cmd in cmds)
                 {
-                    if (handler is IActorHandler)
+                    try
                     {
-                        if (!ActorHandlerDictionary.TryGetValue(cmd, out HashSet<IActorHandler> handlers))
+                        if (handler is IActorHandler)
                         {
-                            handlers = new HashSet<IActorHandler>();
-                            ActorHandlerDictionary[cmd] = handlers;
+                            if (!ActorHandlerDictionary.TryGetValue(cmd, out HashSet<IActorHandler> handlers))
+                            {
+                                handlers = new HashSet<IActorHandler>();
+                                ActorHandlerDictionary[cmd] = handlers;
+                            }
+                            handlers.Add(handler as IActorHandler);
                         }
-                        handlers.Add(handler as IActorHandler);
-                    }
-                    else
-                    {
-                        if (!HandlerDictionary.TryGetValue(cmd, out HashSet<IHandler> handlers))
+                        else
                         {
-                            handlers = new HashSet<IHandler>();
-                            HandlerDictionary[cmd] = handlers;
+                            if (!HandlerDictionary.TryGetValue(cmd, out HashSet<IHandler> handlers))
+                            {
+                                handlers = new HashSet<IHandler>();
+                                HandlerDictionary[cmd] = handlers;
+                            }
+                            handlers.Add(handler);
                         }
-                        handlers.Add(handler);
-                    }
 
-                    if (!CmdTypeDictionary.TryGetValue(cmd, out HashSet<Type> types))
-                    {
-                        types = new HashSet<Type>();
-                        CmdTypeDictionary[cmd] = types;
-                    }
-                    types.Add(handler.MessageType);
+                        if (handler.MessageType == null)
+                            continue;
 
-                    if (!TypeCmdDictionary.TryGetValue(handler.MessageType, out HashSet<int> msgCmds))
-                    {
-                        msgCmds = new HashSet<int>();
-                        TypeCmdDictionary[handler.MessageType] = msgCmds;
+                        if (!CmdTypeDictionary.TryGetValue(cmd, out HashSet<Type> types))
+                        {
+                            types = new HashSet<Type>();
+                            CmdTypeDictionary[cmd] = types;
+                        }
+                        types.Add(handler.MessageType);
+
+                        if (!TypeCmdDictionary.TryGetValue(handler.MessageType, out HashSet<int> msgCmds))
+                        {
+                            msgCmds = new HashSet<int>();
+                            TypeCmdDictionary[handler.MessageType] = msgCmds;
+                        }
+                        msgCmds.Add(cmd);
                     }
-                    msgCmds.Add(cmd);
+                    catch(Exception e)
+                    {
+                        LogRecord.Log(LogLevel.Error, "HandlerMSGFactory/LoadHandler", e.ToString());
+                    }
                 }
             }
         }

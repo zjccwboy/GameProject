@@ -150,15 +150,11 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                this.OnConnected?.Invoke(c);
-
                 InAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network,(id, val)=> { return c.Dispatcher.Network; });
             };
 
             session.OnServerDisconnected = (c) =>
             {
-                this.OnDisConnected(c);
-
                 InAcceptNetworks.TryRemove(c.Id, out Network network);
 
                 if (this.InNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage inMessage))
@@ -182,15 +178,11 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                this.OnConnected?.Invoke(c);
-
                 OuAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (id, val)=> { return c.Dispatcher.Network; });
             };
 
             session.OnServerDisconnected = (c) => 
             {
-                this.OnDisConnected?.Invoke(c);
-
                 OuAcceptNetworks.TryRemove(c.Id, out Network network);
             };
 
@@ -225,8 +217,6 @@ namespace H6Game.Base
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
-                this.OnConnected?.Invoke(c);
-
                 if (this.DisconnectSessions.TryRemove(hashCode, out Session oldSession))
                     this.InConnectSessions[hashCode] = oldSession;
 
@@ -235,6 +225,8 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
+                    this.OnConnected?.Invoke(c);
+
                     InConnectNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (a, val)=> { return c.Dispatcher.Network; });
 
                     var tuple = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
@@ -255,13 +247,13 @@ namespace H6Game.Base
             //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
-                this.OnDisConnected?.Invoke(c);
-
                 if (message == this.Config.GetCenterMessage())
                 {
                     this.Log(LogLevel.Error, "ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
+
+                this.OnDisConnected?.Invoke(c);
 
                 InConnectNetworks.TryRemove(c.Id, out Network network);
 
