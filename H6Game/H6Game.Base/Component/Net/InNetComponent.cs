@@ -35,7 +35,7 @@ namespace H6Game.Base
         /// <summary>
         /// 内网服务端所有监听连接网络对象集合
         /// </summary>
-        public IEnumerable<Network> InAccNets { get { return InAcceptNetworks.Values; } }
+        //public IEnumerable<Network> InAccNets { get { return InAcceptNetworks.Values; } }
 
         /// <summary>
         /// 外网服务端所有监听连接网络对象集合
@@ -161,6 +161,9 @@ namespace H6Game.Base
                 {
                     this.InNetMapManager.Remove(inMessage);
                 }
+
+                if(message != this.Config.GetCenterMessage())
+                    this.OnDisConnected?.Invoke(c);
             };
 
             this.InAcceptSession = session;
@@ -252,8 +255,6 @@ namespace H6Game.Base
                     this.Log(LogLevel.Error, "ConnectToCenter", $"当前中心服务挂掉.");
                     return;
                 }
-
-                this.OnDisConnected?.Invoke(c);
 
                 InConnectNetworks.TryRemove(c.Id, out Network network);
 

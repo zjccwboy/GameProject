@@ -69,7 +69,7 @@ namespace H6Game.Base
         public void Receive(Network network)
         {
             if (network.RecvPacket.MsgTypeCode > 0)
-                throw new Exception("消息分发错误，无类型的AHandler继承类中不应该存在MessageTypeCode.");
+                return;
 
             Handler(network);
         }
