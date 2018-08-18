@@ -36,6 +36,7 @@ namespace H6Game.Base
         {
             var component = Game.Scene.GetComponent<ActorComponent>();
             var entites = component.LocalEntitys;
+            var count = 0;
             foreach (var entity in entites)
             {
                 var syncMessage = new ActorMessage
@@ -43,6 +44,12 @@ namespace H6Game.Base
                     ObjectId = entity.Id,
                 };
                 network.RpcCallBack(syncMessage);
+                count++;
+                if (count >= 100)
+                {
+                    count = 0;
+                    network.Session.Update();
+                }
             }
         }
     }

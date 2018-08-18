@@ -13,7 +13,6 @@ namespace H6Game.Base
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
-        private bool IsNeedSync = true;
 
         public override void Awake()
         {
@@ -75,11 +74,7 @@ namespace H6Game.Base
 
         private void OnNetConnected(ANetChannel channel)
         {
-            if (IsNeedSync)
-            {
-                IsNeedSync = false;
-                channel.Dispatcher.Network.Send((int)MessageCMD.SyncActorInfoCmd);
-            }
+            channel.Dispatcher.Network.Send((int)MessageCMD.SyncActorInfoCmd);
         }
 
         private void OnNetDisconnected(ANetChannel channel)
