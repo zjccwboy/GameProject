@@ -1,4 +1,5 @@
-﻿using H6Game.Message;
+﻿using H6Game.Entitys;
+using H6Game.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +57,19 @@ namespace H6Game.Base
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
 
             var componentBaseType = typeof(BaseComponent);
-            var componentBaseTypes = new HashSet<Type>();
+            var componentTypes = new HashSet<Type>();
 
-            var messageTypes = new HashSet<Type>();
             var messageBaseType = typeof(IMessage);
+            var messageTypes = new HashSet<Type>();
 
-            var dispatcherType = typeof(IHandler);
-            var dispatcherTypes = new HashSet<Type>();
+            var handlerType = typeof(IHandler);
+            var handlerTypes = new HashSet<Type>();
+
+            var entityBaseType = typeof(BaseEntity);
+            var entityTypes = new HashSet<Type>();
+
+            var rpositoryBaseType = typeof(BaseRpository);
+            var rpositoryTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)
             {
@@ -81,18 +88,28 @@ namespace H6Game.Base
                     }
                     else if(t.BaseType == componentBaseType)
                     {
-                        componentBaseTypes.Add(t);
+                        componentTypes.Add(t);
                     }
-                    else if (dispatcherType.IsAssignableFrom(t))
+                    else if (handlerType.IsAssignableFrom(t))
                     {
-                        dispatcherTypes.Add(t);
+                        handlerTypes.Add(t);
+                    }
+                    else if (t.BaseType == entityBaseType)
+                    {
+                        entityTypes.Add(t);
+                    }
+                    else if (t.BaseType == rpositoryBaseType)
+                    {
+                        rpositoryTypes.Add(t);
                     }
                 }
             }
 
             ObjcetDictionary[messageBaseType] = messageTypes;
-            ObjcetDictionary[componentBaseType] = componentBaseTypes;
-            ObjcetDictionary[dispatcherType] = dispatcherTypes;
+            ObjcetDictionary[componentBaseType] = componentTypes;
+            ObjcetDictionary[handlerType] = handlerTypes;
+            ObjcetDictionary[entityBaseType] = entityTypes;
+            ObjcetDictionary[rpositoryBaseType] = rpositoryTypes;
         }
 
     }

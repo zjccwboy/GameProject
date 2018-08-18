@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace H6Game.Base
@@ -13,10 +11,10 @@ namespace H6Game.Base
     {
         private SysConfig Config { get; set; }
         private MongoClient DBClient { get; set; }
-        private IMongoDatabase Database { get; set; }
         private string DatabaseNaeme { get; set; }
-
-        public IMongoDatabase MongoDB { get { return Database; } }
+        private IMongoDatabase MongoDatabase { get; set; }
+        public IMongoDatabase Database { get { return MongoDatabase; } }
+        private IContext Context { get; set; }
 
         public override void Awake()
         {
@@ -24,6 +22,71 @@ namespace H6Game.Base
             this.DBClient = new MongoClient(Config.DbConfig.ConnectionString);
             this.DatabaseNaeme = this.Config.DbConfig.DatabaseName;
             SetMongoDatabase();
+
+            this.Context = new DBContext(this.Database);
+            AddRpositoryComponents();
+        }
+
+        private void AddRpositoryComponents()
+        {
+            var types = TypePool.GetTypes<BaseRpository>();
+            foreach(var type in types)
+            {
+                AddComponent(type);
+            }
+        }
+
+        private void AddComponent(Type type)
+        {
+            if (type.BaseType != typeof(BaseRpository))
+                return;
+
+            var isSingle = ComponentPool.IsSingleType(type);
+            var component = ComponentPool.Fetch(type);
+            (component as BaseRpository).DBContext = this.Context;
+
+            if (isSingle)
+            {
+                SingleDictionary[type] = component;
+            }
+            else
+            {
+                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+                {
+                    components = new HashSet<BaseComponent>();
+                    TypeComponent[type] = components;
+                }
+                components.Add(component);
+            }
+        }
+
+        public override T AddComponent<T>()
+        {
+            var type = typeof(T);
+            if (type.BaseType != typeof(BaseRpository))
+                return default;
+
+            var isSingle = ComponentPool.IsSingleType(type);
+            var component = ComponentPool.Fetch<T>();
+            (component as BaseRpository).DBContext = this.Context;
+
+            if (isSingle)
+            {
+                SingleDictionary[type] = component;
+            }
+            else
+            {
+                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
+                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+                {
+                    components = new HashSet<BaseComponent>();
+                    TypeComponent[type] = components;
+                }
+                components.Add(component);
+            }
+
+            return component;
         }
 
         private void SetMongoDatabase()
@@ -35,7 +98,7 @@ namespace H6Game.Base
                     throw new KeyNotFoundException("此MongoDB名称不存在：" + this.DatabaseNaeme);
                 }
 
-                this.Database = this.DBClient.GetDatabase(this.DatabaseNaeme);
+                this.MongoDatabase = this.DBClient.GetDatabase(this.DatabaseNaeme);
             }
         }
 

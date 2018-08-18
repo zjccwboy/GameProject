@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using H6Game.Entitys;
 
 namespace H6Game.Base
 {
-    public abstract class BaseRpository
+    public abstract class BaseRpository : BaseComponent, IRpository
     {
-        public IContext DBContext { get; }
-
-        public BaseRpository(IContext context)
-        {
-            this.DBContext = context;
-        }
+        public IContext DBContext { get; set; }
     }
 }

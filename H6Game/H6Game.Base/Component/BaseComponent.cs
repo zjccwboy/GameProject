@@ -9,9 +9,9 @@ namespace H6Game.Base
 {
     public abstract class BaseComponent : IDisposable
     {
-        private ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
-        private ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
-        private ConcurrentDictionary<Type, BaseComponent> SingleDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
+        protected internal ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponent { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
+        protected internal ConcurrentDictionary<int, BaseComponent> IdComponent { get; } = new ConcurrentDictionary<int, BaseComponent>();
+        protected internal ConcurrentDictionary<Type, BaseComponent> SingleDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
 
         /// <summary>
         /// 新建并添加一个组件到该组件中.

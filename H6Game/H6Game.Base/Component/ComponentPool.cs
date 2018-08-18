@@ -107,6 +107,37 @@ namespace H6Game.Base
             return (T)result;
         }
 
+        public static BaseComponent Fetch(Type type)
+        {
+            BaseComponent result;
+            if (IsSingleType(type))
+            {
+                if (!SingleCaseDictionary.TryGetValue(type, out result))
+                {
+                    result = ComponentFactory.CreateComponent(type);
+                    SetId(result);
+                    SingleCaseDictionary[type] = result;
+                }
+            }
+            else
+            {
+                if (!componentTypeDictionary.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
+                {
+                    queue = new ConcurrentQueue<BaseComponent>();
+                    componentTypeDictionary.TryAdd(type, queue);
+                }
+
+                if (!queue.TryDequeue(out result))
+                {
+                    result = ComponentFactory.CreateComponent(type);
+                }
+
+                SetId(result);
+                componentDictionary.AddOrUpdate(result.Id, result, (k, v) => { return result; });
+            }
+            return result;
+        }
+
         public static T Fetch<T, K1, K2>(K1 k1, K2 k2) where T : BaseComponent
         {
             var type = typeof(T);

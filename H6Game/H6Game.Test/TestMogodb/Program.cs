@@ -30,9 +30,9 @@ namespace TestMogodb
         static async void TestDBContext()
         {
            var mongoComponent = Game.Scene.AddComponent<MongoDBComponent>();
-            var context = new DBContext(mongoComponent.MongoDB);
+            var context = new DBContext(mongoComponent.Database);
 
-            await context.DeleteManyAsync<TestAccount>(t => t.FAccount != null);
+           var delResult =  await context.DeleteManyAsync<TestAccount>(t => t.FAccount != null);
 
             var accountInfo = new TestAccount
             {
@@ -95,7 +95,7 @@ namespace TestMogodb
                 FAccount = "Update",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 10,
             }, t => t.FAccount == "Insert");
 
 
@@ -104,7 +104,7 @@ namespace TestMogodb
                 FAccount = "UpdateAsync",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 11,
             }, t => t.FAccount == "InsertAsync");
 
 
@@ -113,7 +113,7 @@ namespace TestMogodb
                 FAccount = "Update1",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 12,
             }, t => t.FAccount == "InsertMany", Builders<TestAccount>.Update.Set("FAmt", 102));
 
             await context.UpdateAsync(new TestAccount
@@ -121,7 +121,7 @@ namespace TestMogodb
                 FAccount = "UpdateAsync1",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 13,
             }, t => t.FAccount == "InsertManyAsync", Builders<TestAccount>.Update.Set("FAmt", 103));
 
 
@@ -130,7 +130,7 @@ namespace TestMogodb
                 FAccount = "UpdateMany",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 14,
             }, t => t.FAccount == "InsertAsync");
 
             await context.UpdateManyAsync(new TestAccount
@@ -138,7 +138,7 @@ namespace TestMogodb
                 FAccount = "UpdateManyAsync",
                 FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
+                FVIPLevel = 15,
             }, t => t.FAccount == "InsertManyAsync");
 
             context.Delete<TestAccount>(t => t.FAccount == "UpdateMany");
@@ -240,13 +240,13 @@ namespace TestMogodb
 
     public class TestAccount : BaseEntity
     {
-        [BsonElement]
+        [BsonElement("FAcc")]
         public string FAccount { get; set; }
-        [BsonElement]
+        [BsonElement("FAmt")]
         public decimal FAmt { get; set; }
-        [BsonElement]
+        [BsonElement("FCT")]
         public DateTime FCreateTime { get; set; }
-        [BsonElement]
+        [BsonElement("FVL")]
         public byte FVIPLevel { get; set; }
     }
 }
