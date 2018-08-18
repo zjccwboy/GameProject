@@ -57,6 +57,9 @@ namespace H6Game.Base
     {
         [BsonElement]
         public string ConnectionString { get; set; }
+
+        [BsonElement]
+        public string DatabaseName { get; set; }
     }
 
     public class EndPointEntity

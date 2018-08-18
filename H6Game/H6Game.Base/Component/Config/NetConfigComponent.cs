@@ -66,6 +66,7 @@ namespace H6Game.Base
                 DbConfig = new DbConfigEntity
                 {
                     ConnectionString = "mongodb://localhost:27017",
+                    DatabaseName = "H6Game",
                 },
 #endif
             };

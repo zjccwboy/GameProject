@@ -1,6 +1,8 @@
 ﻿using H6Game.Entitys;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace H6Game.Base
@@ -9,22 +11,36 @@ namespace H6Game.Base
     {
         IMongoDatabase Database { get;}
 
-        void Insert<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
-        Task InsertAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
+        void CreateCollectionIndex<TDoc>(string[] indexFields, CreateIndexOptions options = null);
+        void CreateCollection<TDoc>(string[] indexFields = null, CreateIndexOptions options = null);
 
-        void InsertMany<DBEntity>(IEnumerable<DBEntity> entities) where DBEntity : BaseEntity;
-        Task InsertManyAsync<DBEntity>(IEnumerable<DBEntity> entities) where DBEntity : BaseEntity;
+        List<TDoc> Find<TDoc>(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
+        Task<List<TDoc>> FindAsync<TDoc>(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
 
-        void Remove<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
-        Task RemoveAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
+        List<TDoc> FindByPage<TDoc, TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);
+        Task<List<TDoc>> FindByPageAsync<TDoc, TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);
 
-        PEntity Query<QEntity, PEntity>(QEntity entity) where QEntity : BaseEntity where PEntity : BaseEntity;
-        Task<PEntity> QueryAsync<QEntity, PEntity>(QEntity entity) where QEntity : BaseEntity where PEntity : BaseEntity;
+        void Insert<TDoc>(TDoc doc, InsertOneOptions options = null);
+        Task InsertAsync<TDoc>(TDoc doc, InsertOneOptions options = null);
 
-        DBEntity Query<DBEntity>(string objectId) where DBEntity : BaseEntity;
-        Task<DBEntity> QueryAsync<DBEntity>(string objectId) where DBEntity : BaseEntity;
+        void InsertMany<TDoc>(IEnumerable<TDoc> docs, InsertManyOptions options = null);
+        Task InsertManyAsync<TDoc>(IEnumerable<TDoc> docs, InsertManyOptions options = null);
 
-        bool Modify<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
-        Task<bool> ModifyAsync<DBEntity>(DBEntity entity) where DBEntity : BaseEntity;
+        void Update<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+        Task UpdateAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+
+        void Update<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
+        Task UpdateAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
+
+        void UpdateMany<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+        Task UpdateManyAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+
+        void Delete<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+        Task DeleteAsync<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+
+        void DeleteMany<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+        Task DeleteManyAsync<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+
+        void ClearCollection<TDoc>();
     }
 }
