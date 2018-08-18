@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace H6Game.Entitys
         /// </summary>
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement]
+        [ProtoMember(1)]
         public string Id { get; set; }
     }
 }

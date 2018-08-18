@@ -130,9 +130,9 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new NetworkDispatcher(this.Session, this, channel);
+                channel.Dispatcher = new NetworkDispatcher(this.Session, this, channel);
                 channel.OnDisConnect = HandleDisConnectOnServer;
-                channel.OnReceive += channel.Handler.DoReceive;
+                channel.OnReceive += channel.Dispatcher.DoReceive;
                 this.AddChannel(channel);
                 this.OnServerConnected?.Invoke(channel);
                 this.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
@@ -152,9 +152,9 @@ namespace H6Game.Base
             try
             {
                 channel.Connected = true;
-                channel.Handler = new NetworkDispatcher(this.Session, this, channel);
+                channel.Dispatcher = new NetworkDispatcher(this.Session, this, channel);
                 channel.OnDisConnect = HandleDisConnectOnClient;
-                channel.OnReceive += channel.Handler.DoReceive;
+                channel.OnReceive += channel.Dispatcher.DoReceive;
                 this.AddChannel(channel);
                 this.OnClientConnected?.Invoke(channel);
                 this.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");

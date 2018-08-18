@@ -67,6 +67,16 @@ namespace H6Game.Base
         /// </summary>
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
+        /// <summary>
+        /// 网络连接回调事件
+        /// </summary>
+        public Action<ANetChannel> OnConnected { get; set; }
+
+        /// <summary>
+        /// 网络断开回调事件
+        /// </summary>
+        public Action<ANetChannel> OnDisConnected { get; set; }
+
         public override void Awake()
         {
             this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
@@ -140,11 +150,15 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                InAcceptNetworks.AddOrUpdate(c.Id, c.Handler.Network,(id, val)=> { return c.Handler.Network; });
+                this.OnConnected?.Invoke(c);
+
+                InAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network,(id, val)=> { return c.Dispatcher.Network; });
             };
 
             session.OnServerDisconnected = (c) =>
             {
+                this.OnDisConnected(c);
+
                 InAcceptNetworks.TryRemove(c.Id, out Network network);
 
                 if (this.InNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage inMessage))
@@ -166,8 +180,19 @@ namespace H6Game.Base
             if (!session.Accept())
                 throw new Exception($"服务端口:{message.Port}被占用.");
 
-            session.OnServerConnected = (c) =>{ OuAcceptNetworks.AddOrUpdate(c.Id, c.Handler.Network, (id, val)=> { return c.Handler.Network; }); };
-            session.OnServerDisconnected = (c) => { OuAcceptNetworks.TryRemove(c.Id, out Network network); };
+            session.OnServerConnected = (c) =>
+            {
+                this.OnConnected?.Invoke(c);
+
+                OuAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (id, val)=> { return c.Dispatcher.Network; });
+            };
+
+            session.OnServerDisconnected = (c) => 
+            {
+                this.OnDisConnected?.Invoke(c);
+
+                OuAcceptNetworks.TryRemove(c.Id, out Network network);
+            };
 
             this.OutAcceptSession = session;
             this.Log(LogLevel.Info, "HandleOutAccept", $"监听外网端口:{message.Port}成功.");
@@ -200,6 +225,8 @@ namespace H6Game.Base
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
+                this.OnConnected?.Invoke(c);
+
                 if (this.DisconnectSessions.TryRemove(hashCode, out Session oldSession))
                     this.InConnectSessions[hashCode] = oldSession;
 
@@ -208,9 +235,9 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    InConnectNetworks.AddOrUpdate(c.Id, c.Handler.Network, (a, val)=> { return c.Handler.Network; });
+                    InConnectNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (a, val)=> { return c.Dispatcher.Network; });
 
-                    var tuple = await c.Handler.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
+                    var tuple = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
                     if (tuple.Result)
                     {
                         this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Content.ToJson()}");
@@ -228,6 +255,8 @@ namespace H6Game.Base
             //注册连接断开回调
             session.OnClientDisconnected = (c) =>
             {
+                this.OnDisConnected?.Invoke(c);
+
                 if (message == this.Config.GetCenterMessage())
                 {
                     this.Log(LogLevel.Error, "ConnectToCenter", $"当前中心服务挂掉.");

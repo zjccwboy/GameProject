@@ -61,7 +61,7 @@ namespace H6Game.Base
         /// <summary>
         /// 消息处理分发类
         /// </summary>
-        public NetworkDispatcher Handler { get; set; }
+        public NetworkDispatcher Dispatcher { get; set; }
 
         /// <summary>
         /// RPC字典

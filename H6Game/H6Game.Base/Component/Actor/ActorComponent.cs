@@ -1,6 +1,7 @@
 ﻿using H6Game.Entitys;
 using H6Game.Message;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace H6Game.Base
 {
@@ -11,13 +12,18 @@ namespace H6Game.Base
         private ConcurrentDictionary<long, ActorInfoEntity> EntitiesDictionary { get; } = new ConcurrentDictionary<long, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
+        private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
+        private bool IsNeedSync = true;
 
         public override void Awake()
         {
             InNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            InNetComponent.OnDisConnected += this.OnNetDisconnected;
+            InNetComponent.OnConnected += OnNetConnected;
         }
 
+        public IEnumerable<ActorInfoEntity> LocalEntitys { get { return LocalEntitiesDictionary.Values; } }
 
         public void AddLocalEntity(ActorInfoEntity entity)
         {
@@ -25,14 +31,20 @@ namespace H6Game.Base
                 NotifyAllServerAdd(entity);
         }
 
-        public void AddNetEntity(ActorInfoEntity entity)
+        public void AddNetEntity(ActorInfoEntity entity, int channelId)
         {
             var entityId = entity.GetEntityId();
             EntitiesDictionary.AddOrUpdate(entityId, entity, (k, v) => { return entity; });
             ObjectIdEntitiesDictionary.AddOrUpdate(entity.Id, entity, (k, v) => { return entity; });
+
+            if(!NetChannelEntitys.TryGetValue(channelId, out HashSet<ActorInfoEntity> hashVal))
+            {
+                hashVal = new HashSet<ActorInfoEntity>();
+                NetChannelEntitys[channelId] = hashVal;
+            }
         }
 
-        public void RemoveFromNet(string objectId)
+        public void RemoveFromNet(string objectId, int channelId)
         {
             if (ObjectIdEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
             {
@@ -62,24 +74,43 @@ namespace H6Game.Base
             return LocalEntitiesDictionary.TryGetValue(objectId, out entity);
         }
 
+        private void OnNetConnected(ANetChannel channel)
+        {
+            if (IsNeedSync)
+            {
+                IsNeedSync = false;
+                channel.Dispatcher.Network.Send((int)MessageCMD.SyncActorInfoCmd);
+            }
+        }
+
+        private void OnNetDisconnected(ANetChannel channel)
+        {
+            if(NetChannelEntitys.TryRemove(channel.Id, out HashSet<ActorInfoEntity> entities))
+            {
+                foreach(var entity in entities)
+                {
+                    ObjectIdEntitiesDictionary.TryRemove(entity.Id, out ActorInfoEntity value);
+                    EntitiesDictionary.TryRemove(entity.GetEntityId(), out value);
+                }
+            }
+        }
+
         private void NotifyAllServerAdd(ActorInfoEntity entity)
         {
-            var networks = InNetComponent.InAccNets;
             var message = new ActorMessage
             {
                 ObjectId = entity.Id,
             };
-            networks.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
+            InNetComponent.InAccNets.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
         }
 
         private void NotifyAllServerRemove(ActorInfoEntity entity)
         {
-            var networks = InNetComponent.InAccNets;
             var message = new ActorMessage
             {
                 ObjectId = entity.Id,
             };
-            networks.BroadcastActor(message, (int)MessageCMD.RemoveActorCmd, entity.ActorId);
+            InNetComponent.InAccNets.BroadcastActor(message, (int)MessageCMD.RemoveActorCmd, entity.ActorId);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace H6Game.Message
         #region 框架自带类型 101 - 200
         NetEndPointMessage = 101,
         ActorMessage,
+        SyncActorInfoEntity,
         #endregion
 
         #region 测试类型 10000001-20000000

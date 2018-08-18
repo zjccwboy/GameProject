@@ -33,7 +33,7 @@ namespace H6Game.Message
         /// <summary>
         /// 获取Actor信息
         /// </summary>
-        GetActorInfoCmd,
+        SyncActorInfoCmd,
         #endregion
 
         #region 游戏客户端交互消息指令 200

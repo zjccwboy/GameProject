@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace H6Game.Message
 {
     [MessageType(MessageType.ActorMessage)]
+    [ProtoContract]
     public class ActorMessage : IMessage
     {
         [BsonElement]
