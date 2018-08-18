@@ -11,7 +11,7 @@ namespace H6Game.Base
         private ConcurrentDictionary<long, ActorInfoEntity> EntitiesDictionary { get; } = new ConcurrentDictionary<long, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
-        private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
+        private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
 
         public override void Awake()
@@ -35,10 +35,10 @@ namespace H6Game.Base
             EntitiesDictionary.AddOrUpdate(entityId, entity, (k, v) => { return entity; });
             ObjectIdEntitiesDictionary.AddOrUpdate(entity.Id, entity, (k, v) => { return entity; });
 
-            if(!NetChannelEntitys.TryGetValue(channelId, out HashSet<ActorInfoEntity> hashVal))
+            if(!NetChannelIdEntitys.TryGetValue(channelId, out HashSet<ActorInfoEntity> hashVal))
             {
                 hashVal = new HashSet<ActorInfoEntity>();
-                NetChannelEntitys[channelId] = hashVal;
+                NetChannelIdEntitys[channelId] = hashVal;
             }
         }
 
@@ -79,7 +79,7 @@ namespace H6Game.Base
 
         private void OnNetDisconnected(ANetChannel channel)
         {
-            if(NetChannelEntitys.TryRemove(channel.Id, out HashSet<ActorInfoEntity> entities))
+            if(NetChannelIdEntitys.TryRemove(channel.Id, out HashSet<ActorInfoEntity> entities))
             {
                 foreach(var entity in entities)
                 {
