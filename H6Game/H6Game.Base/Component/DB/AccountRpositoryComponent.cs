@@ -13,10 +13,8 @@ namespace H6Game.Base
         {
             var q = await this.DBContext.FindByIdAsync(objectId);
 
-            if (!q.Any())
+            if (q.Any())
                 return q.FirstOrDefault();
-
-            var upName = this.DefaultEntity.GetElementName(nameof(this.DefaultEntity.FType));
 
             return null;
         }

@@ -24,8 +24,9 @@ namespace TestDistributed
 
         public override void Update()
         {
-            for(var i=0;i<50;i++)
-                Broadcast();
+            Broadcast();
+            //for (var i=0;i< 1;i++)
+            //    Broadcast();
         }
 
         private void Broadcast()
@@ -64,7 +65,7 @@ namespace TestDistributed
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
                         LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
-                        LogRecord.Log(LogLevel.Debug, "接收到数据:", $"JSON:{send.ToJson()}");
+                        //LogRecord.Log(LogLevel.Debug, "接收到数据:", $"JSON:{send.ToJson()}");
                         stopWatch.Restart();
                         Count = 0;
                         size = 0;

@@ -246,7 +246,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0 , 0);
     }
 
     /// <summary>
@@ -258,7 +258,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, null, messageCmd, 0);
+        session.Send(channel, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -272,7 +272,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -298,7 +298,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -311,7 +311,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -324,7 +324,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -337,7 +337,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -350,7 +350,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -363,7 +363,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -376,7 +376,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -389,7 +389,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -402,7 +402,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -415,7 +415,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -428,7 +428,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -441,7 +441,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
     #endregion Send
 
@@ -472,7 +472,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, string.Empty, messageCmd, 0, actorId);
+        session.Send(channel, messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -686,7 +686,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -695,13 +695,12 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, Action<Packet> notificationAction
-        , int messageCmd)
+    public static void CallRpc(this Network network, Action<Packet> notificationAction, int messageCmd)
 
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, null, notificationAction, messageCmd);
+        session.Subscribe(channel, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -715,7 +714,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -729,7 +728,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -743,7 +742,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -757,7 +756,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -771,7 +770,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -785,7 +784,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -799,7 +798,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -813,7 +812,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -827,7 +826,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -841,7 +840,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -855,7 +854,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -869,7 +868,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -883,7 +882,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -897,7 +896,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, messageCmd);
+        session.Subscribe(channel, data, notificationAction, messageCmd, 0);
     }
 
     /// <summary>
@@ -1172,6 +1171,32 @@ public static class NetworkHelper
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
+        {
+            CallResult<Response> result;
+            if (p.TryRead(out Response response))
+            {
+                result = new CallResult<Response>(response, true);
+            }
+            else
+            {
+                result = new CallResult<Response>(response, false);
+            }
+            tcs.TrySetResult(result);
+        }, messageCmd);
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// </summary>
+    /// <typeparam name="Response"></typeparam>
+    /// <param name="network"></param>
+    /// <param name="messageCmd"></param>
+    /// <returns></returns>
+    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int messageCmd)
+    {
+        var tcs = new TaskCompletionSource<CallResult<Response>>();
+        network.CallRpc((p) =>
         {
             CallResult<Response> result;
             if (p.TryRead(out Response response))
@@ -1550,31 +1575,6 @@ public static class NetworkHelper
         }, messageCmd);
         return tcs.Task;
     }
-
-    /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int messageCmd)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc((p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, messageCmd);
-        return tcs.Task;
-    }
     #endregion
 
     #region CallActor
@@ -1609,7 +1609,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, string.Empty, notificationAction, messageCmd, actorId);
+        session.Subscribe(channel, notificationAction, messageCmd, actorId);
     }
 
     /// <summary>
@@ -2587,7 +2587,7 @@ public static class NetworkHelper
         where T : class
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2598,7 +2598,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(string.Empty, messageCmd, 0);
+        session.Broadcast(messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2610,7 +2610,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, string data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2622,7 +2622,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, int data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2634,7 +2634,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, uint data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2646,7 +2646,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, bool data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2658,7 +2658,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, float data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2670,7 +2670,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, double data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2682,7 +2682,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, decimal data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2694,7 +2694,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, long data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2706,7 +2706,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, ulong data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2718,7 +2718,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, byte data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2730,7 +2730,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, sbyte data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2742,7 +2742,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, short data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -2754,7 +2754,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, ushort data, int messageCmd)
     {
         var session = network.Session;
-        session.Broadcast(data, messageCmd, 0);
+        session.Broadcast(data, messageCmd, 0, 0);
     }
     #endregion Broadcast
 
@@ -2783,7 +2783,7 @@ public static class NetworkHelper
     public static void BroadcastActor(this Network network, int messageCmd, int actorId)
     {
         var session = network.Session;
-        session.Broadcast(string.Empty, messageCmd, 0, actorId);
+        session.Broadcast(messageCmd, 0, actorId);
     }
 
     /// <summary>
@@ -2982,7 +2982,7 @@ public static class NetworkHelper
     {
         foreach (var net in networks)
         {
-            net.Send(string.Empty, messageCmd);
+            net.Send(messageCmd);
         }
     }
 
@@ -3211,7 +3211,7 @@ public static class NetworkHelper
     {
         foreach (var net in networks)
         {
-            net.SendActor(string.Empty, messageCmd, actorId);
+            net.SendActor(messageCmd, actorId);
         }
     }
 

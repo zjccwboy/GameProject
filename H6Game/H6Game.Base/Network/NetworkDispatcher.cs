@@ -1,4 +1,5 @@
-﻿using System;
+﻿using H6Game.Message;
+using System;
 
 namespace H6Game.Base
 {
@@ -24,7 +25,13 @@ namespace H6Game.Base
         {
             try
             {
-                if(packet.ActorId > 0)
+                if (packet.MessageId == (int)MessageCMD.GetInServerCmd)
+                   Console.WriteLine($"MessageID:{packet.MessageId}");
+
+                //if (packet.MsgTypeCode == (int)MessageType.ActorMessage)
+                //    Console.WriteLine($"MsgTypeCode:{packet.MsgTypeCode}");
+
+                if (packet.ActorId > 0)
                 {
                     var handlers = HandlerMsgPool.GetActorHandler(packet.MessageId);
                     foreach(var handler in handlers)

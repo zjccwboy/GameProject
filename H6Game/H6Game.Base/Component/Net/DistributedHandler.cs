@@ -16,16 +16,23 @@ namespace H6Game.Base
             inNetComponent.AddSession(message);
             if (inNetComponent.IsCenterServer)
             {
+                inNetComponent.InNetMapManager.Add(network.Channel, message);
+
                 network.Broadcast(message, (int)MessageCMD.AddInServerCmd);
                 this.Log(LogLevel.Debug, "Handler", $"广播分布式连接消息:{MessageCMD.AddInServerCmd} 消息内容:{message.ToJson()}");
+
+                foreach(var entity in inNetComponent.InNetMapManager.Entities)
+                {
+                    network.RpcCallBack(entity);
+                }
             }
         }
     }
 
     [HandlerCMD(MessageCMD.GetOutServerCmd)]
-    public class OutNetMessageSync : AHandler<string>
+    public class OutNetMessageSync : AHandler
     {
-        protected override void Handler(Network network, string message)
+        protected override void Handler(Network network)
         {
             var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
@@ -34,9 +41,9 @@ namespace H6Game.Base
     }
 
     [HandlerCMD(MessageCMD.GetInServerCmd)]
-    public class InNetMessageSync : AHandler<string>
+    public class InNetMessageSync : AHandler
     {
-        protected override void Handler(Network network, string message)
+        protected override void Handler(Network network)
         {
             var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
             network.RpcCallBack(inNetComponent.InNetMessage);

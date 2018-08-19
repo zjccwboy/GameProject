@@ -27,7 +27,7 @@ namespace TestMogodb
         static async void TestDBContext()
         {
            var mongoComponent = Game.Scene.AddComponent<MongoDBComponent>();
-            var context = new DBContext<TestAccount>(mongoComponent.Database);
+            IContext<TestAccount> context = new DBContext<TestAccount>(mongoComponent.Database);
 
            var delResult =  await context.DeleteManyAsync(t => t.FAccount != null);
 

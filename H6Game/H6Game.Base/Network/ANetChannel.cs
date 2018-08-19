@@ -172,11 +172,11 @@ namespace H6Game.Base
         /// <summary>
         /// 添加一个发送数据包到发送缓冲区队列中
         /// </summary>
-        /// <param name="packet"></param>
+        /// <param name="rpcId"></param>
         /// <param name="recvAction"></param>
-        public void AddRpcPacket(Packet packet, Action<Packet> recvAction)
+        public void AddRpcPacket(int rpcId, Action<Packet> recvAction)
         {
-            RpcDictionarys.TryAdd(packet.RpcId, recvAction);
+            RpcDictionarys.TryAdd(rpcId, recvAction);
         }
 
         public void Dispose()

@@ -7,7 +7,7 @@ namespace H6Game.Entitys
         /// <summary>
         /// 普通账号
         /// </summary>
-        None,
+        Default,
         /// <summary>
         /// VIP
         /// </summary>

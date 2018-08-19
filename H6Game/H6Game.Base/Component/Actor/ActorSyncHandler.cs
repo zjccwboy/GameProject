@@ -1,4 +1,5 @@
 ﻿using H6Game.Message;
+using MongoDB.Bson;
 
 namespace H6Game.Base
 {
@@ -7,6 +8,13 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
+            //this.Log(LogLevel.Debug, "ActorAddOrRemoveHandler",
+            //    $"ActorSyncMessage:{message.ToJson()} " +
+            //    $"MessageId:{network.RecvPacket.MessageId} " +
+            //    $"RpcId:{network.RecvPacket.RpcId} " +
+            //    $"ActorId:{network.RecvPacket.ActorId} " +
+            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+
             var component = Game.Scene.GetComponent<ActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             switch (cmd)
@@ -34,6 +42,12 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
+            //this.Log(LogLevel.Debug, "SyncCallHandler", 
+            //    $"MessageId:{network.RecvPacket.MessageId} " +
+            //    $"RpcId:{network.RecvPacket.RpcId} " +
+            //    $"ActorId:{network.RecvPacket.ActorId} " +
+            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+
             var component = Game.Scene.GetComponent<ActorComponent>();
             var entites = component.LocalEntitys;
             var count = 0;
@@ -59,6 +73,13 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
+            //this.Log(LogLevel.Debug, "SyncCallBackHandler", 
+            //    $"ActorSyncMessage:{message.ToJson()} " +
+            //    $"MessageId:{network.RecvPacket.MessageId} " +
+            //    $"RpcId:{network.RecvPacket.RpcId} " +
+            //    $"ActorId:{network.RecvPacket.ActorId} " +
+            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+
             var component = Game.Scene.GetComponent<ActorComponent>();
             var entity = new ActorInfoEntity
             {

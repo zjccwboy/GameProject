@@ -252,8 +252,8 @@ namespace H6Game.Base
 
             this.LastConnectTime = TimeUitls.Now();
             e.RemoteEndPoint = null;
-            OnConnect?.Invoke(this);
             this.Connected = true;
+            OnConnect?.Invoke(this);
         }
 
         private void OnDisconnectComplete(object o)

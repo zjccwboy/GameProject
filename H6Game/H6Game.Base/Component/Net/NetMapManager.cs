@@ -14,6 +14,8 @@ namespace H6Game.Base
         private readonly ConcurrentDictionary<int, NetEndPointMessage> ChannelIdMapMsg = new ConcurrentDictionary<int, NetEndPointMessage>();
         private readonly ConcurrentDictionary<int, ANetChannel> HCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
 
+        public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
+
         /// <summary>
         /// 判断是否存在
         /// </summary>

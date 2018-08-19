@@ -60,6 +60,11 @@ public static class PacketHelper
         }
     }
 
+    internal static void WriteTo(this Packet packet)
+    {
+        packet.WriteBuffer();
+    }
+
     internal static void WriteTo<T>(this Packet packet, T obj) where T : class
     {
         if (obj != default)

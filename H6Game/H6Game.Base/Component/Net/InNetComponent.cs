@@ -150,7 +150,7 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                InAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network,(id, val)=> { return c.Dispatcher.Network; });
+                InAcceptNetworks.TryAdd(c.Id, c.Dispatcher.Network);
             };
 
             session.OnServerDisconnected = (c) =>
@@ -162,8 +162,10 @@ namespace H6Game.Base
                     this.InNetMapManager.Remove(inMessage);
                 }
 
-                if(message != this.Config.GetCenterMessage())
-                    this.OnDisConnected?.Invoke(c);
+                if (this.Config.IsCenterServer)
+                    return;
+
+                this.OnDisConnected?.Invoke(c);
             };
 
             this.InAcceptSession = session;
@@ -181,7 +183,7 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                OuAcceptNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (id, val)=> { return c.Dispatcher.Network; });
+                OuAcceptNetworks.TryAdd(c.Id, c.Dispatcher.Network);
             };
 
             session.OnServerDisconnected = (c) => 
@@ -228,9 +230,7 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    this.OnConnected?.Invoke(c);
-
-                    InConnectNetworks.AddOrUpdate(c.Id, c.Dispatcher.Network, (a, val)=> { return c.Dispatcher.Network; });
+                    InConnectNetworks.TryAdd(c.Id, c.Dispatcher.Network);
 
                     var tuple = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
                     if (tuple.Result)
@@ -238,13 +238,15 @@ namespace H6Game.Base
                         this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Content.ToJson()}");
                         this.OutNetMapManager.Add(c, tuple.Content);
                     }
+
+                    this.OnConnected?.Invoke(c);
                 }
                 else
                 {
                     this.Log(LogLevel.Info, "Connecting", "连接中心服务成功.");
+                    SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
                 }
 
-                SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
             };
 
             //注册连接断开回调
@@ -270,7 +272,7 @@ namespace H6Game.Base
 
         private void SendToCenter<T>(T data, int messageCmd) where T : class
         {
-            this.CenterConnectSession.Broadcast(data, messageCmd);
+            this.CenterConnectSession.Broadcast(data, messageCmd, 0 , 0);
         }
 
         private IPEndPoint GetIPEndPoint(NetEndPointMessage message)
