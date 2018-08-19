@@ -7,14 +7,17 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<InNetComponent>();
-            Game.Scene.AddComponent<ActorComponent>();
-            Game.Scene.AddComponent<MongoDBComponent>();
-            Game.Scene.AddComponent<TestSender>();
+            var netComponent = Game.Scene.AddComponent<InNetComponent>();
+            var actorComponent = Game.Scene.AddComponent<ActorComponent>();
+            var dbComponent = Game.Scene.AddComponent<MongoDBComponent>();
+            var testComponent = Game.Scene.AddComponent<TestSender>();
+
+
             while (true)
             {
                 Game.Update();
                 Thread.Sleep(1);
+                actorComponent.AddComponent<PlayerComponent>();
             }
         }
     }

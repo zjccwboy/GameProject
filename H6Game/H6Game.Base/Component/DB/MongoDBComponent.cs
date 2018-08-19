@@ -12,9 +12,7 @@ namespace H6Game.Base
         private SysConfig Config { get; set; }
         private MongoClient DBClient { get; set; }
         private string DatabaseNaeme { get; set; }
-        private IMongoDatabase MongoDatabase { get; set; }
-        public IMongoDatabase Database { get { return MongoDatabase; } }
-        private IContext Context { get; set; }
+        public IMongoDatabase Database { get;private set; }
 
         public override void Awake()
         {
@@ -23,27 +21,26 @@ namespace H6Game.Base
             this.DatabaseNaeme = this.Config.DbConfig.DatabaseName;
             SetMongoDatabase();
 
-            this.Context = new DBContext(this.Database);
             AddRpositoryComponents();
         }
 
         private void AddRpositoryComponents()
         {
-            var types = TypePool.GetTypes<BaseRpository>();
+            var types = TypePool.GetTypes<IRpository>();
             foreach(var type in types)
             {
                 AddComponent(type);
             }
         }
 
-        private void AddComponent(Type type)
+        private BaseComponent AddComponent(Type type)
         {
-            if (type.BaseType != typeof(BaseRpository))
-                return;
+            if (!typeof(IRpository).IsAssignableFrom(type))
+                return null;
 
             var isSingle = ComponentPool.IsSingleType(type);
             var component = ComponentPool.Fetch(type);
-            (component as BaseRpository).DBContext = this.Context;
+            (component as IRpository).SetDBContext(this.Database);
 
             if (isSingle)
             {
@@ -59,34 +56,16 @@ namespace H6Game.Base
                 }
                 components.Add(component);
             }
+            return component;
         }
 
         public override T AddComponent<T>()
         {
             var type = typeof(T);
-            if (type.BaseType != typeof(BaseRpository))
+            if (!typeof(IRpository).IsAssignableFrom(type))
                 return default;
 
-            var isSingle = ComponentPool.IsSingleType(type);
-            var component = ComponentPool.Fetch<T>();
-            (component as BaseRpository).DBContext = this.Context;
-
-            if (isSingle)
-            {
-                SingleDictionary[type] = component;
-            }
-            else
-            {
-                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
-                {
-                    components = new HashSet<BaseComponent>();
-                    TypeComponent[type] = components;
-                }
-                components.Add(component);
-            }
-
-            return component;
+            return (T)AddComponent(type);
         }
 
         private void SetMongoDatabase()
@@ -98,7 +77,7 @@ namespace H6Game.Base
                     throw new KeyNotFoundException("此MongoDB名称不存在：" + this.DatabaseNaeme);
                 }
 
-                this.MongoDatabase = this.DBClient.GetDatabase(this.DatabaseNaeme);
+                this.Database = this.DBClient.GetDatabase(this.DatabaseNaeme);
             }
         }
 

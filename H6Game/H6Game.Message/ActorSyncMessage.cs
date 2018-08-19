@@ -6,7 +6,7 @@ namespace H6Game.Message
 {
     [MessageType(MessageType.ActorMessage)]
     [ProtoContract]
-    public class ActorMessage : IMessage
+    public class ActorSyncMessage : IMessage
     {
         [BsonElement]
         [ProtoMember(1)]

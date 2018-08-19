@@ -73,7 +73,7 @@ namespace H6Game.Base
             var entityBaseType = typeof(BaseEntity);
             var entityTypes = new HashSet<Type>();
 
-            var rpositoryBaseType = typeof(BaseRpository);
+            var rpositoryBaseType = typeof(IRpository);
             var rpositoryTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)
@@ -103,7 +103,7 @@ namespace H6Game.Base
                     {
                         entityTypes.Add(t);
                     }
-                    else if (t.BaseType == rpositoryBaseType)
+                    else if (rpositoryBaseType.IsAssignableFrom(t))
                     {
                         rpositoryTypes.Add(t);
                     }

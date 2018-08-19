@@ -7,40 +7,43 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
-    public interface IContext
+    public interface IContext<TDoc> where TDoc : BaseEntity
     {
         IMongoDatabase Database { get;}
 
-        void CreateCollectionIndex<TDoc>(string[] indexFields, CreateIndexOptions options = null) where TDoc:BaseEntity;
-        void CreateCollection<TDoc>(string[] indexFields = null, CreateIndexOptions options = null) where TDoc : BaseEntity;
+        void CreateCollectionIndex(string[] indexFields, CreateIndexOptions options = null);
+        void CreateCollection(string[] indexFields = null, CreateIndexOptions options = null);
 
-        List<TDoc> Find<TDoc>(Expression<Func<TDoc, bool>> filter, FindOptions options = null) where TDoc : BaseEntity;
-        Task<List<TDoc>> FindAsync<TDoc>(Expression<Func<TDoc, bool>> filter, FindOptions options = null) where TDoc : BaseEntity;
+        List<TDoc> Find(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
+        Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
 
-        List<TDoc> FindByPage<TDoc, TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount) where TDoc : BaseEntity;
-        Task<List<TDoc>> FindByPageAsync<TDoc, TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount) where TDoc : BaseEntity;
+        List<TDoc> FindById(string objectId, FindOptions options = null);
+        Task<List<TDoc>> FindByIdAsync(string objectId, FindOptions options = null);
 
-        void Insert<TDoc>(TDoc doc, InsertOneOptions options = null) where TDoc : BaseEntity;
-        Task InsertAsync<TDoc>(TDoc doc, InsertOneOptions options = null) where TDoc : BaseEntity;
+        List<TDoc> FindByPage<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);
+        Task<List<TDoc>> FindByPageAsync<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);
 
-        void InsertMany<TDoc>(IEnumerable<TDoc> docs, InsertManyOptions options = null) where TDoc : BaseEntity;
-        Task InsertManyAsync<TDoc>(IEnumerable<TDoc> docs, InsertManyOptions options = null) where TDoc : BaseEntity;
+        void Insert(TDoc doc, InsertOneOptions options = null);
+        Task InsertAsync(TDoc doc, InsertOneOptions options = null);
 
-        void Update<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null) where TDoc : BaseEntity;
-        Task UpdateAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null) where TDoc : BaseEntity;
+        void InsertMany(IEnumerable<TDoc> docs, InsertManyOptions options = null);
+        Task InsertManyAsync(IEnumerable<TDoc> docs, InsertManyOptions options = null);
 
-        void Update<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null) where TDoc : BaseEntity;
-        Task UpdateAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null) where TDoc : BaseEntity;
+        void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+        Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
 
-        void UpdateMany<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null) where TDoc : BaseEntity;
-        Task UpdateManyAsync<TDoc>(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null) where TDoc : BaseEntity;
+        void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
+        Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
 
-        void Delete<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null) where TDoc : BaseEntity;
-        Task DeleteAsync<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null) where TDoc : BaseEntity;
+        void UpdateMany(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
+        Task UpdateManyAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
 
-        DeleteResult DeleteMany<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null) where TDoc : BaseEntity;
-        Task<DeleteResult> DeleteManyAsync<TDoc>(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null) where TDoc : BaseEntity;
+        void Delete(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+        Task DeleteAsync(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
 
-        void ClearCollection<TDoc>() where TDoc : BaseEntity;
+        DeleteResult DeleteMany(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+        Task<DeleteResult> DeleteManyAsync(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null);
+
+        void ClearCollection();
     }
 }

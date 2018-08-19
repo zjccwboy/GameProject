@@ -91,7 +91,7 @@ namespace H6Game.Base
 
         private void NotifyAllServerAdd(ActorInfoEntity entity)
         {
-            var message = new ActorMessage
+            var message = new ActorSyncMessage
             {
                 ObjectId = entity.Id,
             };
@@ -100,7 +100,7 @@ namespace H6Game.Base
 
         private void NotifyAllServerRemove(ActorInfoEntity entity)
         {
-            var message = new ActorMessage
+            var message = new ActorSyncMessage
             {
                 ObjectId = entity.Id,
             };

@@ -3,9 +3,9 @@
 namespace H6Game.Base
 {
     [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class ActorAddOrRemoveHandler : AActorHandler<ActorMessage>
+    public class ActorAddOrRemoveHandler : AActorHandler<ActorSyncMessage>
     {
-        protected override void Handler(Network network, ActorMessage message)
+        protected override void Handler(Network network, ActorSyncMessage message)
         {
             var component = Game.Scene.GetComponent<ActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
@@ -30,7 +30,7 @@ namespace H6Game.Base
 
 
     [HandlerCMD(MessageCMD.SyncActorInfoCmd)]
-    public class ActorSyncCallHandler : AActorHandler
+    public class SyncCallHandler : AHandler
     {
         protected override void Handler(Network network)
         {
@@ -39,7 +39,7 @@ namespace H6Game.Base
             var count = 0;
             foreach (var entity in entites)
             {
-                var syncMessage = new ActorMessage
+                var syncMessage = new ActorSyncMessage
                 {
                     ObjectId = entity.Id,
                 };
@@ -55,9 +55,9 @@ namespace H6Game.Base
     }
 
     [HandlerCMD(MessageCMD.SyncActorInfoCmd)]
-    public class ActorSyncCallBackHandler : AActorHandler<ActorMessage>
+    public class SyncCallBackHandler : AHandler<ActorSyncMessage>
     {
-        protected override void Handler(Network network, ActorMessage message)
+        protected override void Handler(Network network, ActorSyncMessage message)
         {
             var component = Game.Scene.GetComponent<ActorComponent>();
             var entity = new ActorInfoEntity
