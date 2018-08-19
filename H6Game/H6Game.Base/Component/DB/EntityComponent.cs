@@ -30,15 +30,15 @@ namespace H6Game.Base
             return null;
         }
 
-        public string GetElementName<TDoc>(string propertyName) where TDoc : BaseEntity
+        public string GetElementName<TEntity>(string propertyName) where TEntity : BaseEntity
         {
-            var type = typeof(TDoc);
+            var type = typeof(TEntity);
             return GetElementName(type, propertyName);
         }
 
-        public PropertyInfo[] GetPropertys<TDoc>() where TDoc : BaseEntity
+        public PropertyInfo[] GetPropertys<TEntity>() where TEntity : BaseEntity
         {
-            return ClassPropertyInfos[typeof(TDoc)];
+            return ClassPropertyInfos[typeof(TEntity)];
         }
 
         public override void Awake()

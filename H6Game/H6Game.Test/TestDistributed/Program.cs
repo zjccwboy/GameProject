@@ -17,7 +17,7 @@ namespace TestDistributed
             {
                 Game.Update();
                 Thread.Sleep(1);
-                Game.Scene.GetComponent<ActorComponent>().AddComponent<PlayerComponent>().LoadAccountInfo(11111);
+                Game.Scene.GetComponent<ActorComponent>().AddComponent<PlayerComponent>().LoadAccountInfo("");
             }
         }
     }

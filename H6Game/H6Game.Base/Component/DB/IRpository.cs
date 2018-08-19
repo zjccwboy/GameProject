@@ -3,9 +3,9 @@ using MongoDB.Driver;
 
 namespace H6Game.Base
 {
-    public interface IRpository<TDoc> : IRpository where TDoc : BaseEntity
+    public interface IRpository<TEntity> : IRpository where TEntity : BaseEntity
     {
-        IContext<TDoc> DBContext { get;}
+        IContext<TEntity> DBContext { get;}
     }
 
     public interface IRpository
