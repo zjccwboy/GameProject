@@ -17,8 +17,8 @@ namespace H6Game.Base
         List<TDoc> Find(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
         Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> filter, FindOptions options = null);
 
-        List<TDoc> FindById(string objectId, FindOptions options = null);
-        Task<List<TDoc>> FindByIdAsync(string objectId, FindOptions options = null);
+        List<TDoc> FindById(int objectId, FindOptions options = null);
+        Task<List<TDoc>> FindByIdAsync(int objectId, FindOptions options = null);
 
         List<TDoc> FindByPage<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);
         Task<List<TDoc>> FindByPageAsync<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount);

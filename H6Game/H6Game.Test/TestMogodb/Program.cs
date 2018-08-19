@@ -30,9 +30,9 @@ namespace TestMogodb
         static async void TestDBContext()
         {
            var mongoComponent = Game.Scene.AddComponent<MongoDBComponent>();
-            var context = new DBContext(mongoComponent.Database);
+            var context = new DBContext<TestAccount>(mongoComponent.Database);
 
-           var delResult =  await context.DeleteManyAsync<TestAccount>(t => t.FAccount != null);
+           var delResult =  await context.DeleteManyAsync(t => t.FAccount != null);
 
             var accountInfo = new TestAccount
             {
@@ -83,11 +83,11 @@ namespace TestMogodb
             await context.InsertManyAsync(inserts);
             
 
-            var findResult = context.Find<TestAccount>(t => t.FAccount == "InsertMany");
-            findResult = await context.FindAsync<TestAccount>(t => t.FAccount == "InsertManyAsync");
+            var findResult = context.Find(t => t.FAccount == "InsertMany");
+            findResult = await context.FindAsync(t => t.FAccount == "InsertManyAsync");
 
-            var pageResult = context.FindByPage<TestAccount, string>(t => t.FAccount == "InsertMany", t => t.FAccount, 1, 20, out int pageCount);
-            pageResult = await context.FindByPageAsync<TestAccount, string>(t => t.FAccount == "InsertManyAsync", t => t.FAccount, 1, 20, out pageCount);
+            var pageResult = context.FindByPage<string>(t => t.FAccount == "InsertMany", t => t.FAccount, 1, 20, out int pageCount);
+            pageResult = await context.FindByPageAsync<string>(t => t.FAccount == "InsertManyAsync", t => t.FAccount, 1, 20, out pageCount);
 
 
             context.Update(new TestAccount
@@ -141,7 +141,7 @@ namespace TestMogodb
                 FVIPLevel = 15,
             }, t => t.FAccount == "InsertManyAsync");
 
-            context.Delete<TestAccount>(t => t.FAccount == "UpdateMany");
+            context.Delete(t => t.FAccount == "UpdateMany");
 
         }
 
@@ -193,12 +193,12 @@ namespace TestMogodb
             var list = await collection.Find(doc).ToListAsync();
 
             //通过_id查找
-            var objectId = new ObjectId(accountInfo.Id);
-            list = await collection.Find(new BsonDocument("_id", objectId)).ToListAsync();
+            //var objectId = new ObjectId(accountInfo.Id);
+            //list = await collection.Find(new BsonDocument("_id", objectId)).ToListAsync();
 
-            var filter = Builders<TestAccount>.Filter.Eq("_id", objectId);
-            var update = Builders<TestAccount>.Update.Set("FVIPLevel", 110);
-            collection.UpdateOne(filter, update);
+            //var filter = Builders<TestAccount>.Filter.Eq("_id", objectId);
+            //var update = Builders<TestAccount>.Update.Set("FVIPLevel", 110);
+            //collection.UpdateOne(filter, update);
 
 
             foreach (var document in list)

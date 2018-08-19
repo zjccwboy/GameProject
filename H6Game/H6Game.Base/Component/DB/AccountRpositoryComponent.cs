@@ -1,16 +1,22 @@
 ﻿using H6Game.Entitys;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace H6Game.Base.Component.DB
+namespace H6Game.Base
 {
     [SingletCase]
-    public class AccountRpositoryComponent : BaseRpository<AccountEntity>
+    public class AccountRpositoryComponent : BaseRpository<TAccount>
     {
 
-        public Task<List<AccountEntity>> GetAccountById(string objectId)
+        public async Task<TAccount> GetAccountById(int objectId)
         {
-            return this.DBContext.FindByIdAsync(objectId);
+            var q = await this.DBContext.FindByIdAsync(objectId);
+
+            if (!q.Any())
+                return q.FirstOrDefault();
+
+            return null;
         }
 
 

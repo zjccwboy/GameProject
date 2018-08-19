@@ -6,20 +6,26 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake | EventType.Start | EventType.Update)]
+    [Event(EventType.Update | EventType.Dispose)]
     public class PlayerComponent : BaseComponent
     {
+        public TAccount AccountEntity { get; private set; }
 
-
-        public override void Awake()
+        public async void LoadAccountInfo(int objectId)
         {
-            base.Awake();
+            var rpository = Game.Scene.GetComponent<MongoDBComponent>().GetComponent<AccountRpositoryComponent>();
+            this.AccountEntity = await rpository.GetAccountById(objectId);
+            if(this.AccountEntity != null)
+            {
+                var actorComponent = Game.Scene.GetComponent<ActorComponent>();
+                actorComponent.AddLocalEntity(new ActorInfoEntity
+                {
+                    ActorId = this.Id,
+                    Id = this.AccountEntity.Id,
+                });
+            }
         }
 
-        public override void Start()
-        {
-            base.Start();
-        }
 
         public override void Update()
         {

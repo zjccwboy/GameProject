@@ -13,9 +13,9 @@ namespace H6Game.Entitys
         /// <summary>
         /// MongoDB Object _Id
         /// </summary>
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.Int32)]
         [BsonElement]
         [ProtoMember(1)]
-        public string Id { get; set; }
+        public int Id { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 using H6Game.Entitys;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace H6Game.Base
 {
@@ -14,6 +15,25 @@ namespace H6Game.Base
         {
             this.DataBase = database;
             this.DBContext = new DBContext<TDoc>(this.DataBase);
+
+            CreateCollection();
+        }
+
+        private void CreateCollection()
+        {
+            var name = typeof(TDoc).Name;
+            var collections = this.DataBase.ListCollections().ToList();
+            foreach(var collection in collections)
+            {
+                var bsonValue = collection.AsBsonValue;
+                var doc = bsonValue.AsBsonDocument;
+                var oldName = doc["name"];
+                if (oldName == name)
+                {
+                    return;
+                }
+            }
+            this.DBContext.CreateCollection();
         }
 
     }
