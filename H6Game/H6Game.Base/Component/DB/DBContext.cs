@@ -54,12 +54,12 @@ namespace H6Game.Base
             return colleciton.Find(filter, options).ToListAsync();
         }
 
-        public List<TDoc> FindById(int objectId, FindOptions options = null)
+        public List<TDoc> FindById(string objectId, FindOptions options = null)
         {
             return Find(t => t.Id == objectId);
         }
 
-        public Task<List<TDoc>> FindByIdAsync(int objectId, FindOptions options = null)
+        public Task<List<TDoc>> FindByIdAsync(string objectId, FindOptions options = null)
         {
             return FindAsync(t => t.Id == objectId);
         }

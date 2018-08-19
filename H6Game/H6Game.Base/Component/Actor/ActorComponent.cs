@@ -9,8 +9,8 @@ namespace H6Game.Base
     public class ActorComponent : BaseComponent
     {
         private ConcurrentDictionary<long, ActorInfoEntity> EntitiesDictionary { get; } = new ConcurrentDictionary<long, ActorInfoEntity>();
-        private ConcurrentDictionary<int, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<int, ActorInfoEntity>();
-        private ConcurrentDictionary<int, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<int, ActorInfoEntity>();
+        private ConcurrentDictionary<string, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
+        private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
 
@@ -42,7 +42,7 @@ namespace H6Game.Base
             }
         }
 
-        public void RemoveFromNet(int objectId, int channelId)
+        public void RemoveFromNet(string objectId, int channelId)
         {
             if (ObjectIdEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
             {
@@ -51,7 +51,7 @@ namespace H6Game.Base
             }
         }
 
-        public void RemoveFromLocal(int objectId)
+        public void RemoveFromLocal(string objectId)
         {
             if (LocalEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
                 NotifyAllServerRemove(actorInfo);
@@ -62,12 +62,12 @@ namespace H6Game.Base
             return EntitiesDictionary.TryGetValue(entityId, out entity);
         }
 
-        public bool TryGetNetEntity(int objectId, out ActorInfoEntity entity)
+        public bool TryGetNetEntity(string objectId, out ActorInfoEntity entity)
         {
             return ObjectIdEntitiesDictionary.TryGetValue(objectId, out entity);
         }
 
-        public bool TryGetLocalEntity(int objectId, out ActorInfoEntity entity)
+        public bool TryGetLocalEntity(string objectId, out ActorInfoEntity entity)
         {
             return LocalEntitiesDictionary.TryGetValue(objectId, out entity);
         }

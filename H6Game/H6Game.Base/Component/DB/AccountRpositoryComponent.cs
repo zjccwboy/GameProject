@@ -9,7 +9,7 @@ namespace H6Game.Base
     public class AccountRpositoryComponent : BaseRpository<TAccount>
     {
 
-        public async Task<TAccount> GetAccountById(int objectId)
+        public async Task<TAccount> GetAccountById(string objectId)
         {
             var q = await this.DBContext.FindByIdAsync(objectId);
 

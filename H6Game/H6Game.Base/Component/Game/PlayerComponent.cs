@@ -11,7 +11,7 @@ namespace H6Game.Base
     {
         public TAccount AccountEntity { get; private set; }
 
-        public async void LoadAccountInfo(int objectId)
+        public async void LoadAccountInfo(string objectId)
         {
             var rpository = Game.Scene.GetComponent<MongoDBComponent>().GetComponent<AccountRpositoryComponent>();
             this.AccountEntity = await rpository.GetAccountById(objectId);

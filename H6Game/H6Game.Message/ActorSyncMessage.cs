@@ -10,6 +10,6 @@ namespace H6Game.Message
     {
         [BsonElement]
         [ProtoMember(1)]
-        public int ObjectId { get; set; }
+        public string ObjectId { get; set; }
     }
 }
