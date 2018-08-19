@@ -20,10 +20,7 @@ namespace TestMogodb
     {
         static void Main(string[] args)
         {
-
             TestDBContext();
-
-
             Console.Read();
         }
 
@@ -90,12 +87,13 @@ namespace TestMogodb
             pageResult = await context.FindByPageAsync<string>(t => t.FAccount == "InsertManyAsync", t => t.FAccount, 1, 20, out pageCount);
 
 
+            context.Update(t => t.FAccount == "Insert", Builders<TestAccount>.Update.Set("FAmt", 102));
+
             context.Update(new TestAccount
             {
                 FAccount = "Update",
-                FAmt = 100m,
-                FCreateTime = DateTime.Now,
-                FVIPLevel = 10,
+                FAmt = 200m,
+                FVIPLevel = 20,
             }, t => t.FAccount == "Insert");
 
 
@@ -108,21 +106,14 @@ namespace TestMogodb
             }, t => t.FAccount == "InsertAsync");
 
 
-            context.Update(new TestAccount
-            {
-                FAccount = "Update1",
-                FAmt = 100m,
-                FCreateTime = DateTime.Now,
-                FVIPLevel = 12,
-            }, t => t.FAccount == "InsertMany", Builders<TestAccount>.Update.Set("FAmt", 102));
+            context.Update(t => t.FAccount == "InsertMany", Builders<TestAccount>.Update.Set("FAmt", 102));
 
-            await context.UpdateAsync(new TestAccount
-            {
-                FAccount = "UpdateAsync1",
-                FAmt = 100m,
-                FCreateTime = DateTime.Now,
-                FVIPLevel = 13,
-            }, t => t.FAccount == "InsertManyAsync", Builders<TestAccount>.Update.Set("FAmt", 103));
+            var updateAccount = BaseEntity.Create<TestAccount>();
+            var elementName = updateAccount.GetElementName(nameof(updateAccount.FAccount));
+
+            var ecp = Game.Scene.AddComponent<EntityComponent>();
+            elementName = ecp[typeof(TestAccount), "FAmt"];
+            await context.UpdateAsync(t => t.FAccount == "Update", Builders<TestAccount>.Update.Set("FAmt", 103));
 
 
             context.UpdateMany(new TestAccount

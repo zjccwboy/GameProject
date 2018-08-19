@@ -13,15 +13,27 @@ namespace H6Game.Base
         private Dictionary<Type, Dictionary<string, string>> ClassPropertiesElementName { get; } = new Dictionary<Type, Dictionary<string, string>>();
         private Dictionary<Type, PropertyInfo[]> ClassPropertyInfos { get; } = new Dictionary<Type, PropertyInfo[]>();
 
-        public string GetPropertyElementName<TDoc>(TDoc doc, string propertyName) where TDoc : BaseEntity
+        public string this[Type type,string propertyName]
         {
-            var type = typeof(TDoc);
+
+            get { return GetElementName(type, propertyName); }
+
+        }
+
+        private string GetElementName(Type type, string propertyName)
+        {
             if (ClassPropertiesElementName.TryGetValue(type, out Dictionary<string, string> properties))
             {
                 if (properties.TryGetValue(propertyName, out string name))
                     return name;
             }
             return null;
+        }
+
+        public string GetElementName<TDoc>(string propertyName) where TDoc : BaseEntity
+        {
+            var type = typeof(TDoc);
+            return GetElementName(type, propertyName);
         }
 
         public PropertyInfo[] GetPropertys<TDoc>() where TDoc : BaseEntity

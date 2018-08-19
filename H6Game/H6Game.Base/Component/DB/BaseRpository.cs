@@ -5,16 +5,20 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public abstract class BaseRpository<TDoc> : BaseComponent, IRpository<TDoc> where TDoc : BaseEntity
+    public abstract class BaseRpository<TDoc> : BaseComponent, IRpository<TDoc> where TDoc : BaseEntity, new()
     {
         public IContext<TDoc> DBContext { get;private set; }
 
         public IMongoDatabase DataBase { get;private set; }
 
+        public TDoc DefaultEntity { get; private set; }
+
         public void SetDBContext(IMongoDatabase database)
         {
             this.DataBase = database;
             this.DBContext = new DBContext<TDoc>(this.DataBase);
+
+            this.DefaultEntity = BaseEntity.Create<TDoc>();
 
             CreateCollection();
         }

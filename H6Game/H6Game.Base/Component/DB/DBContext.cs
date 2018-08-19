@@ -139,14 +139,14 @@ namespace H6Game.Base
             return colleciton.UpdateOneAsync(filter, Builders<TDoc>.Update.Combine(updateList), options);
         }
 
-        public void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
+        public void Update(Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
             var colleciton = GetMongoCollection(collectionName);
             colleciton.UpdateOne(filter, updateFields, options);
         }
 
-        public Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
+        public Task UpdateAsync(Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
             var colleciton = GetMongoCollection(collectionName);
@@ -261,7 +261,7 @@ namespace H6Game.Base
             var properties = this.EntityComponent.GetPropertys<TDoc>();
             foreach (var property in properties)
             {
-                var elmentName = this.EntityComponent.GetPropertyElementName(doc, property.Name);
+                var elmentName = this.EntityComponent.GetElementName<TDoc>(property.Name);
 
                 string key;                
                 if(elmentName == null)

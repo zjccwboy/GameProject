@@ -32,8 +32,8 @@ namespace H6Game.Base
         void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
         Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
 
-        void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
-        Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
+        void Update(Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
+        Task UpdateAsync(Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null);
 
         void UpdateMany(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);
         Task UpdateManyAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null);

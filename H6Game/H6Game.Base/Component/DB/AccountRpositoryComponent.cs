@@ -16,9 +16,9 @@ namespace H6Game.Base
             if (!q.Any())
                 return q.FirstOrDefault();
 
+            var upName = this.DefaultEntity.GetElementName(nameof(this.DefaultEntity.FType));
+
             return null;
         }
-
-
     }
 }
