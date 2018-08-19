@@ -30,27 +30,27 @@ namespace H6Game.Base
         public void CreateCollectionIndex(string[] indexFields, CreateIndexOptions options = null)
         {
             var collectionName = typeof(TDoc).Name;
-            CreateIndex(GetMongoCollection<TDoc>(collectionName), indexFields, options);
+            CreateIndex(GetMongoCollection(collectionName), indexFields, options);
         }
 
         public void CreateCollection(string[] indexFields = null, CreateIndexOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
             this.Database.CreateCollection(collectionName);
-            CreateIndex(GetMongoCollection<TDoc>(collectionName), indexFields, options);
+            CreateIndex(GetMongoCollection(collectionName), indexFields, options);
         }
 
         public List<TDoc> Find(Expression<Func<TDoc, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.Find(filter, options).ToList();
         }
 
         public Task<List<TDoc>> FindAsync(Expression<Func<TDoc, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.Find(filter, options).ToListAsync();
         }
 
@@ -67,7 +67,7 @@ namespace H6Game.Base
         public List<TDoc> FindByPage<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             rsCount = colleciton.AsQueryable().Where(filter).Count();
 
             int pageCount = rsCount / pageSize + ((rsCount % pageSize) > 0 ? 1 : 0);
@@ -80,7 +80,7 @@ namespace H6Game.Base
         public Task<List<TDoc>> FindByPageAsync<TResult>(Expression<Func<TDoc, bool>> filter, Expression<Func<TDoc, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             rsCount = colleciton.AsQueryable().Where(filter).Count();
 
             int pageCount = rsCount / pageSize + ((rsCount % pageSize) > 0 ? 1 : 0);
@@ -97,14 +97,14 @@ namespace H6Game.Base
         public void Insert(TDoc doc, InsertOneOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             colleciton.InsertOne(doc, options);
         }
 
         public Task InsertAsync(TDoc doc, InsertOneOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.InsertOneAsync(doc, options);
         }
 
@@ -112,21 +112,21 @@ namespace H6Game.Base
         public void InsertMany(IEnumerable<TDoc> docs, InsertManyOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             colleciton.InsertMany(docs, options);
         }
 
         public Task InsertManyAsync(IEnumerable<TDoc> docs, InsertManyOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.InsertManyAsync(docs, options);
         }
 
         public void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TDoc>> updateList = BuildUpdateDefinition(doc, null);
             colleciton.UpdateOne(filter, Builders<TDoc>.Update.Combine(updateList), options);
         }
@@ -134,7 +134,7 @@ namespace H6Game.Base
         public Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TDoc>> updateList = BuildUpdateDefinition(doc, null);
             return colleciton.UpdateOneAsync(filter, Builders<TDoc>.Update.Combine(updateList), options);
         }
@@ -142,21 +142,21 @@ namespace H6Game.Base
         public void Update(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             colleciton.UpdateOne(filter, updateFields, options);
         }
 
         public Task UpdateAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateDefinition<TDoc> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.UpdateOneAsync(filter, updateFields, options);
         }
 
         public void UpdateMany(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TDoc>> updateList = BuildUpdateDefinition(doc, null);
             colleciton.UpdateMany(filter, Builders<TDoc>.Update.Combine(updateList), options);
         }
@@ -164,7 +164,7 @@ namespace H6Game.Base
         public Task UpdateManyAsync(TDoc doc, Expression<Func<TDoc, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TDoc>> updateList = BuildUpdateDefinition(doc, null);
             return colleciton.UpdateManyAsync(filter, Builders<TDoc>.Update.Combine(updateList), options);
         }
@@ -172,28 +172,28 @@ namespace H6Game.Base
         public void Delete(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             colleciton.DeleteOne(filter, options);
         }
 
         public Task DeleteAsync(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.DeleteOneAsync(filter, options);
         }
 
         public DeleteResult DeleteMany(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             return colleciton.DeleteMany(filter, options);
         }
 
         public Task<DeleteResult> DeleteManyAsync(Expression<Func<TDoc, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             var result = colleciton.DeleteManyAsync(filter, options);
             return result;
         }
@@ -201,7 +201,7 @@ namespace H6Game.Base
         public void ClearCollection()
         {
             var collectionName = typeof(TDoc).Name;
-            var colleciton = GetMongoCollection<TDoc>(collectionName);
+            var colleciton = GetMongoCollection(collectionName);
             var inddexs = colleciton.Indexes.List();
             List<IEnumerable<BsonDocument>> docIndexs = new List<IEnumerable<BsonDocument>>();
             while (inddexs.MoveNext())
@@ -246,7 +246,7 @@ namespace H6Game.Base
             return this.Database.ListCollections(options).ToEnumerable().Any();
         }
 
-        private IMongoCollection<TDoc> GetMongoCollection<TDoc>(string name, MongoCollectionSettings settings = null)
+        private IMongoCollection<TDoc> GetMongoCollection(string name, MongoCollectionSettings settings = null)
         {
             if (!CollectionExists(name))
             {
@@ -255,7 +255,7 @@ namespace H6Game.Base
             return this.Database.GetCollection<TDoc>(name, settings);
         }
 
-        private List<UpdateDefinition<TDoc>> BuildUpdateDefinition<TDoc>(TDoc doc, string parent) where TDoc : BaseEntity
+        private List<UpdateDefinition<TDoc>> BuildUpdateDefinition(TDoc doc, string parent)
         {
             var updateList = new List<UpdateDefinition<TDoc>>();
             var properties = this.EntityComponent.GetPropertys<TDoc>();
@@ -284,7 +284,7 @@ namespace H6Game.Base
                         {
                             if (item.GetType().IsClass || item.GetType().IsInterface)
                             {
-                                updateList.AddRange(BuildUpdateDefinition<TDoc>(doc, string.Format("{0}.{1}", key, i)));
+                                updateList.AddRange(BuildUpdateDefinition(doc, string.Format("{0}.{1}", key, i)));
                             }
                             else
                             {
@@ -315,7 +315,7 @@ namespace H6Game.Base
             return updateList;
         }
 
-        private void CreateIndex<TDoc>(IMongoCollection<TDoc> col, string[] indexFields, CreateIndexOptions options = null) where TDoc : BaseEntity
+        private void CreateIndex(IMongoCollection<TDoc> col, string[] indexFields, CreateIndexOptions options = null)
         {
             if (indexFields == null)
             {
