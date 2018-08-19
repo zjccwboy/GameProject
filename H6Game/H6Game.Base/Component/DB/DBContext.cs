@@ -94,18 +94,18 @@ namespace H6Game.Base
 
         }
 
-        public void Insert(TEntity doc, InsertOneOptions options = null)
+        public void Insert(TEntity entity, InsertOneOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            colleciton.InsertOne(doc, options);
+            colleciton.InsertOne(entity, options);
         }
 
-        public Task InsertAsync(TEntity doc, InsertOneOptions options = null)
+        public Task InsertAsync(TEntity entity, InsertOneOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            return colleciton.InsertOneAsync(doc, options);
+            return colleciton.InsertOneAsync(entity, options);
         }
 
 
@@ -123,19 +123,19 @@ namespace H6Game.Base
             return colleciton.InsertManyAsync(docs, options);
         }
 
-        public void Update(TEntity doc, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public void Update(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(doc, null);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null);
             colleciton.UpdateOne(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
-        public Task UpdateAsync(TEntity doc, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(doc, null);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null);
             return colleciton.UpdateOneAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
@@ -153,19 +153,19 @@ namespace H6Game.Base
             return colleciton.UpdateOneAsync(filter, updateFields, options);
         }
 
-        public void UpdateMany(TEntity doc, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(doc, null);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null);
             colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
-        public Task UpdateManyAsync(TEntity doc, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(doc, null);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null);
             return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
@@ -255,7 +255,7 @@ namespace H6Game.Base
             return this.Database.GetCollection<TEntity>(name, settings);
         }
 
-        private List<UpdateDefinition<TEntity>> BuildUpdateDefinition(TEntity doc, string parent)
+        private List<UpdateDefinition<TEntity>> BuildUpdateDefinition(TEntity entity, string parent)
         {
             var updateList = new List<UpdateDefinition<TEntity>>();
             var properties = this.EntityComponent.GetPropertys<TEntity>();
@@ -273,18 +273,18 @@ namespace H6Game.Base
                     continue;
 
                 //非空的复杂类型
-                if ((property.PropertyType.IsClass || property.PropertyType.IsInterface) && property.PropertyType != typeof(string) && property.GetValue(doc) != null)
+                if ((property.PropertyType.IsClass || property.PropertyType.IsInterface) && property.PropertyType != typeof(string) && property.GetValue(entity) != null)
                 {
                     if (typeof(IList).IsAssignableFrom(property.PropertyType))
                     {
                         #region 集合类型
                         int i = 0;
-                        var subObj = property.GetValue(doc);
+                        var subObj = property.GetValue(entity);
                         foreach (var item in subObj as IList)
                         {
                             if (item.GetType().IsClass || item.GetType().IsInterface)
                             {
-                                updateList.AddRange(BuildUpdateDefinition(doc, string.Format("{0}.{1}", key, i)));
+                                updateList.AddRange(BuildUpdateDefinition(entity, string.Format("{0}.{1}", key, i)));
                             }
                             else
                             {
@@ -298,7 +298,7 @@ namespace H6Game.Base
                     {
                         #region 实体类型
                         //复杂类型，导航属性，类对象和集合对象 
-                        var subObj = property.GetValue(doc);
+                        var subObj = property.GetValue(entity);
                         foreach (var sub in property.PropertyType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
                         {
                             updateList.Add(Builders<TEntity>.Update.Set(string.Format("{0}.{1}", key, sub.Name), sub.GetValue(subObj)));
@@ -308,7 +308,7 @@ namespace H6Game.Base
                 }
                 else //简单类型
                 {
-                    updateList.Add(Builders<TEntity>.Update.Set(key, property.GetValue(doc)));
+                    updateList.Add(Builders<TEntity>.Update.Set(key, property.GetValue(entity)));
                 }
             }
 

@@ -19,15 +19,15 @@ namespace H6Game.Entitys
         public string Id { get; set; }
 
         private static Dictionary<Type, BaseEntity> Entitys { get; } = new Dictionary<Type, BaseEntity>();
-        public static Entity Create<Entity>() where Entity : BaseEntity,new()
+        public static TEntity Create<TEntity>() where TEntity : BaseEntity,new()
         {
-            var type = typeof(Entity);
+            var type = typeof(TEntity);
             if(!Entitys.TryGetValue(type, out BaseEntity value))
             {
-                value = new Entity();
+                value = new TEntity();
                 Entitys[type] = value;
             }
-            return (Entity)value;
+            return (TEntity)value;
         }
     }
 }
