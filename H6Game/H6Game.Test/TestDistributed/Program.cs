@@ -8,6 +8,8 @@ namespace TestDistributed
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<InNetComponent>();
+            Game.Scene.AddComponent<ActorComponent>();
+            Game.Scene.AddComponent<MongoDBComponent>();
             Game.Scene.AddComponent<TestSender>();
             while (true)
             {
