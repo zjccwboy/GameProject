@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public static class HandlerMSGFactory
+    public static class HandlerMsgPool
     {
         private static Dictionary<int, HashSet<IHandler>> HandlerDictionary { get; } = new Dictionary<int, HashSet<IHandler>>();
         private static Dictionary<int, HashSet<IActorHandler>> ActorHandlerDictionary { get; } = new Dictionary<int, HashSet<IActorHandler>>();
@@ -14,10 +14,15 @@ namespace H6Game.Base
         private static Dictionary<Type, HashSet<int>> TypeCmdDictionary { get; } = new Dictionary<Type, HashSet<int>>();
         private static Dictionary<Type, int> MsgCodeDictionary { get; } = new Dictionary<Type, int>();
 
-        static HandlerMSGFactory()
+        static HandlerMsgPool()
         {
             LoadHandler();
             LoadMessageType();
+        }
+
+        public static void Load()
+        {
+
         }
 
         private static void LoadMessageType()

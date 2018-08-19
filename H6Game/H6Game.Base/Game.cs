@@ -11,6 +11,9 @@ namespace H6Game.Base
 
         static Game()
         {
+            ComponentPool.Load();
+            HandlerMsgPool.Load();
+
             Scene = ComponentPool.Fetch<SceneComponent>();
             Event = ComponentPool.Fetch<EventComponent>();
             Scene.AddComponent<NetConfigComponent>();

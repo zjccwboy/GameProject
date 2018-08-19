@@ -37,8 +37,10 @@ namespace H6Game.Base
             if (eventType == EventType.None)
                 return false;
 
-            if (!base.AddComponent(component))
+            if(Disposes.Contains(component) || Updates.Contains(component))
+            {
                 return false;
+            }
 
             HandlerEvent(component, eventType & EventType.Awake);
             HandlerEvent(component, eventType & EventType.Start);

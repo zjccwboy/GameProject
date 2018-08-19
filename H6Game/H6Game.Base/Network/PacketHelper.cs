@@ -186,7 +186,7 @@ public static class PacketHelper
 
     private static int GetTypeCode(Type type)
     {
-        return HandlerMSGFactory.GetTypeCode(type);
+        return HandlerMsgPool.GetTypeCode(type);
     }
 
     public static T Read<T>(this Packet packet)

@@ -26,7 +26,7 @@ namespace H6Game.Base
             {
                 if(packet.ActorId > 0)
                 {
-                    var handlers = HandlerMSGFactory.GetActorHandler(packet.MessageId);
+                    var handlers = HandlerMsgPool.GetActorHandler(packet.MessageId);
                     foreach(var handler in handlers)
                     {
                         handler.Receive(this.Network);
@@ -35,7 +35,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    var handlers = HandlerMSGFactory.GetHandler(packet.MessageId);
+                    var handlers = HandlerMsgPool.GetHandler(packet.MessageId);
                     foreach (var handler in handlers)
                     {
                         handler.Receive(this.Network);

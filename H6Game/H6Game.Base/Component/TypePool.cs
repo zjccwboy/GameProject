@@ -15,8 +15,13 @@ namespace H6Game.Base
 
         static TypePool()
         {
-            Load();
+            LoadType();
             LoadEvent();
+        }
+
+        public static void Load()
+        {
+
         }
 
         public static HashSet<Type> GetTypes<T>()
@@ -52,7 +57,7 @@ namespace H6Game.Base
         /// <summary>
         /// 加载类型数据在内存中
         /// </summary>
-        private static void Load()
+        private static void LoadType()
         {
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
 

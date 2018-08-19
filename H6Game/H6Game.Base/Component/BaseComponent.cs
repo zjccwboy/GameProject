@@ -19,9 +19,10 @@ namespace H6Game.Base
         {
             var type = typeof(T);
             var isSingle = ComponentPool.IsSingleType(type);
+            var addResult = false;
             if (isSingle)
             {
-                return SingleDictionary.TryAdd(type, component);
+                addResult = SingleDictionary.TryAdd(type, component);
             }
             else
             {
@@ -31,8 +32,15 @@ namespace H6Game.Base
                     components = new HashSet<BaseComponent>();
                     TypeComponent[type] = components;
                 }
-                return components.Add(component);
+                addResult = components.Add(component);
             }
+
+            if (addResult)
+            {
+                Game.Event.AddComponent(component);
+            }
+
+            return addResult;
         }
 
         /// <summary>
@@ -41,24 +49,8 @@ namespace H6Game.Base
         /// <typeparam name="T"></typeparam>
         public virtual T AddComponent<T>() where T : BaseComponent
         {
-            var type = typeof(T);
-            var isSingle = ComponentPool.IsSingleType(type);
             var component = ComponentPool.Fetch<T>();
-            if (isSingle)
-            {
-                SingleDictionary[type] = component;
-            }
-            else
-            {
-                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
-                {
-                    components = new HashSet<BaseComponent>();
-                    TypeComponent[type] = components;
-                }
-                components.Add(component);
-            }
-
+            this.AddComponent(component);
             return component;
         }
 
@@ -136,7 +128,8 @@ namespace H6Game.Base
                 {
                     if (TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
                     {
-                        return hashVal.Remove(component);
+                        if (hashVal.Remove(component))
+                            Game.Scene.Remove(component);
                     }
                 }
             }

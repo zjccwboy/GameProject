@@ -13,6 +13,8 @@ namespace H6Game.Base
         private static HashSet<Type> SingleTypes { get; } = new HashSet<Type>();
         static ComponentPool()
         {
+            TypePool.Load();
+
             var types = ComponentFactory.CmponentTypes;
             foreach(var type in types)
             {
@@ -29,6 +31,11 @@ namespace H6Game.Base
                     componentTypeDictionary.TryAdd(type, queue);
                 }
             }
+        }
+
+        public static void Load()
+        {
+
         }
 
         public static bool IsSingleType(Type type)
