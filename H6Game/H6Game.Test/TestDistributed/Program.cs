@@ -29,7 +29,7 @@ namespace TestDistributed
                 FUpdateTime = DateTime.UtcNow,
             };
             Game.Scene.GetComponent<MongoDBComponent>().GetComponent<AccountRpositoryComponent>().DBContext.Insert(accountInfo);
-            Game.Scene.GetComponent<ActorComponent>().AddComponent<PlayerComponent>().LoadAccountInfo(accountInfo.Id);
+            Game.Scene.GetComponent<ActorComponent>().AddComponent<PlayerComponent>().LoadAccountById(accountInfo.Id);
 
             while (true)
             {

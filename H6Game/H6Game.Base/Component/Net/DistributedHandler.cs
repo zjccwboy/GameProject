@@ -8,7 +8,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, NetEndPointMessage message)
         {
-            this.Log(LogLevel.Debug, "Handler", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd} 内容:{message.ToJson()}");
+            //this.Log(LogLevel.Debug, "Handler", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd} 内容:{message.ToJson()}");
 
             var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
 
@@ -34,7 +34,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            this.Log(LogLevel.Debug, "OutNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
+            //this.Log(LogLevel.Debug, "OutNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
             var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
         }
@@ -45,7 +45,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            this.Log(LogLevel.Debug, "InNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
+            //this.Log(LogLevel.Debug, "InNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
 
             var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
             network.RpcCallBack(inNetComponent.InNetMessage);

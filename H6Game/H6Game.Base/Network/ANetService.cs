@@ -132,7 +132,7 @@ namespace H6Game.Base
                     this.ClientChannel.LastSendTime = TimeUitls.Now();
                     this.ClientChannel.SendParser.Packet.IsHeartbeat = true;
                     this.ClientChannel.SendParser.Packet.WriteTo(null);
-                    this.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
+                    //this.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
                 }
             }
             else if (this.ServiceType == NetServiceType.Server)
