@@ -11,7 +11,7 @@ namespace H6Game.Entitys
         /// <summary>
         /// 账户类型
         /// </summary>
-        [BsonElement("T")]
+        [BsonElement("AT")]
         public AccountType FType { get; set; }
 
         /// <summary>
@@ -25,6 +25,18 @@ namespace H6Game.Entitys
         /// </summary>
         [BsonElement("OId")]
         public string FWXOpenId { get; set; }
+
+        /// <summary>
+        /// 微信头像地址
+        /// </summary>
+        [BsonElement("HI")]
+        public string FWXHeadImgurl { get; set; }
+
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        [BsonElement("NN")]
+        public string FNikeNmae { get; set; }
 
         /// <summary>
         /// 手机号码
@@ -55,6 +67,18 @@ namespace H6Game.Entitys
         /// </summary>
         [BsonElement("CC")]
         public decimal FCumulativeConsumption { get; set; }
+
+        /// <summary>
+        /// 一周投注金额
+        /// </summary>
+        [BsonElement("BOW")]
+        public decimal FBetOneWeek { get; set; }
+
+        /// <summary>
+        /// 投注总金额
+        /// </summary>
+        [BsonElement("BT")]
+        public decimal FBetTotal { get; set; }
 
         /// <summary>
         /// 创建时间

@@ -1,7 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Entitys
 {
@@ -14,26 +13,15 @@ namespace H6Game.Entitys
         public RoomType FRoomType { get; set; }
 
         /// <summary>
-        /// 游戏Id
+        /// 房间游戏类型
         /// </summary>
-        [BsonElement("GId")]
-        public string FGameId { get; set; }
-
-        /// <summary>
-        /// 最多游戏圈数
-        /// </summary>
-        public int FMaxGame { get; set; }
+        [BsonElement("GT")]
+        public GameType FGameType { get; set; }
 
         /// <summary>
         /// 创建时间
         /// </summary>
         [BsonElement("CT")]
         public DateTime FCreateTime { get; set; }
-
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-        [BsonElement("UT")]
-        public DateTime FUpdateTime { get; set; }
     }
 }
