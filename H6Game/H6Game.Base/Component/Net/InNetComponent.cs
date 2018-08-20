@@ -236,10 +236,10 @@ namespace H6Game.Base
                 {
                     InConnectNetworks.TryAdd(c.Id, c.Dispatcher.Network);
 
-                    var callResult = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
+                    var callResult = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>((int)MessageCMD.GetOutServerCmd);
                     if (callResult.Result)
                     {
-                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{callResult.Content.ToJson()}");
+                        this.Log(LogLevel.Debug, "Connecting", $"收到:{c.RemoteEndPoint} 消息CMD:{(int)MessageCMD.GetOutServerCmd} :{callResult.Content.ToJson()}");
                         this.OutNetMapManager.Add(c, callResult.Content);
                     }
 
