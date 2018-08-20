@@ -25,12 +25,6 @@ namespace H6Game.Base
         {
             try
             {
-                if (packet.MessageId == (int)MessageCMD.GetInServerCmd)
-                   Console.WriteLine($"MessageID:{packet.MessageId}");
-
-                //if (packet.MsgTypeCode == (int)MessageType.ActorMessage)
-                //    Console.WriteLine($"MsgTypeCode:{packet.MsgTypeCode}");
-
                 if (packet.ActorId > 0)
                 {
                     var handlers = HandlerMsgPool.GetActorHandler(packet.MessageId);

@@ -24,9 +24,8 @@ namespace TestDistributed
 
         public override void Update()
         {
-            Broadcast();
-            //for (var i=0;i< 1;i++)
-            //    Broadcast();
+            for (var i = 0; i < 50; i++)
+                Broadcast();
         }
 
         private void Broadcast()

@@ -222,21 +222,25 @@ namespace H6Game.Base
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
+
                 if (this.DisconnectSessions.TryRemove(hashCode, out Session oldSession))
                     this.InConnectSessions[hashCode] = oldSession;
 
                 var localMessage = this.Config.GetInMessage();
                 this.InNetMapManager.Add(c, message);
 
+                //连接成功后把本地监听端口发送给远程进程
+                c.Dispatcher.Network.Send(localMessage, (int)MessageCMD.AddInServerCmd);
+
                 if (message != this.Config.GetCenterMessage())
                 {
                     InConnectNetworks.TryAdd(c.Id, c.Dispatcher.Network);
 
-                    var tuple = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
-                    if (tuple.Result)
+                    var callResult = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>( (int)MessageCMD.GetOutServerCmd);
+                    if (callResult.Result)
                     {
-                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{tuple.Content.ToJson()}");
-                        this.OutNetMapManager.Add(c, tuple.Content);
+                        this.Log(LogLevel.Debug, "Connecting", $"收到外网监听信息:{callResult.Content.ToJson()}");
+                        this.OutNetMapManager.Add(c, callResult.Content);
                     }
 
                     this.OnConnected?.Invoke(c);
@@ -244,9 +248,8 @@ namespace H6Game.Base
                 else
                 {
                     this.Log(LogLevel.Info, "Connecting", "连接中心服务成功.");
-                    SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
+                    //SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
                 }
-
             };
 
             //注册连接断开回调
