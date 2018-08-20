@@ -44,7 +44,7 @@ namespace TestDistributed
             {
                 ActorId = 10001,
                 Message = "Message",
-                LongData = 29999,
+                LongData = 29999, 
                 ULongData = 30000011,
                 ByteData = 200,
                 SByteData = 80,

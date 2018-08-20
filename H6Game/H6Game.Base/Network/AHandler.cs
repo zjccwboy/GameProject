@@ -8,18 +8,10 @@ namespace H6Game.Base
     /// <typeparam name="Message"></typeparam>
     public abstract class AHandler<Message> : IHandler<Message>
     {
-        private Type MsgType;
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public Type MessageType
-        {
-            get
-            {
-                MsgType = MsgType ?? typeof(Message);
-                return MsgType;
-            }
-        }
+        public Type MessageType { get; } = typeof(Message);
 
         private int typeCode;
         /// <summary>

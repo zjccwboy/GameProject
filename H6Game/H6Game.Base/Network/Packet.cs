@@ -50,7 +50,7 @@ namespace H6Game.Base
         public int ActorId;
 
         /// <summary>
-        /// 消息类型哈希码
+        /// 消息类型指定代码
         /// </summary>
         public int MsgTypeCode;
 
