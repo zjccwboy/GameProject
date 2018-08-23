@@ -63,16 +63,12 @@ namespace H6Game.Base
             {
                 var now = TimeUitls.Now();
                 if (now - this.LastConnectTime < ANetChannel.ReConnectInterval)
-                {
                     return;
-                }
 
                 this.LastConnectTime = now;
 
                 if (Connected)
-                {
                     return;
-                }
 
                 this.SendParser = this.SendParser ?? new PacketParser(1400);
                 ConnectSender.SendSYN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint);
@@ -107,15 +103,11 @@ namespace H6Game.Base
             {
                 int n = Kcp.PeekSize();
                 if (n == 0)
-                {
                     return;
-                }
 
                 int count = this.Kcp.Recv(CacheBytes, 0, CacheBytes.Length);
                 if (count <= 0)
-                {
                     return;
-                }
 
                 this.RecvParser = this.RecvParser ?? new PacketParser(1400);
                 RecvParser.WriteBuffer(CacheBytes, 0, count);
@@ -133,13 +125,9 @@ namespace H6Game.Base
                             if (packet.IsRpc)
                             {
                                 if (RpcDictionarys.TryRemove(packet.RpcId, out Action<Packet> action))
-                                {
                                     action(packet);
-                                }
                                 else
-                                {
                                     OnReceive?.Invoke(packet);
-                                }
                             }
                             else
                             {

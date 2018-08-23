@@ -27,6 +27,7 @@ namespace H6Game.Entitys
                 value = new TEntity();
                 Entitys[type] = value;
             }
+
             return (TEntity)value;
         }
     }

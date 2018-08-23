@@ -20,21 +20,16 @@ public static class PacketHelper
         packet.HeadBytes[4] = 0;
         //写标志位
         if (packet.IsHeartbeat)
-        {
             packet.HeadBytes[4] |= 1;
-        }
+
         if (packet.IsCompress)
-        {
             packet.HeadBytes[4] |= 1 << 1;
-        }
+
         if (packet.IsEncrypt)
-        {
             packet.HeadBytes[4] |= 1 << 2;
-        }
+
         if (packet.KcpProtocal > 0)
-        {
             packet.HeadBytes[4] |= (byte)(packet.KcpProtocal << 4);
-        }
 
         //写MessageId
         packet.MessageId.WriteTo(packet.HeadBytes, 5);

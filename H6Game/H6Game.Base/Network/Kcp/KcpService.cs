@@ -86,9 +86,7 @@ namespace H6Game.Base
             if (this.ServiceType == NetServiceType.Client)
             {
                 if(ClientChannel != null)
-                {
                     this.ClientChannel.StartConnecting();
-                }
             }
 
             foreach (var channel in this.Channels.Values)
