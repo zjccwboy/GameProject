@@ -78,6 +78,7 @@ class Program
     {
         DebugInfo db = new DebugInfo();
         Console.WriteLine(db.Test1());
+        Console.Read();
     }
 
 

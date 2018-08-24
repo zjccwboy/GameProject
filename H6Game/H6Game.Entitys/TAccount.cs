@@ -39,6 +39,12 @@ namespace H6Game.Entitys
         public string FNikeNmae { get; set; }
 
         /// <summary>
+        /// 邮箱地址
+        /// </summary>
+        [BsonElement("EM")]
+        public string FEmail { get; set; }
+
+        /// <summary>
         /// 手机号码
         /// </summary>
         [BsonElement("PN")]

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Account.Model
+namespace H6Game.Account.Model.Component
 {
-    public class WeChatLogin
+    public class AlipayLoginComponent : BaseComponent
     {
 
     }

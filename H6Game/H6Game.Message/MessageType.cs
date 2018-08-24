@@ -33,6 +33,13 @@ namespace H6Game.Message
         SyncActorInfoEntity,
         #endregion
 
+        #region Account 201 - 500
+        LoginRequestMessage,
+        LoginResponeMessage,
+        LogoutRequestMessage,
+
+        #endregion
+
         #region 测试类型 10000001-20000000
         TestDistributedTestMessage = 10000001,
         TestGServerTestMessage,

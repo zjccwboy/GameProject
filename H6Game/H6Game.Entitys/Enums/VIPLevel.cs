@@ -4,7 +4,7 @@ namespace H6Game.Entitys
 {
     public enum VIPLevel
     {
-        None,
+        Default,
         VIP1,
         VIP2,
         VIP3,

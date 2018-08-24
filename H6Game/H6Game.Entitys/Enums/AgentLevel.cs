@@ -4,7 +4,7 @@ namespace H6Game.Entitys
 {
     public enum AgentLevel
     {
-        None,
+        Default,
         Level1,
         Level2,
         Level3,

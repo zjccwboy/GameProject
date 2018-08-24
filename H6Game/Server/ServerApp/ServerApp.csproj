@@ -37,6 +37,12 @@
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\obj\Debug\MongoDB.Driver.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core">
+      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\obj\Debug\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
