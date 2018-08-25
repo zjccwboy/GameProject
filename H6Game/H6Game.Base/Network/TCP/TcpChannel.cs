@@ -190,8 +190,7 @@ namespace H6Game.Base
                 if (NetSocket == null)
                     return;
 
-                //OnDisConnect?.Invoke(this);
-                ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, this.OutArgs);
+                OnDisConnect?.Invoke(this);
             }
             catch { }
 

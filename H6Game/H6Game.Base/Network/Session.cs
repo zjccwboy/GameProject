@@ -1247,11 +1247,7 @@ namespace H6Game.Base
 
         public void Dispose()
         {
-            var channels = this.NService.Channels.Values.ToList();
-            foreach(var channel in channels)
-            {
-                channel.DisConnect();
-            }
+            this.NService.Dispose();
             this.NService = null;
         }
     }
