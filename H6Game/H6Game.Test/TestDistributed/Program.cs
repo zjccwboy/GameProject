@@ -18,7 +18,7 @@ namespace TestDistributed
             var accountInfo = new TAccount
             {
                 FType = AccountType.Default,
-                FVIPLevel = VIPLevel.None,
+                FVIPLevel = VIPLevel.Default,
                 FWXOpenId = string.Empty,
                 FPhoneNumber = "13800138000",
                 FPassword = "abcdefg",

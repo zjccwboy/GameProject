@@ -31,11 +31,12 @@ namespace H6Game.Base
             foreach(var type in msgTypes)
             {
                 var attribute = type.GetCustomAttribute<MessageTypeAttribute>();
-                if (attribute.TypeCode == (int)MessageType.None)
-                    continue;
 
                 if (attribute == null)
                     throw new Exception($"类型:{type}必须有MessageTypeAttribute特性器指定消息类型.");
+
+                if (attribute.TypeCode == (int)MessageType.Ignore)
+                    continue;
 
                 MsgCodeDictionary[type] = attribute.TypeCode;
             }
@@ -78,7 +79,7 @@ namespace H6Game.Base
                 if (type.IsAbstract)
                     continue;
 
-                if (!attributes.Any())
+                if (attributes == null || !attributes.Any())
                     throw new Exception($"类型:{type}必须有HandlerCMDAttribute特性器指定订阅消息类型.");
 
                 var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c => c).Distinct().ToList();

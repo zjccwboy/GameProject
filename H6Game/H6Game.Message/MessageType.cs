@@ -6,7 +6,7 @@ namespace H6Game.Message
 {
     public enum MessageType
     {
-        None,
+        Ignore,
 
         #region 值类型 1-100
         String,

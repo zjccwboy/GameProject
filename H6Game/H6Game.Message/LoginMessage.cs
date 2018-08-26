@@ -41,6 +41,7 @@ namespace H6Game.Message
 
     }
 
+    [MessageType(MessageType.Ignore)]
     public class LoginMessage : IMessage
     {
         [ProtoMember(1)]

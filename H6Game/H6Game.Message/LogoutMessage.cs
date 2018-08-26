@@ -16,6 +16,7 @@ namespace H6Game.Message
 
     }
 
+    [MessageType(MessageType.Ignore)]
     public class LogoutMessage : IMessage
     {
 
