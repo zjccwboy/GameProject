@@ -20,10 +20,10 @@ namespace H6Game.Base
         {
             var type = component.GetType();
             var isSingle = ComponentPool.IsSingleType(type);
-            var addResult = false;
+            var isNew = false;
             if (isSingle)
             {
-                addResult = SingleDictionary.TryAdd(type, component);
+                isNew = SingleDictionary.TryAdd(type, component);
             }
             else
             {
@@ -33,15 +33,15 @@ namespace H6Game.Base
                     components = new HashSet<BaseComponent>();
                     TypeComponent[type] = components;
                 }
-                addResult = components.Add(component);
+                isNew = components.Add(component);
             }
 
-            if (addResult)
+            if (isNew)
             {
                 Game.Event.AddComponent(component);
             }
 
-            return addResult;
+            return isNew;
         }
 
         /// <summary>

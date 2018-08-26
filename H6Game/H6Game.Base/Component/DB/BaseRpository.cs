@@ -1,5 +1,4 @@
-﻿
-using H6Game.Entitys;
+﻿using H6Game.Entitys;
 using MongoDB.Driver;
 using System.Linq;
 
