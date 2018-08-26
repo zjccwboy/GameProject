@@ -11,7 +11,6 @@ namespace TestDistributed
         {
             var netComponent = Game.Scene.AddComponent<InNetComponent>();
             var actorComponent = Game.Scene.AddComponent<ActorComponent>();
-            var dbComponent = Game.Scene.AddComponent<MongoDBComponent>();
             var testComponent = Game.Scene.AddComponent<TestSender>();
 
 
@@ -28,8 +27,8 @@ namespace TestDistributed
                 FCreateTime = DateTime.UtcNow,
                 FUpdateTime = DateTime.UtcNow,
             };
-            Game.Scene.GetComponent<MongoDBComponent>().GetComponent<AccountRpositoryComponent>().DBContext.Insert(accountInfo);
-            Game.Scene.GetComponent<ActorComponent>().AddComponent<PlayerComponent>().LoadAccountById(accountInfo.Id);
+            Game.Scene.GetComponent<AccountRpositoryComponent>().DBContext.Insert(accountInfo);
+            Game.Scene.AddComponent<PlayerComponent>().LoadAccountById(accountInfo.Id);
 
             while (true)
             {

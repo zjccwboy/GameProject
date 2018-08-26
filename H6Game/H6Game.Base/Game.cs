@@ -6,17 +6,20 @@ namespace H6Game.Base
 {
     public class Game
     {
-        public static SceneComponent Scene { get; }
-        public static EventComponent Event { get;}
+        public static SceneManager Scene { get; }
+        public static EventManager Event { get;}
 
         static Game()
         {
             ComponentPool.Load();
             HandlerMsgPool.Load();
 
-            Scene = ComponentPool.Fetch<SceneComponent>();
-            Event = ComponentPool.Fetch<EventComponent>();
+            Scene = new SceneManager();
+            Event = new EventManager();
+
             Scene.AddComponent<NetConfigComponent>();
+
+            MongoDBManager.Instance.Init();
         }
 
         public static void Update()

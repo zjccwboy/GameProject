@@ -23,17 +23,6 @@ namespace H6Game.Base
 
         public IEnumerable<ActorInfoEntity> LocalEntitys { get { return LocalEntitiesDictionary.Values; } }
 
-        public void AddPlayer(PlayerComponent player)
-        {
-            this.AddComponent(player);
-        }
-
-        public PlayerComponent AddPlayer()
-        {
-            return this.AddComponent<PlayerComponent>();
-        }
-
-
         public void AddLocalEntity(ActorInfoEntity entity)
         {
             if (LocalEntitiesDictionary.TryAdd(entity.Id, entity))
