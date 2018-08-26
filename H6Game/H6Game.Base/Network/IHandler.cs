@@ -16,4 +16,14 @@ namespace H6Game.Base
         Type MessageType { get; }
         void Receive(Network network);
     }
+
+    public interface IActorHandler<Message> : IActorHandler
+    {
+
+    }
+
+    public interface IActorHandler : IHandler
+    {
+
+    }
 }
