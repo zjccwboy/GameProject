@@ -8,20 +8,19 @@ namespace H6Game.Message
 {
     [MessageType(MessageType.LoginResponeMessage)]
     [ProtoContract]
-    public class LoginResponeMessage : IMessage
+    public class LoginResponeMessage : LoginMessage
     {
-        [ProtoMember(1)]
+        [ProtoMember(2)]
         public LoginResutlCode Result { get; set; }
 
+        [ProtoMember(3)]
+        public string SessionKey { get; set; }
     }
 
 
     [MessageType(MessageType.LoginRequestMessage)]
-    public class LoginRequestMessage : IMessage
+    public class LoginRequestMessage : LoginMessage
     {
-        [ProtoMember(1)]
-        public LoginType LoginType { get; set; }
-
         [ProtoMember(2)]
         public string OpenId { get; set; }
 
@@ -40,6 +39,11 @@ namespace H6Game.Message
         [ProtoMember(7)]
         public string Password { get; set; }
 
+    }
 
+    public class LoginMessage : IMessage
+    {
+        [ProtoMember(1)]
+        public LoginType LoginType { get; set; }
     }
 }

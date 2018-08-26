@@ -37,7 +37,7 @@ namespace H6Game.Message
         LoginRequestMessage,
         LoginResponeMessage,
         LogoutRequestMessage,
-
+        LogoutResponeMessage,
         #endregion
 
         #region 测试类型 10000001-20000000
