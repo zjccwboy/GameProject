@@ -15,7 +15,6 @@ namespace H6Game.Base
             //    $"ActorId:{network.RecvPacket.ActorId} " +
             //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
-            var component = Game.Scene.GetComponent<ActorComponent>();
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             switch (cmd)
             {
@@ -26,11 +25,11 @@ namespace H6Game.Base
                         Network = network,
                         Id = message.ObjectId,
                     };
-                    component.AddNetEntity(entity, network.Channel.Id);
+                    Game.Actor.AddRemoteActor(entity);
                     break;
 
                 case MessageCMD.RemoveActorCmd:
-                    component.RemoveFromNet(message.ObjectId, network.Channel.Id);
+                    Game.Actor.RemoveRemoteActor(message.ActorType, message.ObjectId, network.Channel.Id);
                     break;
             }
         }
@@ -48,21 +47,25 @@ namespace H6Game.Base
             //    $"ActorId:{network.RecvPacket.ActorId} " +
             //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
-            var component = Game.Scene.GetComponent<ActorComponent>();
-            var entites = component.LocalEntitys;
-            var count = 0;
-            foreach (var entity in entites)
+            var components = Game.Scene.GetComponents<ActorComponent>();
+            foreach(var component in components)
             {
-                var syncMessage = new ActorSyncMessage
+                var actorComponent = component as ActorComponent;
+                var entites = actorComponent.LocalEntitys;
+                var count = 0;
+                foreach (var entity in entites)
                 {
-                    ObjectId = entity.Id,
-                };
-                network.RpcCallBack(syncMessage);
-                count++;
-                if (count >= 100)
-                {
-                    count = 0;
-                    network.Session.Update();
+                    var syncMessage = new ActorSyncMessage
+                    {
+                        ObjectId = entity.Id,
+                    };
+                    network.RpcCallBack(syncMessage);
+                    count++;
+                    if (count >= 100)
+                    {
+                        count = 0;
+                        network.Session.Update();
+                    }
                 }
             }
         }
@@ -80,14 +83,13 @@ namespace H6Game.Base
             //    $"ActorId:{network.RecvPacket.ActorId} " +
             //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
-            var component = Game.Scene.GetComponent<ActorComponent>();
             var entity = new ActorInfoEntity
             {
                 ActorId = network.RecvPacket.ActorId,
                 Network = network,
                 Id = message.ObjectId,
             };
-            component.AddNetEntity(entity, network.Channel.Id);
+            Game.Actor.AddRemoteActor(entity);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using H6Game.Message;
+﻿using H6Game.Entitys;
+using H6Game.Message;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace H6Game.Base
 {
-    [SingletCase]
     [Event(EventType.Awake)]
     public class ActorComponent : BaseComponent
     {
@@ -13,6 +13,8 @@ namespace H6Game.Base
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
+
+        public ActorType ActorType { get; set; }
 
         public override void Awake()
         {
@@ -26,19 +28,19 @@ namespace H6Game.Base
         public void AddLocalEntity(ActorInfoEntity entity)
         {
             if (LocalEntitiesDictionary.TryAdd(entity.Id, entity))
-                NotifyAllServerAdd(entity);
+                NotifyAllServerWithAdd(entity);
         }
 
-        public void AddNetEntity(ActorInfoEntity entity, int channelId)
+        public void AddNetEntity(ActorInfoEntity entity)
         {
             var entityId = entity.GetEntityId();
             EntitiesDictionary.AddOrUpdate(entityId, entity, (k, v) => { return entity; });
             ObjectIdEntitiesDictionary.AddOrUpdate(entity.Id, entity, (k, v) => { return entity; });
 
-            if(!NetChannelIdEntitys.TryGetValue(channelId, out HashSet<ActorInfoEntity> hashVal))
+            if(!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out HashSet<ActorInfoEntity> hashVal))
             {
                 hashVal = new HashSet<ActorInfoEntity>();
-                NetChannelIdEntitys[channelId] = hashVal;
+                NetChannelIdEntitys[entity.Network.Channel.Id] = hashVal;
             }
         }
 
@@ -54,7 +56,7 @@ namespace H6Game.Base
         public void RemoveFromLocal(string objectId)
         {
             if (LocalEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
-                NotifyAllServerRemove(actorInfo);
+                NotifyAllServerWithRemove(actorInfo);
         }
 
         public bool TryGetNetEntity(long entityId, out ActorInfoEntity entity)
@@ -89,7 +91,7 @@ namespace H6Game.Base
             }
         }
 
-        private void NotifyAllServerAdd(ActorInfoEntity entity)
+        private void NotifyAllServerWithAdd(ActorInfoEntity entity)
         {
             var message = new ActorSyncMessage
             {
@@ -98,7 +100,7 @@ namespace H6Game.Base
             InNetComponent.InConnNets.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
         }
 
-        private void NotifyAllServerRemove(ActorInfoEntity entity)
+        private void NotifyAllServerWithRemove(ActorInfoEntity entity)
         {
             var message = new ActorSyncMessage
             {

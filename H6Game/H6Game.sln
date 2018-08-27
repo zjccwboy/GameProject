@@ -130,6 +130,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMogodb", "H6Game.Test\T
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Rpository", "H6Game.Rpository\H6Game.Rpository.csproj", "{7D5262A8-CC7E-458B-BE9E-8C9F14868463}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +221,10 @@ Global
 		{0361CCBA-F333-4FAF-B9AB-0589C600D485}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0361CCBA-F333-4FAF-B9AB-0589C600D485}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0361CCBA-F333-4FAF-B9AB-0589C600D485}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D5262A8-CC7E-458B-BE9E-8C9F14868463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D5262A8-CC7E-458B-BE9E-8C9F14868463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D5262A8-CC7E-458B-BE9E-8C9F14868463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D5262A8-CC7E-458B-BE9E-8C9F14868463}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

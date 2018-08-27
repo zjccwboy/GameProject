@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using H6Game.Entitys;
+using System;
 
 namespace H6Game.Base
 {
@@ -8,6 +7,9 @@ namespace H6Game.Base
     {
         public static SceneManager Scene { get; }
         public static EventManager Event { get;}
+        public static ActorManager Actor { get; }
+
+        private static bool IsInitialized;
 
         static Game()
         {
@@ -16,10 +18,26 @@ namespace H6Game.Base
 
             Scene = new SceneManager();
             Event = new EventManager();
+            Actor = new ActorManager();
 
             Scene.AddComponent<NetConfigComponent>();
+        }
 
+        public static void Init()
+        {
+            if (IsInitialized)
+                return;
+
+            IsInitialized = true;
+
+#if SERVER
             MongoDBManager.Instance.Init();
+            Game.Scene.AddComponent<InNetComponent>();
+            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
+            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
+            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
+            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Unit;
+#endif
         }
 
         public static void Update()

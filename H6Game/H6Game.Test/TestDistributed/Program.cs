@@ -9,10 +9,8 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
-            var netComponent = Game.Scene.AddComponent<InNetComponent>();
-            var actorComponent = Game.Scene.AddComponent<ActorComponent>();
+            Game.Init();
             var testComponent = Game.Scene.AddComponent<TestSender>();
-
 
             var accountInfo = new TAccount
             {

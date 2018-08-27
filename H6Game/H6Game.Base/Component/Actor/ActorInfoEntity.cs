@@ -12,6 +12,9 @@ namespace H6Game.Base
         [ProtoMember(3)]
         public Network Network { get; set; }
 
+        [ProtoMember(3)]
+        public ActorType ActorType { get; set; }
+
         public long GetEntityId()
         {
             var entityId = ActorId;

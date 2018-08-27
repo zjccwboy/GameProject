@@ -14,11 +14,11 @@ namespace H6Game.Base
             this.AccountInfo = await rpository.GetAccountById(objectId);
             if(this.AccountInfo != null)
             {
-                var actorComponent = Game.Scene.GetComponent<ActorComponent>();
-                actorComponent.AddLocalEntity(new ActorInfoEntity
+                Game.Actor.AddLocalAcotr(new ActorInfoEntity
                 {
                     ActorId = this.Id,
                     Id = this.AccountInfo.Id,
+                    ActorType = ActorType.Player,
                 });
             }
         }
@@ -29,11 +29,11 @@ namespace H6Game.Base
             this.AccountInfo = await rpository.GetAccountByOpenId(openId);
             if (this.AccountInfo != null)
             {
-                var actorComponent = Game.Scene.GetComponent<ActorComponent>();
-                actorComponent.AddLocalEntity(new ActorInfoEntity
+                Game.Actor.AddLocalAcotr(new ActorInfoEntity
                 {
                     ActorId = this.Id,
                     Id = this.AccountInfo.Id,
+                    ActorType = ActorType.Player,
                 });
             }
         }
@@ -44,11 +44,11 @@ namespace H6Game.Base
             this.AccountInfo = await rpository.GetAccountByPhoneNumber(phoneNumber);
             if (this.AccountInfo != null)
             {
-                var actorComponent = Game.Scene.GetComponent<ActorComponent>();
-                actorComponent.AddLocalEntity(new ActorInfoEntity
+                Game.Actor.AddLocalAcotr(new ActorInfoEntity
                 {
                     ActorId = this.Id,
                     Id = this.AccountInfo.Id,
+                    ActorType = ActorType.Player,
                 });
             }
         }
