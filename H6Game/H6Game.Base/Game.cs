@@ -36,7 +36,6 @@ namespace H6Game.Base
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
-            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Unit;
 #endif
         }
 

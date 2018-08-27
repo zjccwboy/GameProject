@@ -8,6 +8,5 @@ namespace H6Game.Entitys
         Player,
         Room,
         Game,
-        Unit,
     }
 }

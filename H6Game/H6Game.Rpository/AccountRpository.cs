@@ -1,9 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Entitys;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace H6Game.Rpository
@@ -11,7 +8,7 @@ namespace H6Game.Rpository
     [SingletCase]
     public class AccountRpository : BaseRpository<TAccount>
     {
-        public async Task<TAccount> GetAccountById(string objectId)
+        public async Task<TAccount> GetById(string objectId)
         {
             var q = await this.DBContext.FindByIdAsync(objectId);
 
@@ -21,7 +18,7 @@ namespace H6Game.Rpository
             return null;
         }
 
-        public async Task<TAccount> GetAccountByOpenId(string openId)
+        public async Task<TAccount> GetByOpenId(string openId)
         {
             var q = await this.DBContext.FindAsync(t => t.FWXOpenId == openId);
 
@@ -31,7 +28,7 @@ namespace H6Game.Rpository
             return null;
         }
 
-        public async Task<TAccount> GetAccountByPhoneNumber(string phoneNumber)
+        public async Task<TAccount> GetByPhoneNumber(string phoneNumber)
         {
             var q = await this.DBContext.FindAsync(t => t.FPhoneNumber == phoneNumber);
 

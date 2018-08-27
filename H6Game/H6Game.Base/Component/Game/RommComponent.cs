@@ -8,8 +8,18 @@ namespace H6Game.Base
 {
     public class RommComponent : BaseComponent
     {
-        
-        public RoomType RoomType { get; set; }
+        public TRoom RoomEntiry { get; set; }
+
+        public void Add(TRoom roomInfo)
+        {
+            this.RoomEntiry = roomInfo;
+            Game.Actor.AddLocalAcotr(new ActorInfoEntity
+            {
+                ActorId = this.Id,
+                Id = this.RoomEntiry.Id,
+                ActorType = ActorType.Room,
+            });
+        }
     }
 
 }

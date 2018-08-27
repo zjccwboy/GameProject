@@ -2,6 +2,7 @@
 using System.Threading;
 using H6Game.Base;
 using H6Game.Entitys;
+using H6Game.Rpository;
 
 namespace TestDistributed
 {
@@ -25,8 +26,8 @@ namespace TestDistributed
                 FCreateTime = DateTime.UtcNow,
                 FUpdateTime = DateTime.UtcNow,
             };
-            Game.Scene.GetComponent<AccountRpositoryComponent>().DBContext.Insert(accountInfo);
-            Game.Scene.AddComponent<PlayerComponent>().LoadAccountById(accountInfo.Id);
+            Game.Scene.GetComponent<AccountRpository>().DBContext.Insert(accountInfo);
+            Game.Scene.AddComponent<PlayerComponent>().Add(accountInfo);
 
             while (true)
             {
