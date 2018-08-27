@@ -15,6 +15,12 @@ namespace H6Game.Entitys
         public AccountType FType { get; set; }
 
         /// <summary>
+        /// 账号名
+        /// </summary>
+        [BsonElement("FA")]
+        public string FAccountName { get; set; }
+
+        /// <summary>
         /// VIP等级
         /// </summary>
         [BsonElement("VL")]

@@ -26,25 +26,28 @@ namespace H6Game.Base
             }
         }
 
-        public void RemoveRemoteActor(ActorType type, string objectId, int channelId)
+        public void RemoveActor(ActorType type, string objectId)
         {
             var components = Game.Scene.GetComponents<ActorComponent>();
             foreach (var component in components)
             {
                 var actorComponent = component as ActorComponent;
                 if (actorComponent.ActorType == type)
-                    actorComponent.RemoveFromNet(objectId, channelId);
-            }
-        }
+                {
+                    var entity = GetRemoteActor(type, objectId);
+                    if(entity != null)
+                    {
+                        actorComponent.RemoveFromNet(objectId);
+                        return;
+                    }
 
-        public void RemoveLocalActor(ActorType type, string objectId)
-        {
-            var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach (var component in components)
-            {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == type)
-                    actorComponent.RemoveFromLocal(objectId);
+                    entity = GetLocalActor(type, objectId);
+                    if (entity != null)
+                    {
+                        actorComponent.RemoveFromLocal(objectId);
+                        return;
+                    }
+                }
             }
         }
 

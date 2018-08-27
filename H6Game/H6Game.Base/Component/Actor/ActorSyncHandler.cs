@@ -29,7 +29,7 @@ namespace H6Game.Base
                     break;
 
                 case MessageCMD.RemoveActorCmd:
-                    Game.Actor.RemoveRemoteActor(message.ActorType, message.ObjectId, network.Channel.Id);
+                    Game.Actor.RemoveActor(message.ActorType, message.ObjectId);
                     break;
             }
         }

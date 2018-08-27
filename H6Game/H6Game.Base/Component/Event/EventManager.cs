@@ -2,7 +2,7 @@
 
 namespace H6Game.Base
 {
-    public class EventManager : BaseManager
+    public class EventManager
     {
         private HashSet<BaseComponent> Disposes { get; } = new HashSet<BaseComponent>();
         private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
@@ -24,7 +24,7 @@ namespace H6Game.Base
             }
         }
 
-        public override bool AddComponent<T>(T component)
+        public bool Add<T>(T component) where T : BaseComponent
         {
             var type = typeof(T);
 
@@ -44,21 +44,16 @@ namespace H6Game.Base
             return true;
         }
 
-        public override bool Remove(BaseComponent component)
+        public void Remove(BaseComponent component)
         {
-            var result = base.Remove(component);
+            var type = component.GetType();
+            Updates.Remove(component);
+            var result = Disposes.Remove(component);
             if (result)
             {
-                var type = component.GetType();
-                Updates.Remove(component);
-                result &= Disposes.Remove(component);
-                if (result)
-                {
-                    if (!ComponentPool.IsSingleType(type))
-                        component.Dispose();
-                }
+                if (!ComponentPool.IsSingleType(type))
+                    component.Dispose();
             }
-            return result;
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)

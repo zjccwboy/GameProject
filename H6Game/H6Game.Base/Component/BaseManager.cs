@@ -38,7 +38,7 @@ namespace H6Game.Base
 
             if (isNew)
             {
-                Game.Event.AddComponent(component);
+                Game.Event.Add(component);
             }
 
             return isNew;

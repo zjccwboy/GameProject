@@ -37,5 +37,15 @@ namespace H6Game.Rpository
 
             return null;
         }
+
+        public async Task<TAccount> GetByName(string name)
+        {
+            var q = await this.DBContext.FindAsync(t => t.FAccountName == name);
+
+            if (q.Any())
+                return q.FirstOrDefault();
+
+            return null;
+        }
     }
 }

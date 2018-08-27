@@ -10,17 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
-    </Reference>
     <Reference Include="H6Game.Account.Model">
       <HintPath>..\..\H6Game.Models\H6Game.Account.Model\bin\Debug\netstandard2.0\H6Game.Account.Model.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Base">
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Entitys">
-      <HintPath>..\..\H6Game.Entitys\bin\Debug\netstandard2.0\H6Game.Entitys.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Game.Model">
       <HintPath>..\..\H6Game.Models\H6Game.Game.Model\bin\Debug\netstandard2.0\H6Game.Game.Model.dll</HintPath>
@@ -28,20 +22,8 @@
     <Reference Include="H6Game.Gate.Model">
       <HintPath>..\..\H6Game.Models\H6Game.Gate.Model\bin\Debug\netstandard2.0\H6Game.Gate.Model.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Message">
-      <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
-    </Reference>
     <Reference Include="H6Game.Pay.Model">
       <HintPath>..\..\H6Game.Models\H6Game.Pay.Model\bin\Debug\netstandard2.0\H6Game.Pay.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\obj\Debug\MongoDB.Driver.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.Core">
-      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\obj\Debug\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -15,6 +15,12 @@ namespace H6Game.Message
 
         [ProtoMember(3)]
         public string SessionKey { get; set; }
+
+        [ProtoMember(4)]
+        public bool IsNewAccount { get; set; }
+
+        [ProtoMember(5)]
+        public string AccountId { get; set; }
     }
 
 
@@ -46,5 +52,17 @@ namespace H6Game.Message
     {
         [ProtoMember(1)]
         public LoginType LoginType { get; set; }
+    }
+
+
+    [MessageType(MessageType.LogoutRequestMessage)]
+    [ProtoContract]
+    public class LogoutRequestMessage : IMessage
+    {
+        [ProtoMember(1)]
+        public string AccountId { get; set; }
+
+        [ProtoMember(2)]
+        public string SessionKey { get; set; }
     }
 }

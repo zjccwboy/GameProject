@@ -8,10 +8,7 @@ namespace ServerApp
     {
         static void Main(string[] args)
         {
-            var netComponent = Game.Scene.AddComponent<InNetComponent>();
-            var actorComponent = Game.Scene.AddComponent<ActorComponent>();
-            var dbComponent = Game.Scene.AddComponent<MongoDBComponent>();
-            var accountManager = Game.Scene.AddComponent<AccountManagerComponent>();
+            Game.Init();
 
             while (true)
             {

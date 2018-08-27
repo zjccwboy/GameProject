@@ -9,7 +9,7 @@ namespace H6Game.Base
     public class ActorComponent : BaseComponent
     {
         private ConcurrentDictionary<long, ActorInfoEntity> EntitiesDictionary { get; } = new ConcurrentDictionary<long, ActorInfoEntity>();
-        private ConcurrentDictionary<string, ActorInfoEntity> ObjectIdEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
+        private ConcurrentDictionary<string, ActorInfoEntity> RemoteEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
         private InNetComponent InNetComponent { get; set; }
@@ -35,7 +35,7 @@ namespace H6Game.Base
         {
             var entityId = entity.GetEntityId();
             EntitiesDictionary.AddOrUpdate(entityId, entity, (k, v) => { return entity; });
-            ObjectIdEntitiesDictionary.AddOrUpdate(entity.Id, entity, (k, v) => { return entity; });
+            RemoteEntitiesDictionary.AddOrUpdate(entity.Id, entity, (k, v) => { return entity; });
 
             if(!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out HashSet<ActorInfoEntity> hashVal))
             {
@@ -44,12 +44,19 @@ namespace H6Game.Base
             }
         }
 
-        public void RemoveFromNet(string objectId, int channelId)
+        public void RemoveFromNet(string objectId)
         {
-            if (ObjectIdEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
+            if (RemoteEntitiesDictionary.TryRemove(objectId, out ActorInfoEntity actorInfo))
             {
                 var entityId = actorInfo.GetEntityId();
                 EntitiesDictionary.TryRemove(entityId, out ActorInfoEntity actorInfoEntity);
+
+                var message = new ActorSyncMessage
+                {
+                    ObjectId = actorInfo.Id,
+                    ActorType = actorInfo.ActorType,
+                };
+                actorInfo.Network.SendActor(message, (int)MessageCMD.RemoveActorCmd, actorInfo.ActorId);
             }
         }
 
@@ -66,7 +73,7 @@ namespace H6Game.Base
 
         public bool TryGetNetEntity(string objectId, out ActorInfoEntity entity)
         {
-            return ObjectIdEntitiesDictionary.TryGetValue(objectId, out entity);
+            return RemoteEntitiesDictionary.TryGetValue(objectId, out entity);
         }
 
         public bool TryGetLocalEntity(string objectId, out ActorInfoEntity entity)
@@ -85,7 +92,7 @@ namespace H6Game.Base
             {
                 foreach(var entity in entities)
                 {
-                    ObjectIdEntitiesDictionary.TryRemove(entity.Id, out ActorInfoEntity value);
+                    RemoteEntitiesDictionary.TryRemove(entity.Id, out ActorInfoEntity value);
                     EntitiesDictionary.TryRemove(entity.GetEntityId(), out value);
                 }
             }
@@ -96,6 +103,7 @@ namespace H6Game.Base
             var message = new ActorSyncMessage
             {
                 ObjectId = entity.Id,
+                ActorType = entity.ActorType,
             };
             InNetComponent.InConnNets.BroadcastActor(message, (int)MessageCMD.AddActorCmd, entity.ActorId);
         }
@@ -105,6 +113,7 @@ namespace H6Game.Base
             var message = new ActorSyncMessage
             {
                 ObjectId = entity.Id,
+                ActorType = entity.ActorType,
             };
             InNetComponent.InConnNets.BroadcastActor(message, (int)MessageCMD.RemoveActorCmd, entity.ActorId);
         }
