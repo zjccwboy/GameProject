@@ -1,4 +1,5 @@
 ﻿using H6Game.Entitys;
+using H6Game.Entitys.Enums;
 using H6Game.Message;
 using System;
 using System.Collections.Generic;

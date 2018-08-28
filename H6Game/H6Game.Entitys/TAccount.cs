@@ -1,7 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using H6Game.Entitys.Enums;
 
 namespace H6Game.Entitys
 {
@@ -27,6 +26,12 @@ namespace H6Game.Entitys
         public VIPLevel FVIPLevel { get; set; }
 
         /// <summary>
+        /// 性别
+        /// </summary>
+        [BsonElement("Sex")]
+        public UserSex FSex { get; set; }
+
+        /// <summary>
         /// 微信登陆OpenId
         /// </summary>
         [BsonElement("OId")]
@@ -35,8 +40,20 @@ namespace H6Game.Entitys
         /// <summary>
         /// 微信头像地址
         /// </summary>
-        [BsonElement("HI")]
+        [BsonElement("WI")]
         public string FWXHeadImgurl { get; set; }
+
+        /// <summary>
+        /// 支付宝登陆userId
+        /// </summary>
+        [BsonElement("AUId")]
+        public string FAlipayUserId { get; set; }
+
+        /// <summary>
+        /// 支付宝头像地址
+        /// </summary>
+        [BsonElement("AI")]
+        public string FAlipayHeadImgUrl { get; set; }
 
         /// <summary>
         /// 昵称

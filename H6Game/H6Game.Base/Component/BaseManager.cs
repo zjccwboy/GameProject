@@ -56,6 +56,28 @@ namespace H6Game.Base
         }
 
         /// <summary>
+        /// 新建或者从组件池中获取一个单例组件添加到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public virtual T AddComponent<T,K1>(K1 k1) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1>(k1);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
+        /// 新建或者从组件池中获取一个单例组件添加到该组件中.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public virtual T AddComponent<T, K1, K2>(K1 k1, K2 k2) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1, K2>(k1, k2);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
         /// 获取一个SingleCase组件
         /// </summary>
         /// <typeparam name="T"></typeparam>

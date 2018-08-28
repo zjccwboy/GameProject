@@ -9,6 +9,8 @@ namespace ServerApp
         static void Main(string[] args)
         {
             Game.Init();
+            AccountManager.Instance.Init();
+
 
             while (true)
             {

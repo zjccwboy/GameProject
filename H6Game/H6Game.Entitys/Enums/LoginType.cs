@@ -6,7 +6,7 @@ namespace H6Game.Entitys.Enums
         /// <summary>
         /// 默认是账号密码登陆
         /// </summary>
-        Default,
+        Account,
 
         /// <summary>
         /// 微信登陆

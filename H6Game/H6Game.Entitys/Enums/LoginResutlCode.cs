@@ -22,14 +22,19 @@ namespace H6Game.Entitys.Enums
         OpenIdError,
 
         /// <summary>
-        /// 手机号码错误
+        /// 短信认证码错误
         /// </summary>
-        PhoneNumError,
+        SMSError,
 
         /// <summary>
         /// 手机号码不存在
         /// </summary>
         PhoneNumNotExist,
+
+        /// <summary>
+        /// 未绑定手机号码
+        /// </summary>
+        UnboundPhone,
 
         /// <summary>
         /// 支付宝Id错误

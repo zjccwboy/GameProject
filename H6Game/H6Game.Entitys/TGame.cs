@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using H6Game.Entitys.Enums;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 
 namespace H6Game.Entitys

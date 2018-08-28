@@ -1,8 +1,6 @@
-﻿using H6Game.Entitys.Enums;
+﻿using H6Game.Entitys;
+using H6Game.Entitys.Enums;
 using ProtoBuf;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Message
 {
@@ -11,16 +9,71 @@ namespace H6Game.Message
     public class LoginResponeMessage : LoginMessage
     {
         [ProtoMember(2)]
-        public LoginResutlCode Result { get; set; }
+        public LoginResutlCode LoginResult { get; set; }
 
         [ProtoMember(3)]
         public string SessionKey { get; set; }
 
         [ProtoMember(4)]
         public bool IsNewAccount { get; set; }
-
+        
         [ProtoMember(5)]
         public string AccountId { get; set; }
+
+        /// <summary>
+        /// 账户类型
+        /// </summary>
+        [ProtoMember(6)]
+        public AccountType FType { get; set; }
+
+        /// <summary>
+        /// 账号名
+        /// </summary>
+        [ProtoMember(7)]
+        public string FAccountName { get; set; }
+
+        /// <summary>
+        /// VIP等级
+        /// </summary>
+        [ProtoMember(8)]
+        public VIPLevel FVIPLevel { get; set; }
+
+        /// <summary>
+        /// 微信登陆OpenId
+        /// </summary>
+        [ProtoMember(9)]
+        public string FWXOpenId { get; set; }
+
+        /// <summary>
+        /// 微信头像地址
+        /// </summary>
+        [ProtoMember(10)]
+        public string FWXHeadImgurl { get; set; }
+
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        [ProtoMember(11)]
+        public string FNikeNmae { get; set; }
+
+        /// <summary>
+        /// 邮箱地址
+        /// </summary>
+        [ProtoMember(12)]
+        public string FEmail { get; set; }
+
+        /// <summary>
+        /// 手机号码
+        /// </summary>
+        [ProtoMember(13)]
+        public string FPhoneNumber { get; set; }
+
+        /// <summary>
+        /// 账户余额
+        /// </summary>
+        [ProtoMember(14)]
+        public decimal FBalance { get; set; }
+
     }
 
 
