@@ -98,7 +98,6 @@ namespace H6Game.Base
         public override void StartRecv()
         {
             this.TimeNow = TimeUitls.Now();
-            SetKcpSendTime();
             while (true)
             {
                 int n = Kcp.PeekSize();
@@ -175,10 +174,6 @@ namespace H6Game.Base
                     length = length > MaxPSize ? MaxPSize : length;
                     Kcp.Send(this.SendParser.Buffer.First, offset, length);
                     this.SendParser.Buffer.UpdateRead(length);
-                    if(length >= MaxPSize)
-                    {
-                        SetKcpSendTime();
-                    }
                 }
                 SetKcpSendTime();
             }
@@ -227,12 +222,9 @@ namespace H6Game.Base
         /// 设置KCP重传时间
         /// </summary>
         private void SetKcpSendTime()
-        {    
-            if (this.TimeNow >= this.LastCheckTime)
-            {
-                Kcp.Update(this.TimeNow);
-                this.LastCheckTime = this.Kcp.Check(this.TimeNow);
-            }
+        {
+            Kcp.Update(this.LastCheckTime);
+            this.LastCheckTime = this.Kcp.Check(this.TimeNow);
         }
     }
 }

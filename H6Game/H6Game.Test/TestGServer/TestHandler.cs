@@ -13,6 +13,21 @@ namespace TestGServer
     {
         protected override void Handler(Network network, TestMessage message)
         {
+            Console.WriteLine("解包出错");
+            network.RpcCallBack(message);
+        }
+    }
+
+    [H6Game.Message.HandlerCMD(1024)]
+    public class TestHandlerInt : AHandler<int>
+    {
+        protected override void Handler(Network network, int message)
+        {
+            if(message != 1024)
+            {
+                Console.WriteLine("TestHandlerInt:解包出错");
+            }
+
             network.RpcCallBack(message);
         }
     }

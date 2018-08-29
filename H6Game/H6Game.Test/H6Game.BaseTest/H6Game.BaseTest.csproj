@@ -20,9 +20,6 @@
     <Reference Include="H6Game.Message">
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Uitls">
-      <HintPath>..\..\H6Game.Uitls\bin\Debug\netstandard2.0\H6Game.Uitls.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

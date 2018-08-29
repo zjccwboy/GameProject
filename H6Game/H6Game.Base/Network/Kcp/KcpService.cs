@@ -154,7 +154,7 @@ namespace H6Game.Base
                 channel.StartRecv();
             }
 
-            this.StartRecv();
+            this.Update();
         }
 
         /// <summary>
