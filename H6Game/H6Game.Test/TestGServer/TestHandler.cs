@@ -13,7 +13,6 @@ namespace TestGServer
     {
         protected override void Handler(Network network, TestMessage message)
         {
-            Console.WriteLine("解包出错");
             network.RpcCallBack(message);
         }
     }
