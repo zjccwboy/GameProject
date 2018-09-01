@@ -1,5 +1,4 @@
-﻿using H6Game.Entitys;
-using H6Game.Entitys.Enums;
+﻿using H6Game.Entitys.Enums;
 using System;
 
 namespace H6Game.Base
@@ -32,7 +31,7 @@ namespace H6Game.Base
             IsInitialized = true;
 
 #if SERVER
-            MongoDBManager.Instance.Init();
+            MongoDBManager.Init();
             Game.Scene.AddComponent<InNetComponent>();
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;

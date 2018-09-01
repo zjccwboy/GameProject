@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace H6Game.Account.Model
 {
     [Event(EventType.Awake)]
+    [SingletCase]
     public sealed class AccountManager : BaseComponent
     {
         private ILogin AlipayLogin { get; }

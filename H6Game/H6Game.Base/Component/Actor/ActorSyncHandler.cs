@@ -1,5 +1,4 @@
 ﻿using H6Game.Message;
-using MongoDB.Bson;
 
 namespace H6Game.Base
 {

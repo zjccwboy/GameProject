@@ -5,25 +5,28 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public sealed class MongoDBManager
+    public static class MongoDBManager
     {
-        private SysConfig Config { get; set; }
-        private MongoClient DBClient { get; set; }
-        private string DatabaseNaeme { get; set; }
-        public IMongoDatabase Database { get; private set; }
+        private static SysConfig Config { get; set; }
+        private static MongoClient DBClient { get; set; }
+        private static string DatabaseNaeme { get; set; }
+        public static IMongoDatabase Database { get; private set; }
 
-        public static MongoDBManager Instance { get; } = new MongoDBManager();
-
-        public void Init()
+        static MongoDBManager()
         {
-            this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
-            this.DBClient = new MongoClient(Config.DbConfig.ConnectionString);
-            this.DatabaseNaeme = this.Config.DbConfig.DatabaseName;
+            Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
+            DBClient = new MongoClient(Config.DbConfig.ConnectionString);
+            DatabaseNaeme = Config.DbConfig.DatabaseName;
             SetMongoDatabase();
             AddRpositoryComponents();
         }
 
-        private void AddRpositoryComponents()
+        public static void Init()
+        {
+            LogRecord.Log(LogLevel.Info, "MongoDBManager/Init", "MongoDB初始化成功.");
+        }
+
+        private static void AddRpositoryComponents()
         {
             var types = TypePool.GetTypes<IRpository>();
             foreach (var type in types)
@@ -32,31 +35,31 @@ namespace H6Game.Base
             }
         }
 
-        private void AddComponent(Type type)
+        private static void AddComponent(Type type)
         {
             if (!typeof(IRpository).IsAssignableFrom(type))
                 return;
 
             var isSingle = ComponentPool.IsSingleType(type);
             var component = ComponentPool.Fetch(type);
-            (component as IRpository).SetDBContext(this.Database);
+            (component as IRpository).SetDBContext(Database);
             Game.Scene.AddComponent(component);
         }
 
-        private void SetMongoDatabase()
+        private static void SetMongoDatabase()
         {
             if (Database == null)
             {
-                if (!DatabaseExists(this.DBClient, this.DatabaseNaeme))
+                if (!DatabaseExists(DBClient, DatabaseNaeme))
                 {
-                    throw new KeyNotFoundException("此MongoDB名称不存在：" + this.DatabaseNaeme);
+                    throw new KeyNotFoundException("此MongoDB名称不存在：" + DatabaseNaeme);
                 }
 
-                this.Database = this.DBClient.GetDatabase(this.DatabaseNaeme);
+                Database = DBClient.GetDatabase(DatabaseNaeme);
             }
         }
 
-        private bool DatabaseExists(MongoClient client, string dbName)
+        private static bool DatabaseExists(MongoClient client, string dbName)
         {
             try
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Net.Sockets;
 
 namespace H6Game.Base
@@ -206,7 +205,7 @@ namespace H6Game.Base
 
         public void Dispose()
         {
-            foreach(var channel in Channels.Values.ToList())
+            foreach(var channel in Channels.Values)
             {
                 channel.Dispose();
             }

@@ -22,48 +22,59 @@ namespace TestGClient
             {
                 Game.Update();
                 Test();
+                Benchmark();
                 Thread.Sleep(1);
             }
         }
 
         static int Count;
+        static int CallCount;
+        static int BackCount;
         static Stopwatch Swatch = new Stopwatch();
+
+        static TestMessage send = new TestMessage
+        {
+            Actor = 1020201,
+            Message = "我是客户端",
+        };
 
         static async void Test()
         {
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 50; i++)
                await  TestCallBack();
         }
 
         static async Task TestCallBack()
         {
+            CallCount++;
+
             var network = Game.Scene.GetComponent<OutNetComponent>().Network;
             if (network == null)
                 return;
-
-            TestMessage send = new TestMessage
-            {
-                Actor = 1020201,
-                Message = "我是客户端",
-            };
-
+            
             var result = await network.CallMessage<TestMessage, TestMessage>(send, 1024);
             if (!result.Result)
                 return;
 
-                Count++;
+            Count++;
+            BackCount++;
 
             if (result.Content.Actor != 1020201)
                 Console.WriteLine("解包错误!");
 
-            if(Swatch.ElapsedMilliseconds >= 1000)
+            //LogRecord.Log(LogLevel.Info, "CallBack", result.Content.ToJson());
+        }
+
+        static void Benchmark()
+        {
+            if (Swatch.ElapsedMilliseconds >= 1000)
             {
-                LogRecord.Log(LogLevel.Info, "CallBack", $"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}");
+                LogRecord.Log(LogLevel.Info, "CallBack", $"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
                 Swatch.Restart();
                 Count = 0;
             }
-            //LogRecord.Log(LogLevel.Info, "CallBack", result.Content.ToJson());
         }
+
     }
 
 
