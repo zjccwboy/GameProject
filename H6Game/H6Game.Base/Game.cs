@@ -32,7 +32,7 @@ namespace H6Game.Base
 
 #if SERVER
             MongoDBManager.Init();
-            Game.Scene.AddComponent<InNetComponent>();
+            Game.Scene.AddComponent<InnerComponent>();
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
@@ -47,7 +47,7 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-                LogRecord.Log(LogLevel.Fatal, "Game/Update", e.ToString());
+                LogRecord.Log(LogLevel.Fatal, e);
             }
         }
     }

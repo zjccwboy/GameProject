@@ -15,6 +15,7 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using MongoDB.Bson;
+using System.Text;
 #endif
 
 #if SERVER
@@ -88,6 +89,33 @@ namespace H6Game.Base
             logType = typeof(LogRecord);
         }
 
+        public static void Log(LogLevel level, string logRecord)
+        {
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+            WriteLog(level, $"{declaringType}/{name}", logRecord);
+        }
+
+        public static void Log(LogLevel level, Exception exception)
+        {
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+            WriteLog(level, $"{declaringType}/{name}", exception.ToString());
+        }
+
+        public static void Log(LogLevel level, object logRecord)
+        {
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+            WriteLog(level, $"{declaringType}/{name}", logRecord.ToJson());
+        }
+
         public static void Log(LogLevel level, string description, string logRecord)
         {
             WriteLog(level, description, logRecord);
@@ -103,25 +131,36 @@ namespace H6Game.Base
             WriteLog(level, description, exception.ToString());
         }
 
-        public static void Log(this object obj, LogLevel level, string description, object logRecord)
+        public static void Log(this object obj, LogLevel level, object logRecord)
         {
-            WriteLog(level, $"{obj.GetType()}/{description}", logRecord.ToJson());
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+
+            WriteLog(level, $"{declaringType}/{name}", logRecord.ToJson());
         }
 
-        public static void Log(this object obj, LogLevel level, string description, string logRecord)
+        public static void Log(this object obj, LogLevel level, string logRecord)
         {
-            WriteLog(level, $"{obj.GetType()}/{description}", logRecord);
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+
+            WriteLog(level, $"{declaringType}/{name}", logRecord);
         }
 
-        public static void Log(this object obj, LogLevel level, string description, Exception exception)
+        public static void Log(this object obj, LogLevel level, Exception exception)
         {
-            WriteLog(level, $"{obj.GetType()}/{description}", exception.ToString());
+            StackTrace stackTrace = new StackTrace();
+            var frame = stackTrace.GetFrame(1);
+            var declaringType = frame.GetMethod().DeclaringType.ToString();
+            var name = frame.GetMethod().ToString();
+
+            WriteLog(level, $"{declaringType}/{name}", exception.ToString());
         }
 
-        public static void Log(string description, Exception exception)
-        {
-            WriteLog(LogLevel.Error, description, exception.ToString());
-        }
 
         private static Level GetLogLevel(LogLevel level)
         {

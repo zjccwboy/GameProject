@@ -147,7 +147,7 @@ namespace H6Game.Base
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
                     {
-                        this.Log(LogLevel.Info, "CheckHeadbeat", $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
+                        this.Log(LogLevel.Info, $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();
                     }
                 }
@@ -174,12 +174,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnServerDisconnected?.Invoke(channel);
-                    this.Log(LogLevel.Info, "HandleDisConnectOnServer", $"客户端:{channel.RemoteEndPoint}连接断开.");
+                    this.Log(LogLevel.Info, $"客户端:{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, "HandleDisConnectOnServer", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 
@@ -194,12 +194,12 @@ namespace H6Game.Base
                 if (Channels.TryRemove(channel.Id, out ANetChannel value))
                 {
                     OnClientDisconnected?.Invoke(value);
-                    this.Log(LogLevel.Info, "HandleDisConnectOnClient", $"与服务端{channel.RemoteEndPoint}连接断开.");
+                    this.Log(LogLevel.Info, $"与服务端{channel.RemoteEndPoint}连接断开.");
                 }
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, "HandleDisConnectOnClient", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 

@@ -30,7 +30,7 @@ namespace TestDistributed
 
         private void Broadcast()
         {
-            var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
 
             if (inNetComponent.IsCenterServer)
                 return;
@@ -63,7 +63,7 @@ namespace TestDistributed
                     size += 35;
                     if (stopWatch.ElapsedMilliseconds > 1000)
                     {
-                        LogRecord.Log(LogLevel.Debug, "RPC响应次数:", $"数量:{Count}/条 大小:{size / 1024 / 1024}/MB");
+                        LogRecord.Log(LogLevel.Debug, $"RPC响应次数:{Count}/条 大小:{size / 1024 / 1024}/MB");
                         //LogRecord.Log(LogLevel.Debug, "接收到数据:", $"JSON:{send.ToJson()}");
                         stopWatch.Restart();
                         Count = 0;

@@ -47,8 +47,8 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Error, "DoReceive", packet);
-                this.Log(LogLevel.Error, "DoReceive", e.ToString());
+                this.Log(LogLevel.Error, packet);
+                this.Log(LogLevel.Error, e.ToString());
             }
         }
     }

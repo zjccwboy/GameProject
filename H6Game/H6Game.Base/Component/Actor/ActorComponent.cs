@@ -12,13 +12,13 @@ namespace H6Game.Base
         private ConcurrentDictionary<string, ActorInfoEntity> RemoteEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<string, ActorInfoEntity> LocalEntitiesDictionary { get; } = new ConcurrentDictionary<string, ActorInfoEntity>();
         private ConcurrentDictionary<int, HashSet<ActorInfoEntity>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<ActorInfoEntity>>();
-        private InNetComponent InNetComponent { get; set; }
+        private InnerComponent InNetComponent { get; set; }
 
         public ActorType ActorType { get; set; }
 
         public override void Awake()
         {
-            InNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            InNetComponent = Game.Scene.GetComponent<InnerComponent>();
             InNetComponent.OnDisConnected += this.OnNetDisconnected;
             InNetComponent.OnConnected += OnNetConnected;
         }

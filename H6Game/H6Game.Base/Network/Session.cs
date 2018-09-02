@@ -114,7 +114,7 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-                this.Log(LogLevel.Debug, "Update", e);                
+                this.Log(LogLevel.Debug, e);                
             }
         }
 

@@ -23,7 +23,7 @@ namespace H6Game.Base
 
         public static void Init()
         {
-            LogRecord.Log(LogLevel.Info, "MongoDBManager/Init", "MongoDB初始化成功.");
+            LogRecord.Log(LogLevel.Info, "MongoDB初始化成功.");
         }
 
         private static void AddRpositoryComponents()

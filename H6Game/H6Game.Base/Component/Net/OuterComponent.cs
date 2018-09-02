@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
-    public sealed class OutNetComponent : BaseComponent
+    public sealed class OuterComponent : BaseComponent
     {
         private SysConfig Config { get; set; }
 

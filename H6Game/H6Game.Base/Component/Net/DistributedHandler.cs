@@ -9,7 +9,7 @@ namespace H6Game.Base
         {
             //this.Log(LogLevel.Debug, "Handler", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd} 内容:{message.ToJson()}");
 
-            var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
 
             if (inNetComponent.InNetMapManager.Existed(message))
                 return;
@@ -34,7 +34,7 @@ namespace H6Game.Base
         protected override void Handler(Network network)
         {
             //this.Log(LogLevel.Debug, "OutNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
-            var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
             network.RpcCallBack(inNetComponent.OutNetMessage);
         }
     }
@@ -46,7 +46,7 @@ namespace H6Game.Base
         {
             //this.Log(LogLevel.Debug, "InNetMessageSync", $"收到:{network.Channel.RemoteEndPoint} 消息CMD:{(int)MessageCMD.AddInServerCmd}");
 
-            var inNetComponent = Game.Scene.GetComponent<InNetComponent>();
+            var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
             network.RpcCallBack(inNetComponent.InNetMessage);
         }
     }

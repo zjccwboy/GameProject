@@ -16,7 +16,7 @@ namespace TestGClient
         static void Main(string[] args)
         {
             Game.Init();
-            Game.Scene.AddComponent<OutNetComponent>();
+            Game.Scene.AddComponent<OuterComponent>();
             Swatch.Start();
             while (true)
             {
@@ -48,7 +48,7 @@ namespace TestGClient
         {
             CallCount++;
 
-            var network = Game.Scene.GetComponent<OutNetComponent>().Network;
+            var network = Game.Scene.GetComponent<OuterComponent>().Network;
             if (network == null)
                 return;
             
@@ -69,7 +69,7 @@ namespace TestGClient
         {
             if (Swatch.ElapsedMilliseconds >= 1000)
             {
-                LogRecord.Log(LogLevel.Info, "CallBack", $"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
+                LogRecord.Log(LogLevel.Info, $"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
                 Swatch.Restart();
                 Count = 0;
             }

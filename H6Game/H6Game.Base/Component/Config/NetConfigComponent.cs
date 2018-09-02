@@ -77,7 +77,7 @@ namespace H6Game.Base
                 {
                     var json = ConfigEntity.ToJson();
                     sr.Write(json);
-                    LogRecord.Log(LogLevel.Error, $"{this.GetType()}/SaveConfigile", $"未配置服务IP地址端口信息.");
+                    LogRecord.Log(LogLevel.Error, $"未配置服务IP地址端口信息.");
                 }
             }
         }

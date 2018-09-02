@@ -127,7 +127,7 @@ namespace H6Game.Base
                     }
                     catch(Exception e)
                     {
-                        LogRecord.Log(LogLevel.Error, "HandlerMSGFactory/LoadHandler", e.ToString());
+                        LogRecord.Log(LogLevel.Error, e);
                     }
                 }
             }

@@ -43,7 +43,7 @@ namespace H6Game.Base
                 }
                 catch(Exception e)
                 {
-                    this.Log(LogLevel.Error, $"Accept", e);
+                    this.Log(LogLevel.Error, e);
                     return false;
                 }
             }
@@ -92,7 +92,7 @@ namespace H6Game.Base
 
             if (e.SocketError != SocketError.Success)
             {
-                this.Log(LogLevel.Warn, "OnAcceptComplete", $"接受连接发生错误.");
+                this.Log(LogLevel.Warn, $"接受连接发生错误.");
                 return;
             }
             var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
@@ -135,11 +135,11 @@ namespace H6Game.Base
                 channel.OnReceive += channel.Dispatcher.DoReceive;
                 this.AddChannel(channel);
                 this.OnServerConnected?.Invoke(channel);
-                this.Log(LogLevel.Info, "HandleAccept", $"接受客户端:{channel.RemoteEndPoint}连接成功.");
+                this.Log(LogLevel.Info, $"接受客户端:{channel.RemoteEndPoint}连接成功.");
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, "HandleAccept", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 
@@ -157,11 +157,11 @@ namespace H6Game.Base
                 channel.OnReceive += channel.Dispatcher.DoReceive;
                 this.AddChannel(channel);
                 this.OnClientConnected?.Invoke(channel);
-                this.Log(LogLevel.Info, "HandleConnect", $"连接服务端:{channel.RemoteEndPoint}成功.");
+                this.Log(LogLevel.Info, $"连接服务端:{channel.RemoteEndPoint}成功.");
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, "HandleConnect", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 

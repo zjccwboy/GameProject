@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Collections.Concurrent;
 
+
 namespace H6Game.Base
 {
     /// <summary>
@@ -11,14 +12,14 @@ namespace H6Game.Base
     /// </summary>
     [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
-    public sealed class InNetComponent : BaseComponent
+    public sealed class InnerComponent : BaseComponent
     {
         private SysConfig Config { get; set; }
         private EndPointEntity DefaultCenterEndPoint { get; set; }
 
-        private readonly ConcurrentDictionary<int, Session> InConnectSessions = new ConcurrentDictionary<int, Session>();
-        private readonly ConcurrentDictionary<int, Session> DisconnectSessions = new ConcurrentDictionary<int, Session>();
-        private readonly ConcurrentDictionary<int, Network> InConnectNetworks = new ConcurrentDictionary<int, Network>();
+        private readonly ConcurrentDictionary<int, Session> InConnectedSessions = new ConcurrentDictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Session> DisconnectedSessions = new ConcurrentDictionary<int, Session>();
+        private readonly ConcurrentDictionary<int, Network> InConnectedNetworks = new ConcurrentDictionary<int, Network>();
         private readonly ConcurrentDictionary<int, Network> InAcceptNetworks = new ConcurrentDictionary<int, Network>();
         private readonly ConcurrentDictionary<int, Network> OuAcceptNetworks = new ConcurrentDictionary<int, Network>();
 
@@ -29,7 +30,7 @@ namespace H6Game.Base
         /// <summary>
         /// 内网所有客户端连接网络对象集合
         /// </summary>
-        public IEnumerable<Network> InConnNets { get { return InConnectNetworks.Values; } }
+        public IEnumerable<Network> InConnNets { get { return InConnectedNetworks.Values; } }
 
         /// <summary>
         /// 内网服务端所有监听连接网络对象集合
@@ -109,12 +110,12 @@ namespace H6Game.Base
             if (CenterConnectSession != null)
                 CenterConnectSession.Update();
 
-            foreach(var connect in InConnectSessions.Values)
+            foreach(var connect in InConnectedSessions.Values)
             {
                 connect.Update();
             }
 
-            foreach (var connect in DisconnectSessions.Values)
+            foreach (var connect in DisconnectedSessions.Values)
             {
                 if (connect.ConnectChannel.Connected)
                     continue;
@@ -168,10 +169,10 @@ namespace H6Game.Base
             };
 
             this.InAcceptSession = session;
-            this.Log(LogLevel.Info, "HandleInAccept", $"监听内网端口:{message.Port}成功.");
+            this.Log(LogLevel.Info, $"监听内网端口:{message.Port}成功.");
 
             if (this.Config.IsCenterServer)
-                this.Log(LogLevel.Info, "HandleInAccept", $"中心服务启动成功.");
+                this.Log(LogLevel.Info, $"中心服务启动成功.");
         }
 
         private void HandleOutAccept(NetEndPointMessage message)
@@ -191,17 +192,17 @@ namespace H6Game.Base
             };
 
             this.OutAcceptSession = session;
-            this.Log(LogLevel.Info, "HandleOutAccept", $"监听外网端口:{message.Port}成功.");
+            this.Log(LogLevel.Info, $"监听外网端口:{message.Port}成功.");
         }
 
         private void Connecting(NetEndPointMessage message)
         {
             var hashCode = message.GetHashCode();
-            if (this.InConnectSessions.ContainsKey(hashCode))
+            if (this.InConnectedSessions.ContainsKey(hashCode))
                 return;
 
             //如果存在就不再创建新的Session
-            if (this.DisconnectSessions.ContainsKey(hashCode))
+            if (this.DisconnectedSessions.ContainsKey(hashCode))
                 return;
 
             if (Config.IsCenterServer)
@@ -216,14 +217,14 @@ namespace H6Game.Base
             if (message == this.Config.GetCenterMessage())
                 this.CenterConnectSession = session;
             else
-                this.InConnectSessions[hashCode] = session;
+                this.InConnectedSessions[hashCode] = session;
 
             //注册连接成功回调
             session.OnClientConnected = async (c) =>
             {
 
-                if (this.DisconnectSessions.TryRemove(hashCode, out Session oldSession))
-                    this.InConnectSessions[hashCode] = oldSession;
+                if (this.DisconnectedSessions.TryRemove(hashCode, out Session oldSession))
+                    this.InConnectedSessions[hashCode] = oldSession;
 
                 var localMessage = this.Config.GetInMessage();
                 this.InNetMapManager.Add(c, message);
@@ -239,7 +240,7 @@ namespace H6Game.Base
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    InConnectNetworks.TryAdd(c.Id, c.Dispatcher.Network);
+                    InConnectedNetworks.TryAdd(c.Id, c.Dispatcher.Network);
 
                     var callResult = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>((int)MessageCMD.GetOutServerCmd);
                     if (callResult.Result)
@@ -252,7 +253,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    this.Log(LogLevel.Info, "Connecting", "连接中心服务成功.");
+                    this.Log(LogLevel.Info, "连接中心服务成功.");
                     //SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
                 }
             };
@@ -262,14 +263,14 @@ namespace H6Game.Base
             {
                 if (message == this.Config.GetCenterMessage())
                 {
-                    this.Log(LogLevel.Error, "ConnectToCenter", $"当前中心服务挂掉.");
+                    this.Log(LogLevel.Error, $"当前中心服务挂掉.");
                     return;
                 }
 
-                InConnectNetworks.TryRemove(c.Id, out Network network);
+                InConnectedNetworks.TryRemove(c.Id, out Network network);
 
-                if (this.InConnectSessions.TryRemove(hashCode, out Session oldSession))
-                    this.DisconnectSessions[hashCode] = oldSession;
+                if (this.InConnectedSessions.TryRemove(hashCode, out Session oldSession))
+                    this.DisconnectedSessions[hashCode] = oldSession;
 
                 this.InNetMapManager.Remove(message);
                 if (this.OutNetMapManager.TryGetFromChannelId(c, out NetEndPointMessage outMessage))

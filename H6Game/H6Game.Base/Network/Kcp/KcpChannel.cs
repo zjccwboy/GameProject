@@ -75,7 +75,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, "StartConnecting", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 
@@ -135,7 +135,7 @@ namespace H6Game.Base
                         }
                         else
                         {
-                            this.Log(LogLevel.Warn, "HandleRecv", $"接收到客户端:{this.RemoteEndPoint}心跳包.");
+                            this.Log(LogLevel.Warn, $"接收到客户端:{this.RemoteEndPoint}心跳包.");
                         }
 
                         packet.BodyStream.SetLength(0);
@@ -144,7 +144,7 @@ namespace H6Game.Base
                     catch (Exception e)
                     {
                         DisConnect();
-                        this.Log(LogLevel.Warn, "StartRecv", e);
+                        this.Log(LogLevel.Warn, e);
                         return;
                     }
                 }
@@ -214,7 +214,7 @@ namespace H6Game.Base
             catch(Exception e)
             {
                 DisConnect();
-                this.Log(LogLevel.Warn, "Output", e);
+                this.Log(LogLevel.Warn, e);
             }
         }
 
