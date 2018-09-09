@@ -1172,15 +1172,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1198,15 +1191,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc((p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1224,15 +1210,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1250,15 +1229,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1276,15 +1248,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1302,15 +1267,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1328,15 +1286,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1354,15 +1305,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1380,15 +1324,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1406,15 +1343,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1432,15 +1362,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1458,15 +1381,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1484,15 +1400,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1510,15 +1419,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1536,15 +1438,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;
@@ -1562,15 +1457,8 @@ public static class NetworkHelper
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallRpc(data, (p) =>
         {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
+            var state = p.TryRead(out Response response);
+            var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
         return tcs.Task;

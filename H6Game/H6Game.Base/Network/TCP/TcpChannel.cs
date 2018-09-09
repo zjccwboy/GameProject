@@ -86,7 +86,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Warn, e);
+                Log.Logger.Error(e);
             }
         }
 
@@ -133,7 +133,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 IsSending = false;
-                this.Log(LogLevel.Warn, e);
+                Log.Logger.Error(e);
                 DisConnect();
                 return;
             }
@@ -170,7 +170,7 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 IsReceiving = false;
-                this.Log(LogLevel.Warn, e);
+                Log.Logger.Error(e);
                 DisConnect();
             }
         }
@@ -317,7 +317,7 @@ namespace H6Game.Base
                 catch (Exception ex)
                 {
                     DisConnect();
-                    this.Log(LogLevel.Warn, ex);
+                    Log.Logger.Error(ex);
                     return;
                 }
 

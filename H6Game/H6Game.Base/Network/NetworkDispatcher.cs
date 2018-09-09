@@ -1,4 +1,5 @@
 ﻿using H6Game.Message;
+using MongoDB.Bson;
 using System;
 
 namespace H6Game.Base
@@ -47,8 +48,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                this.Log(LogLevel.Error, packet);
-                this.Log(LogLevel.Error, e.ToString());
+                Log.Logger.Error(e, packet.ToJson());
             }
         }
     }

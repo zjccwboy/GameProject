@@ -147,7 +147,7 @@ namespace H6Game.Base
                     var timeSpan = now - channel.LastRecvTime;
                     if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
                     {
-                        this.Log(LogLevel.Info, $"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
+                        Log.Logger.Info($"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.");
                         channel.DisConnect();
                     }
                 }
@@ -169,17 +169,10 @@ namespace H6Game.Base
         /// <param name="channel"></param>
         protected void HandleDisConnectOnServer(ANetChannel channel)
         {
-            try
+            if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                if (Channels.TryRemove(channel.Id, out ANetChannel value))
-                {
-                    OnServerDisconnected?.Invoke(channel);
-                    this.Log(LogLevel.Info, $"客户端:{channel.RemoteEndPoint}连接断开.");
-                }
-            }
-            catch (Exception e)
-            {
-                this.Log(LogLevel.Warn, e);
+                OnServerDisconnected?.Invoke(channel);
+                Log.Logger.Info($"客户端:{channel.RemoteEndPoint}连接断开.");
             }
         }
 
@@ -189,17 +182,10 @@ namespace H6Game.Base
         /// <param name="channel"></param>
         protected void HandleDisConnectOnClient(ANetChannel channel)
         {
-            try
+            if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                if (Channels.TryRemove(channel.Id, out ANetChannel value))
-                {
-                    OnClientDisconnected?.Invoke(value);
-                    this.Log(LogLevel.Info, $"与服务端{channel.RemoteEndPoint}连接断开.");
-                }
-            }
-            catch (Exception e)
-            {
-                this.Log(LogLevel.Warn, e);
+                OnClientDisconnected?.Invoke(value);
+                Log.Logger.Info($"与服务端{channel.RemoteEndPoint}连接断开.");
             }
         }
 

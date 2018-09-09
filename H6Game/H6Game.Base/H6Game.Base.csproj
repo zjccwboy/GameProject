@@ -8,6 +8,8 @@
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;SERVER;NETSTANDARD;NETSTANDARD2_0;WINDOWS</DefineConstants>
     <LangVersion>7.3</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -42,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Utils\log4net.config">
+    <None Update="Logger\log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

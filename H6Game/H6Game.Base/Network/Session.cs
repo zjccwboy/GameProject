@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace H6Game.Base
 {
@@ -109,12 +110,12 @@ namespace H6Game.Base
         {
             try
             {
-                ThreadCallbackContext.Instance.Update();
                 this.NService.Update();
+                ThreadCallbackContext.Instance.Update();
             }
             catch(Exception e)
             {
-                this.Log(LogLevel.Debug, e);                
+                Log.Logger.Error(e);                
             }
         }
 
@@ -394,13 +395,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe<T>(ANetChannel channel, T data, Action<Packet> notificationAction, int messageCmd, int actorId) where T:class
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -416,13 +410,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, messageCmd, rpcId, actorId);
@@ -439,13 +426,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, string data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -462,13 +442,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, int data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -485,13 +458,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, uint data, Action<Packet> notificationAction, int messageCmd,int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -507,13 +473,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, bool data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -529,13 +488,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, long data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -551,13 +503,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, ulong data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -573,13 +518,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, float data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -597,13 +535,6 @@ namespace H6Game.Base
         /// <param name="isEncrypt"></param>
         internal void Subscribe(ANetChannel channel, double data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -619,13 +550,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, decimal data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -641,13 +565,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, byte data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -663,13 +580,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, sbyte data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -685,13 +595,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, char data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -707,13 +610,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, short data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);
@@ -729,13 +625,6 @@ namespace H6Game.Base
         /// <param name="actorId"></param>
         internal void Subscribe(ANetChannel channel, ushort data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
-            if (!channel.Connected)
-            {
-                notificationAction(default);
-                return;
-            }
-
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
             Send(channel, data, messageCmd, rpcId, actorId);

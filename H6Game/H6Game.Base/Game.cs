@@ -1,5 +1,6 @@
 ﻿using H6Game.Entitys.Enums;
 using System;
+using System.Threading;
 
 namespace H6Game.Base
 {
@@ -37,6 +38,10 @@ namespace H6Game.Base
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
 #endif
+            for (var i = 0; i < 2000; i++)
+            {
+                Update();
+            }
         }
 
         public static void Update()
@@ -47,7 +52,7 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-                LogRecord.Log(LogLevel.Fatal, e);
+                Log.Logger.Fatal("未捕获的异常", e);
             }
         }
     }
