@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using System.IO;
 
 namespace H6Game.Base
@@ -26,7 +27,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    ConfigEntity = json.JsonToObject<SysConfig>();
+                    ConfigEntity = BsonSerializer.Deserialize<SysConfig>(json);
                 }
             }
 
