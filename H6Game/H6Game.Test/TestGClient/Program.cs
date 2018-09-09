@@ -69,7 +69,7 @@ namespace TestGClient
         {
             if (Swatch.ElapsedMilliseconds >= 1000)
             {
-                LogRecord.Log(LogLevel.Info, $"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
+                Log.Logger.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
                 Swatch.Restart();
                 Count = 0;
             }
