@@ -18,7 +18,7 @@ namespace TestDistributed
 
         public static void Start()
         {
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 2000; i++)
                 Game.Update();
 
             stopWatch.Start();
@@ -26,13 +26,14 @@ namespace TestDistributed
             if (Game.Scene.GetComponent<InnerComponent>().IsCenterServer)
                 return;
 
-            for (var i = 0; i < 2000; i++)
+            for (var i = 0; i < 1000; i++)
                 Benckmark();
         }
 
         private static async void Benckmark()
         {
-            await Call();
+            while(true)
+                await Call();
         }
 
         static TestMessage send = new TestMessage
@@ -64,8 +65,7 @@ namespace TestDistributed
 
         public static async Task StartCall(Network network)
         {
-            for (var i = 0; i < 10000000; i++)
-                await Call(network);
+            await Call(network);
         }
 
         public static async Task Call(Network network)
