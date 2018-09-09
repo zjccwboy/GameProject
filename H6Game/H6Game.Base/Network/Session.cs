@@ -108,15 +108,7 @@ namespace H6Game.Base
         
         public void Update()
         {
-            try
-            {
-                this.NService.Update();
-                ThreadCallbackContext.Instance.Update();
-            }
-            catch(Exception e)
-            {
-                Log.Logger.Error(e);                
-            }
+            this.NService.Update();
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace TestDistributed
         {
             Game.Init();
 
-            Game.Scene.AddComponent<TestBenckmark>();
+            TestBenckmark.Start();
 
             while (true)
             {

@@ -295,7 +295,7 @@ namespace H6Game.Base
                     {
                         if (packet.IsRpc)
                         {
-                            if (RpcDictionarys.TryRemove(packet.RpcId, out Action<Packet> action))
+                            if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
                             {
                                 //执行RPC请求回调
                                 action(packet);

@@ -1176,6 +1176,7 @@ public static class NetworkHelper
             var result = new CallResult<Response>(response, state);
             tcs.TrySetResult(result);
         }, messageCmd);
+
         return tcs.Task;
     }
 

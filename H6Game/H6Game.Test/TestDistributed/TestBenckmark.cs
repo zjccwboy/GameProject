@@ -10,33 +10,32 @@ using System.Threading.Tasks;
 
 namespace TestDistributed
 {
-    [Event(EventType.Awake | EventType.Update)]
-    [SingletCase]
-    public class TestBenckmark : BaseComponent
+    public static class TestBenckmark
     {
-        private Stopwatch stopWatch = new Stopwatch();
-        private int Count = 0;
-        private long size = 0;
+        private static Stopwatch stopWatch = new Stopwatch();
+        private static int Count = 0;
+        private static long size = 0;
 
-        public override void Awake()
+        public static void Start()
         {
+            for (var i = 0; i < 100; i++)
+                Game.Update();
+
             stopWatch.Start();
-        }
 
-        public override void Update()
-        {
             if (Game.Scene.GetComponent<InnerComponent>().IsCenterServer)
                 return;
 
-            Benckmark();
+            for (var i = 0; i < 100; i++)
+                Benckmark();
         }
 
-        private async void Benckmark()
+        private static async void Benckmark()
         {
             await Call();
         }
 
-        TestMessage send = new TestMessage
+        static TestMessage send = new TestMessage
         {
             ActorId = 10001,
             Message = "Message",
@@ -49,7 +48,7 @@ namespace TestDistributed
         };
 
 
-        private async Task Call()
+        private static async Task Call()
         {
             var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
             if (inNetComponent.IsCenterServer)
@@ -59,16 +58,19 @@ namespace TestDistributed
 
             foreach (var network in networks)
             {
-                await Call(network);
+                await StartCall(network);
             }
         }
 
-        public async Task Call(Network network)
+        public static async Task StartCall(Network network)
         {
-            var result = await network.CallMessage<TestMessage, TestMessage>(send, (int)MessageCMD.TestCMD1);
+            for (var i = 0; i < 10000000; i++)
+                await Call(network);
+        }
 
-            if (!result.Result)
-                return;
+        public static async Task Call(Network network)
+        {
+            await network.CallMessage<TestMessage, TestMessage>(send, (int)MessageCMD.TestCMD1);
 
             Count++;
             size += 35;

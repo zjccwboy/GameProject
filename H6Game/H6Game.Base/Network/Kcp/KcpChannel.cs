@@ -123,7 +123,7 @@ namespace H6Game.Base
                         {
                             if (packet.IsRpc)
                             {
-                                if (RpcDictionarys.TryRemove(packet.RpcId, out Action<Packet> action))
+                                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
                                     action(packet);
                                 else
                                     OnReceive?.Invoke(packet);

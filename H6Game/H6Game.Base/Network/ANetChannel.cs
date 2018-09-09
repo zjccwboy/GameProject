@@ -65,7 +65,7 @@ namespace H6Game.Base
         /// <summary>
         /// RPC字典
         /// </summary>
-        protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionarys = new ConcurrentDictionary<int, Action<Packet>>();
+        protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionary = new ConcurrentDictionary<int, Action<Packet>>();
 
         private int rpcId;
         /// <summary>
@@ -175,7 +175,7 @@ namespace H6Game.Base
         /// <param name="recvAction"></param>
         public void AddRpcPacket(int rpcId, Action<Packet> recvAction)
         {
-            RpcDictionarys.TryAdd(rpcId, recvAction);
+            RpcDictionary.TryAdd(rpcId, recvAction);
         }
 
         public void Dispose()

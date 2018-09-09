@@ -38,10 +38,6 @@ namespace H6Game.Base
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
 #endif
-            for (var i = 0; i < 2000; i++)
-            {
-                Update();
-            }
         }
 
         public static void Update()
@@ -49,6 +45,8 @@ namespace H6Game.Base
             try
             {
                 Event.Update();
+                ThreadCallbackContext.Instance.Update();
+                Thread.Sleep(1);
             }
             catch(Exception e)
             {
