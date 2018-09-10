@@ -39,6 +39,11 @@ namespace H6Game.Base
         public int MessageId;
 
         /// <summary>
+        /// 消息类型指定代码
+        /// </summary>
+        public int MsgTypeCode;
+
+        /// <summary>
         /// Rpc请求标识
         /// </summary>
         public int RpcId;
@@ -47,11 +52,6 @@ namespace H6Game.Base
         /// Actor消息
         /// </summary>
         public int ActorId;
-
-        /// <summary>
-        /// 消息类型指定代码
-        /// </summary>
-        public int MsgTypeCode;
 
         /// <summary>
         /// 包头字节数组

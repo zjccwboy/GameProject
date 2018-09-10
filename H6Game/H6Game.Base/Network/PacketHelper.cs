@@ -34,14 +34,14 @@ public static class PacketHelper
         //写MessageId
         packet.MessageId.WriteTo(packet.HeadBytes, 5);
 
+        //写MsgTypeCode
+        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 9);
+
         //写RpcId
-        packet.RpcId.WriteTo(packet.HeadBytes, 9);
+        packet.RpcId.WriteTo(packet.HeadBytes, 13);
 
         //写ActorId
-        packet.ActorId.WriteTo(packet.HeadBytes, 13);
-
-        //写MsgTypeCode
-        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 17);
+        packet.ActorId.WriteTo(packet.HeadBytes, 17);
 
         return packet.HeadBytes;
     }
