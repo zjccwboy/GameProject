@@ -1,7 +1,7 @@
 ﻿using H6Game.Account.Model.Login;
 using H6Game.Base;
-using H6Game.Entitys;
-using H6Game.Entitys.Enums;
+using H6Game.Entities;
+using H6Game.Entities.Enums;
 using H6Game.Message;
 using H6Game.Rpository;
 using System;

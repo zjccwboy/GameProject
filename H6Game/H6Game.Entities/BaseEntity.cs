@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Entitys
+namespace H6Game.Entities
 {
     [BsonIgnoreExtraElements]
     public abstract class BaseEntity

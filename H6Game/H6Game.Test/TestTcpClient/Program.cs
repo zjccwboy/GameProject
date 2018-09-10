@@ -64,7 +64,7 @@ namespace TestTcpClient
                         Console.WriteLine($"解包出错:{data}");                    }
                     if (recvCount % 1000 == 0)
                     {
-                        LogRecord.Log(LogLevel.Info, "数据响应测试", $"响应:{1000}个包耗时{stopwatch.ElapsedMilliseconds}毫秒");
+                        Log.Logger.Info("数据响应测试", $"响应:{1000}个包耗时{stopwatch.ElapsedMilliseconds}毫秒");
                         Thread.Sleep(1000);
                         stopwatch.Restart();
                     }

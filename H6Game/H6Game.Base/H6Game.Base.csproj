@@ -26,6 +26,9 @@
     <Reference Include="Google.Protobuf">
       <HintPath>..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Entities">
+      <HintPath>..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="H6Game.Entitys">
       <HintPath>..\H6Game.Entitys\bin\Debug\netstandard2.0\H6Game.Entitys.dll</HintPath>
     </Reference>

@@ -1,8 +1,8 @@
 ﻿using ProtoBuf;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using H6Game.Entitys;
-using H6Game.Entitys.Enums;
+using H6Game.Entities;
+using H6Game.Entities.Enums;
 
 namespace H6Game.Message
 {

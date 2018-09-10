@@ -43,9 +43,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Entitys, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\H6Game.Entitys\bin\Debug\netstandard2.0\H6Game.Entitys.dll</HintPath>
+    <Reference Include="H6Game.Entities">
+      <HintPath>..\..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Message, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

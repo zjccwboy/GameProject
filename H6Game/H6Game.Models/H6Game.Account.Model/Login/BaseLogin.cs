@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using H6Game.Entitys;
+using H6Game.Entities;
 
 namespace H6Game.Account.Model.Login
 {

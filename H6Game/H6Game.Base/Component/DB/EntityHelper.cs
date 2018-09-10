@@ -1,4 +1,4 @@
-﻿using H6Game.Entitys;
+﻿using H6Game.Entities;
 
 namespace H6Game.Base
 {

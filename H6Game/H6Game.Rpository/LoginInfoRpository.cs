@@ -1,5 +1,5 @@
 ﻿using H6Game.Base;
-using H6Game.Entitys;
+using H6Game.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 

@@ -1,8 +1,8 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
-using H6Game.Entitys.Enums;
+using H6Game.Entities.Enums;
 
-namespace H6Game.Entitys
+namespace H6Game.Entities
 {
     [BsonIgnoreExtraElements]
     public class TAccount : BaseEntity

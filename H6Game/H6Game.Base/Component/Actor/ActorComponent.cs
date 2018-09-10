@@ -1,4 +1,4 @@
-﻿using H6Game.Entitys.Enums;
+﻿using H6Game.Entities.Enums;
 using H6Game.Message;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

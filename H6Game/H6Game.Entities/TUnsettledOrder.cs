@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace H6Game.Entitys
+namespace H6Game.Entities
 {
     public class TUnsettledOrder : BaseEntity
     {

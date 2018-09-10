@@ -1,4 +1,4 @@
-﻿using H6Game.Entitys;
+﻿using H6Game.Entities;
 using System.Threading.Tasks;
 
 namespace H6Game.Account.Model.Login

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace H6Game.Entitys
+namespace H6Game.Entities
 {
     public class TBetOrder : BaseEntity
     {

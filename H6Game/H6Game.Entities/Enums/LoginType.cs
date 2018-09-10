@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Entitys.Enums
+namespace H6Game.Entities.Enums
 {
     public enum LoginType
     {
