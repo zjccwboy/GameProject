@@ -155,80 +155,90 @@ namespace H6Game.Base
             return colleciton.InsertManyAsync(docs, options);
         }
 
-        public void Update(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public int Update(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            colleciton.UpdateOne(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            var result = colleciton.UpdateOne(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            return (int)result.ModifiedCount;
         }
 
-        public Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            return colleciton.UpdateOneAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            var result = await colleciton.UpdateOneAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            return (int)result.ModifiedCount;
         }
 
-        public void Update(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
+        public int Update(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            colleciton.UpdateOne(filter, updateFields, options);
+            var result = colleciton.UpdateOne(filter, updateFields, options);
+            return (int)result.ModifiedCount;
         }
 
-        public Task UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
+        public async Task<int> UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            return colleciton.UpdateOneAsync(filter, updateFields, options);
+            var result = await colleciton.UpdateOneAsync(filter, updateFields, options);
+            return (int)result.ModifiedCount;
         }
 
-        public void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), options);
-        }
-
-        public Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        public int UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            var result = colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            return (int)result.ModifiedCount;
         }
 
-        public void UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
+        public async Task<int> UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
+            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            return (int)result.ModifiedCount;
+        }
+
+        public int UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
-            colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), null);
+            var result = colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), null);
+            return (int)result.ModifiedCount;
         }
 
-        public Task UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
+        public async Task<int> UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
-            return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), null);
+            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), null);
+            return (int)result.ModifiedCount;
         }
 
-        public void Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
+        public bool Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            colleciton.DeleteOne(filter, options);
+            var result = colleciton.DeleteOne(filter, options);
+            return result.DeletedCount > 0;
         }
 
-        public Task DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            return colleciton.DeleteOneAsync(filter, options);
+            var result = await colleciton.DeleteOneAsync(filter, options);
+            return result.DeletedCount > 0;
         }
 
         public DeleteResult DeleteMany(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)

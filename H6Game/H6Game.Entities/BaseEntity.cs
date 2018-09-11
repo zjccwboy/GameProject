@@ -27,7 +27,7 @@ namespace H6Game.Entities
         /// <summary>
         /// 由谁创建的
         /// </summary>
-        [BsonElement("CRT")]
+        [BsonElement("C")]
         public string FCreator { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace H6Game.Entities
         /// <summary>
         /// 由谁更新的
         /// </summary>
-        [BsonElement("UDT")]
+        [BsonElement("U")]
         public string FUpdater { get; set; }
 
 

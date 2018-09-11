@@ -25,7 +25,8 @@ namespace H6Game.BaseTest
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetCreator("Admin");
-            await rpository.AddAsync(Account);
+            var success = await rpository.AddAsync(Account);
+            Assert.True(success);
         }
 
         [Fact]
@@ -35,7 +36,8 @@ namespace H6Game.BaseTest
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("Admin");
             var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime)};
-            await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
+            var result = await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
+            Assert.True(result > 0);
         }
 
         [Fact]
@@ -43,7 +45,8 @@ namespace H6Game.BaseTest
         {
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            var result = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
+            var q = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
+            Assert.NotNull(q);
         }
 
         [Fact]
@@ -54,6 +57,7 @@ namespace H6Game.BaseTest
             var account = new TAccount { FAccountName = "SAM" };
             var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
             var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, fs);
+            Assert.NotNull(q);
         }
 
         [Fact]
@@ -61,7 +65,8 @@ namespace H6Game.BaseTest
         {
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            await rpository.DBContext.DeleteAsync(a => a.FAccountName == Account.FAccountName);
+            var result = await rpository.DBContext.DeleteAsync(a => a.FAccountName == Account.FAccountName);
+            Assert.True(result);
         }
     }
 }

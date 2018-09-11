@@ -34,20 +34,20 @@ namespace H6Game.Base
         void InsertMany(IEnumerable<TEntity> entitys, InsertManyOptions options = null);
         Task InsertManyAsync(IEnumerable<TEntity> entitys, InsertManyOptions options = null);
 
-        void Update(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
-        Task UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        int Update(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
 
-        void Update(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
-        Task UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
+        int Update(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
+        Task<int> UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
 
-        void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
-        Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        int UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        Task<int> UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
 
-        void UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
-        Task UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
+        int UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
+        Task<int> UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
 
-        void Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
-        Task DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
+        bool Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
+        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
 
         DeleteResult DeleteMany(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
         Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
