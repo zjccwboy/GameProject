@@ -15,6 +15,8 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using H6Game.Entities.Enums;
+using MongoDB.Driver.GridFS;
+using MongoDB.Driver.Builders;
 
 namespace TestMogodb
 {
@@ -27,16 +29,47 @@ namespace TestMogodb
 
             //TestRpository();
 
-            var account = new TAccount
-            {
-                FAccountName = "Sam",
-                FSex = UserSex.Man,
-                FCreateTime = DateTime.UtcNow,
-                FUpdateTime = DateTime.UtcNow,
-                FType = AccountType.Agent,
-            };
+            Test();
+
 
             Console.Read();
+        }
+
+        static async void Test()
+        {
+            Game.InitDB();
+
+            //MongoClient client = new MongoClient(ConnectionString + DBName + AuthSource);
+            //MongoServer server = new MongoServer(MongoServerSettings.FromClientSettings(client.Settings));
+            //var yourCollection = server.GetDatabase(DBName).GetCollection<ItemEntity>(CollectionName);
+
+            //var servers = MongoServer.GetAllServers();
+
+            //var server = (MongoConfig.Database.Client as MongoClient).GetServer();
+            //var settings = new MongoGridFSSettings();
+            ////settings.WriteConcern = database.Settings.WriteConcern;
+
+            //MongoCollection<TAccount> books = server.GetDatabase("H6Game").GetCollection<TAccount>("TAccount");
+
+
+            ////var query = Query.EQ("_id", "5b97ca7c90d43696d4de4f83");
+            //var fields = Fields.Include("FA");
+
+            //var query = Query<TAccount>.EQ(b => b.Id, "5b97ca7c90d43696d4de4f83");
+
+            //foreach (TAccount book in books.FindAs<TAccount>(query).SetFields(fields))
+            //{
+            //    var b = book;
+            //    // do something with book
+            //}
+
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var account = new TAccount { FAccountName = "SAM" };
+            var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
+            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName,fs);
+
+            // var q = chuncks.Find(query).SetFields(fields).FirstOrDefault();
+            //var q = gridFS.Find(query).SetFields(fields);
         }
 
 
@@ -61,7 +94,7 @@ namespace TestMogodb
         static async void TestDBContext()
         {
            Game.Init();
-            IContext<TestAccount> context = new DBContext<TestAccount>(MongoDBManager.Database);
+            IContext<TestAccount> context = new DBContext<TestAccount>(MongoConfig.Database);
 
            var delResult =  await context.DeleteManyAsync(t => t.FAccount != null);
 

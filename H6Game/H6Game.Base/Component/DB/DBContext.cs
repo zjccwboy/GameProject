@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using H6Game.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver.GridFS;
 
 namespace H6Game.Base
 {
@@ -23,6 +25,8 @@ namespace H6Game.Base
 
         #region 公共接口
         public IMongoDatabase Database { get; }
+
+        public IMongoCollection<TEntity> Collection => GetMongoCollection(typeof(TEntity).Name);
 
         public void CreateCollectionIndex(string[] indexFields, CreateIndexOptions options = null)
         {
@@ -44,18 +48,42 @@ namespace H6Game.Base
             return colleciton.Find(filter, options).ToList();
         }
 
-        public List<TEntity> FindTest(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);            
-            return colleciton.Find(filter, options).ToList();
-        }
-
         public Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             return colleciton.Find(filter, options).ToListAsync();
+        }
+
+        public List<TEntity> FindAs<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
+        {
+            var server = MongoConfig.DBServer;
+            var settings = new MongoGridFSSettings();
+            var collection = server.GetDatabase(MongoConfig.DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
+            var fs = Fields.Include(fields);
+            var query = Query<TEntity>.EQ(memberExpression, value);
+            var q = collection.FindAs<TEntity>(query).SetFields(fs);
+
+            if (q == null)
+                return null;
+
+            return q.ToList();
+        }
+
+        public Task<List<TEntity>> FindAsAsync<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
+        {
+            var server = MongoConfig.DBServer;
+            var settings = new MongoGridFSSettings();
+            var collection = server.GetDatabase(MongoConfig.DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
+            var fs = Fields.Include(fields);
+            var query = Query<TEntity>.EQ(memberExpression, value);
+            var q = collection.FindAs<TEntity>(query).SetFields(fs);
+
+            if (q == null)
+                return null;
+
+            var result = q.ToList();
+            return Task.FromResult(result);
         }
 
         public List<TEntity> FindById(string objectId, FindOptions options = null)
@@ -165,14 +193,6 @@ namespace H6Game.Base
             colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
-        public void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
-            colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), options);
-        }
-
         public Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
@@ -181,12 +201,20 @@ namespace H6Game.Base
             return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
         }
 
-        public Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null)
+        public void UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
-            return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), null);
+        }
+
+        public Task UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
+            return colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), null);
         }
 
         public void Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
@@ -285,7 +313,7 @@ namespace H6Game.Base
                 if (updateFields != null && !updateFields.Contains(property.Name))
                     continue;
 
-                var elmentName = entity.GetElementName(property.Name);
+                var elmentName = entity.BsonElementName(property.Name);
 
                 string key;
                 if(elmentName == null)

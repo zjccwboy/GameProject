@@ -41,7 +41,7 @@ namespace H6Game.Base
 
         public static void InitDB()
         {
-            MongoDBManager.Init();
+            MongoConfig.Init();
         }
 
         public static void Update()

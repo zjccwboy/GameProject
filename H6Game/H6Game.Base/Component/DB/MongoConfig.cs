@@ -5,14 +5,15 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public static class MongoDBManager
+    public static class MongoConfig
     {
         private static SysConfig Config { get; set; }
-        private static MongoClient DBClient { get; set; }
-        private static string DatabaseNaeme { get; set; }
+        public static string DatabaseNaeme { get; set; }
+        public static MongoClient DBClient { get;}
+        public static MongoServer DBServer  => DBClient.GetServer();
         public static IMongoDatabase Database { get; private set; }
 
-        static MongoDBManager()
+        static MongoConfig()
         {
             Game.Scene.AddComponent<EntityComponent>();
             Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;

@@ -10,12 +10,17 @@ namespace H6Game.Base
     public interface IContext<TEntity> where TEntity : BaseEntity
     {
         IMongoDatabase Database { get;}
+        IMongoCollection<TEntity> Collection { get; }
 
         void CreateCollectionIndex(string[] indexFields, CreateIndexOptions options = null);
         void CreateCollection(string[] indexFields = null, CreateIndexOptions options = null);
 
         List<TEntity> Find(Expression<Func<TEntity, bool>> filter, FindOptions options = null);
+
         Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null);
+
+        List<TEntity> FindAs<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields);
+        Task<List<TEntity>> FindAsAsync<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields);
 
         List<TEntity> FindById(string objectId, FindOptions options = null);
         Task<List<TEntity>> FindByIdAsync(string objectId, FindOptions options = null);
@@ -36,9 +41,10 @@ namespace H6Game.Base
         Task UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
 
         void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
-        void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null);
         Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
-        Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null);
+
+        void UpdateManyAs(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
+        Task UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields);
 
         void Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
         Task DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);

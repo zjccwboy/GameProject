@@ -35,7 +35,7 @@ namespace H6Game.BaseTest
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("Admin");
             var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime)};
-            await rpository.DBContext.UpdateManyAsync(Account, a => a.FAccountName == "SAM", updates);
+            await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
         }
 
         [Fact]
@@ -44,6 +44,16 @@ namespace H6Game.BaseTest
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var result = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
+        }
+
+        [Fact]
+        public async static void TestFindAs()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var account = new TAccount { FAccountName = "SAM" };
+            var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
+            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, fs);
         }
 
         [Fact]
