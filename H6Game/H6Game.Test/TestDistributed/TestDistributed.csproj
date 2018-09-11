@@ -87,11 +87,5 @@
     <None Include="packages.config" />
     <None Include="Start.bat" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\MongoDB.Driver.csproj">
-      <Project>{94C5D4A7-B307-41F9-9A24-57CEDD14B05C}</Project>
-      <Name>MongoDB.Driver</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

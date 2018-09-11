@@ -47,5 +47,15 @@ namespace H6Game.Rpository
 
             return null;
         }
+
+        public async Task<bool> AddAsync(TAccount account)
+        {
+            var q = await this.DBContext.FindAsync(a => a.FAccountName == account.FAccountName);
+            if (q.Any())
+                return false;
+
+            await this.DBContext.InsertAsync(account);
+            return true;
+        }
     }
 }

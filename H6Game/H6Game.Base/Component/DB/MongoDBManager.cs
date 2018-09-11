@@ -14,6 +14,7 @@ namespace H6Game.Base
 
         static MongoDBManager()
         {
+            Game.Scene.AddComponent<EntityComponent>();
             Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
             DBClient = new MongoClient(Config.DbConfig.ConnectionString);
             DatabaseNaeme = Config.DbConfig.DatabaseName;

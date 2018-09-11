@@ -40,17 +40,5 @@ namespace H6Game.Entities
         /// </summary>
         [BsonElement("WIN")]
         public decimal FWins { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        [BsonElement("CT")]
-        public DateTime FCreateTime { get; set; }
-
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-        [BsonElement("UT")]
-        public DateTime FUpdateTime { get; set; }
     }
 }

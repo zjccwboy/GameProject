@@ -36,7 +36,9 @@ namespace H6Game.Base
         Task UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null);
 
         void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        void UpdateMany(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null);
         Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null);
+        Task UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, IEnumerable<string> updateFields, UpdateOptions options = null);
 
         void Delete(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);
         Task DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null);

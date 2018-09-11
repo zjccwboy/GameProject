@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
@@ -17,9 +18,27 @@
     <Reference Include="H6Game.Base">
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Entities">
+      <HintPath>..\..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Rpository">
+      <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

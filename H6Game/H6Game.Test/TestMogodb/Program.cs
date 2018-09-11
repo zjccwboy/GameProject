@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using H6Game.Base;
 using H6Game.Entities;
+using H6Game.Rpository;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using H6Game.Entities.Enums;
 
 namespace TestMogodb
 {
@@ -20,8 +22,40 @@ namespace TestMogodb
     {
         static void Main(string[] args)
         {
-            TestDBContext();
+            //TestDBContext();
+            //Game.InitDB();
+
+            //TestRpository();
+
+            var account = new TAccount
+            {
+                FAccountName = "Sam",
+                FSex = UserSex.Man,
+                FCreateTime = DateTime.UtcNow,
+                FUpdateTime = DateTime.UtcNow,
+                FType = AccountType.Agent,
+            };
+
             Console.Read();
+        }
+
+
+        static async void TestRpository()
+        {
+            
+            var account = new TAccount
+            {
+                FAccountName = "Sam",
+                FSex = UserSex.Man,
+                FCreateTime = DateTime.UtcNow,
+                FUpdateTime = DateTime.UtcNow,
+                FType = AccountType.Agent,
+            };
+            //await Game.Scene.GetComponent<AccountRpository>().DBContext.DeleteManyAsync(a => a.FAccountName == "Sam");
+
+            //await Game.Scene.GetComponent<AccountRpository>().AddAsync(account);
+
+            await Game.Scene.GetComponent<AccountRpository>().DBContext.UpdateManyAsync(account, a => a.Id == "5b976935ed0bd7a9d8c87908");
         }
 
         static async void TestDBContext()
@@ -108,11 +142,11 @@ namespace TestMogodb
 
             context.Update(t => t.FAccount == "InsertMany", Builders<TestAccount>.Update.Set("FAmt", 102));
 
-            var updateAccount = BaseEntity.Create<TestAccount>();
-            var elementName = updateAccount.GetElementName(nameof(updateAccount.FAccount));
+            //var updateAccount = BaseEntity.Create<TestAccount>();
+            //var elementName = updateAccount.GetElementName(nameof(updateAccount.FAccount));
 
             var ecp = Game.Scene.AddComponent<EntityComponent>();
-            elementName = ecp[typeof(TestAccount), "FAmt"];
+            var  elementName = ecp[typeof(TestAccount), "FAmt"];
             await context.UpdateAsync(t => t.FAccount == "Update", Builders<TestAccount>.Update.Set("FAmt", 103));
 
 

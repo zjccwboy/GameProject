@@ -10,19 +10,17 @@ namespace H6Game.Base
     [SingletCase]
     public class EntityComponent : BaseComponent
     {
-        private Dictionary<Type, Dictionary<string, string>> ClassPropertiesElementName { get; } = new Dictionary<Type, Dictionary<string, string>>();
-        private Dictionary<Type, PropertyInfo[]> ClassPropertyInfos { get; } = new Dictionary<Type, PropertyInfo[]>();
+        private Dictionary<Type, Dictionary<string, string>> EntitiesPropertiesElementName { get; } = new Dictionary<Type, Dictionary<string, string>>();
+        private Dictionary<Type, PropertyInfo[]> EntitiesProperties { get; } = new Dictionary<Type, PropertyInfo[]>();
 
         public string this[Type type,string propertyName]
         {
-
             get { return GetElementName(type, propertyName); }
-
         }
 
         private string GetElementName(Type type, string propertyName)
         {
-            if (ClassPropertiesElementName.TryGetValue(type, out Dictionary<string, string> properties))
+            if (EntitiesPropertiesElementName.TryGetValue(type, out Dictionary<string, string> properties))
             {
                 if (properties.TryGetValue(propertyName, out string name))
                     return name;
@@ -38,7 +36,7 @@ namespace H6Game.Base
 
         public PropertyInfo[] GetPropertys<TEntity>() where TEntity : BaseEntity
         {
-            return ClassPropertyInfos[typeof(TEntity)];
+            return EntitiesProperties[typeof(TEntity)];
         }
 
         public override void Awake()
@@ -51,14 +49,14 @@ namespace H6Game.Base
         {
             foreach(var type in types)
             {
-                if(!ClassPropertiesElementName.TryGetValue(type, out Dictionary<string, string> propDic))
+                if(!EntitiesPropertiesElementName.TryGetValue(type, out Dictionary<string, string> propDic))
                 {
                     propDic = new Dictionary<string, string>();
-                    ClassPropertiesElementName[type] = propDic;
+                    EntitiesPropertiesElementName[type] = propDic;
                 }
 
                 var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-                ClassPropertyInfos[type] = properties;
+                EntitiesProperties[type] = properties;
 
                 foreach (var prop in properties)
                 {

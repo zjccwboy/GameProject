@@ -59,7 +59,26 @@ namespace H6Game.Base
         /// </summary>
         private static void LoadType()
         {
-            var assemblys = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(a => a.Name.Contains("H6Game")).ToList();
+            var assemblys = AppDomain.CurrentDomain.GetAssemblies().Where(a=> a.FullName.Contains("H6Game")).ToList();
+            foreach (var name in assemblyNames)
+            {
+                var exist = false;
+                foreach(var assembly in assemblys)
+                {
+                    if (assembly.GetName().Name == name.Name)
+                    {
+                        exist = true;
+                        break;
+                    }
+                }
+
+                if(!exist)
+                {
+                    var assembly = Assembly.Load(name);
+                    assemblys.Add(assembly);
+                }
+            }
 
             var componentBaseType = typeof(BaseComponent);
             var componentTypes = new HashSet<Type>();

@@ -17,7 +17,7 @@ namespace H6Game.Base
             this.DataBase = database;
             this.DBContext = new DBContext<TEntity>(this.DataBase);
 
-            this.DefaultEntity = BaseEntity.Create<TEntity>();
+            this.DefaultEntity = this.Create<TEntity>();
 
             CreateCollection();
         }

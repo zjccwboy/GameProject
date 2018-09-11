@@ -29,20 +29,23 @@
     <Reference Include="H6Game.Entities">
       <HintPath>..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Entitys">
-      <HintPath>..\H6Game.Entitys\bin\Debug\netstandard2.0\H6Game.Entitys.dll</HintPath>
-    </Reference>
     <Reference Include="H6Game.Message">
       <HintPath>..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\obj\Debug\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver.Core">
-      <HintPath>..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver.Core\obj\Debug\MongoDB.Driver.Core.dll</HintPath>
+      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Core\bin\Debug\netstandard2.0\MongoDB.Driver.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.GridFS">
+      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.GridFS\bin\Debug\netstandard2.0\MongoDB.Driver.GridFS.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy">
+      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Legacy\bin\Debug\netstandard2.0\MongoDB.Driver.Legacy.dll</HintPath>
     </Reference>
   </ItemGroup>
 

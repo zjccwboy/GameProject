@@ -10,12 +10,6 @@ namespace H6Game.Entities
         public string FAccountId { get; set; }
 
         [BsonElement("LR")]
-        public LoginResutlCode FLoginResult { get; set; }       
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        [BsonElement("CT")]
-        public DateTime FCreateTime { get; set; }
+        public LoginResutlCode FLoginResult { get; set; }
     }
 }

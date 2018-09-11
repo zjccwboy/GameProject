@@ -24,10 +24,10 @@
       <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Bson\obj\Debug\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\ThirdParty\MongodbDriver\DotNetCoreDriver\MongoDB.Driver\obj\Debug\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -29,11 +29,5 @@ namespace H6Game.Entities
         /// </summary>
         [BsonElement("AIds")]
         public List<string> FBetAccountIds { get; set; }
-
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        [BsonElement("CT")]
-        public DateTime FCreateTime { get; set; }
     }
 }

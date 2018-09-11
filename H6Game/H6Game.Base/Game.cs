@@ -32,12 +32,16 @@ namespace H6Game.Base
             IsInitialized = true;
 
 #if SERVER
-            MongoDBManager.Init();
             Game.Scene.AddComponent<InnerComponent>();
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
             Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
 #endif
+        }
+
+        public static void InitDB()
+        {
+            MongoDBManager.Init();
         }
 
         public static void Update()
