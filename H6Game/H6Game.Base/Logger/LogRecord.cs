@@ -79,7 +79,8 @@ namespace H6Game.Base
         static LogRecord()
         {
             GlobalContext.Properties["InstanceName"] = Process.GetCurrentProcess().Id;
-            var loggers = LoggerManager.GetCurrentLoggers(Assembly.GetCallingAssembly());
+            var assembly = Assembly.GetCallingAssembly();
+            var loggers = LoggerManager.GetCurrentLoggers(assembly);
             var loggerSystem = loggers.SingleOrDefault(f => f.Name.Equals("LoggerNameSystem", StringComparison.OrdinalIgnoreCase));
             if (loggerSystem == null)
             {
