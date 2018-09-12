@@ -59,11 +59,11 @@ namespace H6Game.Base
         /// </summary>
         private static void LoadType()
         {
-            //var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(a => a.Name.Contains("H6Game")).ToList();
-            //var assemblys = AppDomain.CurrentDomain.GetAssemblies().Where(a=> a.FullName.Contains("H6Game")).ToList();
+            var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(a => a.Name.Contains("H6Game")).ToList();
+            var assemblys = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.Contains("H6Game")).ToList();
 
-            var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList();
-            var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            //var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList();
+            //var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
             foreach (var name in assemblyNames)
             {
                 var exist = false;

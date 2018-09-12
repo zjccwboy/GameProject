@@ -14,7 +14,7 @@ using MongoDB.Driver.GridFS;
 namespace H6Game.Base
 {
 
-    public class DBContext<TEntity> : IContext<TEntity> where TEntity : BaseEntity
+    public class DBContext<TEntity> where TEntity : BaseEntity
     {
         #region 构造函数
         public DBContext(IMongoDatabase database)

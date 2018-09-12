@@ -5,7 +5,7 @@ namespace H6Game.Base
 {
     public interface IRpository<TEntity> : IRpository where TEntity : BaseEntity
     {
-        IContext<TEntity> DBContext { get;}
+        DBContext<TEntity> DBContext { get;}
     }
 
     public interface IRpository
