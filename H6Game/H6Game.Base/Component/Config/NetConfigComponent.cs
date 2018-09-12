@@ -62,14 +62,6 @@ namespace H6Game.Base
                     Port = 50000,
                     IP = "127.0.0.1",
                 },
-
-#if SERVER
-                DbConfig = new DbConfigEntity
-                {
-                    ConnectionString = "mongodb://localhost:27017",
-                    DatabaseName = "H6Game",
-                },
-#endif
             };
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))

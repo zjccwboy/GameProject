@@ -24,17 +24,68 @@ namespace H6Game.BaseTest
         {
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            Account.SetCreator("Admin");
+            Account.SetCreator("AddAsync");
             var success = await rpository.AddAsync(Account);
             Assert.True(success);
         }
 
         [Fact]
-        public async void TestUpdate()
+        public void TestUpdate()
         {
             Game.InitDB();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            Account.SetUpdater("Admin");
+            Account.SetUpdater("Update");
+            var result = rpository.DBContext.Update(Account, a => a.FAccountName == "SAM");
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        public async void TestUpdateAsync()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            Account.SetUpdater("UpdateAsync");
+            var result = await rpository.DBContext.UpdateAsync(Account, a => a.FAccountName == "SAM");
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        public void TestUpdateMany()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            Account.SetUpdater("UpdateMany");
+            var result = rpository.DBContext.UpdateMany(Account, a => a.FAccountName == "SAM");
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        public async void TestUpdateManyAsync()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            Account.SetUpdater("UpdateManyAsync");
+            var result = await rpository.DBContext.UpdateManyAsync(Account, a => a.FAccountName == "SAM");
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        public void TestUpdateManyAs()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            Account.SetUpdater("UpdateManyAs");
+            var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime) };
+            var result = rpository.DBContext.UpdateManyAs(Account, a => a.FAccountName == "SAM", updates);
+            Assert.True(result > 0);
+        }
+
+        [Fact]
+        public async void TestUpdateManyAsAsync()
+        {
+            Game.InitDB();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            Account.SetUpdater("UpdateManyAsAsync");
             var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime)};
             var result = await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
             Assert.True(result > 0);

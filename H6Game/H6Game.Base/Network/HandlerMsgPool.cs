@@ -135,7 +135,12 @@ namespace H6Game.Base
 
         public static int GetTypeCode(Type type)
         {
-            return MsgCodeDictionary[type];
+            if(!MsgCodeDictionary.TryGetValue(type, out int result))
+            {
+                throw new Exception($"MessageType:{type} 不存在.");
+            }
+
+            return result;
         }
 
         public static bool IsValidMessage(this Packet packet, Type type)

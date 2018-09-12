@@ -7,7 +7,7 @@ namespace H6Game.Base
 {
     public static class MongoConfig
     {
-        private static SysConfig Config { get; set; }
+        private static DbConfigEntity Config { get; set; }
         public static string DatabaseNaeme { get; set; }
         public static MongoClient DBClient { get;}
         public static MongoServer DBServer  => DBClient.GetServer();
@@ -16,16 +16,18 @@ namespace H6Game.Base
         static MongoConfig()
         {
             Game.Scene.AddComponent<EntityComponent>();
-            Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
-            DBClient = new MongoClient(Config.DbConfig.ConnectionString);
-            DatabaseNaeme = Config.DbConfig.DatabaseName;
+            Config = Game.Scene.AddComponent<DBConfigComponent>().ConfigEntity;
+            DBClient = new MongoClient(Config.ConnectionString);
+            DatabaseNaeme = Config.DatabaseName;
             SetMongoDatabase();
             AddRpositoryComponents();
+
+            Log.Logger.Info("MongoDB初始化成功.");
         }
 
         public static void Init()
         {
-            Log.Logger.Info("MongoDB初始化成功.");
+
         }
 
         private static void AddRpositoryComponents()

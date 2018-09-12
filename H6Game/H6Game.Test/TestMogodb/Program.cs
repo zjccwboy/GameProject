@@ -218,8 +218,8 @@ namespace TestMogodb
             };
 
 
-            var config = Game.Scene.GetComponent<NetConfigComponent>();
-            var mongoDbHelper = new MongoDbCsharpHelper(config.ConfigEntity.DbConfig.ConnectionString, "H6Game");
+            var config = Game.Scene.GetComponent<DBConfigComponent>();
+            var mongoDbHelper = new MongoDbCsharpHelper(config.ConfigEntity.ConnectionString, "H6Game");
 
             var tableName = accountInfo.GetType().Name;
 

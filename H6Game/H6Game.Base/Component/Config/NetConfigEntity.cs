@@ -37,11 +37,6 @@ namespace H6Game.Base
         {
             return this.InNetConfig.LocalEndPoint.GetMessage();
         }
-
-#if SERVER
-        [BsonElement]
-        public DbConfigEntity DbConfig { get; set; }
-#endif
     }
 
     public class InNetConfigEntity
@@ -51,15 +46,6 @@ namespace H6Game.Base
 
         [BsonElement]
         public EndPointEntity LocalEndPoint { get; set; }
-    }
-
-    public class DbConfigEntity
-    {
-        [BsonElement]
-        public string ConnectionString { get; set; }
-
-        [BsonElement]
-        public string DatabaseName { get; set; }
     }
 
     public class EndPointEntity
