@@ -86,6 +86,7 @@
     </None>
     <None Include="packages.config" />
     <None Include="Start.bat" />
+    <None Include="Start2.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
