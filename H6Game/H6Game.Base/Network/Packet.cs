@@ -77,9 +77,8 @@ namespace H6Game.Base
             this.BodyStream = new MemoryStream(parser.BlockSize);
             this.Parser = parser;
 
-            var config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
-            this.IsCompress = config.IsCompress;
-            this.IsEncrypt = config.IsEncrypt;
+            this.IsCompress = PacketConfig.IsCompress;
+            this.IsEncrypt = PacketConfig.IsEncrypt;
         }
 
         public void WriteBuffer()
@@ -111,5 +110,11 @@ namespace H6Game.Base
             this.BodyStream.Close();
             this.BodyStream.Dispose();
         }
+    }
+
+    public class PacketConfig
+    {
+        public static bool IsCompress { get; set; }
+        public static bool IsEncrypt { get; set; }
     }
 }

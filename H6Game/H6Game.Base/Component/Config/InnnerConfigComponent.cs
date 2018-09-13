@@ -6,15 +6,18 @@ namespace H6Game.Base
 {
     [Event(EventType.Awake)]
     [SingletCase]
-    public sealed class NetConfigComponent : BaseComponent
+    public sealed class InnnerConfigComponent : BaseComponent
     {
-        public SysConfig ConfigEntity { get; private set; }
+        public InnerConfig InnerConfig { get; private set; }
 
         public override void Awake()
         {
             var path = $"{Directory.GetCurrentDirectory()}\\SysConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
+
+            PacketConfig.IsCompress = InnerConfig.IsCompress;
+            PacketConfig.IsEncrypt = InnerConfig.IsEncrypt;
         }
 
         private bool ReadConfigFile(string path)
@@ -27,16 +30,16 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    ConfigEntity = BsonSerializer.Deserialize<SysConfig>(json);
+                    InnerConfig = BsonSerializer.Deserialize<InnerConfig>(json);
                 }
             }
 
-            if(ConfigEntity.InNetConfig == null || ConfigEntity.OuNetConfig == null || string.IsNullOrEmpty(ConfigEntity.OuNetHost))
+            if(InnerConfig.InnerListenConfig == null || InnerConfig.OutListenConfig == null)
                 return false;
 
-            if (ConfigEntity.InNetConfig.CenterEndPoint != null
-                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.CenterEndPoint.IP)
-                && !string.IsNullOrEmpty(ConfigEntity.InNetConfig.LocalEndPoint.IP))
+            if (InnerConfig.InnerListenConfig.CenterEndPoint != null
+                && !string.IsNullOrEmpty(InnerConfig.InnerListenConfig.CenterEndPoint.IP)
+                && !string.IsNullOrEmpty(InnerConfig.InnerListenConfig.LocalEndPoint.IP))
                 return true;
 
             return false;
@@ -44,20 +47,19 @@ namespace H6Game.Base
 
         private void SaveConfigile(string path)
         {
-            ConfigEntity = new SysConfig
+            InnerConfig = new InnerConfig
             {
-                IsCenterServer = true,
-                OuNetHost = "payapi.test.com",
+                IsCenterServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
 
-                InNetConfig = new InNetConfigEntity
+                InnerListenConfig = new InnerListenConfig
                 {
-                    CenterEndPoint = new EndPointEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
-                    LocalEndPoint = new EndPointEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
+                    CenterEndPoint = new EndPointConfig { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
+                    LocalEndPoint = new EndPointConfig { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
                 },
 
-                OuNetConfig = new EndPointEntity
+                OutListenConfig = new EndPointConfig
                 {
                     Port = 50000,
                     IP = "127.0.0.1",
@@ -68,7 +70,7 @@ namespace H6Game.Base
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = ConfigEntity.ToJson();
+                    var json = InnerConfig.ToJson();
                     sr.Write(json);
                     Log.Logger.Error($"未配置服务IP地址端口信息.");
                 }

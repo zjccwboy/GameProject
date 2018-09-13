@@ -218,7 +218,7 @@ namespace TestMogodb
 
 
             var config = Game.Scene.GetComponent<DBConfigComponent>();
-            var mongoDbHelper = new MongoDbCsharpHelper(config.ConfigEntity.ConnectionString, "H6Game");
+            var mongoDbHelper = new MongoDbCsharpHelper(config.DBConfig.ConnectionString, "H6Game");
 
             var tableName = accountInfo.GetType().Name;
 

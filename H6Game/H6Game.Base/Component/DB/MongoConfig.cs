@@ -9,7 +9,7 @@ namespace H6Game.Base
     [SingletCase]
     public class MongoConfig : BaseComponent
     {
-        private DbConfigEntity Config { get; set; }
+        private DbConfig Config { get; set; }
         public string DatabaseNaeme { get; set; }
         public MongoClient DBClient { get; private set; }
         public MongoServer DBServer  => DBClient.GetServer();
@@ -18,7 +18,7 @@ namespace H6Game.Base
         public override void Awake()
         {
             Game.Scene.AddComponent<EntityComponent>();
-            Config = Game.Scene.AddComponent<DBConfigComponent>().ConfigEntity;
+            Config = Game.Scene.AddComponent<DBConfigComponent>().DBConfig;
             DBClient = new MongoClient(Config.ConnectionString);
             DatabaseNaeme = Config.DatabaseName;
             SetMongoDatabase();

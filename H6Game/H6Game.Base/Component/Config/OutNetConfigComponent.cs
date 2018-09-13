@@ -6,14 +6,17 @@ namespace H6Game.Base
 {
     [Event(EventType.Awake)]
     [SingletCase]
-    public class DBConfigComponent : BaseComponent
+    public class OutNetConfigComponent : BaseComponent
     {
-        public DbConfig DBConfig { get; private set; }
+        public OutNetConfig OutNetConfig { get; private set; }
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\DbConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\OutNetConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
+
+            PacketConfig.IsCompress = OutNetConfig.IsCompress;
+            PacketConfig.IsEncrypt = OutNetConfig.IsEncrypt;
         }
 
         private bool ReadConfigFile(string path)
@@ -26,11 +29,11 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    DBConfig = BsonSerializer.Deserialize<DbConfig>(json);
+                    OutNetConfig = BsonSerializer.Deserialize<OutNetConfig>(json);
                 }
             }
 
-            if (DBConfig == null || string.IsNullOrWhiteSpace(DBConfig.ConnectionString) || string.IsNullOrWhiteSpace(DBConfig.DatabaseName)) 
+            if (OutNetConfig == null || string.IsNullOrWhiteSpace(OutNetConfig.OutNetHost))
                 return false;
 
             return true;
@@ -38,22 +41,23 @@ namespace H6Game.Base
 
         private void SaveConfigile(string path)
         {
-            DBConfig = new DbConfig
+            OutNetConfig = new OutNetConfig
             {
-                ConnectionString = "mongodb://localhost:27017",
-                DatabaseName = "H6Game",
+                OutNetHost = "payapi.test.com",
+                IsCompress = false,
+                IsEncrypt = false,
+                Port = 50000,
             };
 
             using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = DBConfig.ToJson();
+                    var json = OutNetConfig.ToJson();
                     sr.Write(json);
-                    Log.Logger.Error($"数据库连接信息未配置.");
+                    Log.Logger.Error($"外网连接信息未配置.");
                 }
             }
         }
-
     }
 }

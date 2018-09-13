@@ -1,6 +1,8 @@
 ﻿using H6Game.Base;
 using H6Game.Message;
+using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestGClient
@@ -51,6 +53,9 @@ namespace TestGClient
         private static async Task Call(Network network)
         {
             await network.CallMessage<TestMessage, TestMessage>(send, 1024);
+
+            if (Thread.CurrentThread.ManagedThreadId != 1)
+                Console.WriteLine("Thread.CurrentThread.ManagedThreadId");
 
             Count++;
             if (Swatch.ElapsedMilliseconds >= 1000)

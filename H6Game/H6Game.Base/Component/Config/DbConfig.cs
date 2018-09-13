@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base
 {
-    public class DbConfigEntity
+    public class DbConfig
     {
         [BsonElement]
         public string ConnectionString { get; set; }

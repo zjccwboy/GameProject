@@ -14,8 +14,8 @@ namespace H6Game.Base
     [SingletCase]
     public sealed class InnerComponent : BaseComponent
     {
-        private SysConfig Config { get; set; }
-        private EndPointEntity DefaultCenterEndPoint { get; set; }
+        private InnerConfig Config { get; set; }
+        private EndPointConfig DefaultCenterEndPoint { get; set; }
 
         private readonly ConcurrentDictionary<int, Session> InConnectedSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Session> DisconnectedSessions = new ConcurrentDictionary<int, Session>();
@@ -45,7 +45,7 @@ namespace H6Game.Base
         /// <summary>
         /// 内网监听IP端口消息类
         /// </summary>
-        public NetEndPointMessage InNetMessage { get { return this.Config.GetInMessage(); } }
+        public NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
 
         /// <summary>
         /// 外网监听IP端口消息类
@@ -79,19 +79,19 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
+            this.Config = Game.Scene.AddComponent<InnnerConfigComponent>().InnerConfig;
         }
 
         public override void Start()
         {
-            this.DefaultCenterEndPoint = Config.InNetConfig.CenterEndPoint;
+            this.DefaultCenterEndPoint = Config.InnerListenConfig.CenterEndPoint;
             var center = this.Config.GetCenterMessage();
             if (this.Config.IsCenterServer)
             {
                 HandleInAccept(center);
                 return;
             }
-            HandleInAccept(this.Config.GetInMessage());
+            HandleInAccept(this.Config.GetInnerMessage());
             this.Connecting(center);
             HandleOutAccept(this.Config.GetOutMessage());
         }
@@ -130,7 +130,7 @@ namespace H6Game.Base
                 return;
 
             //判断是否是本地服务，是排除掉
-            if(message == this.Config.GetInMessage())
+            if(message == this.Config.GetInnerMessage())
                 return;
 
             //排除中心服务
@@ -209,7 +209,7 @@ namespace H6Game.Base
                 return;
 
             //不连接进程内的监听端口
-            if (message == this.Config.GetInMessage())
+            if (message == this.Config.GetInnerMessage())
                 return;
 
             var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Tcp);
@@ -226,7 +226,7 @@ namespace H6Game.Base
                 if (this.DisconnectedSessions.TryRemove(hashCode, out Session oldSession))
                     this.InConnectedSessions[hashCode] = oldSession;
 
-                var localMessage = this.Config.GetInMessage();
+                var localMessage = this.Config.GetInnerMessage();
                 this.InNetMapManager.Add(c, message);
 
                 //连接成功后把本地监听端口发送给远程进程

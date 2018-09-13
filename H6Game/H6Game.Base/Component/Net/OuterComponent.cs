@@ -6,7 +6,7 @@ namespace H6Game.Base
     [SingletCase]
     public sealed class OuterComponent : BaseComponent
     {
-        private SysConfig Config { get; set; }
+        private OutNetConfig Config { get; set; }
 
         public Network Network { get; private set; }
 
@@ -14,7 +14,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = Game.Scene.GetComponent<NetConfigComponent>().ConfigEntity;
+            this.Config = Game.Scene.AddComponent<OutNetConfigComponent>().OutNetConfig;
         }
 
         public override void Start()
@@ -47,9 +47,9 @@ namespace H6Game.Base
 
         private IPEndPoint GetLoginServerEndPoint()
         {
-            var hostInfo = Dns.GetHostEntry(Config.OuNetHost);
+            var hostInfo = Dns.GetHostEntry(Config.OutNetHost);
             IPAddress ipAddress = hostInfo.AddressList[0];
-            var endPoint = new IPEndPoint(ipAddress, Config.OuNetConfig.Port);
+            var endPoint = new IPEndPoint(ipAddress, Config.Port);
             return endPoint;
         }
     }

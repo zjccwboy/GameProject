@@ -18,8 +18,6 @@ namespace H6Game.Base
             Scene = new SceneManager();
             Event = new EventManager();
             Actor = new ActorManager();
-
-            Scene.AddComponent<NetConfigComponent>();
         }
 
         public static void Update()
