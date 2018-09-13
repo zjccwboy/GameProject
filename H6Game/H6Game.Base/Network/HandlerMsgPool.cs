@@ -168,12 +168,20 @@ namespace H6Game.Base
 
         public static IEnumerable<IHandler> GetHandler(int messageCmd)
         {
-            return HandlerDictionary[messageCmd];
+            if (!HandlerDictionary.TryGetValue(messageCmd, out HashSet<IHandler> value))
+            {
+                throw new Exception($"MessageCMD:{messageCmd} 没有IHandler订阅该消息.");
+            }
+            return value;
         }
 
         public static IEnumerable<IActorHandler> GetActorHandler(int messageCmd)
         {
-            return ActorHandlerDictionary[messageCmd];
+            if(!ActorHandlerDictionary.TryGetValue(messageCmd, out HashSet<IActorHandler> value))
+            {
+                throw new Exception($"MessageCMD:{messageCmd} 没有ActorHandler订阅该消息.");
+            }
+            return value;
         }
 
         public static T GetMessage<T>(this Packet packet)
