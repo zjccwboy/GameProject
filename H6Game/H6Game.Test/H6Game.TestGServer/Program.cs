@@ -13,11 +13,10 @@ namespace TestGServer
     {
         static void Main(string[] args)
         {
-            Game.Init();
+            Game.Scene.AddComponent<InnerComponent>();
             while (true)
             {
                 Game.Update();
-                Thread.Sleep(1);
             }
         }
     }

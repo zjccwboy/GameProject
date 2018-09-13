@@ -10,8 +10,6 @@ namespace H6Game.Base
         public static EventManager Event { get;}
         public static ActorManager Actor { get; }
 
-        private static bool IsInitialized;
-
         static Game()
         {
             ComponentPool.Load();
@@ -22,26 +20,6 @@ namespace H6Game.Base
             Actor = new ActorManager();
 
             Scene.AddComponent<NetConfigComponent>();
-        }
-
-        public static void Init()
-        {
-            if (IsInitialized)
-                return;
-
-            IsInitialized = true;
-
-#if SERVER
-            Game.Scene.AddComponent<InnerComponent>();
-            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Player;
-            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Room;
-            Game.Scene.AddComponent<ActorComponent>().ActorType = ActorType.Game;
-#endif
-        }
-
-        public static void InitDB()
-        {
-            MongoConfig.Init();
         }
 
         public static void Update()

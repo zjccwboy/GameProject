@@ -163,20 +163,17 @@ namespace H6Game.Base
             if (!this.Connected)
                 return;
 
-            if (Connected)
+            while (this.SendParser.Buffer.DataSize > 0)
             {
-                while (this.SendParser.Buffer.DataSize > 0)
-                {
-                    this.TimeNow = TimeUitls.Now();
-                    this.LastSendTime = this.TimeNow;
-                    var offset = this.SendParser.Buffer.FirstReadOffset;
-                    var length = this.SendParser.Buffer.FirstDataSize;
-                    length = length > MaxPSize ? MaxPSize : length;
-                    Kcp.Send(this.SendParser.Buffer.First, offset, length);
-                    this.SendParser.Buffer.UpdateRead(length);
-                }
-                SetKcpSendTime();
+                this.TimeNow = TimeUitls.Now();
+                this.LastSendTime = this.TimeNow;
+                var offset = this.SendParser.Buffer.FirstReadOffset;
+                var length = this.SendParser.Buffer.FirstDataSize;
+                length = length > MaxPSize ? MaxPSize : length;
+                Kcp.Send(this.SendParser.Buffer.First, offset, length);
+                this.SendParser.Buffer.UpdateRead(length);
             }
+            SetKcpSendTime();
         }
 
         /// <summary>

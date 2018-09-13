@@ -5,15 +5,17 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public static class MongoConfig
+    [Event(EventType.Awake)]
+    [SingletCase]
+    public class MongoConfig : BaseComponent
     {
-        private static DbConfigEntity Config { get; set; }
-        public static string DatabaseNaeme { get; set; }
-        public static MongoClient DBClient { get;}
-        public static MongoServer DBServer  => DBClient.GetServer();
-        public static IMongoDatabase Database { get; private set; }
+        private DbConfigEntity Config { get; set; }
+        public string DatabaseNaeme { get; set; }
+        public MongoClient DBClient { get; private set; }
+        public MongoServer DBServer  => DBClient.GetServer();
+        public IMongoDatabase Database { get; private set; }
 
-        static MongoConfig()
+        public override void Awake()
         {
             Game.Scene.AddComponent<EntityComponent>();
             Config = Game.Scene.AddComponent<DBConfigComponent>().ConfigEntity;
@@ -25,12 +27,7 @@ namespace H6Game.Base
             Log.Logger.Info("MongoDB初始化成功.");
         }
 
-        public static void Init()
-        {
-
-        }
-
-        private static void AddRpositoryComponents()
+        private void AddRpositoryComponents()
         {
             var types = TypePool.GetTypes<IRpository>();
             foreach (var type in types)
@@ -39,7 +36,7 @@ namespace H6Game.Base
             }
         }
 
-        private static void AddComponent(Type type)
+        private void AddComponent(Type type)
         {
             if (!typeof(IRpository).IsAssignableFrom(type))
                 return;
@@ -50,7 +47,7 @@ namespace H6Game.Base
             Game.Scene.AddComponent(component);
         }
 
-        private static void SetMongoDatabase()
+        private void SetMongoDatabase()
         {
             if (Database == null)
             {
@@ -63,7 +60,7 @@ namespace H6Game.Base
             }
         }
 
-        private static bool DatabaseExists(MongoClient client, string dbName)
+        private bool DatabaseExists(MongoClient client, string dbName)
         {
             try
             {

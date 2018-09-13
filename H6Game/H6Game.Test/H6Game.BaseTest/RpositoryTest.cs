@@ -22,7 +22,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestInsert()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetCreator("AddAsync");
             var success = await rpository.AddAsync(Account);
@@ -32,7 +32,7 @@ namespace H6Game.BaseTest
         [Fact]
         public void TestUpdate()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("Update");
             var result = rpository.DBContext.Update(Account, a => a.FAccountName == "SAM");
@@ -42,7 +42,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestUpdateAsync()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateAsync");
             var result = await rpository.DBContext.UpdateAsync(Account, a => a.FAccountName == "SAM");
@@ -52,7 +52,7 @@ namespace H6Game.BaseTest
         [Fact]
         public void TestUpdateMany()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateMany");
             var result = rpository.DBContext.UpdateMany(Account, a => a.FAccountName == "SAM");
@@ -62,7 +62,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestUpdateManyAsync()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateManyAsync");
             var result = await rpository.DBContext.UpdateManyAsync(Account, a => a.FAccountName == "SAM");
@@ -72,7 +72,7 @@ namespace H6Game.BaseTest
         [Fact]
         public void TestUpdateManyAs()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateManyAs");
             var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime) };
@@ -83,7 +83,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestUpdateManyAsAsync()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateManyAsAsync");
             var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime)};
@@ -94,7 +94,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestFind()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var q = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
             Assert.NotNull(q);
@@ -103,7 +103,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async static void TestFindAs()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount { FAccountName = "SAM" };
             var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
@@ -114,7 +114,7 @@ namespace H6Game.BaseTest
         [Fact]
         public async void TestDelete()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var result = await rpository.DBContext.DeleteAsync(a => a.FAccountName == Account.FAccountName);
             Assert.True(result);

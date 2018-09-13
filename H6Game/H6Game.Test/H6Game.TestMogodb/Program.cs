@@ -37,7 +37,7 @@ namespace TestMogodb
 
         static async void Test()
         {
-            Game.InitDB();
+            Game.Scene.AddComponent<MongoConfig>();
 
             //MongoClient client = new MongoClient(ConnectionString + DBName + AuthSource);
             //MongoServer server = new MongoServer(MongoServerSettings.FromClientSettings(client.Settings));
@@ -93,8 +93,7 @@ namespace TestMogodb
 
         static async void TestDBContext()
         {
-           Game.Init();
-            var context = new DBContext<TestAccount>(MongoConfig.Database);
+            var context = new DBContext<TestAccount>(Game.Scene.GetComponent<MongoConfig>().Database);
 
            var delResult =  await context.DeleteManyAsync(t => t.FAccount != null);
 

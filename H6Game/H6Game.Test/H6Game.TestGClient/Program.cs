@@ -15,61 +15,54 @@ namespace TestGClient
     {
         static void Main(string[] args)
         {
-            Game.Init();
             Game.Scene.AddComponent<OuterComponent>();
-            Swatch.Start();
+            Start();
             while (true)
             {
                 Game.Update();
-                Test();
-                Benchmark();
-                Thread.Sleep(1);
             }
         }
 
         static int Count;
-        static int CallCount;
-        static int BackCount;
         static Stopwatch Swatch = new Stopwatch();
-
         static TestMessage send = new TestMessage
         {
             Actor = 1020201,
             Message = "我是客户端",
         };
 
+        static void Start()
+        {
+            for (var i = 0; i < 2000; i++)
+                Game.Update();
+
+            Swatch.Start();
+
+            for (var i = 0; i < 2000; i++)
+                Test();
+
+        }
+
         static async void Test()
         {
-            for (var i = 0; i < 50; i++)
-               await  TestCallBack();
+            while(true)
+               await Call();
         }
 
-        static async Task TestCallBack()
+        private static async Task Call()
         {
-            CallCount++;
-
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            if (network == null)
-                return;
-            
-            var result = await network.CallMessage<TestMessage, TestMessage>(send, 1024);
-            if (!result.Result)
-                return;
+            await Call(network);
+        }
+
+        public static async Task Call(Network network)
+        {
+            await network.CallMessage<TestMessage, TestMessage>(send, 1024);
 
             Count++;
-            BackCount++;
-
-            if (result.Content.Actor != 1020201)
-                Console.WriteLine("解包错误!");
-
-            //LogRecord.Log(LogLevel.Info, "CallBack", result.Content.ToJson());
-        }
-
-        static void Benchmark()
-        {
             if (Swatch.ElapsedMilliseconds >= 1000)
             {
-                Log.Logger.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count} Call:{CallCount} Back:{BackCount}");
+                Log.Logger.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}");
                 Swatch.Restart();
                 Count = 0;
             }

@@ -59,6 +59,9 @@ namespace TestDistributed
 
             foreach (var network in networks)
             {
+                if (!network.Channel.Connected)
+                    continue;
+
                 await StartCall(network);
             }
         }
