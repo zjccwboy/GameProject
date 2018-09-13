@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TestGClient
+namespace H6Game.TestKcpClientBenckmark
 {
     class Program
     {

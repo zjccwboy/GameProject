@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1CF0C878-2E0D-45D4-9B9F-1DF8B542B5A5}</ProjectGuid>
+    <ProjectGuid>{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TestGClient</RootNamespace>
-    <AssemblyName>H6Game.TestGClient</AssemblyName>
+    <RootNamespace>H6Game.TestKcpServerBenckmark</RootNamespace>
+    <AssemblyName>H6Game.TestKcpServerBenckmark</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,8 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.Protobuf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Google.Protobuf">
       <HintPath>..\..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Base">
@@ -44,10 +43,6 @@
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -61,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

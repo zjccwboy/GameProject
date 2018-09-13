@@ -2,7 +2,7 @@
 using H6Game.Message;
 using System;
 
-namespace TestGServer
+namespace H6Game.TestKcpServerBenckmark
 {
     [HandlerCMD(1024)]
     public class TestHandler : AHandler<TestMessage>

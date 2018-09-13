@@ -1,6 +1,6 @@
 ﻿using H6Game.Base;
 
-namespace TestGServer
+namespace H6Game.TestKcpServerBenckmark
 {
     class Program
     {
