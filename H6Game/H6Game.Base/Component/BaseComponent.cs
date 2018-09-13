@@ -4,7 +4,6 @@ namespace H6Game.Base
 {
     public abstract class BaseComponent : IDisposable
     {        
-
         /// <summary>
         /// 该事件只有第一次创建出来的时候执行一次，应该把资源初始化之类的逻辑放到该事件重写方法中处理。
         /// </summary>
@@ -25,9 +24,15 @@ namespace H6Game.Base
         /// </summary>
         public virtual void Dispose()
         {
-            this.PutBack();
+            if (ComponentPool.IsSingleType(this.GetType()))
+                return;
+
+            this.PutBack();            
         }
 
+        /// <summary>
+        /// 组件唯一Id标识
+        /// </summary>
         public int Id { get; set; }
 
         /// <summary>

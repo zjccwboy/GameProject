@@ -21,7 +21,10 @@ namespace Tester
                 return myName;
             }
         }
+
+
     }
+
 
     // Define a class that has the custom attribute associated with one of its members.
     [MyAttribute("This is an example attribute.")]

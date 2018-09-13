@@ -31,7 +31,7 @@ namespace H6Game.Base
                     }
                     return;
                 }
-                throw new Exception($"MessageCMD:{packet.MessageId}没有在Handler实现类中加入MessageCMDAttribute.");
+                throw new NetworkException($"MessageCMD:{packet.MessageId}没有在Handler实现类中加入MessageCMDAttribute.");
             }
             catch (Exception e)
             {

@@ -28,7 +28,7 @@ namespace H6Game.Base
         public void Receive(Network network)
         {
             if (network.RecvPacket.ActorId <= 0)
-                throw new Exception($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
+                throw new NetworkException($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
 
             if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
                 return;
@@ -64,7 +64,7 @@ namespace H6Game.Base
                 return;
 
             if (network.RecvPacket.ActorId <= 0)
-                throw new Exception($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
+                throw new NetworkException($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
 
             Handler(network);
         }

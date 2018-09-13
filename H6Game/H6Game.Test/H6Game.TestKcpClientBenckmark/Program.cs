@@ -34,7 +34,7 @@ namespace H6Game.TestKcpClientBenckmark
 
             Swatch.Start();
 
-            for (var i = 0; i < 2000; i++)
+            for (var i = 0; i < 1000; i++)
                 Test();
         }
 
@@ -52,7 +52,8 @@ namespace H6Game.TestKcpClientBenckmark
 
         private static async Task Call(Network network)
         {
-            await network.CallMessage<TestMessage, TestMessage>(send, 1024);
+            await network.CallMessage<int>(1024, 1024);
+
 
             if (Thread.CurrentThread.ManagedThreadId != 1)
                 Console.WriteLine("Thread.CurrentThread.ManagedThreadId");

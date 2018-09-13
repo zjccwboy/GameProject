@@ -117,7 +117,7 @@ namespace H6Game.Base
             while (true)
             {
                 if (tryCount > 6)
-                    throw new Exception("解包错误，数据包非法.");
+                    throw new PacketParserException("解包错误，数据包非法.");
 
                 tryCount++;
                 switch (state)

@@ -60,7 +60,7 @@ namespace H6Game.Base
                 if (actorComponent.ActorType == type)
                 {
                     if (!actorComponent.TryGetNetEntity(objectId, out ActorInfoEntity value))
-                        throw new System.Exception("无效的ActorType或者objectId.");
+                        throw new ActorException("无效的ActorType或者objectId.");
 
                     return value;
                 }
@@ -77,7 +77,7 @@ namespace H6Game.Base
                 if (actorComponent.ActorType == type)
                 {
                     if (!actorComponent.TryGetLocalEntity(objectId, out ActorInfoEntity value))
-                        throw new System.Exception("无效的ActorType或者objectId.");
+                        throw new ActorException("无效的ActorType或者objectId.");
 
                     return value;
                 }

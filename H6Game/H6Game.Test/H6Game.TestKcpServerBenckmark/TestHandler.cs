@@ -1,6 +1,8 @@
 ﻿using H6Game.Base;
 using H6Game.Message;
+using H6Game.Rpository;
 using System;
+using System.Threading.Tasks;
 
 namespace H6Game.TestKcpServerBenckmark
 {
@@ -18,11 +20,6 @@ namespace H6Game.TestKcpServerBenckmark
     {
         protected override void Handler(Network network, int message)
         {
-            if(message != 1024)
-            {
-                Console.WriteLine("TestHandlerInt:解包出错");
-            }
-
             network.RpcCallBack(message);
         }
     }

@@ -24,7 +24,7 @@ namespace H6Game.Base
             SetMongoDatabase();
             AddRpositoryComponents();
 
-            Log.Logger.Info("MongoDB初始化成功.");
+            Log.Logger.Info("MongoDB初始化成功。");
         }
 
         private void AddRpositoryComponents()
@@ -42,6 +42,9 @@ namespace H6Game.Base
                 return;
 
             var isSingle = ComponentPool.IsSingleType(type);
+            if (!isSingle)
+                throw new ComponentException("规定Rpository类型组件只能定义成单例(SingleCase)组件。");
+
             var component = ComponentPool.Fetch(type);
             (component as IRpository).SetDBContext(Database);
             Game.Scene.AddComponent(component);
