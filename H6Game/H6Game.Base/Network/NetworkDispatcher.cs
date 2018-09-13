@@ -9,20 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public class NetworkDispatcher
     {
-        private ANetChannel Channel { get;}
-        private ANetService NetService { get;}
-        private Session Session { get;}
-        public Network Network { get;}
-
-        public NetworkDispatcher(Session session, ANetService netService, ANetChannel channel)
-        {
-            this.Session = session;
-            this.NetService = netService;
-            this.Channel = channel;
-            this.Network = new Network(this.Session, this.NetService, this.Channel);
-        }
-
-        public void DoReceive(Packet packet)
+        public static void DoReceive(Network network, Packet packet)
         {
             try
             {
@@ -31,7 +18,7 @@ namespace H6Game.Base
                     var handlers = HandlerMsgPool.GetActorHandler(packet.MessageId);
                     foreach(var handler in handlers)
                     {
-                        handler.Receive(this.Network);
+                        handler.Receive(network);
                     }
                     return;
                 }
@@ -40,7 +27,7 @@ namespace H6Game.Base
                     var handlers = HandlerMsgPool.GetHandler(packet.MessageId);
                     foreach (var handler in handlers)
                     {
-                        handler.Receive(this.Network);
+                        handler.Receive(network);
                     }
                     return;
                 }

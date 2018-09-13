@@ -150,7 +150,7 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                InAcceptNetworks.TryAdd(c.Id, c.Dispatcher.Network);
+                InAcceptNetworks.TryAdd(c.Id, c.Network);
             };
 
             session.OnServerDisconnected = (c) =>
@@ -183,7 +183,7 @@ namespace H6Game.Base
 
             session.OnServerConnected = (c) =>
             {
-                OuAcceptNetworks.TryAdd(c.Id, c.Dispatcher.Network);
+                OuAcceptNetworks.TryAdd(c.Id, c.Network);
             };
 
             session.OnServerDisconnected = (c) => 
@@ -230,19 +230,19 @@ namespace H6Game.Base
                 this.InNetMapManager.Add(c, message);
 
                 //连接成功后把本地监听端口发送给远程进程
-                c.Dispatcher.Network.Send(localMessage, (int)MessageCMD.AddInServerCmd);
+                c.Network.Send(localMessage, (int)MessageCMD.AddInServerCmd);
 
                 //把当前所有连接的内网监听服务发送给远程进程
                 foreach(var entity in this.InNetMapManager.Entities)
                 {
-                    c.Dispatcher.Network.Send(entity, (int)MessageCMD.AddInServerCmd);
+                    c.Network.Send(entity, (int)MessageCMD.AddInServerCmd);
                 }
 
                 if (message != this.Config.GetCenterMessage())
                 {
-                    InConnectedNetworks.TryAdd(c.Id, c.Dispatcher.Network);
+                    InConnectedNetworks.TryAdd(c.Id, c.Network);
 
-                    var callResult = await c.Dispatcher.Network.CallMessage<NetEndPointMessage>((int)MessageCMD.GetOutServerCmd);
+                    var callResult = await c.Network.CallMessage<NetEndPointMessage>((int)MessageCMD.GetOutServerCmd);
                     if (callResult.Result)
                     {
                         //this.Log(LogLevel.Debug, "Connecting", $"收到:{c.RemoteEndPoint} 消息CMD:{(int)MessageCMD.GetOutServerCmd} :{callResult.Content.ToJson()}");

@@ -83,7 +83,7 @@ namespace H6Game.Base
 
         private void OnNetConnected(ANetChannel channel)
         {
-            channel.Dispatcher.Network.Send((int)MessageCMD.SyncActorInfoCmd);
+            channel.Network.Send((int)MessageCMD.SyncActorInfoCmd);
         }
 
         private void OnNetDisconnected(ANetChannel channel)

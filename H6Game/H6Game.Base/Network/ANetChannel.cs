@@ -19,6 +19,8 @@ namespace H6Game.Base
         {
             this.NetService = netService;
             Id = ChannelIdCreator.CreateId();
+
+            this.Network = new Network(this.Session, this.NetService, this);
         }
 
         /// <summary>
@@ -30,6 +32,8 @@ namespace H6Game.Base
         {
             this.NetService = netService;
             Id = conv;
+
+            this.Network = new Network(this.Session, this.NetService, this);
         }
 
         /// <summary>
@@ -58,9 +62,9 @@ namespace H6Game.Base
         public const uint ReConnectInterval = 3000;
 
         /// <summary>
-        /// 消息处理分发类
+        /// 网络类
         /// </summary>
-        public NetworkDispatcher Dispatcher { get; set; }
+        public Network Network { get; }
 
         /// <summary>
         /// RPC字典
