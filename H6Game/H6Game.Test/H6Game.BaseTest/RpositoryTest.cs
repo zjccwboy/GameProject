@@ -16,7 +16,7 @@ namespace H6Game.BaseTest
         {
             FAccountName = "SAM",
             FType = AccountType.CustomerService,
-            FEmail = "zjccwboy@yeah.net",            
+            FEmail = "zjccwboy@yeah.net",
         };
 
         [Fact]
@@ -27,6 +27,27 @@ namespace H6Game.BaseTest
             Account.SetCreator("AddAsync");
             var success = await rpository.AddAsync(Account);
             Assert.True(success);
+        }
+
+        [Fact]
+        public async void TestInsertMany()
+        {
+            Game.Scene.AddComponent<MongoConfig>();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+
+            List<TAccount> accounts = new List<TAccount>();
+            for(var i = 0; i < 100; i++)
+            {
+                var account = new TAccount
+                {
+                    FAccountName = "SAM" + i,
+                    FType = AccountType.CustomerService,
+                    FEmail = "zjccwboy@yeah.net",
+                };
+                account.SetCreator("TestInsertMany");
+                accounts.Add(account);
+            }
+            await rpository.DBContext.InsertManyAsync(accounts);
         }
 
         [Fact]
@@ -86,7 +107,7 @@ namespace H6Game.BaseTest
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateManyAsAsync");
-            var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime)};
+            var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime) };
             var result = await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
             Assert.True(result > 0);
         }
@@ -97,6 +118,15 @@ namespace H6Game.BaseTest
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var q = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
+            Assert.NotNull(q);
+        }
+
+        [Fact]
+        public async void TestFindMany()
+        {
+            Game.Scene.AddComponent<MongoConfig>();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var q = await rpository.DBContext.FindAsync(a => a.FAccountName.Contains("SAM"));
             Assert.NotNull(q);
         }
 
@@ -118,6 +148,16 @@ namespace H6Game.BaseTest
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var result = await rpository.DBContext.DeleteAsync(a => a.FAccountName == Account.FAccountName);
             Assert.True(result);
+        }
+
+        [Fact]
+        public async void TestDeleteMany()
+        {
+            Game.Scene.AddComponent<MongoConfig>();
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = await rpository.DBContext.DeleteManyAsync(a => a.FAccountName.Contains("SAM") && a.Id == "5b9aaa8a1bb3d785c8be34f9");
+            //Assert.True(result);
+            Assert.NotNull(result);
         }
     }
 }

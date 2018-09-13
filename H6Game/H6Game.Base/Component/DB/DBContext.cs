@@ -58,7 +58,6 @@ namespace H6Game.Base
         public List<TEntity> FindAs<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
         {
             var server = Game.Scene.GetComponent<MongoConfig>().DBServer;
-            var settings = new MongoGridFSSettings();
             var collection = server.GetDatabase(Game.Scene.GetComponent<MongoConfig>().DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
             var fs = Fields.Include(fields);
             var query = Query<TEntity>.EQ(memberExpression, value);
@@ -73,7 +72,6 @@ namespace H6Game.Base
         public Task<List<TEntity>> FindAsAsync<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
         {
             var server = Game.Scene.GetComponent<MongoConfig>().DBServer;
-            var settings = new MongoGridFSSettings();
             var collection = server.GetDatabase(Game.Scene.GetComponent<MongoConfig>().DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
             var fs = Fields.Include(fields);
             var query = Query<TEntity>.EQ(memberExpression, value);
