@@ -1,14 +1,10 @@
 ﻿using H6Game.Base;
 using H6Game.Message;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestGServer
 {
-    [H6Game.Message.HandlerCMD(1024)]
+    [HandlerCMD(1024)]
     public class TestHandler : AHandler<TestMessage>
     {
         protected override void Handler(Network network, TestMessage message)
@@ -17,7 +13,7 @@ namespace TestGServer
         }
     }
 
-    [H6Game.Message.HandlerCMD(1024)]
+    [HandlerCMD(1024)]
     public class TestHandlerInt : AHandler<int>
     {
         protected override void Handler(Network network, int message)

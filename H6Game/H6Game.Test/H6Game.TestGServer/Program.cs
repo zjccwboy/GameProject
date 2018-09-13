@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using H6Game.Base;
-using H6Game.Message;
+﻿using H6Game.Base;
 
 namespace TestGServer
 {

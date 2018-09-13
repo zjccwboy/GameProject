@@ -1,12 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Message;
-using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestGClient
@@ -40,7 +34,6 @@ namespace TestGClient
 
             for (var i = 0; i < 2000; i++)
                 Test();
-
         }
 
         static async void Test()
@@ -55,7 +48,7 @@ namespace TestGClient
             await Call(network);
         }
 
-        public static async Task Call(Network network)
+        private static async Task Call(Network network)
         {
             await network.CallMessage<TestMessage, TestMessage>(send, 1024);
 
@@ -67,7 +60,6 @@ namespace TestGClient
                 Count = 0;
             }
         }
-
     }
 
 
