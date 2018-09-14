@@ -13,12 +13,5 @@ namespace H6Game.Base
         public ActorType ActorType { get; set; }
 
         public BaseEntity ActorInfo { get; set; }
-
-        public long GetEntityId()
-        {
-            var entityId = ActorId;
-            entityId = entityId | Network.Channel.Id << 32;
-            return entityId;
-        }
     }
 }
