@@ -122,6 +122,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpClientBenckma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpServerBenckmark", "H6Game.Test\H6Game.TestKcpServerBenckmark\H6Game.TestKcpServerBenckmark.csproj", "{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestActorMessage", "H6Game.Test\H6Game.TestActorMessage\H6Game.TestActorMessage.csproj", "{83AC1E22-95C6-4890-AC6E-754ED60340A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -216,6 +218,10 @@ Global
 		{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83AC1E22-95C6-4890-AC6E-754ED60340A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83AC1E22-95C6-4890-AC6E-754ED60340A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83AC1E22-95C6-4890-AC6E-754ED60340A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83AC1E22-95C6-4890-AC6E-754ED60340A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,6 +245,7 @@ Global
 		{9BB595B1-E3F6-4009-85C0-873049A2072F} = {61168F8B-A28A-4F04-88F8-022352849042}
 		{1CF0C878-2E0D-45D4-9B9F-1DF8B542B5A5} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
 		{F8C2593B-CFCB-4E99-8B05-1615A5449A4F} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
+		{83AC1E22-95C6-4890-AC6E-754ED60340A5} = {D44EC1DD-AD19-4F8F-9B57-08CA9B6AD2FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9256E0EA-B7B6-467E-888A-9A55B18CEB05}

@@ -15,8 +15,9 @@ namespace H6Game.Base
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
         /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="component"></param>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="component">组件实体。</param>
+        /// <returns>新增成功返回true,失败返回false，如果返回false表示池中已经存在该组件。</returns>
         public virtual bool AddComponent<T>(T component) where T : BaseComponent
         {
             var type = component.GetType();
@@ -28,13 +29,16 @@ namespace H6Game.Base
             }
             else
             {
-                IdComponent.AddOrUpdate(component.Id, component, (k, v) => { return component; });
-                if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+                isNew = IdComponent.TryAdd(component.Id, component);
+                if (isNew)
                 {
-                    components = new HashSet<BaseComponent>();
-                    TypeComponent[type] = components;
+                    if (!TypeComponent.TryGetValue(type, out HashSet<BaseComponent> components))
+                    {
+                        components = new HashSet<BaseComponent>();
+                        TypeComponent[type] = components;
+                    }
+                    components.Add(component);
                 }
-                isNew = components.Add(component);
             }
 
             if (isNew)
@@ -51,7 +55,7 @@ namespace H6Game.Base
         /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
-        /// <returns>返回被实例化的组件。</returns>
+        /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T>() where T : BaseComponent
         {
             var component = ComponentPool.Fetch<T>();
@@ -67,7 +71,7 @@ namespace H6Game.Base
         /// <typeparam name="T">组件类型。</typeparam>
         /// <typeparam name="K1">组件构造函数第一个参数类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数。</param>
-        /// <returns>返回被实例化的组件。</returns>
+        /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T,K1>(K1 k1) where T : BaseComponent
         {
             var component = ComponentPool.Fetch<T, K1>(k1);
@@ -85,7 +89,7 @@ namespace H6Game.Base
         /// <typeparam name="K2">组件构造函数第二个参数类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数。</param>
         /// <param name="k2">组件构造函数第二个参数。</param>
-        /// <returns></returns>
+        /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2>(K1 k1, K2 k2) where T : BaseComponent
         {
             var component = ComponentPool.Fetch<T, K1, K2>(k1, k2);
@@ -98,7 +102,7 @@ namespace H6Game.Base
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <exception cref="ComponentException">非SingleCase类型组件异常。</exception>
-        /// <returns></returns>
+        /// <returns>返回一个单例(SigleCase)组件实体</returns>
         public virtual T GetComponent<T>() where T : BaseComponent
         {
             var type = typeof(T);
@@ -115,10 +119,9 @@ namespace H6Game.Base
         /// <summary>
         /// 获取一个组件集合，不允许获取SingleCase
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
+        /// <typeparam name="T">组件类型。</typeparam>
         /// <exception cref="ComponentException">不允许获取SingleCase类型组件异常。</exception>
-        /// <returns></returns>
+        /// <returns>返回一个类型的多例(ManyCase)组件集合。</returns>
         public virtual HashSet<BaseComponent> GetComponents<T>() where T : BaseComponent
         {
             var type = typeof(T);
@@ -137,11 +140,10 @@ namespace H6Game.Base
         /// <summary>
         /// 获取一个组件，不允许获取SingleCase
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="value"></param>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="id">组件Id。</param>
         /// <exception cref="ComponentException">不允许获取SingleCase类型组件异常。</exception>
-        /// <returns></returns>        
+        /// <returns>返回一个类型的多例(ManyCase)组件。</returns>        
         public virtual T GetComponent<T>(int id) where T : BaseComponent
         {
             var type = typeof(T);
@@ -156,6 +158,11 @@ namespace H6Game.Base
             throw new ComponentException($"类型:{type} ID:{id}组件没有加到该组件中.");
         }
 
+        /// <summary>
+        /// 删除一个组件
+        /// </summary>
+        /// <param name="component">组件实体</param>
+        /// <returns>删除成功返回true，失败返回false</returns>
         public virtual bool Remove(BaseComponent component)
         {
             var type = component.GetType();

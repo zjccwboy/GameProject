@@ -20,7 +20,7 @@ namespace H6Game.Base
             switch (actorType)
             {
                 case ActorType.Player:
-                    using(var component = Game.Scene.GetComponent<PlayerComponent>())
+                    using(var component = Game.Scene.AddComponent<PlayerComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
@@ -33,7 +33,7 @@ namespace H6Game.Base
                     }
                     break;
                 case ActorType.Room:
-                    using (var component = Game.Scene.GetComponent<RoomComponent>())
+                    using (var component = Game.Scene.AddComponent<RoomComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
@@ -46,7 +46,7 @@ namespace H6Game.Base
                     }
                     break;
                 case ActorType.Game:
-                    using (var component = Game.Scene.GetComponent<GameComponent>())
+                    using (var component = Game.Scene.AddComponent<GameComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
