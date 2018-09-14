@@ -15,7 +15,6 @@ namespace H6Game.Entities
         /// </summary>
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement]
-        [ProtoMember(1)]
         public string Id { get; set; }
 
         /// <summary>

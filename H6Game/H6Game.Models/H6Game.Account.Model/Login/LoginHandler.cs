@@ -1,11 +1,6 @@
 ﻿using H6Game.Base;
-using H6Game.Entities;
 using H6Game.Entities.Enums;
 using H6Game.Message;
-using H6Game.Rpository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Account.Model.Login
 {
@@ -27,9 +22,11 @@ namespace H6Game.Account.Model.Login
         {
 
             Game.Actor.RemoveActor(ActorType.Player, message.AccountId);
-
             var playerEnity = Game.Actor.GetLocalActor(ActorType.Player, message.AccountId);
-            var playerComponent = Game.Scene.GetComponent<PlayerComponent>(playerEnity.ActorId);
+            using (var playerComponent = Game.Scene.AddComponent<PlayerComponent>())
+            {
+                playerComponent.Remove(playerEnity.Id);
+            }
         }
     }
 }

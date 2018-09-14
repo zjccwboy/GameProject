@@ -4,17 +4,15 @@ using ProtoBuf;
 
 namespace H6Game.Base
 {
-    [ProtoContract]
-    public class ActorInfoEntity : BaseEntity
+    public class ActorEntity : BaseEntity
     {
-        [ProtoMember(2)]
         public int ActorId { get; set; }
 
-        [ProtoMember(3)]
         public Network Network { get; set; }
 
-        [ProtoMember(3)]
         public ActorType ActorType { get; set; }
+
+        public BaseEntity ActorInfo { get; set; }
 
         public long GetEntityId()
         {

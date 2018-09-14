@@ -4,86 +4,62 @@ namespace H6Game.Base
 {
     public sealed class ActorManager
     {
-        public void AddRemoteActor(ActorInfoEntity entity)
+        public void AddRemoteActor(ActorEntity entity)
         {
-            var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach(var component in components)
-            {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == entity.ActorType)
-                    actorComponent.AddNetEntity(entity);
-            }
+            var actorComponent = GetActorComponent(entity.ActorType);
+            actorComponent.AddNetEntity(entity);
         }
 
-        public void AddLocalAcotr(ActorInfoEntity entity)
+        public void AddLocalAcotr(ActorEntity entity)
         {
-            var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach (var component in components)
-            {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == entity.ActorType)
-                    actorComponent.AddLocalEntity(entity);
-            }
+            var actorComponent = GetActorComponent(entity.ActorType);
+            actorComponent.AddLocalEntity(entity);
         }
 
         public void RemoveActor(ActorType type, string objectId)
         {
-            var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach (var component in components)
+            var actorComponent = GetActorComponent(type);
+            var entity = GetRemoteActor(type, objectId);
+            if (entity != null)
             {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == type)
-                {
-                    var entity = GetRemoteActor(type, objectId);
-                    if(entity != null)
-                    {
-                        actorComponent.RemoveFromNet(objectId);
-                        return;
-                    }
+                actorComponent.RemoveFromNet(objectId);
+                return;
+            }
 
-                    entity = GetLocalActor(type, objectId);
-                    if (entity != null)
-                    {
-                        actorComponent.RemoveFromLocal(objectId);
-                        return;
-                    }
-                }
+            entity = GetLocalActor(type, objectId);
+            if (entity != null)
+            {
+                actorComponent.RemoveFromLocal(objectId);
+                return;
             }
         }
 
-        public ActorInfoEntity GetRemoteActor(ActorType type, string objectId)
+        public ActorEntity GetRemoteActor(ActorType type, string objectId)
+        {
+            var actorComponent = GetActorComponent(type);
+            if (!actorComponent.TryGetNetEntity(objectId, out ActorEntity value))
+                throw new ActorException("无效的ActorType或者objectId.");
+            return value;
+        }
+
+        public ActorEntity GetLocalActor(ActorType type, string objectId)
+        {
+            var actorComponent = GetActorComponent(type);
+            if (!actorComponent.TryGetLocalEntity(objectId, out ActorEntity value))
+                throw new ActorException("无效的ActorType或者objectId.");
+            return value;
+        }
+
+        private ActorComponent GetActorComponent(ActorType type)
         {
             var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach (var component in components)
+            foreach(var component in components)
             {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == type)
-                {
-                    if (!actorComponent.TryGetNetEntity(objectId, out ActorInfoEntity value))
-                        throw new ActorException("无效的ActorType或者objectId.");
-
-                    return value;
-                }
+                var actor = component as ActorComponent;
+                if (actor.ActorType == type)
+                    return actor;
             }
             return null;
         }
-
-        public ActorInfoEntity GetLocalActor(ActorType type, string objectId)
-        {
-            var components = Game.Scene.GetComponents<ActorComponent>();
-            foreach (var component in components)
-            {
-                var actorComponent = component as ActorComponent;
-                if (actorComponent.ActorType == type)
-                {
-                    if (!actorComponent.TryGetLocalEntity(objectId, out ActorInfoEntity value))
-                        throw new ActorException("无效的ActorType或者objectId.");
-
-                    return value;
-                }
-            }
-            return null;
-        }
-
     }
 }

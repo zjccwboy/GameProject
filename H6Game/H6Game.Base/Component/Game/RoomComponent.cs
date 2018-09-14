@@ -3,16 +3,16 @@ using H6Game.Entities.Enums;
 
 namespace H6Game.Base
 {
-    public class PlayerComponent : BaseComponent
+    public class RoomComponent : BaseComponent
     {
-        public void AddLocal(TAccount accountInfo)
+        public void AddLocal(TRoom roomInfo)
         {
             Game.Actor.AddLocalAcotr(new ActorEntity
             {
                 ActorId = this.Id,
-                Id = accountInfo.Id,
-                ActorType = ActorType.Player,
-                ActorInfo = accountInfo,
+                Id = roomInfo.Id,
+                ActorType = ActorType.Room,
+                ActorInfo = roomInfo,
             });
         }
 
@@ -22,14 +22,15 @@ namespace H6Game.Base
             {
                 ActorId = this.Id,
                 Id = objectId,
-                ActorType = ActorType.Player,
+                ActorType = ActorType.Room,
                 Network = network,
             });
         }
 
         public void Remove(string objectId)
         {
-            Game.Actor.RemoveActor(ActorType.Player, objectId);
+            Game.Actor.RemoveActor(ActorType.Room, objectId);
         }
     }
+
 }

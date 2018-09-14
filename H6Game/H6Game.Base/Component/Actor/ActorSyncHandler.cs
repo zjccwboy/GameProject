@@ -1,4 +1,5 @@
-﻿using H6Game.Message;
+﻿using H6Game.Entities.Enums;
+using H6Game.Message;
 
 namespace H6Game.Base
 {
@@ -15,20 +16,47 @@ namespace H6Game.Base
             //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
-            switch (cmd)
+            var actorType = message.ActorType;
+            switch (actorType)
             {
-                case MessageCMD.AddActorCmd:
-                    var entity = new ActorInfoEntity
+                case ActorType.Player:
+                    using(var component = Game.Scene.GetComponent<PlayerComponent>())
                     {
-                        ActorId = network.RecvPacket.ActorId,
-                        Network = network,
-                        Id = message.ObjectId,
-                    };
-                    Game.Actor.AddRemoteActor(entity);
+                        if (cmd == MessageCMD.AddActorCmd)
+                        {
+                            component.AddRemote(message.ObjectId, network);
+                        }
+                        else if (cmd == MessageCMD.RemoveActorCmd)
+                        {
+                            component.Remove(message.ObjectId);
+                        }
+                    }
                     break;
-
-                case MessageCMD.RemoveActorCmd:
-                    Game.Actor.RemoveActor(message.ActorType, message.ObjectId);
+                case ActorType.Room:
+                    using (var component = Game.Scene.GetComponent<RoomComponent>())
+                    {
+                        if (cmd == MessageCMD.AddActorCmd)
+                        {
+                            component.AddRemote(message.ObjectId, network);
+                        }
+                        else if (cmd == MessageCMD.RemoveActorCmd)
+                        {
+                            component.Remove(message.ObjectId);
+                        }
+                    }
+                    break;
+                case ActorType.Game:
+                    using (var component = Game.Scene.GetComponent<GameComponent>())
+                    {
+                        if (cmd == MessageCMD.AddActorCmd)
+                        {
+                            component.AddRemote(message.ObjectId, network);
+                        }
+                        else if (cmd == MessageCMD.RemoveActorCmd)
+                        {
+                            component.Remove(message.ObjectId);
+                        }
+                    }
                     break;
             }
         }
@@ -57,13 +85,14 @@ namespace H6Game.Base
                     var syncMessage = new ActorSyncMessage
                     {
                         ObjectId = entity.Id,
+                        ActorType = entity.ActorType,
                     };
                     network.RpcCallBack(syncMessage);
                     count++;
                     if (count >= 100)
                     {
+                        network.Channel.StartSend();
                         count = 0;
-                        network.Session.Update();
                     }
                 }
             }
@@ -82,11 +111,12 @@ namespace H6Game.Base
             //    $"ActorId:{network.RecvPacket.ActorId} " +
             //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
-            var entity = new ActorInfoEntity
+            var entity = new ActorEntity
             {
                 ActorId = network.RecvPacket.ActorId,
                 Network = network,
                 Id = message.ObjectId,
+                ActorType = message.ActorType,
             };
             Game.Actor.AddRemoteActor(entity);
         }
