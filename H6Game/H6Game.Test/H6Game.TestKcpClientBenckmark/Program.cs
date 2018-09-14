@@ -34,7 +34,7 @@ namespace H6Game.TestKcpClientBenckmark
 
             Swatch.Start();
 
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 2000; i++)
                 Test();
         }
 

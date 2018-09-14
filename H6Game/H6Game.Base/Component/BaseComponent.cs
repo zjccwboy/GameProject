@@ -27,6 +27,8 @@ namespace H6Game.Base
             if (ComponentPool.IsSingleType(this.GetType()))
                 return;
 
+            Game.Scene.Remove(this);
+
             this.PutBack();            
         }
 

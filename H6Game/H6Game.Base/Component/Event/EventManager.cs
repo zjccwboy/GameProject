@@ -4,7 +4,6 @@ namespace H6Game.Base
 {
     public class EventManager
     {
-        private HashSet<BaseComponent> Disposes { get; } = new HashSet<BaseComponent>();
         private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
         private HashSet<BaseComponent> Starts { get; } = new HashSet<BaseComponent>();
 
@@ -32,7 +31,7 @@ namespace H6Game.Base
             if (eventType == EventType.None)
                 return false;
 
-            if (Disposes.Contains(component) || Updates.Contains(component))
+            if (Updates.Contains(component))
             {
                 return false;
             }
@@ -40,20 +39,7 @@ namespace H6Game.Base
             HandlerEvent(component, eventType & EventType.Awake);
             HandlerEvent(component, eventType & EventType.Start);
             HandlerEvent(component, eventType & EventType.Update);
-            HandlerEvent(component, eventType & EventType.Dispose);
             return true;
-        }
-
-        public void Remove(BaseComponent component)
-        {
-            var type = component.GetType();
-            Updates.Remove(component);
-            var result = Disposes.Remove(component);
-            if (result)
-            {
-                if (!ComponentPool.IsSingleType(type))
-                    component.Dispose();
-            }
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)
@@ -75,10 +61,6 @@ namespace H6Game.Base
             else if ((eventType & EventType.Update) == EventType.Update)
             {
                 Updates.Add(component);
-            }
-            else if ((eventType & EventType.Dispose) == EventType.Dispose)
-            {
-                Disposes.Add(component);
             }
         }
     }

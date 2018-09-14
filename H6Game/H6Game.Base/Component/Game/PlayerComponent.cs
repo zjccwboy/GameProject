@@ -3,7 +3,6 @@ using H6Game.Entities.Enums;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Dispose)]
     public class PlayerComponent : BaseComponent
     {
         public TAccount AccountInfo { get; private set; }

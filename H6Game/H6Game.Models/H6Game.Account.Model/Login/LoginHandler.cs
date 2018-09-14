@@ -30,7 +30,6 @@ namespace H6Game.Account.Model.Login
 
             var playerEnity = Game.Actor.GetLocalActor(ActorType.Player, message.AccountId);
             var playerComponent = Game.Scene.GetComponent<PlayerComponent>(playerEnity.ActorId);
-            Game.Scene.Remove(playerComponent);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace H6Game.Entities
         /// <summary>
         /// 是否已经结算
         /// </summary>
-        [BsonElement("")]
-        public bool IsUnsettled { get; set; }
+        [BsonElement("UD")]
+        public bool FIsUnsettled { get; set; }
 
         /// <summary>
         /// 房间Id
