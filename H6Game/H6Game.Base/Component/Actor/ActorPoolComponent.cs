@@ -14,8 +14,8 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
-            Log.Logger.Info($"{network.RecvPacket.ToBson()}");
-            Game.Actor.GetActorPool(message.ActorType).AddOrRemove(message, network);
+            Log.Logger.Info(network.RecvPacket.ToJson());
+            Game.Actor.GetActorPool(message.ActorType).AddOrRemoveRemoteActor(message, network);
         }
     }
 
@@ -27,7 +27,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            Log.Logger.Info($"{network.RecvPacket.ToBson()}");
+            Log.Logger.Info(network.RecvPacket.ToJson());
 
             //回发AMessageCMD.AddActorCmd消息告诉远程订阅服务新增RemoteActor
             network.RecvPacket.MessageCmd = (int)MessageCMD.AddActorCmd;
@@ -74,7 +74,7 @@ namespace H6Game.Base
             innerComponent.OnConnected += (channel) => { channel.Network.Send((int)MessageCMD.SyncActorInfoCmd); };
         }
 
-        public void AddOrRemove(ActorSyncMessage message, Network network)
+        public void AddOrRemoveRemoteActor(ActorSyncMessage message, Network network)
         {
             if (network.RecvPacket.MessageCmd == (int)MessageCMD.AddActorCmd)
             {
@@ -109,22 +109,22 @@ namespace H6Game.Base
                 case ActorType.Player:
                     {
                         var component = Game.Scene.AddComponent<PlayerComponent>();
-                        AddRemote(component);
                         component.AddRemote(message.ObjectId, network);
+                        AddRemote(component);
                     }
                     break;
                 case ActorType.Room:
                     {
                         var component = Game.Scene.AddComponent<RoomComponent>();
-                        AddRemote(component);
                         component.AddRemote(message.ObjectId, network);
+                        AddRemote(component);
                     }
                     break;
                 case ActorType.Game:
                     {
                         var component = Game.Scene.AddComponent<GameComponent>();
-                        AddRemote(component);
                         component.AddRemote(message.ObjectId, network);
+                        AddRemote(component);
                     }
                     break;
             }
@@ -151,16 +151,8 @@ namespace H6Game.Base
             if (!AllComponentDictionary.TryRemove(objectId, out BaseActorEntityComponent component))
                 return;
 
-            RemoteComponentDictionary.TryRemove(component.Id, out component);
-
-            var message = new ActorSyncMessage
-            {
-                ObjectId = component.ActorEntity.Id,
-                ActorType = component.ActorEntity.ActorType,
-            };
-            component.ActorEntity.Network.SendActor(message, (int)MessageCMD.RemoveActorCmd, component.ActorEntity.ActorId);
-
-            component.Dispose();
+            if(RemoteComponentDictionary.TryRemove(component.Id, out component))
+                component.Dispose();
         }
 
         public void RemoveLocal(string objectId)
@@ -168,11 +160,11 @@ namespace H6Game.Base
             if (!AllComponentDictionary.TryRemove(objectId, out BaseActorEntityComponent component))
                 return;
 
-            LocalComponentDictionary.TryRemove(component.Id, out component);
-
-            NotifyAllServerWithRemove(component.ActorEntity);
-
-            component.Dispose();
+            if(LocalComponentDictionary.TryRemove(component.Id, out component))
+            {
+                NotifyAllServerWithRemove(component.ActorEntity);
+                component.Dispose();
+            }
         }
 
 
@@ -186,7 +178,7 @@ namespace H6Game.Base
             var count = 0;
             foreach (var localComponent in LocalComponents)
             {
-                localComponent.SendActorMessage(network);
+                localComponent.SendLocalActorInfoMessage(network);
 
                 count++;
 

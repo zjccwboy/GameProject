@@ -14,7 +14,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceStack(LogLevel.Fatal, messageToTrace);
         }
 
@@ -23,7 +23,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceException(LogLevel.Fatal, exception, messageToTrace);
         }
 
@@ -32,7 +32,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceStack(LogLevel.Info, messageToTrace);
         }
 
@@ -41,7 +41,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             Trace(LogLevel.Warn, messageToTrace);
         }
 
@@ -50,7 +50,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceStack(LogLevel.Error, messageToTrace);
         }
 
@@ -59,7 +59,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceException(LogLevel.Error, exception, messageToTrace);
         }
 
@@ -68,7 +68,7 @@ namespace H6Game.Base
             if (exception == null)
                 return;
 
-            string messageToTrace = $"args:{args}";
+            string messageToTrace = args == null ? string.Empty : $"args:{args}";
             TraceException(LogLevel.Error, exception, messageToTrace);
         }
 
@@ -77,7 +77,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = $"{message},args:{args}";
+            string messageToTrace = args == null ? message : $"{message},args:{args}";
             TraceStack(LogLevel.Debug, messageToTrace);
         }
 
