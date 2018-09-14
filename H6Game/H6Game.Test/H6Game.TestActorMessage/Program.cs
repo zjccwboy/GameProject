@@ -14,9 +14,9 @@ namespace H6Game.TestActorMessage
         {
             Game.Scene.AddComponent<InnerComponent>();
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Player);
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Room);
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Game);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Player);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Room);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Game);
 
             TestAccountActor.Start();
             TestGameActor.Start();

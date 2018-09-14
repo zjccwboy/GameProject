@@ -371,7 +371,7 @@ namespace H6Game.Base
 
         private void SetHead(Packet packet, int messageCmd, int rpcId, int actorId)
         {
-            packet.MessageId = messageCmd;
+            packet.MessageCmd = messageCmd;
             packet.RpcId = rpcId;
             packet.ActorId = actorId;
         }

@@ -32,7 +32,7 @@ public static class PacketHelper
             packet.HeadBytes[4] |= (byte)(packet.KcpProtocal << 4);
 
         //写MessageId
-        packet.MessageId.WriteTo(packet.HeadBytes, 5);
+        packet.MessageCmd.WriteTo(packet.HeadBytes, 5);
 
         //写MsgTypeCode
         packet.MsgTypeCode.WriteTo(packet.HeadBytes, 9);

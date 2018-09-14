@@ -1,5 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Entities;
+using H6Game.Entities.Enums;
 using H6Game.Rpository;
 using System;
 using System.Collections.Generic;
@@ -34,10 +35,7 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TAccount account)
         {
-            using(var component = Game.Scene.AddComponent<PlayerHandlerComponent>())
-            {
-                component.AddLocal(account);
-            }
+            Game.Scene.AddComponent<PlayerComponent>().Add(account);
         }
     }
 }

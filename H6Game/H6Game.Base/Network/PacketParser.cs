@@ -170,7 +170,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(MessageIdFlagSize - count);
                             }
                             readLength += MessageIdFlagSize;
-                            Packet.MessageId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            Packet.MessageCmd = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
                             state = ParseState.MsgType;
                             break;
                         }

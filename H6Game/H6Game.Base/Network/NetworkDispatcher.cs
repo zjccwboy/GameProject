@@ -15,7 +15,7 @@ namespace H6Game.Base
             {
                 if (packet.ActorId > 0)
                 {
-                    var handlers = HandlerMsgPool.GetActorHandler(packet.MessageId);
+                    var handlers = HandlerMsgPool.GetActorHandler(packet.MessageCmd);
                     foreach(var handler in handlers)
                     {
                         handler.Receive(network);
@@ -24,14 +24,14 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    var handlers = HandlerMsgPool.GetHandler(packet.MessageId);
+                    var handlers = HandlerMsgPool.GetHandler(packet.MessageCmd);
                     foreach (var handler in handlers)
                     {
                         handler.Receive(network);
                     }
                     return;
                 }
-                throw new NetworkException($"MessageCMD:{packet.MessageId}没有在Handler实现类中加入MessageCMDAttribute.");
+                throw new NetworkException($"MessageCMD:{packet.MessageCmd}没有在Handler实现类中加入MessageCMDAttribute.");
             }
             catch (Exception e)
             {

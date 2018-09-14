@@ -7,6 +7,33 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
+    [HandlerCMD(MessageCMD.AddInServerCmd)]
+    public class DistributedHandler : AHandler<NetEndPointMessage>
+    {
+        protected override void Handler(Network network, NetEndPointMessage message)
+        {
+            Game.Scene.GetComponent<InnerComponent>().AddService(network, message);
+        }
+    }
+
+    [HandlerCMD(MessageCMD.GetOutServerCmd)]
+    public class OutNetMessageSync : AHandler
+    {
+        protected override void Handler(Network network)
+        {
+            Game.Scene.GetComponent<InnerComponent>().GetOutNet(network);
+        }
+    }
+
+    [HandlerCMD(MessageCMD.GetInServerCmd)]
+    public class InNetMessageSync : AHandler
+    {
+        protected override void Handler(Network network)
+        {
+            Game.Scene.GetComponent<InnerComponent>().GetInner(network);
+        }
+    }
+
     /// <summary>
     /// 内网分布式连接核心组件
     /// </summary>
@@ -45,12 +72,12 @@ namespace H6Game.Base
         /// <summary>
         /// 内网监听IP端口消息类
         /// </summary>
-        public NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
+        private NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
 
         /// <summary>
         /// 外网监听IP端口消息类
         /// </summary>
-        public NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
+        private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
 
         /// <summary>
         /// 是否是中心服务
@@ -124,13 +151,41 @@ namespace H6Game.Base
             }
         }
 
-        public void AddSession(NetEndPointMessage message)
+        public void AddService(Network network, NetEndPointMessage message)
+        {
+            if (InNetMapManager.Existed(message))
+                return;
+
+            AddSession(message);
+            if (IsCenterServer)
+            {
+                InNetMapManager.Add(network.Channel, message);
+
+                network.Broadcast(message, (int)MessageCMD.AddInServerCmd);
+                foreach (var entity in InNetMapManager.Entities)
+                {
+                    network.RpcCallBack(entity);
+                }
+            }
+        }
+
+        public void GetOutNet(Network network)
+        {
+            network.RpcCallBack(OutNetMessage);
+        }
+
+        public void GetInner(Network network)
+        {
+            network.RpcCallBack(InNetMessage);
+        }
+
+        private void AddSession(NetEndPointMessage message)
         {
             if (Config.IsCenterServer)
                 return;
 
             //判断是否是本地服务，是排除掉
-            if(message == this.Config.GetInnerMessage())
+            if (message == this.Config.GetInnerMessage())
                 return;
 
             //排除中心服务

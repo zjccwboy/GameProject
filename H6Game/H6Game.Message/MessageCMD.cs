@@ -40,11 +40,11 @@ namespace H6Game.Message
         /// <summary>
         /// 获取一个网关连接地址
         /// </summary>
-        GetGateEndPoint,
+        GetGateEndPoint = 200,
         /// <summary>
         /// 客户端登陆
         /// </summary>
-        ClientLogin = 200,
+        ClientLogin,
         /// <summary>
         /// 客户端登出
         /// </summary>

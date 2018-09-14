@@ -36,7 +36,7 @@ namespace H6Game.Base
         /// <summary>
         /// MessageId
         /// </summary>
-        public int MessageId;
+        public int MessageCmd;
 
         /// <summary>
         /// 消息类型指定代码
@@ -96,7 +96,7 @@ namespace H6Game.Base
             IsCompress = false;
             IsHeartbeat = false;
             KcpProtocal = 0;
-            MessageId = 0;
+            MessageCmd = 0;
             RpcId = 0;
             ActorId = 0;
             MsgTypeCode = 0;

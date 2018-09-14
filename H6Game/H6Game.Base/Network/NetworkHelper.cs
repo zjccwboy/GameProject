@@ -16,7 +16,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -31,7 +31,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -46,7 +46,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -61,7 +61,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -76,7 +76,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -91,7 +91,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -106,7 +106,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -121,7 +121,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -136,7 +136,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -151,7 +151,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -166,7 +166,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -181,7 +181,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -196,7 +196,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -211,7 +211,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
@@ -226,7 +226,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        var messageCmd = network.RecvPacket.MessageId;
+        var messageCmd = network.RecvPacket.MessageCmd;
         var rpcId = network.RecvPacket.RpcId;
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);

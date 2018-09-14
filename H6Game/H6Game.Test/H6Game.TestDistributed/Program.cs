@@ -12,9 +12,9 @@ namespace TestDistributed
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<InnerComponent>();
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Player);
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Room);
-            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Game);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Player);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Room);
+            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Game);
 
             TestBenckmark.Start();
 

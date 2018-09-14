@@ -8,7 +8,7 @@ namespace H6Game.Base
     {
         public static SceneManager Scene { get; }
         public static EventManager Event { get;}
-        public static ActorManager Actor { get; }
+        public static ActorPoolManager Actor { get; }
 
         static Game()
         {
@@ -17,7 +17,7 @@ namespace H6Game.Base
 
             Scene = new SceneManager();
             Event = new EventManager();
-            Actor = new ActorManager();
+            Actor = new ActorPoolManager();
         }
 
         public static void Update()

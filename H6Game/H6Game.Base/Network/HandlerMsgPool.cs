@@ -145,7 +145,7 @@ namespace H6Game.Base
 
         public static bool IsValidMessage(this Packet packet, Type type)
         {
-            return ExistCmd(type, packet.MessageId) && ExistType(packet.MessageId, type);
+            return ExistCmd(type, packet.MessageCmd) && ExistType(packet.MessageCmd, type);
         }
 
         private static bool ExistType(int messageCmd, Type type)

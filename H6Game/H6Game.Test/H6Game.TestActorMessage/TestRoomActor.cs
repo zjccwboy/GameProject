@@ -1,5 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Entities;
+using H6Game.Entities.Enums;
 using H6Game.Rpository;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,7 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TRoom room)
         {
-            using (var component = Game.Scene.AddComponent<RoomHandlerComponent>())
-            {
-                component.AddLocal(room);
-            }
+            Game.Scene.AddComponent<RoomComponent>().Add(room);
         }
     }
 }
