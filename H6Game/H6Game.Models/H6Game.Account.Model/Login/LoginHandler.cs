@@ -23,7 +23,7 @@ namespace H6Game.Account.Model.Login
 
             Game.Actor.RemoveActor(ActorType.Player, message.AccountId);
             var playerEnity = Game.Actor.GetLocalActor(ActorType.Player, message.AccountId);
-            using (var playerComponent = Game.Scene.AddComponent<PlayerComponent>())
+            using (var playerComponent = Game.Scene.AddComponent<PlayerHandlerComponent>())
             {
                 playerComponent.Remove(playerEnity.Id);
             }

@@ -3,17 +3,12 @@ using H6Game.Entities.Enums;
 
 namespace H6Game.Base
 {
-    public class GameComponent : BaseComponent
+    public class GameHandlerComponent : BaseComponent
     {
         public void AddLocal(TGame gameInfo)
         {
-            Game.Actor.AddLocalAcotr(new ActorEntity
-            {
-                ActorId = this.Id,
-                Id = gameInfo.Id,
-                ActorType = ActorType.Game,
-                ActorInfo = gameInfo,
-            });
+            var handler = Game.Scene.AddComponent<GameComponent>();
+            handler.Add(gameInfo);
         }
 
         public void AddRemote(string objectId, Network network)
@@ -30,6 +25,21 @@ namespace H6Game.Base
         public void Remove(string objectId)
         {
             Game.Actor.RemoveActor(ActorType.Game, objectId);
+        }
+    }
+
+    public class GameComponent : BaseComponent<TGame>
+    {
+        public void Add(TGame gameInfo)
+        {
+            this.EntityInfo = gameInfo;
+            Game.Actor.AddLocalAcotr(new ActorEntity
+            {
+                ActorId = this.Id,
+                Id = gameInfo.Id,
+                ActorType = ActorType.Game,
+                ActorInfo = gameInfo,
+            });
         }
     }
 }

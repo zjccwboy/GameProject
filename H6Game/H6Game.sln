@@ -123,6 +123,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpServerBenckmark", "H6Game.Test\H6Game.TestKcpServerBenckmark\H6Game.TestKcpServerBenckmark.csproj", "{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestActorMessage", "H6Game.Test\H6Game.TestActorMessage\H6Game.TestActorMessage.csproj", "{83AC1E22-95C6-4890-AC6E-754ED60340A5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8F854D1B-D001-4E54-B295-916E88F590C7} = {8F854D1B-D001-4E54-B295-916E88F590C7}
+		{7D5262A8-CC7E-458B-BE9E-8C9F14868463} = {7D5262A8-CC7E-458B-BE9E-8C9F14868463}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

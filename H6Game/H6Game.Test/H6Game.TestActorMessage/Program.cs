@@ -1,4 +1,6 @@
-﻿using System;
+﻿using H6Game.Base;
+using H6Game.Entities.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +12,26 @@ namespace H6Game.TestActorMessage
     {
         static void Main(string[] args)
         {
+            Game.Scene.AddComponent<InnerComponent>();
+            Game.Scene.AddComponent<MongoConfig>();
+            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Player);
+            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Room);
+            Game.Scene.AddComponent<ActorComponent, ActorType>(ActorType.Game);
+
+            TestAccountActor.Start();
+            TestGameActor.Start();
+            TestRoomActor.Start();
+
+            while (true)
+            {
+                Game.Update();
+            }
+        }
+
+        static void Connecting()
+        {
+            for (var i = 0; i < 2000; i++)
+                Game.Update();
         }
     }
 }

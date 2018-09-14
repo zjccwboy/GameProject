@@ -14,7 +14,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceStack(LogLevel.Fatal, messageToTrace);
         }
 
@@ -23,7 +23,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceException(LogLevel.Fatal, exception, messageToTrace);
         }
 
@@ -32,7 +32,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceStack(LogLevel.Info, messageToTrace);
         }
 
@@ -41,7 +41,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             Trace(LogLevel.Warn, messageToTrace);
         }
 
@@ -50,7 +50,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceStack(LogLevel.Error, messageToTrace);
         }
 
@@ -59,7 +59,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceException(LogLevel.Error, exception, messageToTrace);
         }
 
@@ -68,7 +68,7 @@ namespace H6Game.Base
             if (exception == null)
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, "", args);
+            string messageToTrace = $"args:{args}";
             TraceException(LogLevel.Error, exception, messageToTrace);
         }
 
@@ -77,7 +77,7 @@ namespace H6Game.Base
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            string messageToTrace = String.Format(CultureInfo.InvariantCulture, message, args);
+            string messageToTrace = $"{message},args:{args}";
             TraceStack(LogLevel.Debug, messageToTrace);
         }
 
@@ -107,6 +107,7 @@ namespace H6Game.Base
             builder.AppendFormat("错误信息：{0}", message).AppendLine();
             builder.AppendFormat("异常信息：{0}", ex.Message).AppendLine();
             builder.AppendFormat("异常类型：{0}", ex.GetType().Name).AppendLine();
+            builder.AppendFormat("堆栈信息：{0}", ex.StackTrace).AppendLine();
 
             string stackMessage = BuildStackTraceMessage();
             builder.Append(stackMessage);

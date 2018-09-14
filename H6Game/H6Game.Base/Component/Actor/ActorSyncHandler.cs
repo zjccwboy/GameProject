@@ -1,5 +1,6 @@
 ﻿using H6Game.Entities.Enums;
 using H6Game.Message;
+using MongoDB.Bson;
 
 namespace H6Game.Base
 {
@@ -8,19 +9,19 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
-            //this.Log(LogLevel.Debug, "ActorAddOrRemoveHandler",
-            //    $"ActorSyncMessage:{message.ToJson()} " +
-            //    $"MessageId:{network.RecvPacket.MessageId} " +
-            //    $"RpcId:{network.RecvPacket.RpcId} " +
-            //    $"ActorId:{network.RecvPacket.ActorId} " +
-            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+            Log.Logger.Info(
+                $"ActorSyncMessage:{message.ToJson()} " +
+                $"MessageId:{network.RecvPacket.MessageId} " +
+                $"RpcId:{network.RecvPacket.RpcId} " +
+                $"ActorId:{network.RecvPacket.ActorId} " +
+                $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
             var cmd = (MessageCMD)network.RecvPacket.MessageId;
             var actorType = message.ActorType;
             switch (actorType)
             {
                 case ActorType.Player:
-                    using(var component = Game.Scene.AddComponent<PlayerComponent>())
+                    using(var component = Game.Scene.AddComponent<PlayerHandlerComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
@@ -33,7 +34,7 @@ namespace H6Game.Base
                     }
                     break;
                 case ActorType.Room:
-                    using (var component = Game.Scene.AddComponent<RoomComponent>())
+                    using (var component = Game.Scene.AddComponent<RoomHandlerComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
@@ -46,7 +47,7 @@ namespace H6Game.Base
                     }
                     break;
                 case ActorType.Game:
-                    using (var component = Game.Scene.AddComponent<GameComponent>())
+                    using (var component = Game.Scene.AddComponent<GameHandlerComponent>())
                     {
                         if (cmd == MessageCMD.AddActorCmd)
                         {
@@ -68,11 +69,11 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            //this.Log(LogLevel.Debug, "SyncCallHandler", 
-            //    $"MessageId:{network.RecvPacket.MessageId} " +
-            //    $"RpcId:{network.RecvPacket.RpcId} " +
-            //    $"ActorId:{network.RecvPacket.ActorId} " +
-            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+            Log.Logger.Info(
+                $"MessageId:{network.RecvPacket.MessageId} " +
+                $"RpcId:{network.RecvPacket.RpcId} " +
+                $"ActorId:{network.RecvPacket.ActorId} " +
+                $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
 
             var components = Game.Scene.GetComponents<ActorComponent>();
             foreach(var component in components)
@@ -104,12 +105,12 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
-            //this.Log(LogLevel.Debug, "SyncCallBackHandler", 
-            //    $"ActorSyncMessage:{message.ToJson()} " +
-            //    $"MessageId:{network.RecvPacket.MessageId} " +
-            //    $"RpcId:{network.RecvPacket.RpcId} " +
-            //    $"ActorId:{network.RecvPacket.ActorId} " +
-            //    $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ");
+            var logs = $"ActorSyncMessage:{message.ToJson()} " +
+                $"MessageId:{network.RecvPacket.MessageId} " +
+                $"RpcId:{network.RecvPacket.RpcId} " +
+                $"ActorId:{network.RecvPacket.ActorId} " +
+                $"MsgTypeCode:{network.RecvPacket.MsgTypeCode} ";
+            Log.Logger.Info(logs, network.RecvPacket.MessageId, network.RecvPacket.RpcId);
 
             var entity = new ActorEntity
             {
