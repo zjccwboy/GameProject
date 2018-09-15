@@ -6,7 +6,7 @@ namespace H6Game.Base
     /// 消息分发处理类，所有消息处理应该继承该抽象类实现
     /// </summary>
     /// <typeparam name="Message"></typeparam>
-    public abstract class AHandler<Message> : IHandler<Message>
+    public abstract class AMessageHandler<Message> : IHandler<Message>
     {
         /// <summary>
         /// 返回数据约定类型
@@ -47,7 +47,7 @@ namespace H6Game.Base
         protected abstract void Handler(Network network, Message message);
     }
 
-    public abstract class AHandler : IHandler
+    public abstract class AMessageHandler : IHandler
     {
         /// <summary>
         /// 返回数据约定类型

@@ -7,15 +7,31 @@ using System.Collections.Generic;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 订阅与处理Add or Remove Actor消息
+    /// 订阅与处理Actor新增消息
     /// </summary>
-    [HandlerCMD(MessageCMD.AddActorCmd, MessageCMD.RemoveActorCmd)]
-    public class ActorAddOrRemoveHandler : AActorHandler<ActorSyncMessage>
+    [HandlerCMD(MessageCMD.AddActorCmd)]
+    public class ActorAddOrRemoveHandler : AActorMessageHandler<ActorSyncMessage>
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
             Log.Logger.Info(network.RecvPacket.ToJson());
-            Game.Actor.GetActorPool(message.ActorType).AddOrRemoveRemoteActor(message, network);
+            Game.Actor.GetActorPool(message.ActorType).AddRemote(message, network);
+        }
+    }
+
+    /// <summary>
+    /// 订阅与处理Actor删除消息
+    /// </summary>
+    [HandlerCMD(MessageCMD.RemoveActorCmd)]
+    public class ActorRemoveHandler : AActorMessageHandler
+    {
+        protected override void Handler(Network network)
+        {
+            Log.Logger.Info(network.RecvPacket.ToJson());
+            if(Game.Scene.GetComponent(network.RecvPacket.ActorId, out BaseComponent component))
+            {
+                component.Dispose();
+            }
         }
     }
 
@@ -23,7 +39,7 @@ namespace H6Game.Base
     /// 订阅与回发全量的本地LocalActor信息
     /// </summary>
     [HandlerCMD(MessageCMD.SyncActorInfoCmd)]
-    public class SyncFullActorHandler : AHandler
+    public class SyncFullActorHandler : AMessageHandler
     {
         protected override void Handler(Network network)
         {
@@ -45,7 +61,7 @@ namespace H6Game.Base
     [Event(EventType.Awake)]
     public class ActorPoolComponent : BaseComponent
     {
-        private ConcurrentDictionary<int, HashSet<BaseActorEntityComponent>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, HashSet<BaseActorEntityComponent>>();
+        private ConcurrentDictionary<int, Dictionary<int,BaseActorEntityComponent>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, Dictionary<int, BaseActorEntityComponent>>();
         private ConcurrentDictionary<int, BaseActorEntityComponent> LocalComponentDictionary { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
         private ConcurrentDictionary<int, BaseActorEntityComponent> RemoteComponentDictionary { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
         private ConcurrentDictionary<string, BaseActorEntityComponent> AllComponentDictionary { get; } = new ConcurrentDictionary<string, BaseActorEntityComponent>();
@@ -62,28 +78,10 @@ namespace H6Game.Base
 
             innerComponent.OnDisConnected += (channel) =>
             {
-                if (NetChannelIdEntitys.TryRemove(channel.Id, out HashSet<BaseActorEntityComponent> components))
-                {
-                    foreach (var component in components)
-                    {
-                        RemoteComponentDictionary.TryRemove(component.Id, out BaseActorEntityComponent value);
-                    }
-                }
+                this.RemoveRemote(channel.Network);
             };
 
             innerComponent.OnConnected += (channel) => { channel.Network.Send((int)MessageCMD.SyncActorInfoCmd); };
-        }
-
-        public void AddOrRemoveRemoteActor(ActorSyncMessage message, Network network)
-        {
-            if (network.RecvPacket.MessageCmd == (int)MessageCMD.AddActorCmd)
-            {
-                AddRemote(message, network);
-            }
-            else if (network.RecvPacket.MessageCmd == (int)MessageCMD.RemoveActorCmd)
-            {
-                Remove(message);
-            }
         }
 
         public void AddLocal(BaseActorEntityComponent component)
@@ -96,13 +94,7 @@ namespace H6Game.Base
             NotifyAllServerWithAdd(component.ActorEntity);
         }
 
-        private void Remove(ActorSyncMessage message)
-        {
-            RemoveRemote(message.ObjectId);
-            RemoveLocal(message.ObjectId);
-        }
-
-        private void AddRemote(ActorSyncMessage message, Network network)
+        public void AddRemote(ActorSyncMessage message, Network network)
         {
             switch (message.ActorType)
             {
@@ -130,29 +122,18 @@ namespace H6Game.Base
             }
         }
 
-        private void AddRemote(BaseActorEntityComponent component)
+        public void RemoveRemote(Network network)
         {
-            if (!RemoteComponentDictionary.TryAdd(component.Id, component))
+            if (!NetChannelIdEntitys.TryGetValue(network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
                 return;
 
-            var entity = component.ActorEntity;
-            if(!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out HashSet<BaseActorEntityComponent> hashVal))
-            {
-                hashVal = new HashSet<BaseActorEntityComponent>();
-                NetChannelIdEntitys[entity.Network.Channel.Id] = hashVal;
-            }
-            hashVal.Add(component);
-
-            AllComponentDictionary[component.ActorEntity.Id] = component;
-        }
-
-        public void RemoveRemote(string objectId)
-        {
-            if (!AllComponentDictionary.TryRemove(objectId, out BaseActorEntityComponent component))
+            if (!dicVal.TryGetValue(network.RecvPacket.ActorId, out BaseActorEntityComponent component))
                 return;
 
             if(RemoteComponentDictionary.TryRemove(component.Id, out component))
-                component.Dispose();
+            {
+                AllComponentDictionary.TryRemove(component.ActorEntity.Id, out component);
+            }
         }
 
         public void RemoveLocal(string objectId)
@@ -163,14 +144,7 @@ namespace H6Game.Base
             if(LocalComponentDictionary.TryRemove(component.Id, out component))
             {
                 NotifyAllServerWithRemove(component.ActorEntity);
-                component.Dispose();
             }
-        }
-
-
-        public bool TryGetComponent(string objectId, out BaseActorEntityComponent component)
-        {
-            return AllComponentDictionary.TryGetValue(objectId, out component);
         }
 
         public void GetFullActor(Network network)
@@ -189,6 +163,22 @@ namespace H6Game.Base
                     count = 0;
                 }
             }
+        }
+
+        private void AddRemote(BaseActorEntityComponent component)
+        {
+            if (!RemoteComponentDictionary.TryAdd(component.Id, component))
+                return;
+
+            var entity = component.ActorEntity;
+            if (!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+            {
+                dicVal = new Dictionary<int, BaseActorEntityComponent>();
+                NetChannelIdEntitys[entity.Network.Channel.Id] = dicVal;
+            }
+            dicVal[entity.ActorId] = component;
+
+            AllComponentDictionary[component.ActorEntity.Id] = component;
         }
 
         private void NotifyAllServerWithAdd(ActorEntity entity)

@@ -159,6 +159,16 @@ namespace H6Game.Base
         }
 
         /// <summary>
+        /// 获取一个组件
+        /// </summary>
+        /// <param name="id">组件Id。</param>
+        /// <returns>返回一个组件。</returns>        
+        public virtual bool GetComponent(int id, out BaseComponent component)
+        {
+            return IdComponent.TryGetValue(id, out component);
+        }
+
+        /// <summary>
         /// 删除一个组件
         /// </summary>
         /// <param name="component">组件实体</param>

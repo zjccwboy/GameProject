@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 namespace H6Game.Base
 {
     [HandlerCMD(MessageCMD.AddInServerCmd)]
-    public class DistributedHandler : AHandler<NetEndPointMessage>
+    public class DistributedHandler : AMessageHandler<NetEndPointMessage>
     {
         protected override void Handler(Network network, NetEndPointMessage message)
         {
@@ -17,7 +17,7 @@ namespace H6Game.Base
     }
 
     [HandlerCMD(MessageCMD.GetOutServerCmd)]
-    public class OutNetMessageSync : AHandler
+    public class OutNetMessageSync : AMessageHandler
     {
         protected override void Handler(Network network)
         {
@@ -26,7 +26,7 @@ namespace H6Game.Base
     }
 
     [HandlerCMD(MessageCMD.GetInServerCmd)]
-    public class InNetMessageSync : AHandler
+    public class InNetMessageSync : AMessageHandler
     {
         protected override void Handler(Network network)
         {

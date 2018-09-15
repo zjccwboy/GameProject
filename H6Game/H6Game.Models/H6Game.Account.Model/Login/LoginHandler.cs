@@ -5,7 +5,7 @@ using H6Game.Message;
 namespace H6Game.Account.Model.Login
 {
     [HandlerCMD(MessageCMD.ClientLogin)]
-    public class LoginHandler : AHandler<LoginRequestMessage>
+    public class LoginHandler : AMessageHandler<LoginRequestMessage>
     {
         protected async override void Handler(Network network, LoginRequestMessage message)
         {
@@ -16,7 +16,7 @@ namespace H6Game.Account.Model.Login
     }
 
     [HandlerCMD(MessageCMD.ClientLogOut)]
-    public class LogouHandler : AHandler<LogoutRequestMessage>
+    public class LogouHandler : AMessageHandler<LogoutRequestMessage>
     {
         protected override void Handler(Network network, LogoutRequestMessage message)
         {

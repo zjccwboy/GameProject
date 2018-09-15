@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace TestDistributed
 {
     [HandlerCMD(MessageCMD.TestCMD1)]
-    public class TestHandler : AHandler<TestMessage>
+    public class TestHandler : AMessageHandler<TestMessage>
     {
         protected override void Handler(Network network, TestMessage message)
         {

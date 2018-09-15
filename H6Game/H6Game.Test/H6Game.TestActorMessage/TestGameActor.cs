@@ -29,7 +29,7 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TGame game)
         {
-            Game.Scene.AddComponent<GameComponent>().Add(game);
+            Game.Scene.AddComponent<GameComponent>().AddLocal(game);
         }
     }
 }

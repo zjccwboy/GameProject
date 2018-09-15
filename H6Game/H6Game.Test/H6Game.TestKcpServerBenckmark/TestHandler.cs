@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace H6Game.TestKcpServerBenckmark
 {
     [HandlerCMD(1024)]
-    public class TestHandler : AHandler<TestMessage>
+    public class TestHandler : AMessageHandler<TestMessage>
     {
         protected override void Handler(Network network, TestMessage message)
         {
@@ -16,7 +16,7 @@ namespace H6Game.TestKcpServerBenckmark
     }
 
     [HandlerCMD(1024)]
-    public class TestHandlerInt : AHandler<int>
+    public class TestHandlerInt : AMessageHandler<int>
     {
         protected override void Handler(Network network, int message)
         {
