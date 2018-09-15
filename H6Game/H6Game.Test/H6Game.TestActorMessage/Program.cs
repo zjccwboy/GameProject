@@ -27,11 +27,5 @@ namespace H6Game.TestActorMessage
                 Game.Update();
             }
         }
-
-        static void Connecting()
-        {
-            for (var i = 0; i < 2000; i++)
-                Game.Update();
-        }
     }
 }

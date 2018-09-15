@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
-    [HandlerCMD(MessageCMD.AddInServerCmd)]
+    [HandlerCMD(InnerMessageCMD.AddInServerCmd)]
     public class DistributedHandler : AMessageHandler<NetEndPointMessage>
     {
         protected override void Handler(Network network, NetEndPointMessage message)
@@ -16,7 +16,7 @@ namespace H6Game.Base
         }
     }
 
-    [HandlerCMD(MessageCMD.GetOutServerCmd)]
+    [HandlerCMD(InnerMessageCMD.GetOutServerCmd)]
     public class OutNetMessageSync : AMessageHandler
     {
         protected override void Handler(Network network)
@@ -25,7 +25,7 @@ namespace H6Game.Base
         }
     }
 
-    [HandlerCMD(MessageCMD.GetInServerCmd)]
+    [HandlerCMD(InnerMessageCMD.GetInServerCmd)]
     public class InNetMessageSync : AMessageHandler
     {
         protected override void Handler(Network network)
@@ -161,7 +161,7 @@ namespace H6Game.Base
             {
                 InNetMapManager.Add(network.Channel, message);
 
-                network.Broadcast(message, (int)MessageCMD.AddInServerCmd);
+                network.Broadcast(message, (int)InnerMessageCMD.AddInServerCmd);
                 foreach (var entity in InNetMapManager.Entities)
                 {
                     network.RpcCallBack(entity);
@@ -285,19 +285,19 @@ namespace H6Game.Base
                 this.InNetMapManager.Add(c, message);
 
                 //连接成功后把本地监听端口发送给远程进程
-                c.Network.Send(localMessage, (int)MessageCMD.AddInServerCmd);
+                c.Network.Send(localMessage, (int)InnerMessageCMD.AddInServerCmd);
 
                 //把当前所有连接的内网监听服务发送给远程进程
                 foreach(var entity in this.InNetMapManager.Entities)
                 {
-                    c.Network.Send(entity, (int)MessageCMD.AddInServerCmd);
+                    c.Network.Send(entity, (int)InnerMessageCMD.AddInServerCmd);
                 }
 
                 if (message != this.Config.GetCenterMessage())
                 {
                     InConnectedNetworks.TryAdd(c.Id, c.Network);
 
-                    var callResult = await c.Network.CallMessage<NetEndPointMessage>((int)MessageCMD.GetOutServerCmd);
+                    var callResult = await c.Network.CallMessage<NetEndPointMessage>((int)InnerMessageCMD.GetOutServerCmd);
                     if (callResult.Result)
                     {
                         //this.Log(LogLevel.Debug, "Connecting", $"收到:{c.RemoteEndPoint} 消息CMD:{(int)MessageCMD.GetOutServerCmd} :{callResult.Content.ToJson()}");

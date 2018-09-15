@@ -1,5 +1,4 @@
-﻿using H6Game.Entities;
-using H6Game.Entities.Enums;
+﻿using H6Game.Entities.Enums;
 using ProtoBuf;
 
 namespace H6Game.Message
@@ -18,7 +17,7 @@ namespace H6Game.Message
         public bool IsNewAccount { get; set; }
         
         [ProtoMember(5)]
-        public string AccountId { get; set; }
+        public int AccountId { get; set; }
 
         /// <summary>
         /// 账户类型
@@ -78,6 +77,7 @@ namespace H6Game.Message
 
 
     [MessageType(MessageType.LoginRequestMessage)]
+    [ProtoContract]
     public class LoginRequestMessage : LoginMessage
     {
         [ProtoMember(2)]

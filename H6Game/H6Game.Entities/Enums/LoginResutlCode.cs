@@ -17,6 +17,11 @@ namespace H6Game.Entities.Enums
         Success,
 
         /// <summary>
+        /// 登陆类型错误
+        /// </summary>
+        LoginTypeError,
+
+        /// <summary>
         /// 微信OpenId错误
         /// </summary>
         OpenIdError,

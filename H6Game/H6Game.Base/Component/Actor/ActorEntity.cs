@@ -1,6 +1,5 @@
 ﻿using H6Game.Entities;
 using H6Game.Entities.Enums;
-using ProtoBuf;
 
 namespace H6Game.Base
 {

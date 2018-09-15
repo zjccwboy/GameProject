@@ -22,7 +22,7 @@ namespace H6Game.Base
             }
             else
             {
-                Game.Actor.GetActorPool(this.ActorType).RemoveRemote(this.ActorEntity.Network);
+                Game.Actor.GetActorPool(this.ActorType).RemoveRemote(this.ActorEntity);
             }
 
             base.Dispose();

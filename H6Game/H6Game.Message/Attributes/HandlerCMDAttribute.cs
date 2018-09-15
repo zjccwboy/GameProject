@@ -11,16 +11,25 @@ namespace H6Game.Message
 
         public HandlerCMDAttribute(params int[] commands)
         {
-            if(commands == null || !commands.Any())
+            if(!commands.Any())
             {
                 throw new NullReferenceException("消息commands不能为空.");
             }
             this.MessageCmds.AddRange(commands.Select(c=>c));
         }
 
-        public HandlerCMDAttribute(params MessageCMD[] commands)
+        public HandlerCMDAttribute(params InnerMessageCMD[] commands)
         {
-            if (commands == null || !commands.Any())
+            if (!commands.Any())
+            {
+                throw new NullReferenceException("消息commands不能为空.");
+            }
+            this.MessageCmds.AddRange(commands.Select(c => (int)c));
+        }
+
+        public HandlerCMDAttribute(params OutNetMessageCMD[] commands)
+        {
+            if (!commands.Any())
             {
                 throw new NullReferenceException("消息commands不能为空.");
             }
