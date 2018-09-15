@@ -131,9 +131,9 @@ namespace H6Game.Base
                 AllComponentDictionary.TryRemove(component.ActorEntity.Id, out component);
         }
 
-        public void RemoveLocal(string objectId)
+        public void RemoveLocal(ActorEntity entity)
         {
-            if (!AllComponentDictionary.TryRemove(objectId, out BaseActorEntityComponent component))
+            if (!AllComponentDictionary.TryRemove(entity.Id, out BaseActorEntityComponent component))
                 return;
 
             if (LocalComponentDictionary.TryRemove(component.Id, out component))

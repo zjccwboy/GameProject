@@ -10,20 +10,20 @@ namespace H6Game.Base
 
         public override void Dispose()
         {
-            this.EntityInfo = null;
-            this.ActorEntity.ActorId = 0;
-            this.ActorEntity.Id = null;
-            this.ActorEntity.ActorInfo = null;
-            this.ActorEntity.Network = null;
-
             if (this.IsLocalActor)
             {
-                Game.Actor.GetActorPool(this.ActorType).RemoveLocal(this.ActorEntity.Id);
+                Game.Actor.GetActorPool(this.ActorType).RemoveLocal(this.ActorEntity);
             }
             else
             {
                 Game.Actor.GetActorPool(this.ActorType).RemoveRemote(this.ActorEntity);
             }
+
+            this.EntityInfo = null;
+            this.ActorEntity.ActorId = 0;
+            this.ActorEntity.Id = null;
+            this.ActorEntity.ActorInfo = null;
+            this.ActorEntity.Network = null;
 
             base.Dispose();
         }
