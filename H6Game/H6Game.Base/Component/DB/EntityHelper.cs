@@ -1,4 +1,4 @@
-﻿using H6Game.Entities;
+﻿using H6Game.Hotfix.Entities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;

@@ -1,10 +1,5 @@
 ﻿using H6Game.Base;
-using H6Game.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using H6Game.Hotfix.Enums;
 
 namespace H6Game.TestActorMessage
 {

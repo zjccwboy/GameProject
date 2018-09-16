@@ -1,7 +1,8 @@
 ﻿using H6Game.Base;
-using H6Game.Entities;
-using H6Game.Entities.Enums;
-using H6Game.Message;
+using H6Game.Hotfix.Enums;
+using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Messages.Enums;
+using H6Game.Hotfix.Messages.OutNet;
 using H6Game.Rpository;
 
 namespace H6Game.Account.Model

@@ -1,6 +1,4 @@
-﻿using H6Game.Entities.Enums;
-using System;
-using System.Threading;
+﻿using System;
 
 namespace H6Game.Base
 {

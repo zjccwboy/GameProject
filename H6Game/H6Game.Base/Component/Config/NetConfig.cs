@@ -1,5 +1,5 @@
 ﻿
-using H6Game.Message;
+using H6Game.Hotfix.Messages.Inner;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base

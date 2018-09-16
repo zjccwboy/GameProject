@@ -1,8 +1,8 @@
 ﻿using H6Game.Base;
-using H6Game.Message;
-using H6Game.Rpository;
-using System;
-using System.Threading.Tasks;
+using H6Game.Hotfix.Messages;
+using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Messages.Enums;
+
 
 namespace H6Game.TestKcpServerBenckmark
 {

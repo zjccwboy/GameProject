@@ -1,9 +1,10 @@
-﻿using H6Game.Message;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Collections.Concurrent;
-
+using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Messages.Inner;
+using H6Game.Hotfix.Messages.Enums;
 
 namespace H6Game.Base
 {

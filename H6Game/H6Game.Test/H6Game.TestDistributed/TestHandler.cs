@@ -1,12 +1,10 @@
 ﻿using H6Game.Base;
-using H6Game.Message;
+using H6Game.Hotfix.Messages;
+using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Messages.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestDistributed
 {

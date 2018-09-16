@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using H6Game.Base;
-using H6Game.Entities;
-using H6Game.Entities.Enums;
-using H6Game.Rpository;
+using H6Game.Hotfix.Enums;
 
 namespace TestDistributed
 {

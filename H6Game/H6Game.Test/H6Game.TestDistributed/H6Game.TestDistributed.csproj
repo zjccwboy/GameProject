@@ -43,12 +43,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Entities">
-      <HintPath>..\..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Message, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="H6Game.Hotfix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
+      <HintPath>..\..\H6Game.Hotfix\bin\Debug\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Rpository">
       <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>

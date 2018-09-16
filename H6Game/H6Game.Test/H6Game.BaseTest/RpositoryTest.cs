@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Xunit;
 using H6Game.Base;
 using H6Game.Rpository;
-using H6Game.Entities;
-using H6Game.Entities.Enums;
 using MongoDB.Driver;
+using H6Game.Hotfix.Entities;
+using H6Game.Hotfix.Enums;
 
 namespace H6Game.BaseTest
 {

@@ -1,4 +1,4 @@
-﻿using H6Game.Message;
+﻿using H6Game.Hotfix.Messages.Inner;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 

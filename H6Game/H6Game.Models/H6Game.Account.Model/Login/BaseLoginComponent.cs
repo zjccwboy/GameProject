@@ -1,6 +1,6 @@
 ﻿using H6Game.Base;
-using H6Game.Entities;
-using H6Game.Message;
+using H6Game.Hotfix.Entities;
+using H6Game.Hotfix.Messages.OutNet;
 
 namespace H6Game.Account.Model
 {

@@ -39,12 +39,9 @@
     <Reference Include="H6Game.Base">
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="H6Game.Hotfix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\H6Game.Entities\bin\Debug\netstandard2.0\H6Game.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Message">
-      <HintPath>..\..\H6Game.Message\bin\Debug\netstandard2.0\H6Game.Message.dll</HintPath>
+      <HintPath>..\..\H6Game.Hotfix\bin\Debug\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>

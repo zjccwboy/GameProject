@@ -1,4 +1,4 @@
-﻿using H6Game.Entities;
+﻿using H6Game.Hotfix.Entities;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;

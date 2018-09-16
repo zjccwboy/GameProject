@@ -5,11 +5,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using H6Game.Entities;
+using H6Game.Hotfix.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using MongoDB.Driver.GridFS;
 
 namespace H6Game.Base
 {

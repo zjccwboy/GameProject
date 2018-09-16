@@ -1,6 +1,6 @@
-﻿using H6Game.Entities;
-using H6Game.Entities.Enums;
-using H6Game.Message;
+﻿using H6Game.Hotfix.Entities;
+using H6Game.Hotfix.Enums;
+using H6Game.Hotfix.Messages.Inner;
 
 namespace H6Game.Base
 {

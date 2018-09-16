@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using H6Game.Message;
 using System.Reflection;
 using System.Linq;
+using H6Game.Hotfix.Messages;
+using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Messages.Enums;
 
 namespace H6Game.Base
 {
