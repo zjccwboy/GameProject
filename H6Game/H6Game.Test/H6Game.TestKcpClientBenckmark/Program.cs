@@ -11,8 +11,7 @@ namespace H6Game.TestKcpClientBenckmark
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<OuterComponent>();
-            Start();
+            Game.Scene.AddComponent<OuterComponent>().OnConnected = c=> { Start(); };
             while (true)
             {
                 Game.Update();
@@ -29,9 +28,6 @@ namespace H6Game.TestKcpClientBenckmark
 
         static void Start()
         {
-            for (var i = 0; i < 2000; i++)
-                Game.Update();
-
             Swatch.Start();
 
             for (var i = 0; i < 2000; i++)

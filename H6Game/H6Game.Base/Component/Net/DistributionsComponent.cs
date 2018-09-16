@@ -8,11 +8,11 @@ using System.Collections.Concurrent;
 namespace H6Game.Base
 {
     [HandlerCMD(InnerMessageCMD.AddInServerCmd)]
-    public class DistributedHandler : AMessageHandler<NetEndPointMessage>
+    public class DistributionsHandler : AMessageHandler<NetEndPointMessage>
     {
         protected override void Handler(Network network, NetEndPointMessage message)
         {
-            Game.Scene.GetComponent<InnerComponent>().AddService(network, message);
+            Game.Scene.GetComponent<DistributionsComponent>().AddService(network, message);
         }
     }
 
@@ -21,16 +21,16 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            Game.Scene.GetComponent<InnerComponent>().GetOutNet(network);
+            Game.Scene.GetComponent<DistributionsComponent>().GetOutNet(network);
         }
     }
 
     [HandlerCMD(InnerMessageCMD.GetInServerCmd)]
-    public class InNetMessageSync : AMessageHandler
+    public class InnerMessageSync : AMessageHandler
     {
         protected override void Handler(Network network)
         {
-            Game.Scene.GetComponent<InnerComponent>().GetInner(network);
+            Game.Scene.GetComponent<DistributionsComponent>().GetInner(network);
         }
     }
 
@@ -39,9 +39,9 @@ namespace H6Game.Base
     /// </summary>
     [Event(EventType.Awake | EventType.Start | EventType.Update)]
     [SingletCase]
-    public sealed class InnerComponent : BaseComponent
+    public sealed class DistributionsComponent : BaseComponent
     {
-        private InnerConfig Config { get; set; }
+        private DistributionsConfig Config { get; set; }
         private EndPointConfig DefaultCenterEndPoint { get; set; }
 
         private readonly ConcurrentDictionary<int, Session> InConnectedSessions = new ConcurrentDictionary<int, Session>();
@@ -55,58 +55,53 @@ namespace H6Game.Base
         private Session CenterConnectSession;
 
         /// <summary>
-        /// 内网所有客户端连接网络对象集合
+        /// 内网所有客户端连接网络对象集合。
         /// </summary>
         public IEnumerable<Network> InConnNets { get { return InConnectedNetworks.Values; } }
 
         /// <summary>
-        /// 内网服务端所有监听连接网络对象集合
-        /// </summary>
-        //public IEnumerable<Network> InAccNets { get { return InAcceptNetworks.Values; } }
-
-        /// <summary>
-        /// 外网服务端所有监听连接网络对象集合
+        /// 外网服务端所有监听连接网络对象集合。
         /// </summary>
         public IEnumerable<Network> OuAccNets { get { return OuAcceptNetworks.Values; } }
 
         /// <summary>
-        /// 内网监听IP端口消息类
+        /// 内网监听IP端口消息类。
         /// </summary>
         private NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
 
         /// <summary>
-        /// 外网监听IP端口消息类
+        /// 外网监听IP端口消息类。
         /// </summary>
         private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
 
         /// <summary>
-        /// 是否是中心服务
+        /// 是否是中心服务。
         /// </summary>
         public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
 
         /// <summary>
-        /// 内网消息映射管理类接口
+        /// 内网消息映射管理类接口。
         /// </summary>
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
 
         /// <summary>
-        /// 外网消息映射管理类接口
+        /// 外网消息映射管理类接口。
         /// </summary>
         public NetMapManager OutNetMapManager { get; } = new NetMapManager();
 
         /// <summary>
-        /// 网络连接回调事件
+        /// 内网网络服务端连接成功回调事件。
         /// </summary>
-        public Action<ANetChannel> OnConnected { get; set; }
+        public Action<ANetChannel> OnInnerClientConnected { get; set; }
 
         /// <summary>
-        /// 网络断开回调事件
+        /// 内网客户端网络连接断开回调事件。
         /// </summary>
-        public Action<ANetChannel> OnDisConnected { get; set; }
+        public Action<ANetChannel> OnInnerServerDisConnected { get; set; }
 
         public override void Awake()
         {
-            this.Config = Game.Scene.AddComponent<InnnerConfigComponent>().InnerConfig;
+            this.Config = Game.Scene.AddComponent<DistributionsConfigComponent>().InnerConfig;
         }
 
         public override void Start()
@@ -220,7 +215,7 @@ namespace H6Game.Base
                 if (this.Config.IsCenterServer)
                     return;
 
-                this.OnDisConnected?.Invoke(c);
+                this.OnInnerServerDisConnected?.Invoke(c);
             };
 
             this.InAcceptSession = session;
@@ -304,7 +299,7 @@ namespace H6Game.Base
                         this.OutNetMapManager.Add(c, callResult.Content);
                     }
 
-                    this.OnConnected?.Invoke(c);
+                    this.OnInnerClientConnected?.Invoke(c);
                 }
                 else
                 {

@@ -98,6 +98,88 @@ namespace H6Game.Base
         }
 
         /// <summary>
+        /// 添加并返回一个组件。
+        /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// </summary>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数类型。</param>
+        /// <typeparam name="K2">组件构造函数第二个参数类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数。</param>
+        /// <param name="k2">组件构造函数第二个参数。</param>
+        /// <param name="k3">组件构造函数第三个参数。</param>
+        /// <returns>返回一个组件实体。</returns>
+        public virtual T AddComponent<T, K1, K2,K3>(K1 k1, K2 k2, K3 k3) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1, K2, K3>(k1, k2, k3);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
+        /// 添加并返回一个组件。
+        /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// </summary>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数类型。</param>
+        /// <typeparam name="K2">组件构造函数第二个参数类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数。</param>
+        /// <param name="k2">组件构造函数第二个参数。</param>
+        /// <param name="k3">组件构造函数第三个参数。</param>
+        /// <param name="k4">组件构造函数第四个参数。</param>
+        /// <returns>返回一个组件实体。</returns>
+        public virtual T AddComponent<T, K1, K2, K3, K4>(K1 k1, K2 k2, K3 k3, K4 k4) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1, K2, K3, K4>(k1, k2, k3, k4);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
+        /// 添加并返回一个组件。
+        /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// </summary>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数类型。</param>
+        /// <typeparam name="K2">组件构造函数第二个参数类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数。</param>
+        /// <param name="k2">组件构造函数第二个参数。</param>
+        /// <param name="k3">组件构造函数第三个参数。</param>
+        /// <param name="k4">组件构造函数第四个参数。</param>.
+        /// <param name="k5">组件构造函数第四个参数。</param>
+        /// <returns>返回一个组件实体。</returns>
+        public virtual T AddComponent<T, K1, K2, K3, K4, K5>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
+        /// 添加并返回一个组件。
+        /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// </summary>
+        /// <typeparam name="T">组件类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数类型。</param>
+        /// <typeparam name="K2">组件构造函数第二个参数类型。</typeparam>
+        /// <param name="k1">组件构造函数第一个参数。</param>
+        /// <param name="k2">组件构造函数第二个参数。</param>
+        /// <param name="k3">组件构造函数第三个参数。</param>
+        /// <param name="k4">组件构造函数第四个参数。</param>.
+        /// <param name="k5">组件构造函数第四个参数。</param>
+        /// <param name="k6">组件构造函数第四个参数。</param>
+        /// <returns>返回一个组件实体。</returns>
+        public virtual T AddComponent<T, K1, K2, K3, K4, K5, K6>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5, K6 k6) where T : BaseComponent
+        {
+            var component = ComponentPool.Fetch<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
         /// 获取一个SingleCase组件，不允许获取非SingleCase
         /// </summary>
         /// <typeparam name="T"></typeparam>

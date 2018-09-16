@@ -23,7 +23,7 @@ namespace TestDistributed
 
             stopWatch.Start();
 
-            if (Game.Scene.GetComponent<InnerComponent>().IsCenterServer)
+            if (Game.Scene.GetComponent<DistributionsComponent>().IsCenterServer)
                 return;
 
             for (var i = 0; i < 1000; i++)
@@ -51,7 +51,7 @@ namespace TestDistributed
 
         private static async Task Call()
         {
-            var inNetComponent = Game.Scene.GetComponent<InnerComponent>();
+            var inNetComponent = Game.Scene.GetComponent<DistributionsComponent>();
             if (inNetComponent.IsCenterServer)
                 return;
 

@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base
 {
-    public class InnerConfig
+    public class DistributionsConfig
     {
         [BsonElement]
         public bool IsCenterServer { get; set; }

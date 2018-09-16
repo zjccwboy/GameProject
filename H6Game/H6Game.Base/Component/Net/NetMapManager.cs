@@ -6,7 +6,7 @@ namespace H6Game.Base
 {
 
     /// <summary>
-    /// 管理服务端分布式网络映射组件
+    /// 管理服务端分布式网络映射组件。
     /// </summary>
     public class NetMapManager
     {
@@ -17,7 +17,7 @@ namespace H6Game.Base
         public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
 
         /// <summary>
-        /// 判断是否存在
+        /// 判断是否存在。
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
@@ -27,7 +27,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 删除一条连接消息
+        /// 删除一条连接消息。
         /// </summary>
         /// <param name="message"></param>
         public void Remove(NetEndPointMessage message)
@@ -43,7 +43,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 新增一个连接消息，非中心服务需要跟Channel映射
+        /// 新增一个连接消息，非中心服务需要跟Channel映射。
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="message"></param>
@@ -58,7 +58,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 用Channel Id获取相应的连接消息
+        /// 用Channel Id获取相应的连接消息。
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="message"></param>

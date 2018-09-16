@@ -6,13 +6,13 @@ namespace H6Game.Base
 {
     [Event(EventType.Awake)]
     [SingletCase]
-    public sealed class InnnerConfigComponent : BaseComponent
+    public sealed class DistributionsConfigComponent : BaseComponent
     {
-        public InnerConfig InnerConfig { get; private set; }
+        public DistributionsConfig InnerConfig { get; private set; }
 
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\SysConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\DistributionsConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
 
@@ -30,7 +30,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    InnerConfig = BsonSerializer.Deserialize<InnerConfig>(json);
+                    InnerConfig = BsonSerializer.Deserialize<DistributionsConfig>(json);
                 }
             }
 
@@ -47,7 +47,7 @@ namespace H6Game.Base
 
         private void SaveConfigile(string path)
         {
-            InnerConfig = new InnerConfig
+            InnerConfig = new DistributionsConfig
             {
                 IsCenterServer = false,
                 IsCompress = false,

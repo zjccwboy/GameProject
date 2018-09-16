@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake | EventType.Start | EventType.Update)]
+    [Event(EventType.Awake | EventType.Update)]
     [SingletCase]
     public sealed class OuterComponent : BaseComponent
     {
@@ -14,13 +14,13 @@ namespace H6Game.Base
 
         public bool IsConnected { get { return this.Network.Channel.Connected; } }
 
+        public Action<ANetChannel> OnConnected { get; set; }
+
+        public Action<ANetChannel> OnDisconnected { get; set; }
+
         public override void Awake()
         {
             this.Config = Game.Scene.AddComponent<OutNetConfigComponent>().OutNetConfig;
-        }
-
-        public override void Start()
-        {
             this.Connecting(GetLoginServerEndPoint());
         }
 
@@ -44,7 +44,7 @@ namespace H6Game.Base
 
         private void Connecting(IPEndPoint endPoint)
         {
-            this.Network = Network.CreateConnecting(endPoint, ProtocalType.Kcp);
+            this.Network = Network.CreateConnecting(endPoint, ProtocalType.Kcp, c => { this.OnConnected?.Invoke(c); }, c => { this.OnDisconnected?.Invoke(c); });
         }
 
         private IPEndPoint GetLoginServerEndPoint()
