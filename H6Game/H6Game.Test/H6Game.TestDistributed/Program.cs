@@ -11,16 +11,15 @@ namespace TestDistributed
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<DistributionsComponent>();
+            Game.Scene.AddComponent<DistributionsComponent>().OnInnerClientConnected += c=> { TestBenckmark.Start(c.Network); };
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Player);
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Room);
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Game);
 
-            TestBenckmark.Start();
-
             while (true)
             {
                 Game.Update();
+                Thread.Sleep(1);
             }
         }
     }

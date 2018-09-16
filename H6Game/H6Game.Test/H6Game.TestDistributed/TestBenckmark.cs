@@ -16,24 +16,21 @@ namespace TestDistributed
         private static int Count = 0;
         private static long size = 0;
 
-        public static void Start()
+        public static void Start(Network network)
         {
-            for (var i = 0; i < 2000; i++)
-                Game.Update();
-
             stopWatch.Start();
 
             if (Game.Scene.GetComponent<DistributionsComponent>().IsCenterServer)
                 return;
 
             for (var i = 0; i < 1000; i++)
-                Benckmark();
+                Benckmark(network);
         }
 
-        private static async void Benckmark()
+        private static async void Benckmark(Network network)
         {
             while(true)
-                await Call();
+                await StartCall(network);
         }
 
         static TestMessage send = new TestMessage
@@ -47,24 +44,6 @@ namespace TestDistributed
             UIntData = 191919191,
             ListIntData = new List<int> { 1, 2, 3, 4, 5, 6, },
         };
-
-
-        private static async Task Call()
-        {
-            var inNetComponent = Game.Scene.GetComponent<DistributionsComponent>();
-            if (inNetComponent.IsCenterServer)
-                return;
-
-            var networks = inNetComponent.InConnNets;
-
-            foreach (var network in networks)
-            {
-                if (!network.Channel.Connected)
-                    continue;
-
-                await StartCall(network);
-            }
-        }
 
         public static async Task StartCall(Network network)
         {

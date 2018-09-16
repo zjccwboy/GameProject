@@ -26,7 +26,6 @@ namespace H6Game.Base
             {
                 Event.Update();
                 ThreadCallbackContext.Instance.Update();
-                Thread.Sleep(1);
             }
             catch(Exception e)
             {

@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using System.Threading;
 
 namespace H6Game.TestKcpServerBenckmark
 {
@@ -10,6 +11,7 @@ namespace H6Game.TestKcpServerBenckmark
             while (true)
             {
                 Game.Update();
+                Thread.Sleep(1);
             }
         }
     }

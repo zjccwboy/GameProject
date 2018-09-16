@@ -11,7 +11,7 @@ namespace H6Game.Base
         public DbConfig DBConfig { get; private set; }
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\DbConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
         }

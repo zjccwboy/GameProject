@@ -97,7 +97,7 @@ namespace H6Game.Base
         /// <summary>
         /// 内网客户端网络连接断开回调事件。
         /// </summary>
-        public Action<ANetChannel> OnInnerServerDisConnected { get; set; }
+        public Action<ANetChannel> OnInnerServerDisconnected { get; set; }
 
         public override void Awake()
         {
@@ -215,7 +215,7 @@ namespace H6Game.Base
                 if (this.Config.IsCenterServer)
                     return;
 
-                this.OnInnerServerDisConnected?.Invoke(c);
+                this.OnInnerServerDisconnected?.Invoke(c);
             };
 
             this.InAcceptSession = session;

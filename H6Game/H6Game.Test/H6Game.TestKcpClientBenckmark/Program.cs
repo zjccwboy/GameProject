@@ -15,6 +15,7 @@ namespace H6Game.TestKcpClientBenckmark
             while (true)
             {
                 Game.Update();
+                Thread.Sleep(1);
             }
         }
 
@@ -43,11 +44,6 @@ namespace H6Game.TestKcpClientBenckmark
         private static async Task Call()
         {
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            await Call(network);
-        }
-
-        private static async Task Call(Network network)
-        {
             await network.CallMessage<int>(1024, 1024);
 
 

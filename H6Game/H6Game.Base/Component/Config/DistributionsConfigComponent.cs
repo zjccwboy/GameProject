@@ -12,7 +12,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\DistributionsConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
 

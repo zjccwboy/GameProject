@@ -1,6 +1,7 @@
 ﻿using H6Game.Entities.Enums;
 using H6Game.Message;
 using MongoDB.Bson;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -59,6 +60,10 @@ namespace H6Game.Base
         private ConcurrentDictionary<int, BaseActorEntityComponent> RemoteComponentDictionary { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
         private ConcurrentDictionary<string, BaseActorEntityComponent> AllComponentDictionary { get; } = new ConcurrentDictionary<string, BaseActorEntityComponent>();
         private IEnumerable<BaseActorEntityComponent> LocalComponents { get { return LocalComponentDictionary.Values; } }
+
+        public static Action<ANetChannel> OnServerDisconnected { get; set; }
+        public static Action<ANetChannel> OnInnerClientConnected { get; set; }
+
         public ActorType ActorType { get; }
         public ActorPoolComponent(ActorType actorType)
         {
@@ -69,16 +74,26 @@ namespace H6Game.Base
         {
             var innerComponent = Game.Scene.AddComponent<DistributionsComponent>();
 
-            innerComponent.OnInnerServerDisConnected += (channel) =>
+            //断开消息只注册一次
+            if (OnServerDisconnected == null)
             {
-                if (!NetChannelIdEntitys.TryGetValue(channel.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
-                    return;
+                OnServerDisconnected = c =>
+                {
+                    if (!NetChannelIdEntitys.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+                        return;
 
-                foreach (var kv in dicVal)
-                    kv.Value.Dispose();
-            };
+                    foreach (var kv in dicVal)
+                        kv.Value.Dispose();
+                };
+                innerComponent.OnInnerServerDisconnected += OnServerDisconnected;
+            }
 
-            innerComponent.OnInnerClientConnected = (channel) => { channel.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd); };
+            //连接消息只注册一次
+            if(OnInnerClientConnected == null)
+            {
+                OnInnerClientConnected = c => { c.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd); };
+                innerComponent.OnInnerClientConnected += OnInnerClientConnected;
+            }
         }
 
         public void AddLocal(BaseActorEntityComponent component)

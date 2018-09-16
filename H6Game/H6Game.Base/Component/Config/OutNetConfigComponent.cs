@@ -11,7 +11,7 @@ namespace H6Game.Base
         public OutNetConfig OutNetConfig { get; private set; }
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\OutNetConfig.json";
+            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
             if (!ReadConfigFile(path))
                 SaveConfigile(path);
 
