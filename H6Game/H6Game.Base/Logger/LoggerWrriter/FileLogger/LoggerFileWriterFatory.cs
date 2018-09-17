@@ -5,13 +5,11 @@ namespace H6Game.Base
 {
     public class LoggerFileWriterFatory
     {
-        private Dictionary<LogLevel, ILoggerWriter> FileWriters { get; }
+        private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
 
         public LoggerFileWriterFatory()
         {
-            FileWriters = new Dictionary<LogLevel, ILoggerWriter>();
-            var patch = Game.Scene.GetComponent<LoggerConfigComponent>().Config.LoggerPath;
-            FileHelper.UpdateFileInfo(patch);
+            FileWriters = new Dictionary<LogLevel, ILoggerFileWriter>();
         }
 
         public void ReCreateWriters()
@@ -31,6 +29,19 @@ namespace H6Game.Base
             {
                 FileWriters[level] = Create(level);
             }
+
+            var patch = Game.Scene.GetComponent<LoggerConfigComponent>().Config.LoggerPath;
+            FileHelper.UpdateFileInfo(patch);
+            var needReload = FileHelper.LastCreateFileNames.Count <= 0;
+            foreach (var writer in FileWriters.Values)
+            {
+                writer.CreateOrOpenFile();
+            }
+
+            if (needReload)
+            {
+                FileHelper.UpdateFileInfo(patch);
+            }
         }
 
         public async Task WriteMessage(LoggerEntity entity)
@@ -38,7 +49,7 @@ namespace H6Game.Base
             await FileWriters[entity.FLogLevel].WriteMessage(entity);
         }
 
-        private  ILoggerWriter Create(LogLevel logLevel)
+        private ILoggerFileWriter Create(LogLevel logLevel)
         {
             switch (logLevel)
             {

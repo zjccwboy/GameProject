@@ -36,7 +36,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private void SaveConfigile(string path)
+        private async void SaveConfigile(string path)
         {
             DBConfig = new DbConfig
             {
@@ -49,7 +49,8 @@ namespace H6Game.Base
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = DBConfig.ToJson();
-                    sr.Write(json);
+                    await sr.WriteAsync(json);
+                    await sr.FlushAsync();
                     Log.Logger.Error($"数据库连接信息未配置.");
                 }
             }

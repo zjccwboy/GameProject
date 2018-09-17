@@ -45,7 +45,7 @@ namespace H6Game.Base
             return false;
         }
 
-        private void SaveConfigile(string path)
+        private async void SaveConfigile(string path)
         {
             InnerConfig = new DistributionsConfig
             {
@@ -71,7 +71,8 @@ namespace H6Game.Base
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = InnerConfig.ToJson();
-                    sr.Write(json);
+                    await sr.WriteAsync(json);
+                    await sr.FlushAsync();
                     Log.Logger.Error($"未配置服务IP地址端口信息.");
                 }
             }

@@ -10,7 +10,6 @@ namespace H6Game.TestLooger
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Test", ConsoleColor.Red);
 
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<LoggerConfigComponent>();

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
-    public abstract class ALoggerFileWriter : ILoggerWriter
+    public abstract class ALoggerFileWriter : ILoggerFileWriter
     {
         private LoggerConfigEntity Config { get; }
         private StreamWriter logOutput;
@@ -18,7 +18,10 @@ namespace H6Game.Base
         {
             this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
             this.WriterFatory = writerFatory;
+        }
 
+        public void CreateOrOpenFile()
+        {
             if (!CanWrite(this.LogLevel))
                 return;
 
@@ -95,11 +98,11 @@ namespace H6Game.Base
             {
                 SetFileExtensionName();
                 var levelName = FileHelper.LevelNames[this.LogLevel];
-                var fileName = $"{levelName} {CustomName}";
+                var fileName = $"{levelName}{CustomName}";
                 return $"{path}{fileName}";
             }
 
-            return $"{path} {FileHelper.LastCreateFileNames[this.LogLevel]}";// FileHelper.LastCreateFileNames[this.LogLevel];
+            return $"{path}{FileHelper.LastCreateFileNames[this.LogLevel]}";
         }
 
         private void SetFileExtensionName()
@@ -128,10 +131,9 @@ namespace H6Game.Base
             return true;
         }
 
-        public void Dispose()
+        public async void Dispose()
         {
-            logOutput.Flush();
-            logOutput.Close();
+            await logOutput.FlushAsync();
             logOutput.Dispose();
         }
     }

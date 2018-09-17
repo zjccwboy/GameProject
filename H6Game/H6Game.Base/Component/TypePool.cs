@@ -136,7 +136,7 @@ namespace H6Game.Base
                 }
                 catch(Exception e)
                 {
-                    var a = e;
+                    Console.WriteLine(e.StackTrace);
                 }
             }
 

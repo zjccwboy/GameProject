@@ -39,7 +39,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private void SaveConfigile(string path)
+        private async void SaveConfigile(string path)
         {
             OutNetConfig = new OutNetConfig
             {
@@ -54,7 +54,8 @@ namespace H6Game.Base
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = OutNetConfig.ToJson();
-                    sr.Write(json);
+                    await sr.WriteAsync(json);
+                    await sr.FlushAsync();
                     Log.Logger.Error($"外网连接信息未配置.");
                 }
             }
