@@ -10,6 +10,7 @@ namespace H6Game.Base
 
     public interface IRpository
     {
-        void SetDBContext(IMongoDatabase database);
+        DBType DBType { get; }
+        void SetDBContext(IMongoDatabase database, string databaseName, MongoClient dbClient);
     }
 }

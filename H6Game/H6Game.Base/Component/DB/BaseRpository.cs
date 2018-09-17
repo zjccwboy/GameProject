@@ -10,10 +10,12 @@ namespace H6Game.Base
 
         public IMongoDatabase DataBase { get;private set; }
 
-        public void SetDBContext(IMongoDatabase database)
+        public virtual DBType DBType => DBType.SysDb;
+
+        public void SetDBContext(IMongoDatabase database, string databaseName, MongoClient dbClient)
         {
             this.DataBase = database;
-            this.DBContext = new DBContext<TEntity>(this.DataBase);
+            this.DBContext = new DBContext<TEntity>(this.DataBase, databaseName, dbClient);
 
             CreateCollection();
         }

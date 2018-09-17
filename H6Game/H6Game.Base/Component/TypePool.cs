@@ -101,35 +101,42 @@ namespace H6Game.Base
 
             foreach (var assembly in assemblys)
             {
-                var types = assembly.GetTypes();
-                foreach (var t in types)
+                try
                 {
-                    if (!t.IsClass)
-                        continue;
+                    var types = assembly.GetTypes();
+                    foreach (var t in types)
+                    {
+                        if (!t.IsClass)
+                            continue;
 
-                    if (t.IsAbstract)
-                        continue;
+                        if (t.IsAbstract)
+                            continue;
 
-                    if (messageBaseType.IsAssignableFrom(t))
-                    {
-                        messageTypes.Add(t);
+                        if (messageBaseType.IsAssignableFrom(t))
+                        {
+                            messageTypes.Add(t);
+                        }
+                        else if (t.BaseType == componentBaseType)
+                        {
+                            componentTypes.Add(t);
+                        }
+                        else if (handlerType.IsAssignableFrom(t))
+                        {
+                            handlerTypes.Add(t);
+                        }
+                        else if (t.BaseType == entityBaseType)
+                        {
+                            entityTypes.Add(t);
+                        }
+                        else if (rpositoryBaseType.IsAssignableFrom(t))
+                        {
+                            rpositoryTypes.Add(t);
+                        }
                     }
-                    else if(t.BaseType == componentBaseType)
-                    {
-                        componentTypes.Add(t);
-                    }
-                    else if (handlerType.IsAssignableFrom(t))
-                    {
-                        handlerTypes.Add(t);
-                    }
-                    else if (t.BaseType == entityBaseType)
-                    {
-                        entityTypes.Add(t);
-                    }
-                    else if (rpositoryBaseType.IsAssignableFrom(t))
-                    {
-                        rpositoryTypes.Add(t);
-                    }
+                }
+                catch(Exception e)
+                {
+                    var a = e;
                 }
             }
 

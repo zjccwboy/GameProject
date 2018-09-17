@@ -15,10 +15,15 @@ namespace H6Game.Base
 
     public class DBContext<TEntity> where TEntity : BaseEntity
     {
+        private string DatabaseName { get; set; }
+        private MongoClient DBClient { get; set; }
+        public MongoServer DBServer => DBClient.GetServer();
         #region 构造函数
-        public DBContext(IMongoDatabase database)
+        public DBContext(IMongoDatabase database, string databaseName, MongoClient dbClient)
         {
             this.Database = database;
+            this.DatabaseName = databaseName;
+            this.DBClient = dbClient;
         }
         #endregion
 
@@ -56,8 +61,7 @@ namespace H6Game.Base
 
         public List<TEntity> FindAs<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
         {
-            var server = Game.Scene.GetComponent<MongoConfig>().DBServer;
-            var collection = server.GetDatabase(Game.Scene.GetComponent<MongoConfig>().DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
+            var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
             var fs = Fields.Include(fields);
             var query = Query<TEntity>.EQ(memberExpression, value);
             var q = collection.FindAs<TEntity>(query).SetFields(fs);
@@ -70,8 +74,7 @@ namespace H6Game.Base
 
         public Task<List<TEntity>> FindAsAsync<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, string[] fields)
         {
-            var server = Game.Scene.GetComponent<MongoConfig>().DBServer;
-            var collection = server.GetDatabase(Game.Scene.GetComponent<MongoConfig>().DatabaseNaeme).GetCollection<TEntity>(typeof(TEntity).Name);
+            var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
             var fs = Fields.Include(fields);
             var query = Query<TEntity>.EQ(memberExpression, value);
             var q = collection.FindAs<TEntity>(query).SetFields(fs);

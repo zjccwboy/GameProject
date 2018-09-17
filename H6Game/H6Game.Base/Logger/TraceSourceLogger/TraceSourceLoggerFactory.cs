@@ -2,11 +2,12 @@
 
 namespace H6Game.Base
 {
-    public class TraceSourceLoggerFactory : ILoggerFactory
+    public class TraceSourceLoggerFactory : ITraceSourceLoggerFactory
     {
         public ILogger Create()
         {
             var logger = new TraceSourceLogger();
+            logger.Create();
             return logger;
         }
     }
@@ -14,7 +15,7 @@ namespace H6Game.Base
     /// <summary>
     /// 系统日志工厂
     /// </summary>
-    public interface ILoggerFactory
+    public interface ITraceSourceLoggerFactory
     {
         /// <summary>
         /// 创建一个系统日志

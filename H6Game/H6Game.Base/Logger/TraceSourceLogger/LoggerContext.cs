@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// </summary>
     public static class LoggerContext
     {
-        static ILoggerFactory _currentLogFactory = null;
+        static ITraceSourceLoggerFactory _currentLogFactory = null;
 
         /// <summary>
         /// 设置当然上下文使用的日志工厂
@@ -17,7 +17,7 @@ namespace H6Game.Base
         /// </remarks>
         /// </summary>
         /// <param name="factory">日志工厂</param>
-        public static void SetCurrent(ILoggerFactory factory)
+        public static void SetCurrent(ITraceSourceLoggerFactory factory)
         {
             if (_currentLogFactory != null)
                 throw new ArgumentException("该日志上下文已经设置使用的日志工厂，无法进行再次设置，如需使用其他日志工厂，请直接实例日志工厂进行操作。", "factory");

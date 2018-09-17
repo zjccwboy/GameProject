@@ -1,7 +1,5 @@
 ﻿using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace H6Game.Base
 {
@@ -9,34 +7,32 @@ namespace H6Game.Base
     [SingletCase]
     public class MongoConfig : BaseComponent
     {
-        private DbConfig Config { get; set; }
-        public string DatabaseNaeme { get; set; }
-        public MongoClient DBClient { get; private set; }
-        public MongoServer DBServer  => DBClient.GetServer();
-        public IMongoDatabase Database { get; private set; }
-
         public override void Awake()
         {
             Game.Scene.AddComponent<EntityComponent>();
-            Config = Game.Scene.AddComponent<DBConfigComponent>().DBConfig;
-            DBClient = new MongoClient(Config.ConnectionString);
-            DatabaseNaeme = Config.DatabaseName;
-            SetMongoDatabase();
+            Game.Scene.AddComponent<DBConfigComponent>();
             AddRpositoryComponents();
-
             Log.Logger.Info("MongoDB初始化成功。");
         }
 
         private void AddRpositoryComponents()
         {
+            var sysConfig = Game.Scene.GetComponent<DBConfigComponent>().DBConfig;
+            var sysDbClient = new MongoClient(sysConfig.ConnectionString);
+            var sysDb = sysDbClient.GetDatabase(sysConfig.DatabaseName);
+
+            var logConfig = Game.Scene.AddComponent<LoggerConfigComponent>().Config.DBConfig;
+            var logDbClient = new MongoClient(logConfig.ConnectionString);
+            var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);
+
             var types = TypePool.GetTypes<IRpository>();
             foreach (var type in types)
             {
-                AddComponent(type);
+                AddComponent(type, sysConfig, logConfig, sysDbClient, logDbClient, sysDb, logDb);
             }
         }
 
-        private void AddComponent(Type type)
+        private void AddComponent(Type type, DbConfig sysConfig, DbConfig logConfig, MongoClient sysDbClient, MongoClient logDbClient, IMongoDatabase sysDb, IMongoDatabase logDb)
         {
             if (!typeof(IRpository).IsAssignableFrom(type))
                 return;
@@ -46,33 +42,16 @@ namespace H6Game.Base
                 throw new ComponentException("规定Rpository类型组件只能定义成单例(SingleCase)组件。");
 
             var component = ComponentPool.Fetch(type);
-            (component as IRpository).SetDBContext(Database);
-            Game.Scene.AddComponent(component);
-        }
-
-        private void SetMongoDatabase()
-        {
-            if (Database == null)
+            var rpository = component as IRpository;
+            if(rpository.DBType == DBType.SysDb)
             {
-                if (!DatabaseExists(DBClient, DatabaseNaeme))
-                {
-                    throw new KeyNotFoundException("此MongoDB名称不存在：" + DatabaseNaeme);
-                }
-
-                Database = DBClient.GetDatabase(DatabaseNaeme);
+                rpository.SetDBContext(sysDb, sysConfig.DatabaseName, sysDbClient);
+                Game.Scene.AddComponent(component);
             }
-        }
-
-        private bool DatabaseExists(MongoClient client, string dbName)
-        {
-            try
+            else if(rpository.DBType == DBType.LoggerDb)
             {
-                var dbNames = client.ListDatabases().ToList().Select(db => db.GetValue("name").AsString);
-                return dbNames.Contains(dbName);
-            }
-            catch
-            {
-                return true;
+                rpository.SetDBContext(logDb, logConfig.DatabaseName, logDbClient);
+                Game.Scene.AddComponent(component);
             }
         }
     }
