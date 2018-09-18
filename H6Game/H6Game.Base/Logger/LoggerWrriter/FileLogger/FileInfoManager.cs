@@ -24,6 +24,12 @@ namespace H6Game.Base
         /// <param name="path"></param>
         public static void UpdateLastCreateFileInfo(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return;
+            }
+
             var directory = new DirectoryInfo(path);
             var files = directory.GetFiles().OrderByDescending(f=>f.CreationTimeUtc);
 

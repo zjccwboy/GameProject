@@ -6,7 +6,7 @@ namespace H6Game.Base
         /// <summary>
         /// 日志文件存放目录路径
         /// </summary>
-        public string LoggerPath { get; set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// 日志MongoDB配置项

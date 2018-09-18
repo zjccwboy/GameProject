@@ -31,7 +31,7 @@ namespace H6Game.Base
             }
 
             if (this.Config == null 
-                || string.IsNullOrWhiteSpace(this.Config.LoggerPath)
+                || string.IsNullOrWhiteSpace(this.Config.Path)
                 || this.Config.DBConfig == null
                 || string.IsNullOrWhiteSpace(this.Config.DBConfig.ConnectionString)
                 || string.IsNullOrWhiteSpace(this.Config.DBConfig.DatabaseName)
@@ -51,7 +51,7 @@ namespace H6Game.Base
         {
             this.Config = new LoggerConfigEntity
             {
-                LoggerPath = Directory.GetCurrentDirectory() + "\\Logs",
+                Path = Directory.GetCurrentDirectory() + "\\Logs",
                 DBConfig = new DbConfig
                 {
                     ConnectionString = "mongodb://localhost:27017",

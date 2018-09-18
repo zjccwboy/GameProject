@@ -12,6 +12,7 @@ namespace H6Game.Base
         private StreamWriter logOutput { get; set; }
         private LoggerFileWriterFatory WriterFatory { get; }
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
+        private string Path { get; }
 
         public abstract LogLevel LogLevel { get; }
         public bool IsWorking { get; private set; }
@@ -21,6 +22,7 @@ namespace H6Game.Base
         {
             this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
             this.WriterFatory = writerFatory;
+            this.Path = this.Config.Path.EndsWith("\\") ? this.Config.Path : this.Config.Path + "\\";
         }
 
         public bool Existed
@@ -129,29 +131,22 @@ namespace H6Game.Base
 
         private string GetFileName()
         {
-            if (!Directory.Exists(this.Config.LoggerPath))
-            {
-                Directory.CreateDirectory(this.Config.LoggerPath);
-            }
-
-            var path = this.Config.LoggerPath.EndsWith("\\") ? this.Config.LoggerPath : this.Config.LoggerPath + "\\";
-
             var isNeedNewFile = !CanWrite();
             if (isNeedNewFile)
             {
                 var levelName = FileInfoManager.LevelNames[this.LogLevel];
                 var customName = GetCustomNameName();
                 var fileName = $"{levelName} {customName}";
-                return $"{path}{fileName}";
+                return $"{this.Path}{fileName}";
             }
 
-            return $"{path}{FileInfoManager.LastCreateFileNames[this.LogLevel]}";
+            return $"{this.Path}{FileInfoManager.LastCreateFileNames[this.LogLevel]}";
         }
-
-        private string[] splitStr = new string[] { " " };
+        
+        private const string StartName = "100000";
         private string GetCustomNameName()
         {
-            var newName = "100000";
+            var newName = StartName;
             var isAddOne = true;
             if(!FileInfoManager.LastCreateFileNames.TryGetValue(this.LogLevel, out string fileName))
             {
@@ -172,9 +167,10 @@ namespace H6Game.Base
             return $"{newName} .log";
         }
 
+        private static string[] SplitStr = new string[] { " " };
         private string GetVerName(string fileName)
         {
-            var list = fileName.Split(splitStr, StringSplitOptions.RemoveEmptyEntries);
+            var list = fileName.Split(SplitStr, StringSplitOptions.RemoveEmptyEntries);
             return list[1];
         }
     }

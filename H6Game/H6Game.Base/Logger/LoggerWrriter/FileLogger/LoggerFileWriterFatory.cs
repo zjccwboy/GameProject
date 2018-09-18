@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace H6Game.Base
@@ -6,13 +7,14 @@ namespace H6Game.Base
     public class LoggerFileWriterFatory
     {
         private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
+        private LoggerConfigEntity Config { get; }
 
         public LoggerFileWriterFatory()
         {
             FileWriters = new Dictionary<LogLevel, ILoggerFileWriter>();
             FileInfoManager.Load();
-            var patch = Game.Scene.GetComponent<LoggerConfigComponent>().Config.LoggerPath;
-            FileInfoManager.UpdateLastCreateFileInfo(patch);
+            Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
+            FileInfoManager.UpdateLastCreateFileInfo(Config.Path);
         }
 
         public void Create()

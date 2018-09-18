@@ -11,6 +11,7 @@ namespace H6Game.Base
         public MyLogger()
         {
             ConsoleLogger.Create();
+            LoggerWriter.Create();
         }
 
         public async Task WriteMessage(LogLevel FLogLevel, string message, string args = null, Exception exception = null)

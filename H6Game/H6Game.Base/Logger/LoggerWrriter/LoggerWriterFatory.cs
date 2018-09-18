@@ -9,7 +9,7 @@ namespace H6Game.Base
         public LoggerFileWriterFatory FileWriterFatory { get; } = new LoggerFileWriterFatory();
         public LoggerMongoDBWriter MongoWriterFatory { get; } = new LoggerMongoDBWriter();
 
-        public LoggerWriterFatory()
+        public void Create()
         {
             FileWriterFatory.Create();
         }
