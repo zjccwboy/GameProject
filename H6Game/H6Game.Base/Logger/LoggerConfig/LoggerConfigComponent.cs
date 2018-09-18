@@ -51,7 +51,7 @@ namespace H6Game.Base
         {
             this.Config = new LoggerConfigEntity
             {
-                Path = Directory.GetCurrentDirectory() + "\\Logs",
+                Path = "\\Logs",
                 DBConfig = new DbConfig
                 {
                     ConnectionString = "mongodb://localhost:27017",
