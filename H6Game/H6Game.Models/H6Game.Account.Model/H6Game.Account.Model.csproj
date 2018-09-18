@@ -8,14 +8,14 @@
     <Reference Include="Google.Protobuf">
       <HintPath>..\..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
     <Reference Include="H6Game.Hotfix">
       <HintPath>..\..\H6Game.Hotfix\bin\Debug\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Rpository">
       <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>
+    </Reference>
+    <Reference Include="H6Game.Server.Base">
+      <HintPath>..\..\H6Game.Server.Base\bin\Debug\netstandard2.0\H6Game.Server.Base.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
