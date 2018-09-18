@@ -120,14 +120,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestLooger", "H6Game
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpServerBenckmarkCore", "H6Game.Test\H6Game.TestKcpServerBenckmarkCore\H6Game.TestKcpServerBenckmarkCore.csproj", "{B21094BF-66CF-421F-A691-1F12D2B81161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestKcpServerBenckmarkCore", "H6Game.Test\H6Game.TestKcpServerBenckmarkCore\H6Game.TestKcpServerBenckmarkCore.csproj", "{B21094BF-66CF-421F-A691-1F12D2B81161}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpClientBenckmarkCore", "H6Game.Test\H6Game.TestKcpClientBenckmarkCore\H6Game.TestKcpClientBenckmarkCore.csproj", "{8AB0C28C-255B-40B8-8EBF-69A1F2681A9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestKcpClientBenckmarkCore", "H6Game.Test\H6Game.TestKcpClientBenckmarkCore\H6Game.TestKcpClientBenckmarkCore.csproj", "{8AB0C28C-255B-40B8-8EBF-69A1F2681A9D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Server.Base", "H6Game.Server.Base\H6Game.Server.Base.csproj", "{41F4304D-51BD-419C-9809-061B19C1A12E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.Server.Base", "H6Game.Server.Base\H6Game.Server.Base.csproj", "{41F4304D-51BD-419C-9809-061B19C1A12E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AA139D1F-E279-45A4-8D5F-D9B556016F90} = {AA139D1F-E279-45A4-8D5F-D9B556016F90}
 		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
@@ -137,6 +137,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Server.Base", "H6Gam
 		{E2F45C9C-7DB6-4188-8399-FC3F1B82B56E} = {E2F45C9C-7DB6-4188-8399-FC3F1B82B56E}
 		{32039CEC-94BD-4E98-B25D-DEA0F0DF0E99} = {32039CEC-94BD-4E98-B25D-DEA0F0DF0E99}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Client.Base", "H6Game.Client.Base\H6Game.Client.Base.csproj", "{AAC8F6EE-7CCC-46C9-8373-27C2E3DD6AE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -248,6 +250,10 @@ Global
 		{41F4304D-51BD-419C-9809-061B19C1A12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41F4304D-51BD-419C-9809-061B19C1A12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41F4304D-51BD-419C-9809-061B19C1A12E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAC8F6EE-7CCC-46C9-8373-27C2E3DD6AE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAC8F6EE-7CCC-46C9-8373-27C2E3DD6AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAC8F6EE-7CCC-46C9-8373-27C2E3DD6AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAC8F6EE-7CCC-46C9-8373-27C2E3DD6AE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
