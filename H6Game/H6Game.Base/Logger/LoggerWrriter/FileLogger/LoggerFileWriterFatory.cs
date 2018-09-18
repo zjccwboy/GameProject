@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace H6Game.Base
@@ -24,7 +23,7 @@ namespace H6Game.Base
             {
                 FileWriters[level] = Create(level);
             }
-            CreateLoggerFile();
+            CreateNewFiles();
         }
 
         public async Task WriteMessage(LoggerEntity entity)
@@ -32,18 +31,18 @@ namespace H6Game.Base
             var writer = FileWriters[entity.FLogLevel];
 
             if (!writer.CanWrite())
-                CreateLoggerFile();
+                CreateNewFiles();
 
             await writer.WriteMessage(entity);
         }
 
-        private void CreateLoggerFile()
+        private void CreateNewFiles()
         {
             foreach (var writer in FileWriters.Values)
             {
                 if (!writer.IsWorking)
                 {
-                    writer.CreateFile();
+                    writer.CreateNewFile();
                 }
                 else
                 {

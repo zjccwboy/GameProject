@@ -25,7 +25,7 @@ namespace H6Game.Base
             this.Path = this.Config.Path.EndsWith("\\") ? this.Config.Path : this.Config.Path + "\\";
         }
 
-        public void CreateFile()
+        public void CreateNewFile()
         {
             if (!CanWrite(this.LogLevel))
                 return;
@@ -37,12 +37,9 @@ namespace H6Game.Base
                 logOutput = null;
             }
 
-            var fileName = GetFileName();
+            var fileName = CreateFileName();
             logOutput = new StreamWriter(File.Open(fileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite), Encoding.UTF8);
-            var fileInfo = new FileInfo(fileName);
-            FileInfoManager.LastCreateFileNames[this.LogLevel] = fileInfo.Name;
-            FileInfoManager.LastCreateFileSize[this.LogLevel] = fileInfo.Length;
-            FileInfoManager.LastCreateFileTime[this.LogLevel] = fileInfo.CreationTimeUtc;
+            SetFileInfo(fileName);
         }
 
         public bool CanWrite(LogLevel logLevel)
@@ -90,7 +87,7 @@ namespace H6Game.Base
             if (this.IsCreateNew)
             {
                 this.IsCreateNew = false;
-                CreateFile();
+                CreateNewFile();
             }
 
             MessageBuilder.Clear();
@@ -116,20 +113,22 @@ namespace H6Game.Base
             IsWorking = false;
         }
 
-        private string GetFileName()
+        private void SetFileInfo(string fileName)
         {
-            var isNeedNewFile = !CanWrite();
-            if (isNeedNewFile)
-            {
-                var levelName = FileInfoManager.LevelNames[this.LogLevel];
-                var customName = GetCustomNameName();
-                var fileName = $"{levelName} {customName}";
-                return $"{this.Path}{fileName}";
-            }
-
-            return $"{this.Path}{FileInfoManager.LastCreateFileNames[this.LogLevel]}";
+            var fileInfo = new FileInfo(fileName);
+            FileInfoManager.LastCreateFileNames[this.LogLevel] = fileInfo.Name;
+            FileInfoManager.LastCreateFileSize[this.LogLevel] = fileInfo.Length;
+            FileInfoManager.LastCreateFileTime[this.LogLevel] = DateTime.UtcNow;
         }
-        
+
+        private string CreateFileName()
+        {
+            var levelName = FileInfoManager.LevelNames[this.LogLevel];
+            var customName = GetCustomNameName();
+            var fileName = $"{levelName} {customName}";
+            return $"{this.Path}{fileName}";
+        }
+
         private const string StartName = "100000";
         private string GetCustomNameName()
         {

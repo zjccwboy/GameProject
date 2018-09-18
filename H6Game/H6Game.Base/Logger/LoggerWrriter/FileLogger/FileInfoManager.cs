@@ -32,10 +32,9 @@ namespace H6Game.Base
 
             var directory = new DirectoryInfo(path);
             var files = directory.GetFiles().OrderByDescending(f=>f.CreationTimeUtc);
-
             foreach (var levelName in LevelNames.Values)
             {
-                foreach (var fileInfo in directory.GetFiles())
+                foreach (var fileInfo in files)
                 {
                     if (fileInfo.Name.StartsWith(levelName))
                     {

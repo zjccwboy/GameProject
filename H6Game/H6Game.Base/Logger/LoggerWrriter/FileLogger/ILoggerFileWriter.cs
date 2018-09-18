@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     public interface ILoggerFileWriter : ILoggerWriter
     {
-        void CreateFile();
+        void CreateNewFile();
         bool IsWorking { get;}
         bool IsCreateNew { get; set;}
         bool CanWrite();
