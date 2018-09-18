@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Linq;
 using System.Diagnostics;
-
+using System.Runtime.CompilerServices;
 
 namespace Tester
 {
@@ -11,41 +11,17 @@ namespace Tester
     {
         static void Main(string[] args)
         {
+            ShowInfo("message");
 
-            var classA = new ClassA();
-
-            var a = nameof(TestEnum.A);
-
-            var arr = Enum.GetNames(typeof(TestEnum));
-
-            var name = Enum.GetName(typeof(TestEnum), TestEnum.A);
-
-            var day = DateTime.Now.ToString("-yyyy/MM/dd HH:mm:ss ");
-
-            //ILoggerFactory loggerFactory = new LoggerFactory().AddConsole();
-            //ILogger logger = loggerFactory.CreateLogger<Program>();
-            //logger.LogInformation("This is a test of the emergency broadcast system.");
-            //logger.LogDebug("This is a test of the emergency broadcast system.");
-            //logger.LogError("This is a test of the emergency broadcast system.");
-            //logger.LogTrace("This is a test of the emergency broadcast system.");
-            //logger.LogWarning("This is a test of the emergency broadcast system.");
             Console.Read();
         }
 
-        public class ClassA
-        {
-            public int TestInt => 100;
-            public ClassA()
-            {
-                var a = TestInt;
-            }
-        }
 
-        public enum TestEnum
+        static void ShowInfo(string message, [CallerFilePath] string file = null,
+                     [CallerLineNumber] int line = 0,
+                     [CallerMemberName] string member = null)
         {
-            A,
-            B,
-            C,
+            Console.WriteLine("{0}:{1} - {2} {3}", file, line, member, message);
         }
     }
 }
