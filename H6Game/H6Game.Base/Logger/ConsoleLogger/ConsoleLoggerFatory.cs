@@ -9,7 +9,7 @@ namespace H6Game.Base
 
         public void Create()
         {
-            var levels = FileHelper.NameLevels.Values;
+            var levels = FileInfoManager.NameLevels.Values;
             foreach (var level in levels)
             {
                 FileWriters[level] = Create(level);

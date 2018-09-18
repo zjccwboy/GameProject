@@ -16,15 +16,10 @@ namespace H6Game.Base
         private static Dictionary<Type, HashSet<int>> TypeCmdDictionary { get; } = new Dictionary<Type, HashSet<int>>();
         private static Dictionary<Type, int> MsgCodeDictionary { get; } = new Dictionary<Type, int>();
 
-        static HandlerMsgPool()
+        public static void Load()
         {
             LoadHandler();
             LoadMessageType();
-        }
-
-        public static void Load()
-        {
-
         }
 
         private static void LoadMessageType()

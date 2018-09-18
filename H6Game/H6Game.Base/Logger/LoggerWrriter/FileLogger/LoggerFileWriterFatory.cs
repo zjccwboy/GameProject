@@ -10,43 +10,43 @@ namespace H6Game.Base
         public LoggerFileWriterFatory()
         {
             FileWriters = new Dictionary<LogLevel, ILoggerFileWriter>();
-        }
-
-        public void ReCreateWriters()
-        {
-            foreach(var kv in FileWriters)
-            {
-                kv.Value.Dispose();
-            }
-            FileWriters.Clear();
-            Create();
+            FileInfoManager.Load();
+            var patch = Game.Scene.GetComponent<LoggerConfigComponent>().Config.LoggerPath;
+            FileInfoManager.UpdateLastCreateFileInfo(patch);
         }
 
         public void Create()
         {
-            var levels = FileHelper.NameLevels.Values;
+            var levels = FileInfoManager.NameLevels.Values;
             foreach (var level in levels)
             {
                 FileWriters[level] = Create(level);
             }
-
-            var patch = Game.Scene.GetComponent<LoggerConfigComponent>().Config.LoggerPath;
-            FileHelper.UpdateFileInfo(patch);
-            var needReload = FileHelper.LastCreateFileNames.Count <= 0;
-            foreach (var writer in FileWriters.Values)
-            {
-                writer.CreateOrOpenFile();
-            }
-
-            if (needReload)
-            {
-                FileHelper.UpdateFileInfo(patch);
-            }
+            CreateLoggerFile();
         }
 
         public async Task WriteMessage(LoggerEntity entity)
         {
-            await FileWriters[entity.FLogLevel].WriteMessage(entity);
+            var writer = FileWriters[entity.FLogLevel];
+            if (!writer.CanWrite() || !writer.Existed)
+                CreateLoggerFile();
+
+            await writer.WriteMessage(entity);
+        }
+
+        private void CreateLoggerFile()
+        {
+            foreach (var writer in FileWriters.Values)
+            {
+                if (!writer.IsWorking)
+                {
+                    writer.CreateFile();
+                }
+                else
+                {
+                    writer.IsCreateNew = true;
+                }
+            }
         }
 
         private ILoggerFileWriter Create(LogLevel logLevel)

@@ -30,6 +30,13 @@ namespace H6Game.Base
         void Info(string message, params object[] args);
 
         /// <summary>
+        /// 系统消息日志
+        /// </summary>
+        /// <param name="message">要记录的信息</param>
+        /// <param name="args">设置格式的对象的数组</param>
+        void Notice(string message, params object[] args);
+
+        /// <summary>
         /// 系统警告日志
         /// </summary>
         /// <param name="message">警告信息</param>

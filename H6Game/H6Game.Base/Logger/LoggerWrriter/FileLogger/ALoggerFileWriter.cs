@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,11 +9,13 @@ namespace H6Game.Base
     public abstract class ALoggerFileWriter : ILoggerFileWriter
     {
         private LoggerConfigEntity Config { get; }
-        private StreamWriter logOutput;
+        private StreamWriter logOutput { get; set; }
         private LoggerFileWriterFatory WriterFatory { get; }
-        private string CustomName { get; set; }
-        public abstract LogLevel LogLevel { get;}
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
+
+        public abstract LogLevel LogLevel { get; }
+        public bool IsWorking { get; private set; }
+        public bool IsCreateNew { get; set; }
 
         public ALoggerFileWriter(LoggerFileWriterFatory writerFatory)
         {
@@ -20,13 +23,32 @@ namespace H6Game.Base
             this.WriterFatory = writerFatory;
         }
 
-        public void CreateOrOpenFile()
+        public bool Existed
+        {
+            get
+            {
+                return FileInfoManager.LastCreateFileNames.ContainsKey(this.LogLevel);
+            }
+        }
+
+        public void CreateFile()
         {
             if (!CanWrite(this.LogLevel))
                 return;
 
+            if (logOutput != null)
+            {
+                logOutput.Flush();
+                logOutput.Dispose();
+                logOutput = null;
+            }
+
             var fileName = GetFileName();
             logOutput = new StreamWriter(File.Open(fileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite), Encoding.UTF8);
+            var fileInfo = new FileInfo(fileName);
+            FileInfoManager.LastCreateFileNames[this.LogLevel] = fileInfo.Name;
+            FileInfoManager.LastCreateFileSize[this.LogLevel] = fileInfo.Length;
+            FileInfoManager.LastCreateFileTime[this.LogLevel] = fileInfo.CreationTimeUtc;
         }
 
         public bool CanWrite(LogLevel logLevel)
@@ -49,20 +71,37 @@ namespace H6Game.Base
             return true;
         }
 
+        public bool CanWrite()
+        {
+            if (!FileInfoManager.LastCreateFileSize.TryGetValue(this.LogLevel, out long size))
+                return false;
+
+            if (size >= this.Config.MaxBytes)
+                return false;
+
+            if (!FileInfoManager.LastCreateFileTime.TryGetValue(this.LogLevel, out DateTime dateTime))
+                return false;
+
+            var span = DateTime.UtcNow - dateTime;
+            if (span.TotalSeconds >= this.Config.SecondInterval)
+                return false;
+
+            return true;
+        }
+
         public async Task WriteMessage(LoggerEntity entity)
         {
-            if (entity.FLogLevel != this.LogLevel)
-                return;
-
-            if (!CanWrite(this.LogLevel))
-                return;
+            IsWorking = true;
 
             if (!CanWrite())
             {
-                FileHelper.UpdateFileInfo(this.Config.LoggerPath);
-                WriterFatory.ReCreateWriters();
-                await WriterFatory.WriteMessage(entity);
-                return;
+                CreateFile();
+            }
+
+            if (this.IsCreateNew)
+            {
+                this.IsCreateNew = false;
+                CreateFile();
             }
 
             MessageBuilder.Clear();
@@ -81,7 +120,11 @@ namespace H6Game.Base
                 MessageBuilder.AppendLine($"exception:{ entity.FExceptionInfo}");
             }
             await this.logOutput.WriteLineAsync(MessageBuilder.ToString());
-            await this.logOutput.FlushAsync();
+            this.logOutput.Flush();
+
+            FileInfoManager.LastCreateFileSize[this.LogLevel] += MessageBuilder.Length;
+
+            IsWorking = false;
         }
 
         private string GetFileName()
@@ -96,45 +139,43 @@ namespace H6Game.Base
             var isNeedNewFile = !CanWrite();
             if (isNeedNewFile)
             {
-                SetFileExtensionName();
-                var levelName = FileHelper.LevelNames[this.LogLevel];
-                var fileName = $"{levelName}{CustomName}";
+                var levelName = FileInfoManager.LevelNames[this.LogLevel];
+                var customName = GetCustomNameName();
+                var fileName = $"{levelName} {customName}";
                 return $"{path}{fileName}";
             }
 
-            return $"{path}{FileHelper.LastCreateFileNames[this.LogLevel]}";
+            return $"{path}{FileInfoManager.LastCreateFileNames[this.LogLevel]}";
         }
 
-        private void SetFileExtensionName()
+        private string[] splitStr = new string[] { " " };
+        private string GetCustomNameName()
         {
-            CustomName = $"{DateTime.Now.Ticks}.log";
+            var newName = "100000";
+            var isAddOne = true;
+            if(!FileInfoManager.LastCreateFileNames.TryGetValue(this.LogLevel, out string fileName))
+            {
+                if(FileInfoManager.LastCreateFileNames.Count != 0)
+                {
+                    fileName = FileInfoManager.LastCreateFileNames.Values.FirstOrDefault();
+                    isAddOne = false;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                var oldName = GetVerName(fileName);
+                var number = int.Parse(oldName);
+                newName = isAddOne ? (number + 1).ToString() : number.ToString();
+            }
+
+            return $"{newName} .log";
         }
 
-        private bool CanWrite()
+        private string GetVerName(string fileName)
         {
-            if (!FileHelper.LastCreateFileNames.ContainsKey(this.LogLevel))
-                return false;
-
-            if (!FileHelper.LastCreateFileSize.TryGetValue(this.LogLevel, out long size))
-                return false;
-
-            if (size >= this.Config.MaxBytes)
-                return false;
-
-            if (!FileHelper.LastCreateFileTime.TryGetValue(this.LogLevel, out DateTime dateTime))
-                return false;
-
-            var span = DateTime.UtcNow - dateTime;
-            if (span.TotalSeconds >= this.Config.SecondInterval)
-                return false;
-
-            return true;
-        }
-
-        public async void Dispose()
-        {
-            await logOutput.FlushAsync();
-            logOutput.Dispose();
+            var list = fileName.Split(splitStr, StringSplitOptions.RemoveEmptyEntries);
+            return list[1];
         }
     }
 }

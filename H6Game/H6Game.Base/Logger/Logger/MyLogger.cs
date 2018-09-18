@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace H6Game.Base
 {
@@ -14,13 +13,12 @@ namespace H6Game.Base
             ConsoleLogger.Create();
         }
 
-        public async Task WriteMessage(LogLevel FLogLevel, string message, EventId eventId, string args = null, Exception exception = null)
+        public async Task WriteMessage(LogLevel FLogLevel, string message, string args = null, Exception exception = null)
         {
             var entity = new LoggerEntity
             {
                 FLogLevel = FLogLevel,
                 FMessage = message,
-                FEventId = eventId.Id,
                 FArgs = args,
             };
 

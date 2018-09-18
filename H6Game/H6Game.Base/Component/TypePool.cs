@@ -14,15 +14,10 @@ namespace H6Game.Base
         private static Dictionary<Type, MessageType> MsgTypeDictionary { get; } = new Dictionary<Type, MessageType>();
         private static Dictionary<Type, EventType> EventTypeDictionary { get; } = new Dictionary<Type, EventType>();
 
-        static TypePool()
+        public static void Load()
         {
             LoadType();
             LoadEvent();
-        }
-
-        public static void Load()
-        {
-
         }
 
         public static HashSet<Type> GetTypes<T>()

@@ -39,6 +39,14 @@ namespace H6Game.Base
             Write(LogLevel.Info, message, null, args);
         }
 
+        public void Notice(string message, params object[] args)
+        {
+            if (String.IsNullOrWhiteSpace(message))
+                return;
+
+            Write(LogLevel.Notice, message, null, args);
+        }
+
         public void Warning(string message, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
@@ -88,7 +96,7 @@ namespace H6Game.Base
             var stack = BuildStackTraceMessage();
             var msg = $"stack:{stack} message:{message}";
 
-            MyLogger.WriteMessage(FLogLevel, msg, 0, argsStr, exception);
+            MyLogger.WriteMessage(FLogLevel, msg, argsStr, exception);
         }
 
         private string BuildStackTraceMessage()

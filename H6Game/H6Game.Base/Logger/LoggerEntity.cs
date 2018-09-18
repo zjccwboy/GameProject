@@ -11,9 +11,6 @@ namespace H6Game.Base
         [BsonElement("Msg")]
         public string FMessage { get; set; }
 
-        [BsonElement("EId")]
-        public int FEventId { get; set; }
-
         [BsonElement("EN")]
         public string FExceptionName { get; set; }
 

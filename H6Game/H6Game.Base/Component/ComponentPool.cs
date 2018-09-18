@@ -11,31 +11,25 @@ namespace H6Game.Base
         private static ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>> componentTypeDictionary { get; } = new ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>>();
         private static ConcurrentDictionary<Type, BaseComponent> SingleCaseDictionary { get; } = new ConcurrentDictionary<Type, BaseComponent>();
         private static HashSet<Type> SingleTypes { get; } = new HashSet<Type>();
-        static ComponentPool()
-        {
-            TypePool.Load();
 
+        public static void Load()
+        {
             var types = ComponentFactory.CmponentTypes;
-            foreach(var type in types)
+            foreach (var type in types)
             {
                 var attribute = type.GetCustomAttribute<SingletCaseAttribute>();
-                if(attribute != null)
+                if (attribute != null)
                 {
                     SingleTypes.Add(type);
                     continue;
                 }
 
-                if(!componentTypeDictionary.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
+                if (!componentTypeDictionary.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
                     queue = new ConcurrentQueue<BaseComponent>();
                     componentTypeDictionary.TryAdd(type, queue);
                 }
             }
-        }
-
-        public static void Load()
-        {
-
         }
 
         public static bool IsSingleType(Type type)

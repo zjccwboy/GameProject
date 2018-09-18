@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
+using System.Linq;
 
 namespace H6Game.Base
 {
@@ -20,7 +21,7 @@ namespace H6Game.Base
             var sysConfig = Game.Scene.GetComponent<DBConfigComponent>().DBConfig;
             var sysDbClient = new MongoClient(sysConfig.ConnectionString);
             var sysDb = sysDbClient.GetDatabase(sysConfig.DatabaseName);
-
+            
             var logConfig = Game.Scene.AddComponent<LoggerConfigComponent>().Config.DBConfig;
             var logDbClient = new MongoClient(logConfig.ConnectionString);
             var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);

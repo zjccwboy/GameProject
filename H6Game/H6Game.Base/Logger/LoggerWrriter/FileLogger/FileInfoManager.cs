@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public static class FileHelper
+    public static class FileInfoManager
     {
         public static Dictionary<LogLevel,string> LastCreateFileNames { get; } = new Dictionary<LogLevel, string>();
         public static Dictionary<LogLevel, long> LastCreateFileSize { get; } = new Dictionary<LogLevel, long>();
@@ -13,7 +13,7 @@ namespace H6Game.Base
         public static Dictionary<string, LogLevel> NameLevels { get; } = new Dictionary<string, LogLevel>();
         public static Dictionary<LogLevel, string> LevelNames { get; } = new Dictionary<LogLevel, string>();
 
-        static FileHelper()
+        public static void Load()
         {
             SetNameLevels();
         }
@@ -22,7 +22,7 @@ namespace H6Game.Base
         /// 更新最新日志文件信息
         /// </summary>
         /// <param name="path"></param>
-        public static void UpdateFileInfo(string path)
+        public static void UpdateLastCreateFileInfo(string path)
         {
             var directory = new DirectoryInfo(path);
             var files = directory.GetFiles().OrderByDescending(f=>f.CreationTimeUtc);

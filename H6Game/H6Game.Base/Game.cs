@@ -10,6 +10,7 @@ namespace H6Game.Base
 
         static Game()
         {
+            TypePool.Load();
             ComponentPool.Load();
             HandlerMsgPool.Load();
 
