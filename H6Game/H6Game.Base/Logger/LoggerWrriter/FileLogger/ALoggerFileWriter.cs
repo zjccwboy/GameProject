@@ -37,7 +37,7 @@ namespace H6Game.Base
                 logOutput = null;
             }
 
-            var fileName = CreateFileName();
+            var fileName = NewFileFullName();
             logOutput = new StreamWriter(File.Open(fileName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite), Encoding.UTF8);
             SetFileInfo(fileName);
         }
@@ -121,7 +121,7 @@ namespace H6Game.Base
             FileInfoManager.LastCreateFileTime[this.LogLevel] = DateTime.UtcNow;
         }
 
-        private string CreateFileName()
+        private string NewFileFullName()
         {
             var levelName = FileInfoManager.LevelNames[this.LogLevel];
             var customName = GetCustomNameName();
