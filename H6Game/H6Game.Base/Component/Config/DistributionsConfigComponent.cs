@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using System;
 using System.IO;
 
 namespace H6Game.Base
@@ -12,9 +13,9 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
-            if (!ReadConfigFile(path))
-                SaveConfigile(path);
+            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
+            if (!ReadConfigFile(fullName))
+                SaveConfigile(fullName);
 
             PacketConfig.IsCompress = InnerConfig.IsCompress;
             PacketConfig.IsEncrypt = InnerConfig.IsEncrypt;
@@ -45,7 +46,7 @@ namespace H6Game.Base
             return false;
         }
 
-        private async void SaveConfigile(string path)
+        private async void SaveConfigile(string fullName)
         {
             InnerConfig = new DistributionsConfig
             {
@@ -66,14 +67,15 @@ namespace H6Game.Base
                 },
             };
 
-            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = InnerConfig.ToJson();
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
-                    Log.Logger.Error($"未配置服务IP地址端口信息.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"未配置服务IP地址端口信息，系统会自动生成模板：{fullName}");
                 }
             }
         }

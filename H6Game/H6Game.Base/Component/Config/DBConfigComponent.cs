@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using System;
 using System.IO;
 
 namespace H6Game.Base
@@ -11,9 +12,9 @@ namespace H6Game.Base
         public DbConfig DBConfig { get; private set; }
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
-            if (!ReadConfigFile(path))
-                SaveConfigile(path);
+            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
+            if (!ReadConfigFile(fullName))
+                SaveConfigile(fullName);
         }
 
         private bool ReadConfigFile(string path)
@@ -36,7 +37,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private async void SaveConfigile(string path)
+        private async void SaveConfigile(string fullName)
         {
             DBConfig = new DbConfig
             {
@@ -44,14 +45,15 @@ namespace H6Game.Base
                 DatabaseName = "H6Game",
             };
 
-            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = DBConfig.ToJson();
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
-                    Log.Logger.Error($"数据库连接信息未配置.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"数据库连接信息未配置，系统会自动生成模板：{fullName}");
                 }
             }
         }

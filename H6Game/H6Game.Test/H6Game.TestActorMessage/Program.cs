@@ -7,8 +7,10 @@ namespace H6Game.TestActorMessage
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<DistributionsComponent>();
+            Game.Scene.AddComponent<DBConfigComponent>();
             Game.Scene.AddComponent<MongoConfig>();
+            Game.Scene.AddComponent<LoggerConfigComponent>();
+            Game.Scene.AddComponent<DistributionsConfigComponent>();
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Player);
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Room);
             Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Game);

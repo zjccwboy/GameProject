@@ -50,9 +50,6 @@
     <Reference Include="H6Game.Rpository">
       <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -74,10 +71,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Close.bat" />
-    <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
     <None Include="Start.bat" />
     <None Include="Start2.bat" />
   </ItemGroup>

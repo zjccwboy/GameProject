@@ -2,11 +2,11 @@
 
 namespace H6Game.Base
 {
-    public class NewConsoleLogger 
+    public class LoggerColor 
     {
         public LogLevel LogLevel { get; set; }
 
-        public NewConsoleLogger(LogLevel logLevel)
+        public LoggerColor(LogLevel logLevel)
         {
             this.LogLevel = logLevel;
         }
@@ -37,7 +37,7 @@ namespace H6Game.Base
 
     public static class ShowLoggerExtensions
     {
-        public static void ShowMessage(this NewConsoleLogger consoleLogger, string message)
+        public static void ShowMessage(this LoggerColor consoleLogger, string message)
         {
             Console.ForegroundColor = consoleLogger.Color;
             Console.WriteLine(message);

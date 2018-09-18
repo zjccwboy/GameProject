@@ -5,7 +5,7 @@ namespace H6Game.Base
 {
     public abstract class AConsoleLogger : IConsoleLogger
     {
-        private NewConsoleLogger ConsoleLogger { get; }
+        private LoggerColor ConsoleLogger { get; }
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
         private LoggerConfigEntity Config { get; }
         public abstract LogLevel LogLevel { get; }
@@ -13,7 +13,7 @@ namespace H6Game.Base
         public AConsoleLogger()
         {
             this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
-            this.ConsoleLogger = new NewConsoleLogger(this.LogLevel);
+            this.ConsoleLogger = new LoggerColor(this.LogLevel);
         }
 
         public void ShowMessage(LoggerEntity entity)

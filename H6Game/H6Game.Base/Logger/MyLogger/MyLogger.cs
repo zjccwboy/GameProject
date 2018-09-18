@@ -5,13 +5,17 @@ namespace H6Game.Base
 {
     public class MyLogger : IMyLog
     {
+#if SERVER
         public LoggerWriterFatory LoggerWriter { get; } = new LoggerWriterFatory();
+#endif
         public ConsoleLoggerFatory ConsoleLogger { get; } = new ConsoleLoggerFatory();
 
         public MyLogger()
         {
             ConsoleLogger.Create();
+#if SERVER
             LoggerWriter.Create();
+#endif
         }
 
         public async Task WriteMessage(LogLevel FLogLevel, string message, string args = null, Exception exception = null)
@@ -32,8 +36,10 @@ namespace H6Game.Base
             entity.SetCreator("Sys");
             ConsoleLogger.WriteMessage(entity);
 
+#if SERVER
             await LoggerWriter.FileWriterFatory.WriteMessage(entity);
             await LoggerWriter.MongoWriterFatory.WriteMessage(entity);
+#endif
         }
     }
 }

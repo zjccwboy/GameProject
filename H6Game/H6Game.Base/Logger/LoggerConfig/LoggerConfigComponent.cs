@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using System;
 using System.IO;
 
 namespace H6Game.Base
@@ -11,9 +12,9 @@ namespace H6Game.Base
         public LoggerConfigEntity Config { get; private set; }
         public override void Awake()
         {
-            var path = $"{Directory.GetCurrentDirectory()}\\H6Game.LoggerConfig.json";
-            if (!ReadConfigFile(path))
-                SaveConfigile(path);
+            var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\H6Game.LoggerConfig.json";
+            if (!ReadConfigFile(fullName))
+                SaveConfigile(fullName);
         }
 
         private bool ReadConfigFile(string path)
@@ -47,11 +48,11 @@ namespace H6Game.Base
             return true;
         }
 
-        private void SaveConfigile(string path)
+        private void SaveConfigile(string fullName)
         {
             this.Config = new LoggerConfigEntity
             {
-                Path = "\\Logs",
+                Path = Path.GetDirectoryName(this.GetType().Assembly.Location) + "\\Logs",
                 DBConfig = new DbConfig
                 {
                     ConnectionString = "mongodb://localhost:27017",
@@ -103,13 +104,14 @@ namespace H6Game.Base
                 },
             };
 
-            using (var fileStream = new FileStream(path, FileMode.OpenOrCreate))
+            using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
                     var json = this.Config.ToJson();
                     sr.Write(json);
-                    Log.Logger.Error($"日志配置文件没有配置。");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"日志配置文件没有配置，系统会自动生成模板：{fullName}。");
                 }
             }
         }

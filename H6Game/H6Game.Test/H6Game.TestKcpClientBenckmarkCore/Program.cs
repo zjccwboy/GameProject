@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace H6Game.TestKcpClientBenckmark
+namespace H6Game.TestKcpClientBenckmarkCore
 {
     class Program
     {
@@ -17,7 +17,7 @@ namespace H6Game.TestKcpClientBenckmark
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<LoggerConfigComponent>();
             Game.Scene.AddComponent<DistributionsConfigComponent>();
-            Game.Scene.AddComponent<OuterComponent>().OnConnected = c=> { Start(); };
+            Game.Scene.AddComponent<OuterComponent>().OnConnected = c => { Start(); };
             while (true)
             {
                 Game.Update();
@@ -43,8 +43,8 @@ namespace H6Game.TestKcpClientBenckmark
 
         static async void Test()
         {
-            while(true)
-               await Call();
+            while (true)
+                await Call();
         }
 
         private static async Task Call()
@@ -77,5 +77,4 @@ namespace H6Game.TestKcpClientBenckmark
         [ProtoBuf.ProtoMember(2)]
         public string Message { get; set; }
     }
-
 }

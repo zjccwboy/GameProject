@@ -84,38 +84,31 @@ namespace TestMogodb
 
         static async void TestDBContext()
         {
-            var context = new DBContext<TestAccount>(Game.Scene.GetComponent<MongoConfig>().Database);
+            //var context = new DBContext<TestAccount>(Game.Scene.GetComponent<MongoConfig>().Database);
 
-           var delResult =  await context.DeleteManyAsync(t => t.FAccount != null);
+            var context = Game.Scene.GetComponent<AccountRpository>().DBContext;
 
-            var accountInfo = new TestAccount
+            var delResult =  await context.DeleteManyAsync(t => t.FAccountName != null);
+
+            var accountInfo = new TAccount
             {
-                FAccount = "Insert",
-                FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 1,
             };
             context.Insert(accountInfo);
 
-            accountInfo = new TestAccount
+            accountInfo = new TAccount
             {
-                FAccount = "InsertAsync",
-                FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 2,
             };
             await context.InsertAsync(accountInfo);
 
             
-            var inserts = new List<TestAccount>();
+            var inserts = new List<TAccount>();
             for (var i = 0; i < 10; i++)
             {
-                accountInfo = new TestAccount
+                accountInfo = new TAccount
                 {
-                    FAccount = "InsertMany",
-                    FAmt = 100m,
                     FCreateTime = DateTime.Now,
-                    FVIPLevel = 1,
                 };
                 inserts.Add(accountInfo);
             }
@@ -125,71 +118,56 @@ namespace TestMogodb
             inserts.Clear();
             for (var i = 0; i < 10; i++)
             {
-                accountInfo = new TestAccount
+                accountInfo = new TAccount
                 {
-                    FAccount = "InsertManyAsync",
-                    FAmt = 100m,
                     FCreateTime = DateTime.Now,
-                    FVIPLevel = 2,
                 };
                 inserts.Add(accountInfo);
             }
             await context.InsertManyAsync(inserts);
             
 
-            var findResult = context.Find(t => t.FAccount == "InsertMany");
-            findResult = await context.FindAsync(t => t.FAccount == "InsertManyAsync");
+            var findResult = context.Find(t => t.FAccountName == "InsertMany");
+            findResult = await context.FindAsync(t => t.FAccountName == "InsertManyAsync");
 
-            var pageResult = context.FindByPage<string>(t => t.FAccount == "InsertMany", t => t.FAccount, 1, 20, out int pageCount);
-            pageResult = await context.FindByPageAsync<string>(t => t.FAccount == "InsertManyAsync", t => t.FAccount, 1, 20, out pageCount);
+            var pageResult = context.FindByPage<string>(t => t.FAccountName == "InsertMany", t => t.FAccountName, 1, 20, out int pageCount);
+            pageResult = await context.FindByPageAsync<string>(t => t.FAccountName == "InsertManyAsync", t => t.FAccountName, 1, 20, out pageCount);
 
 
-            context.Update(t => t.FAccount == "Insert", Builders<TestAccount>.Update.Set("FAmt", 102));
+            context.Update(t => t.FAccountName == "Insert", Builders<TAccount>.Update.Set("FAmt", 102));
 
-            context.Update(new TestAccount
+            context.Update(new TAccount
             {
-                FAccount = "Update",
-                FAmt = 200m,
-                FVIPLevel = 20,
-            }, t => t.FAccount == "Insert");
+            }, t => t.FAccountName == "Insert");
 
 
-            await context.UpdateAsync(new TestAccount 
+            await context.UpdateAsync(new TAccount
             {
-                FAccount = "UpdateAsync",
-                FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 11,
-            }, t => t.FAccount == "InsertAsync");
+            }, t => t.FAccountName == "InsertAsync");
 
 
-            context.Update(t => t.FAccount == "InsertMany", Builders<TestAccount>.Update.Set("FAmt", 102));
+            context.Update(t => t.FAccountName == "InsertMany", Builders<TAccount>.Update.Set("FAmt", 102));
 
             //var updateAccount = BaseEntity.Create<TestAccount>();
             //var elementName = updateAccount.GetElementName(nameof(updateAccount.FAccount));
 
             var ecp = Game.Scene.AddComponent<EntityComponent>();
             var  elementName = ecp[typeof(TestAccount), "FAmt"];
-            await context.UpdateAsync(t => t.FAccount == "Update", Builders<TestAccount>.Update.Set("FAmt", 103));
+            await context.UpdateAsync(t => t.FAccountName == "Update", Builders<TAccount>.Update.Set("FAmt", 103));
 
 
-            context.UpdateMany(new TestAccount
+            context.UpdateMany(new TAccount
             {
-                FAccount = "UpdateMany",
-                FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 14,
-            }, t => t.FAccount == "InsertAsync");
+            }, t => t.FAccountName == "InsertAsync");
 
-            await context.UpdateManyAsync(new TestAccount
+            await context.UpdateManyAsync(new TAccount
             {
-                FAccount = "UpdateManyAsync",
-                FAmt = 100m,
                 FCreateTime = DateTime.Now,
-                FVIPLevel = 15,
-            }, t => t.FAccount == "InsertManyAsync");
+            }, t => t.FAccountName == "InsertManyAsync");
 
-            context.Delete(t => t.FAccount == "UpdateMany");
+            context.Delete(t => t.FAccountName == "UpdateMany");
 
         }
 
