@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -33,9 +33,6 @@
     </Reference>
     <Reference Include="MongoDB.Driver.Core">
       <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Core\bin\Debug\netstandard2.0\MongoDB.Driver.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver.GridFS">
-      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.GridFS\bin\Debug\netstandard2.0\MongoDB.Driver.GridFS.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver.Legacy">
       <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Legacy\bin\Debug\netstandard2.0\MongoDB.Driver.Legacy.dll</HintPath>
