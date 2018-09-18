@@ -43,7 +43,7 @@ namespace H6Game.Base
                 }
                 catch(Exception e)
                 {
-                    Log.Logger.Error(e);
+                    Log.Logger.Error(e, LoggerBllType.System);
                     return false;
                 }
             }
@@ -92,7 +92,7 @@ namespace H6Game.Base
 
             if (e.SocketError != SocketError.Success)
             {
-                Log.Logger.Fatal($"接受连接发生错误.");
+                Log.Logger.Fatal($"接受连接发生错误.", LoggerBllType.System);
                 return;
             }
             var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
@@ -134,11 +134,11 @@ namespace H6Game.Base
                 channel.OnReceive = (p) => { NetworkDispatcher.DoReceive(channel.Network, p); };
                 this.AddChannel(channel);
                 this.OnServerConnected?.Invoke(channel);
-                Log.Logger.Info($"接受客户端:{channel.RemoteEndPoint}连接成功.");
+                Log.Logger.Info($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e);
+                Log.Logger.Error(e, LoggerBllType.System);
             }
         }
 
@@ -155,11 +155,11 @@ namespace H6Game.Base
                 channel.OnReceive = (p) => { NetworkDispatcher.DoReceive(channel.Network, p); };
                 this.AddChannel(channel);
                 this.OnClientConnected?.Invoke(channel);
-                Log.Logger.Info($"连接服务端:{channel.RemoteEndPoint}成功.");
+                Log.Logger.Info($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e);
+                Log.Logger.Error(e, LoggerBllType.System);
             }
         }
 

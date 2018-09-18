@@ -26,7 +26,7 @@ namespace H6Game.Base
             CreateNewFiles();
         }
 
-        public async Task WriteMessage(LoggerEntity entity)
+        public async Task WriteMessage(TLogger entity)
         {
             var writer = FileWriters[entity.FLogLevel];
 

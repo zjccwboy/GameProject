@@ -16,7 +16,7 @@ namespace H6Game.Base
             }
         }
 
-        public void WriteMessage(LoggerEntity entity)
+        public void WriteMessage(TLogger entity)
         {
             FileWriters[entity.FLogLevel].ShowMessage(entity);
         }

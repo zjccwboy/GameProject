@@ -80,7 +80,7 @@ namespace H6Game.Base
             return true;
         }
 
-        public async Task WriteMessage(LoggerEntity entity)
+        public async Task WriteMessage(TLogger entity)
         {
             IsWorking = true;
 

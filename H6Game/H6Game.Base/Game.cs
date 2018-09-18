@@ -28,7 +28,7 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-                Log.Logger.Fatal("未捕获的异常", e);
+                Log.Logger.Fatal("未捕获的异常", e, LoggerBllType.System);
             }
         }
     }

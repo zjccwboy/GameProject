@@ -16,7 +16,7 @@ namespace H6Game.Base
             this.ConsoleLogger = new LoggerColor(this.LogLevel);
         }
 
-        public void ShowMessage(LoggerEntity entity)
+        public void ShowMessage(TLogger entity)
         {
             if (entity.FLogLevel != this.LogLevel)
                 return;

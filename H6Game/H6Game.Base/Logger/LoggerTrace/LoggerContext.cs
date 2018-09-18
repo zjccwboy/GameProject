@@ -28,7 +28,7 @@ namespace H6Game.Base
         /// <summary>
         /// 创建一个日志
         /// </summary>
-        public static ILogger CreateLog()
+        public static ILoggerTrace CreateLog()
         {
             if (_currentLogFactory == null)
                 throw new NullReferenceException("该日志上下文尚未设置日志工厂，请使用SetCurrent方法进行设置。");

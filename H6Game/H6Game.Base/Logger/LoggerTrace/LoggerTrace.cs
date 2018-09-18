@@ -6,7 +6,7 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public sealed class TraceSourceLogger : ILogger
+    public sealed class LoggerTrace : ILoggerTrace
     {
         private IMyLog MyLogger { get; set; }
 
@@ -15,79 +15,79 @@ namespace H6Game.Base
             this.MyLogger = LoggerFatory.Create();
         }
 
-        public void Fatal(string message, params object[] args)
+        public void Fatal(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Fatal, message, null, args);
+            Write(LogLevel.Fatal, message, bllType, null, args);
         }
 
-        public void Fatal(string message, Exception exception, params object[] args)
+        public void Fatal(string message, Exception exception, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            Write(LogLevel.Fatal, message, exception, args);
+            Write(LogLevel.Fatal, message, bllType, exception, args);
         }
 
-        public void Info(string message, params object[] args)
+        public void Info(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Info, message, null, args);
+            Write(LogLevel.Info, message, bllType, null, args);
         }
 
-        public void Notice(string message, params object[] args)
+        public void Notice(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Notice, message, null, args);
+            Write(LogLevel.Notice, message, bllType, null, args);
         }
 
-        public void Warning(string message, params object[] args)
+        public void Warning(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Warn, message, null, args);
+            Write(LogLevel.Warn, message, bllType, null, args);
         }
 
-        public void Error(string message, params object[] args)
+        public void Error(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Error, message, null, args);
+            Write(LogLevel.Error, message, bllType, null, args);
         }
 
-        public void Error(string message, Exception exception, params object[] args)
+        public void Error(string message, Exception exception, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message) || exception == null)
                 return;
 
-            Write(LogLevel.Error, message, exception, args);
+            Write(LogLevel.Error, message, bllType, exception, args);
         }
 
-        public void Error(Exception exception, params object[] args)
+        public void Error(Exception exception, LoggerBllType bllType, params object[] args)
         {
             if (exception == null)
                 return;
 
-            Write(LogLevel.Error, null, exception, args);
+            Write(LogLevel.Error, null, bllType, exception, args);
         }
 
-        public void Debug(string message, params object[] args)
+        public void Debug(string message, LoggerBllType bllType, params object[] args)
         {
             if (String.IsNullOrWhiteSpace(message))
                 return;
 
-            Write(LogLevel.Debug, message, null, args);
+            Write(LogLevel.Debug, message, bllType, null, args);
         }
 
-        private void Write(LogLevel FLogLevel, string message, Exception exception = null, params object[] args)
+        private void Write(LogLevel FLogLevel, string message, LoggerBllType bllType, Exception exception, params object[] args)
         {
             string argsStr = null;
             if (args.Any())
@@ -96,7 +96,7 @@ namespace H6Game.Base
             var stack = BuildStackTraceMessage();
             var msg = $"stack:{stack} message:{message}";
 
-            MyLogger.WriteMessage(FLogLevel, msg, argsStr, exception);
+            MyLogger.WriteMessage(FLogLevel, msg, argsStr, bllType, exception);
         }
 
         private string BuildStackTraceMessage()

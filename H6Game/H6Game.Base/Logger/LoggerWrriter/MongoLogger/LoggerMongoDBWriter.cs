@@ -10,7 +10,7 @@ namespace H6Game.Base
             this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
         }
 
-        public async Task WriteMessage(LoggerEntity entity)
+        public async Task WriteMessage(TLogger entity)
         {
             if (!CanWrite(entity.FLogLevel))
                 return;

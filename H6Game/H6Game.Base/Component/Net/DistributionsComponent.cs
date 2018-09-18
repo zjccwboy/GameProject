@@ -220,10 +220,10 @@ namespace H6Game.Base
             };
 
             this.InAcceptSession = session;
-            Log.Logger.Info($"监听内网端口:{message.Port}成功.");
+            Log.Logger.Info($"监听内网端口:{message.Port}成功.", LoggerBllType.System);
 
             if (this.Config.IsCenterServer)
-                Log.Logger.Info($"中心服务启动成功.");
+                Log.Logger.Info($"中心服务启动成功.", LoggerBllType.System);
         }
 
         private void HandleOutAccept(NetEndPointMessage message)
@@ -243,7 +243,7 @@ namespace H6Game.Base
             };
 
             this.OutAcceptSession = session;
-            Log.Logger.Info($"监听外网端口:{message.Port}成功.");
+            Log.Logger.Info($"监听外网端口:{message.Port}成功.", LoggerBllType.System);
         }
 
         private void Connecting(NetEndPointMessage message)
@@ -304,7 +304,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    Log.Logger.Info("连接中心服务成功.");
+                    Log.Logger.Info("连接中心服务成功.", LoggerBllType.System);
                     //SendToCenter(localMessage, (int)MessageCMD.AddInServerCmd);
                 }
             };
@@ -314,7 +314,7 @@ namespace H6Game.Base
             {
                 if (message == this.Config.GetCenterMessage())
                 {
-                    Log.Logger.Info($"当前中心服务挂掉.");
+                    Log.Logger.Info($"当前中心服务挂掉.", LoggerBllType.System);
                     return;
                 }
 

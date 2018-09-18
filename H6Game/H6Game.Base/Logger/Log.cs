@@ -4,11 +4,11 @@ namespace H6Game.Base
 {
     public class Log
     {
-        public static ILogger Logger { get; }
+        public static ILoggerTrace Logger { get; }
 
         static Log()
         {
-            LoggerContext.SetCurrent(new TraceSourceLoggerFactory());
+            LoggerContext.SetCurrent(new LoggerTraceFactory());
             Logger = LoggerContext.CreateLog();
         }
     }

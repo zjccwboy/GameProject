@@ -5,6 +5,6 @@ namespace H6Game.Base
 {
     public interface IMyLog
     {
-        Task WriteMessage(LogLevel FLogLevel, string message, string args = null, Exception exception = null);
+        Task WriteMessage(LogLevel FLogLevel, string message, string args, LoggerBllType bllType, Exception exception);
     }
 }

@@ -54,7 +54,7 @@ namespace H6Game.TestDistributedNetCore
             size += 35;
             if (stopWatch.ElapsedMilliseconds > 1000)
             {
-                Log.Logger.Debug($"RPC响应次数:{Count}/条 大小:{size / 1024 / 1024}/MB");
+                Log.Logger.Debug($"RPC响应次数:{Count}/条 大小:{size / 1024 / 1024}/MB", LoggerBllType.System);
                 stopWatch.Restart();
                 Count = 0;
                 size = 0;

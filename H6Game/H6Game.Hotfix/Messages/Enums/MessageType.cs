@@ -32,7 +32,7 @@ namespace H6Game.Hotfix.Messages.Enums
         #endregion
 
         #region Account 201 - 500
-        LoginRequestMessage,
+        LoginRequestMessage = 201,
         LoginResponeMessage,
         LogoutRequestMessage,
         LogoutResponeMessage,

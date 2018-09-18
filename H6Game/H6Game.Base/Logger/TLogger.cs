@@ -3,21 +3,15 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base
 {
-    public class LoggerEntity : BaseEntity
+    public class TLogger : BaseEntity
     {
-        [BsonIgnore]
+        [BsonElement("LL")]
         public LogLevel FLogLevel { get; set; }
 
-        [BsonElement("Lv")]
-        public string FLogLevelName
-        {
-            get
-            {
-                return FileInfoManager.LevelNames[FLogLevel];
-            }
-        }
+        [BsonElement("BT")]
+        public LoggerBllType FBllType { get; set; }
 
-        [BsonElement("Msg")]
+        [BsonElement("MSG")]
         public string FMessage { get; set; }
 
         [BsonElement("EN")]
@@ -26,7 +20,7 @@ namespace H6Game.Base
         [BsonElement("EI")]
         public string FExceptionInfo { get; set; }
 
-        [BsonElement("A")]
+        [BsonElement("AG")]
         public string FArgs { get; set; }
     }
 }

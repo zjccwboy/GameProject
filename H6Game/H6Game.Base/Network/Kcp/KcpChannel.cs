@@ -75,7 +75,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e);
+                Log.Logger.Error(e, LoggerBllType.System);
             }
         }
 
@@ -135,7 +135,7 @@ namespace H6Game.Base
                         }
                         else
                         {
-                            Log.Logger.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.");
+                            Log.Logger.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
                         }
 
                         packet.BodyStream.SetLength(0);
@@ -144,7 +144,7 @@ namespace H6Game.Base
                     catch (Exception e)
                     {
                         DisConnect();
-                        Log.Logger.Error(e);
+                        Log.Logger.Error(e, LoggerBllType.System);
                         return;
                     }
                 }
@@ -211,7 +211,7 @@ namespace H6Game.Base
             catch(Exception e)
             {
                 DisConnect();
-                Log.Logger.Error(e);
+                Log.Logger.Error(e, LoggerBllType.System);
             }
         }
 
