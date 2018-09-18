@@ -7,7 +7,6 @@ namespace H6Game.Base
         void CreateFile();
         bool IsWorking { get;}
         bool IsCreateNew { get; set;}
-        bool Existed { get;}
         bool CanWrite();
     }
 }

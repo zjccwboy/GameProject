@@ -29,6 +29,7 @@ namespace H6Game.Base
                 entity.FExceptionInfo = exception.StackTrace;
             }
 
+            entity.SetCreator("Sys");
             ConsoleLogger.WriteMessage(entity);
 
             await LoggerWriter.FileWriterFatory.WriteMessage(entity);

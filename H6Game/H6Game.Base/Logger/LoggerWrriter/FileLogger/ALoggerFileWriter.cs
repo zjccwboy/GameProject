@@ -25,14 +25,6 @@ namespace H6Game.Base
             this.Path = this.Config.Path.EndsWith("\\") ? this.Config.Path : this.Config.Path + "\\";
         }
 
-        public bool Existed
-        {
-            get
-            {
-                return FileInfoManager.LastCreateFileNames.ContainsKey(this.LogLevel);
-            }
-        }
-
         public void CreateFile()
         {
             if (!CanWrite(this.LogLevel))
@@ -94,11 +86,6 @@ namespace H6Game.Base
         public async Task WriteMessage(LoggerEntity entity)
         {
             IsWorking = true;
-
-            if (!CanWrite())
-            {
-                CreateFile();
-            }
 
             if (this.IsCreateNew)
             {

@@ -30,7 +30,8 @@ namespace H6Game.Base
         public async Task WriteMessage(LoggerEntity entity)
         {
             var writer = FileWriters[entity.FLogLevel];
-            if (!writer.CanWrite() || !writer.Existed)
+
+            if (!writer.CanWrite())
                 CreateLoggerFile();
 
             await writer.WriteMessage(entity);

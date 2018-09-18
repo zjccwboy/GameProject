@@ -5,8 +5,17 @@ namespace H6Game.Base
 {
     public class LoggerEntity : BaseEntity
     {
-        [BsonElement("Lv")]
+        [BsonIgnore]
         public LogLevel FLogLevel { get; set; }
+
+        [BsonElement("Lv")]
+        public string FLogLevelName
+        {
+            get
+            {
+                return FileInfoManager.LevelNames[FLogLevel];
+            }
+        }
 
         [BsonElement("Msg")]
         public string FMessage { get; set; }
