@@ -120,9 +120,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestKcpClientBenckma
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Hotfix.Client", "H6Game.Hotfix.Client\H6Game.Hotfix.Client.csproj", "{D780C1F7-B016-4B84-94D3-F092A361F215}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.Hotfix.Client", "H6Game.Hotfix.Client\H6Game.Hotfix.Client.csproj", "{D780C1F7-B016-4B84-94D3-F092A361F215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Base.Client", "H6Game.Base.Client\H6Game.Base.Client.csproj", "{EF4F0531-8504-4D07-915F-9B96AA12BB07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Base.Client", "H6Game.Base.Client\H6Game.Base.Client.csproj", "{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -234,10 +234,10 @@ Global
 		{D780C1F7-B016-4B84-94D3-F092A361F215}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D780C1F7-B016-4B84-94D3-F092A361F215}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D780C1F7-B016-4B84-94D3-F092A361F215}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF4F0531-8504-4D07-915F-9B96AA12BB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF4F0531-8504-4D07-915F-9B96AA12BB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF4F0531-8504-4D07-915F-9B96AA12BB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF4F0531-8504-4D07-915F-9B96AA12BB07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
