@@ -1,9 +1,9 @@
 ﻿
 namespace H6Game.Base
 {
-    public static class LoggerFatory
+    public static class LoggerFactory
     {
-        static LoggerFatory()
+        static LoggerFactory()
         {
             Game.Scene.AddComponent<LoggerConfigComponent>();
         }

@@ -12,7 +12,7 @@ namespace H6Game.Base
 
         public void Create()
         {
-            this.MyLogger = LoggerFatory.Create();
+            this.MyLogger = LoggerFactory.Create();
         }
 
         public void Fatal(string message, LoggerBllType bllType, params object[] args)

@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
-    public class LoggerFileWriterFatory
+    public class LoggerFileWriterFactory
     {
         private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
         private LoggerConfigEntity Config { get; }
 
-        public LoggerFileWriterFatory()
+        public LoggerFileWriterFactory()
         {
             FileWriters = new Dictionary<LogLevel, ILoggerFileWriter>();
             FileInfoManager.Load();
@@ -56,17 +56,17 @@ namespace H6Game.Base
             switch (logLevel)
             {
                 case LogLevel.Debug:
-                    return new DebugLoggerFileWriter(this);
+                    return new DebugLoggerFileWriter();
                 case LogLevel.Info:
-                    return new InfoLoggerFileWriter(this);
+                    return new InfoLoggerFileWriter();
                 case LogLevel.Notice:
-                    return new NoticeLoggerFileWriter(this);
+                    return new NoticeLoggerFileWriter();
                 case LogLevel.Warn:
-                    return new WarnLoggerFileWriter(this);
+                    return new WarnLoggerFileWriter();
                 case LogLevel.Error:
-                    return new ErrorLoggerFileWriter(this);
+                    return new ErrorLoggerFileWriter();
                 case LogLevel.Fatal:
-                    return new FatalLoggerFileWriter(this);
+                    return new FatalLoggerFileWriter();
             }
             return default;
         }

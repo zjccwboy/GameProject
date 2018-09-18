@@ -6,9 +6,9 @@ namespace H6Game.Base
     public class MyLogger : IMyLog
     {
 #if SERVER
-        public LoggerWriterFatory LoggerWriter { get; } = new LoggerWriterFatory();
+        public LoggerWriterFactory LoggerWriter { get; } = new LoggerWriterFactory();
 #endif
-        public ConsoleLoggerFatory ConsoleLogger { get; } = new ConsoleLoggerFatory();
+        public ConsoleLoggerFactory ConsoleLogger { get; } = new ConsoleLoggerFactory();
 
         public MyLogger()
         {

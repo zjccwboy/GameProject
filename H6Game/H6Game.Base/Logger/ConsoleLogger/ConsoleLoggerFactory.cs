@@ -2,7 +2,7 @@
 
 namespace H6Game.Base
 {
-    public class ConsoleLoggerFatory
+    public class ConsoleLoggerFactory
     {
 
         private Dictionary<LogLevel, IConsoleLogger> FileWriters { get; } = new Dictionary<LogLevel, IConsoleLogger>();

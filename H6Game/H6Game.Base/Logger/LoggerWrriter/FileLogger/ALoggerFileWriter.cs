@@ -10,7 +10,6 @@ namespace H6Game.Base
     {
         private LoggerConfigEntity Config { get; }
         private StreamWriter logOutput { get; set; }
-        private LoggerFileWriterFatory WriterFatory { get; }
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
         private string Path { get; }
 
@@ -18,10 +17,9 @@ namespace H6Game.Base
         public bool IsWorking { get; private set; }
         public bool IsCreateNew { get; set; }
 
-        public ALoggerFileWriter(LoggerFileWriterFatory writerFatory)
+        public ALoggerFileWriter()
         {
             this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
-            this.WriterFatory = writerFatory;
             this.Path = this.Config.Path.EndsWith("\\") ? this.Config.Path : this.Config.Path + "\\";
         }
 

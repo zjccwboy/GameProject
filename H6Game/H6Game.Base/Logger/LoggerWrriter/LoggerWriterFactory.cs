@@ -4,9 +4,9 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public class LoggerWriterFatory
+    public class LoggerWriterFactory
     {
-        public LoggerFileWriterFatory FileWriterFatory { get; } = new LoggerFileWriterFatory();
+        public LoggerFileWriterFactory FileWriterFatory { get; } = new LoggerFileWriterFactory();
         public LoggerMongoDBWriter MongoWriterFatory { get; } = new LoggerMongoDBWriter();
 
         public void Create()
