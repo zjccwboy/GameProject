@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Compile Remove="..\H6Game.Base\obj\Debug\netstandard2.0\**" />
+    <Compile Remove="..\H6Game.Base\obj\Release\netstandard2.0\**" />
   </ItemGroup>
 
   <ItemGroup>
