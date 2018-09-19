@@ -41,6 +41,7 @@ namespace H6Game.Base
             await LoggerWriter.FileWriterFatory.WriteMessage(entity);
             await LoggerWriter.MongoWriterFatory.WriteMessage(entity);
 #endif
+            await Task.CompletedTask;
         }
     }
 }
