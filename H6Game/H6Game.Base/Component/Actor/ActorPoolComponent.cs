@@ -17,7 +17,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, ActorSyncMessage message)
         {
-            Log.Logger.Info(message.ToJson(), LoggerBllType.System);
+            Log.Info(message.ToJson(), LoggerBllType.System);
             Game.Actor.GetActorPool(message.ActorType).AddRemote(message, network);
         }
     }
@@ -30,7 +30,7 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network)
         {
-            Log.Logger.Info(network.RecvPacket.MessageCmd.ToString(), LoggerBllType.System);
+            Log.Info(network.RecvPacket.MessageCmd.ToString(), LoggerBllType.System);
             if (Game.Scene.GetComponent(network.RecvPacket.ActorId, out BaseComponent component))
                 component.Dispose();
         }

@@ -13,7 +13,7 @@ namespace H6Game.Base
             Game.Scene.AddComponent<EntityComponent>();
             Game.Scene.AddComponent<DBConfigComponent>();
             AddRpositoryComponents();
-            Log.Logger.Info("MongoDB初始化成功。", LoggerBllType.System);
+            Log.Info("MongoDB初始化成功。", LoggerBllType.System);
         }
 
         private void AddRpositoryComponents()

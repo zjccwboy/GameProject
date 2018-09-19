@@ -34,7 +34,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                Log.Logger.Error(packet.ToJson(), e, LoggerBllType.System);
+                Log.Error(packet.ToJson(), e, LoggerBllType.System);
             }
         }
     }

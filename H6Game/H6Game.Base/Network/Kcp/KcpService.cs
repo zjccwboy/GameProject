@@ -50,7 +50,7 @@ namespace H6Game.Base
                 }
                 catch(Exception e)
                 {
-                    Log.Logger.Error(e, LoggerBllType.System);
+                    Log.Error(e, LoggerBllType.System);
                     return false;
                 }
             }
@@ -112,7 +112,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e, LoggerBllType.System);
+                Log.Error(e, LoggerBllType.System);
                 return;
             }
 
@@ -123,7 +123,7 @@ namespace H6Game.Base
                 var packet = this.ConnectParser.Packet;
                 if (!ConnectParser.TryRead())
                 {
-                    Log.Logger.Error($"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.", LoggerBllType.System);
+                    Log.Error($"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.", LoggerBllType.System);
                     //丢弃非法数据包
                     ConnectParser.Buffer.Flush();
                     return;
@@ -230,11 +230,11 @@ namespace H6Game.Base
                 channel.OnDisConnect = HandleDisConnectOnServer;
                 channel.OnReceive = (p) => { NetworkDispatcher.DoReceive(channel.Network, p); };
                 OnServerConnected?.Invoke(channel);
-                Log.Logger.Info($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+                Log.Info($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e, LoggerBllType.System);
+                Log.Error(e, LoggerBllType.System);
             }
         }
 
@@ -251,11 +251,11 @@ namespace H6Game.Base
                 channel.OnDisConnect = HandleDisConnectOnClient;
                 channel.OnReceive = (p) => { NetworkDispatcher.DoReceive(channel.Network, p); };
                 this.OnClientConnected?.Invoke(channel);
-                Log.Logger.Info($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
+                Log.Info($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e, LoggerBllType.System);
+                Log.Error(e, LoggerBllType.System);
             }
         }
     }

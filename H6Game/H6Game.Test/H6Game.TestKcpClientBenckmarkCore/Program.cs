@@ -59,7 +59,7 @@ namespace H6Game.TestKcpClientBenckmarkCore
             Count++;
             if (Swatch.ElapsedMilliseconds >= 1000)
             {
-                Log.Logger.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
                 Swatch.Restart();
                 Count = 0;
             }

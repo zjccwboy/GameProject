@@ -29,12 +29,12 @@ namespace H6Game.TestLooger
         {
             while (true)
             {
-                Log.Logger.Debug("Debug", LoggerBllType.System);
-                Log.Logger.Info("Info", LoggerBllType.System);
-                Log.Logger.Error("Error", LoggerBllType.System);
-                Log.Logger.Warning("Warning", LoggerBllType.System);
-                Log.Logger.Fatal("Fatal", LoggerBllType.System);
-                Log.Logger.Notice("Notice", LoggerBllType.System);
+                Log.Debug("Debug", LoggerBllType.System);
+                Log.Info("Info", LoggerBllType.System);
+                Log.Error("Error", LoggerBllType.System);
+                Log.Warning("Warning", LoggerBllType.System);
+                Log.Fatal("Fatal", LoggerBllType.System);
+                Log.Notice("Notice", LoggerBllType.System);
             }
         }
     }

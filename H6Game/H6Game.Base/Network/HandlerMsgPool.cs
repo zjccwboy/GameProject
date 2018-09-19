@@ -124,7 +124,7 @@ namespace H6Game.Base
                     }
                     catch(Exception e)
                     {
-                        Log.Logger.Error(e, LoggerBllType.System);
+                        Log.Error(e, LoggerBllType.System);
                     }
                 }
             }
