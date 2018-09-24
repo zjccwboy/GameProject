@@ -24,11 +24,7 @@ namespace H6Game.Base
         /// </summary>
         public virtual void Dispose()
         {
-            if (ComponentPool.IsSingleType(this.GetType()))
-                return;
-
             Game.Scene.Remove(this);
-
             this.PutBack();            
         }
 
@@ -36,11 +32,6 @@ namespace H6Game.Base
         /// 组件唯一Id标识
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Start事件状态
-        /// </summary>
-        public bool IsStart { get; set; }
 
         /// <summary>
         /// Awake事件状态

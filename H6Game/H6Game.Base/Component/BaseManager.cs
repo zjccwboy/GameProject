@@ -257,21 +257,12 @@ namespace H6Game.Base
         /// <returns>删除成功返回true，失败返回false</returns>
         public virtual bool Remove(BaseComponent component)
         {
-            var type = component.GetType();
-            var isSingle = ComponentPool.IsSingleType(type);
-            if (isSingle)
+            if (IdComponent.TryGetValue(component.Id, out BaseComponent value))
             {
-                return SingleDictionary.TryRemove(type, out BaseComponent value);
-            }
-            else
-            {
-                if (IdComponent.TryGetValue(component.Id, out BaseComponent value))
+                if (TypeComponent.TryGetValue(component.GetType(), out HashSet<BaseComponent> hashVal))
                 {
-                    if (TypeComponent.TryGetValue(type, out HashSet<BaseComponent> hashVal))
-                    {
-                        if (hashVal.Remove(component))
-                            Game.Scene.Remove(component);
-                    }
+                    if (hashVal.Remove(component))
+                        return Game.Event.Remove(component);
                 }
             }
             return false;

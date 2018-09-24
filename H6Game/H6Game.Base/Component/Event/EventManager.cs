@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     public class EventManager
     {
-        private List<BaseComponent> Updates { get; } = new List<BaseComponent>();
+        private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
         private List<BaseComponent> Starts { get; } = new List<BaseComponent>();
 
         public void Update()
@@ -12,9 +12,7 @@ namespace H6Game.Base
             foreach (var component in Starts)
             {
                 component.Start();
-                component.IsStart = true;
             }
-
             Starts.Clear();
 
             foreach (var component in Updates)
@@ -42,6 +40,11 @@ namespace H6Game.Base
             return true;
         }
 
+        public bool Remove(BaseComponent component)
+        {
+            return Updates.Remove(component);
+        }
+
         private void HandlerEvent(BaseComponent component, EventType eventType)
         {
             if ((eventType & EventType.Awake) == EventType.Awake)
@@ -54,8 +57,6 @@ namespace H6Game.Base
             }
             else if ((eventType & EventType.Start) == EventType.Start)
             {
-                if (component.IsStart)
-                    return;
                 Starts.Add(component);
             }
             else if ((eventType & EventType.Update) == EventType.Update)

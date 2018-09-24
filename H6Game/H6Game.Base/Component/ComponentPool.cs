@@ -310,8 +310,6 @@ namespace H6Game.Base
                 return;
 
             value.Id = 0;
-            value.IsStart = false;
-
             queue.Enqueue(component);
         }
     }
