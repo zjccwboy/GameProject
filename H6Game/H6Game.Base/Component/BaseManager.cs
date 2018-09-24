@@ -148,7 +148,7 @@ namespace H6Game.Base
         /// <param name="k2">组件构造函数第二个参数。</param>
         /// <param name="k3">组件构造函数第三个参数。</param>
         /// <param name="k4">组件构造函数第四个参数。</param>.
-        /// <param name="k5">组件构造函数第四个参数。</param>
+        /// <param name="k5">组件构造函数第五个参数。</param>
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2, K3, K4, K5>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5) where T : BaseComponent
         {
@@ -169,8 +169,8 @@ namespace H6Game.Base
         /// <param name="k2">组件构造函数第二个参数。</param>
         /// <param name="k3">组件构造函数第三个参数。</param>
         /// <param name="k4">组件构造函数第四个参数。</param>.
-        /// <param name="k5">组件构造函数第四个参数。</param>
-        /// <param name="k6">组件构造函数第四个参数。</param>
+        /// <param name="k5">组件构造函数第五个参数。</param>
+        /// <param name="k6">组件构造函数第六个参数。</param>
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2, K3, K4, K5, K6>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5, K6 k6) where T : BaseComponent
         {
