@@ -94,13 +94,13 @@ namespace H6Game.Base
             return $"{file}:{line} - {member}";
         }
 
-        private static void Write(LogLevel FLogLevel, string message, LoggerBllType bllType, Exception exception, object args)
+        private static async void Write(LogLevel FLogLevel, string message, LoggerBllType bllType, Exception exception, object args)
         {
             string argsStr = null;
             if (args != null)
                 argsStr = args.ToJson();
 
-            MyLogger.WriteMessage(FLogLevel, message, argsStr, bllType, exception);
+           await  MyLogger.WriteMessage(FLogLevel, message, argsStr, bllType, exception);
         }
     }
 }

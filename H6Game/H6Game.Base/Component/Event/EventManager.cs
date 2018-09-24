@@ -4,8 +4,8 @@ namespace H6Game.Base
 {
     public class EventManager
     {
-        private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
-        private HashSet<BaseComponent> Starts { get; } = new HashSet<BaseComponent>();
+        private List<BaseComponent> Updates { get; } = new List<BaseComponent>();
+        private List<BaseComponent> Starts { get; } = new List<BaseComponent>();
 
         public void Update()
         {
