@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace H6Game.Rpository
 {
     [SingletCase]
-    public class GameRpository : BaseRpository<TGame>
+    public class GameRpository : ARpository<TGame>
     {
         public async Task<TGame> GetById(string objectId)
         {

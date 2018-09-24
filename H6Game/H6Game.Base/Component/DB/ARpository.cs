@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    public abstract class BaseRpository<TEntity> : BaseComponent, IRpository<TEntity> where TEntity : BaseEntity, new()
+    public abstract class ARpository<TEntity> : BaseComponent, IRpository<TEntity> where TEntity : BaseEntity, new()
     {
         public DBContext<TEntity> DBContext { get;private set; }
 

@@ -93,7 +93,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 该方法并没有用
+        /// 接收与解析数据包
         /// </summary>
         public override void StartRecv()
         {
