@@ -4,7 +4,7 @@ using System;
 
 namespace H6Game.Account.Model
 {
-    public class AlipayLoginComponent : BaseLoginComponent
+    public class WXLogin : ALogin
     {
         public override LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account)
         {

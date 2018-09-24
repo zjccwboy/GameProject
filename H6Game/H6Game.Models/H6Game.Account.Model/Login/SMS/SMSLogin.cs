@@ -4,7 +4,7 @@ using System;
 
 namespace H6Game.Account.Model
 {
-    public class SMSLoginComponent : BaseLoginComponent
+    public class SMSLogin : ALogin
     {
         public override LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account)
         {

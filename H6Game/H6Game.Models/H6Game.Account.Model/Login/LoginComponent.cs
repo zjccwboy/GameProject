@@ -4,6 +4,7 @@ using H6Game.Hotfix.Messages.Attributes;
 using H6Game.Hotfix.Messages.Enums;
 using H6Game.Hotfix.Messages.OutNet;
 using H6Game.Rpository;
+using System.Collections.Generic;
 
 namespace H6Game.Account.Model
 {
@@ -16,43 +17,44 @@ namespace H6Game.Account.Model
         }
     }
 
+    [Event(EventType.Awake)]
     [SingletCase]
     public class LoginComponent : BaseComponent
     {
+        private Dictionary<LoginType, ILogin> Logins { get; } = new Dictionary<LoginType, ILogin>();
+
+        public override void Awake()
+        {
+            Logins[LoginType.Account] = new AccountLogin();
+            Logins[LoginType.AliPayLogin] = new AliPayLogin();
+            Logins[LoginType.SMSLogin] = new SMSLogin();
+            Logins[LoginType.WXLogin] = new WXLogin();
+        }
+
         public async void LoginHandler(Network network, LoginRequestMessage message)
         {
             LoginResponeMessage response = null;
             switch (message.LoginType)
             {
                 case LoginType.Account:
-                    using (var component = Game.Scene.AddComponent<AccountLoginComponent>())
                     {
+                        var login = Logins[LoginType.Account];
                         var account = await Game.Scene.GetComponent<AccountRpository>().GetByName(message.Account);
-                        response = component.VerifyLogin(message, account);
+                        response = login.VerifyLogin(message, account);
                         if (response.LoginResult == LoginResutlCode.Success)
                             Game.Scene.AddComponent<PlayerComponent>().AddLocal(account);
                     }
                     break;
-
                 case LoginType.AliPayLogin:
-                    using (var component = Game.Scene.AddComponent<AlipayLoginComponent>())
-                    {
 
-                    }
                     break;
 
                 case LoginType.SMSLogin:
-                    using (var component = Game.Scene.AddComponent<SMSLoginComponent>())
-                    {
 
-                    }
                     break;
 
                 case LoginType.WXLogin:
-                    using (var component = Game.Scene.AddComponent<WXLoginComponent>())
-                    {
 
-                    }
                     break;
                 default:
                     response = new LoginResponeMessage() { LoginResult = LoginResutlCode.LoginTypeError };

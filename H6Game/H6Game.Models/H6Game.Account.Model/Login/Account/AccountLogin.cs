@@ -6,7 +6,7 @@ using H6Game.Hotfix.Messages.OutNet;
 
 namespace H6Game.Account.Model
 {
-    public class AccountLoginComponent : BaseLoginComponent
+    public class AccountLogin : ALogin
     {
         public override LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account)
         {
