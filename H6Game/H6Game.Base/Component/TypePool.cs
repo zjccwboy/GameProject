@@ -11,7 +11,6 @@ namespace H6Game.Base
     public static class TypePool
     {
         private static Dictionary<Type, HashSet<Type>> ObjcetDictionary { get; } = new Dictionary<Type, HashSet<Type>>();
-        private static Dictionary<Type, MessageType> MsgTypeDictionary { get; } = new Dictionary<Type, MessageType>();
         private static Dictionary<Type, EventType> EventTypeDictionary { get; } = new Dictionary<Type, EventType>();
 
         public static void Load()
