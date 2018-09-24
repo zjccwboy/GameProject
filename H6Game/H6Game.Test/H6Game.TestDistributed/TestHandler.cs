@@ -13,7 +13,7 @@ namespace TestDistributed
     {
         protected override void Handler(Network network, TestMessage message)
         {
-            network.RpcCallBack(message);
+            network.Response(message);
         }
     }
 

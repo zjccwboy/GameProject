@@ -48,7 +48,7 @@ namespace H6Game.TestDistributedNetCore
 
         public static async Task Call(Network network)
         {
-            await network.CallMessage<TestMessage, TestMessage>(send, (int)InnerMessageCMD.TestCMD1);
+            await network.CallMessageAsync<TestMessage, TestMessage>(send, (int)InnerMessageCMD.TestCMD1);
 
             Count++;
             size += 35;

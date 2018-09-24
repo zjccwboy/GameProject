@@ -59,7 +59,7 @@ namespace H6Game.Account.Model
                     break;
             }
 
-            network.RpcCallBack(response);
+            network.Response(response);
         }
     }
 }

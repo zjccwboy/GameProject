@@ -160,19 +160,19 @@ namespace H6Game.Base
                 network.Broadcast(message, (int)InnerMessageCMD.AddInServerCmd);
                 foreach (var entity in InNetMapManager.Entities)
                 {
-                    network.RpcCallBack(entity);
+                    network.Response(entity);
                 }
             }
         }
 
         public void GetOutNet(Network network)
         {
-            network.RpcCallBack(OutNetMessage);
+            network.Response(OutNetMessage);
         }
 
         public void GetInner(Network network)
         {
-            network.RpcCallBack(InNetMessage);
+            network.Response(InNetMessage);
         }
 
         private void AddSession(NetEndPointMessage message)
@@ -293,7 +293,7 @@ namespace H6Game.Base
                 {
                     InConnectedNetworks.TryAdd(c.Id, c.Network);
 
-                    var callResult = await c.Network.CallMessage<NetEndPointMessage>((int)InnerMessageCMD.GetOutServerCmd);
+                    var callResult = await c.Network.CallMessageAsync<NetEndPointMessage>((int)InnerMessageCMD.GetOutServerCmd);
                     if (callResult.Result)
                     {
                         //this.Log(LogLevel.Debug, "Connecting", $"收到:{c.RemoteEndPoint} 消息CMD:{(int)MessageCMD.GetOutServerCmd} :{callResult.Content.ToJson()}");

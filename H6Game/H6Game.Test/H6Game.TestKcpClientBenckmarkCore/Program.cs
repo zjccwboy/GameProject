@@ -50,7 +50,7 @@ namespace H6Game.TestKcpClientBenckmarkCore
         private static async Task Call()
         {
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            await network.CallMessage<int>(1024, 1024);
+            await network.CallMessageAsync<int>(1024, 1024);
 
 
             if (Thread.CurrentThread.ManagedThreadId != 1)

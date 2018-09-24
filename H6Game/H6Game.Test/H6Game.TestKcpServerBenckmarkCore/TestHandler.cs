@@ -11,7 +11,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     {
         protected override void Handler(Network network, TestMessage message)
         {
-            network.RpcCallBack(message);
+            network.Response(message);
         }
     }
 
@@ -20,7 +20,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     {
         protected override void Handler(Network network, int message)
         {
-            network.RpcCallBack(message);
+            network.Response(message);
         }
     }
 

@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 public static class NetworkHelper
 {
-    #region RpcCallBack
+    #region Response
     /// <summary>
     /// 回发消息，回发的消息所有的协议与接收到的消息保持一致
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack<T>(this Network network, T data) where T :class
+    public static void Response<T>(this Network network, T data) where T : class
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -27,7 +27,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, string data)
+    public static void Response(this Network network, string data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -42,7 +42,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, int data)
+    public static void Response(this Network network, int data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -57,7 +57,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, uint data)
+    public static void Response(this Network network, uint data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -72,7 +72,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, long data)
+    public static void Response(this Network network, long data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -87,7 +87,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, ulong data)
+    public static void Response(this Network network, ulong data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -102,7 +102,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, float data)
+    public static void Response(this Network network, float data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -117,7 +117,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, double data)
+    public static void Response(this Network network, double data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -132,7 +132,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, decimal data)
+    public static void Response(this Network network, decimal data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -147,7 +147,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, byte data)
+    public static void Response(this Network network, byte data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -162,7 +162,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, sbyte data)
+    public static void Response(this Network network, sbyte data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -177,7 +177,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, bool data)
+    public static void Response(this Network network, bool data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -192,7 +192,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, char data)
+    public static void Response(this Network network, char data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -207,7 +207,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, short data)
+    public static void Response(this Network network, short data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -222,7 +222,7 @@ public static class NetworkHelper
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void RpcCallBack(this Network network, ushort data)
+    public static void Response(this Network network, ushort data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -231,7 +231,7 @@ public static class NetworkHelper
         var actorId = network.RecvPacket.ActorId;
         session.Send(channel, data, messageCmd, rpcId, actorId);
     }
-    #endregion RpcCallBack
+    #endregion Response
 
     #region Send
     /// <summary>
@@ -246,7 +246,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, messageCmd, 0 , 0);
+        session.Send(channel, data, messageCmd, 0, 0);
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ public static class NetworkHelper
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
-   public static void Send(this Network network, float data, int messageCmd)
+    public static void Send(this Network network, float data, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -672,16 +672,16 @@ public static class NetworkHelper
     }
     #endregion
 
-    #region  CallRpc
+    #region  CallMessage
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd) where Request : class
+    public static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd) where Request : class
 
     {
         var session = network.Session;
@@ -690,12 +690,12 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, Action<Packet> notificationAction, int messageCmd)
 
     {
         var session = network.Session;
@@ -704,13 +704,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, string data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, string data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -718,13 +718,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, int data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, int data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -732,13 +732,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, uint data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, uint data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -746,13 +746,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, bool data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, bool data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -760,13 +760,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, long data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, long data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -774,13 +774,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, ulong data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, ulong data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -788,13 +788,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, float data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, float data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -802,13 +802,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, double data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, double data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -816,13 +816,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, decimal data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, decimal data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -830,13 +830,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, byte data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, byte data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -844,13 +844,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, sbyte data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, sbyte data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -858,13 +858,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, char data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, char data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -872,13 +872,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, short data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, short data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -886,13 +886,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc(this Network network, ushort data, Action<Packet> notificationAction, int messageCmd)
+    public static void CallMessage(this Network network, ushort data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -900,7 +900,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -908,269 +908,269 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Request,Response>(this Network network, Request data, Action<Response> notificationAction, int messageCmd) where Request:class
+    public static void CallMessage<Request, Response>(this Network network, Request data, Action<Response> notificationAction, int messageCmd) where Request : class
     {
-        network.CallRpc(data, (p)=> {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc((p) => {
+        network.CallMessage((p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, string data, Action<Response> notificationAction, int messageCmd)
-    {
-        network.CallRpc(data, (p) => {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, messageCmd);
-    }
-
-    /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, int data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, string data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, uint data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, int data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, bool data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, uint data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, long data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, bool data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, ulong data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, long data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, float data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, ulong data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, double data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, float data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, decimal data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, double data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, byte data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, decimal data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, sbyte data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, byte data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, char data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, sbyte data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, short data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, char data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
     /// <summary>
-    /// 发送Rpc请求
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallRpc<Response>(this Network network, ushort data, Action<Response> notificationAction, int messageCmd)
+    public static void CallMessage<Response>(this Network network, short data, Action<Response> notificationAction, int messageCmd)
     {
-        network.CallRpc(data, (p) => {
+        network.CallMessage(data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, messageCmd);
     }
 
-    #endregion CallRpc
-
-    #region CallMessage
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
+    /// </summary>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="messageCmd">消息指令</param>
+    public static void CallMessage<Response>(this Network network, ushort data, Action<Response> notificationAction, int messageCmd)
+    {
+        network.CallMessage(data, (p) => {
+            var response = p.Read<Response>();
+            notificationAction(response);
+        }, messageCmd);
+    }
+
+    #endregion CallMessage
+
+    #region CallMessageAsync
+    /// <summary>
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Rquest"></typeparam>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Rquest,Response>(this Network network, Rquest data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd)
         where Rquest : class
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1181,16 +1181,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc((p) =>
+        network.CallMessage((p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1200,16 +1200,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, string data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, string data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1219,16 +1219,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, int data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1238,16 +1238,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, uint data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, uint data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1257,16 +1257,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, long data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, long data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1276,16 +1276,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, ulong data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ulong data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1295,16 +1295,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, float data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, float data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1314,16 +1314,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, double data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, double data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1333,16 +1333,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, decimal data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, decimal data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1352,16 +1352,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, short data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, short data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1371,16 +1371,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, ushort data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ushort data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1390,16 +1390,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, byte data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, byte data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1409,16 +1409,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, sbyte data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, sbyte data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1428,16 +1428,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, char data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, char data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1447,16 +1447,16 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallRpc
+    /// 发送并订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallMessage<Response>(this Network network, bool data, int messageCmd)
+    public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, bool data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallRpc(data, (p) =>
+        network.CallMessage(data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1468,7 +1468,7 @@ public static class NetworkHelper
 
     #region CallActor
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
@@ -1486,7 +1486,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
@@ -1502,7 +1502,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1518,7 +1518,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1534,7 +1534,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1550,7 +1550,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1566,7 +1566,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1582,7 +1582,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1598,7 +1598,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1614,7 +1614,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1630,7 +1630,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1646,7 +1646,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1662,7 +1662,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1678,7 +1678,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1694,7 +1694,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1710,7 +1710,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1726,7 +1726,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -1746,7 +1746,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1763,7 +1763,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1782,7 +1782,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1801,7 +1801,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1820,7 +1820,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1839,7 +1839,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1858,7 +1858,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1877,7 +1877,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1896,7 +1896,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1915,7 +1915,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1934,7 +1934,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1953,7 +1953,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1972,7 +1972,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1991,7 +1991,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -2010,7 +2010,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送Actor Rpc请求
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -2029,9 +2029,9 @@ public static class NetworkHelper
     }
     #endregion CallActor
 
-    #region CallActorMessage
+    #region CallActorAsync
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Rquest"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -2039,7 +2039,7 @@ public static class NetworkHelper
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Rquest, Response>(this Network network, Rquest data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd, int actorId)
         where Rquest : class
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2060,14 +2060,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, string data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, string data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2087,14 +2087,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, int data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2114,14 +2114,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, uint data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, uint data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2141,14 +2141,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, long data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, long data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2168,14 +2168,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, ulong data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ulong data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2195,14 +2195,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, float data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, float data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2222,14 +2222,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, double data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, double data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2249,14 +2249,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, decimal data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, decimal data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2276,14 +2276,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, short data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, short data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2303,14 +2303,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, ushort data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ushort data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2330,14 +2330,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, byte data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, byte data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2357,14 +2357,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, sbyte data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, sbyte data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2384,14 +2384,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, char data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, char data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2411,14 +2411,14 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, bool data, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, bool data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2438,13 +2438,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// RPC请求，有GC不建议在Unity3d客户端使用,客户端应该使用CallActor
+    /// 发送并订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
     /// <param name="actorId"></param>
     /// <returns></returns>
-    public static Task<CallResult<Response>> CallActorMessage<Response>(this Network network, int messageCmd, int actorId)
+    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor((p) =>

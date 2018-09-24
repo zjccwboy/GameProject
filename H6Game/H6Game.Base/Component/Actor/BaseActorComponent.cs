@@ -63,7 +63,7 @@ namespace H6Game.Base
                 ObjectId = this.ActorEntity.Id,
                 ActorType = this.ActorEntity.ActorType,
             };
-            network.RpcCallBack(syncMessage);
+            network.Response(syncMessage);
         }
     }
 }
