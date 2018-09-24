@@ -13,25 +13,25 @@ namespace H6Game.Base
     {
         protected override void Handler(Network network, NetEndPointMessage message)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().AddService(network, message);
+            Game.Scene.GetComponent<DistributionsComponent>().AddServerConnection(network, message);
         }
     }
 
     [HandlerCMD(InnerMessageCMD.GetOutServerCmd)]
-    public class OutNetMessageSync : AMessageHandler
+    public class OutNetMessageSyncHandler : AMessageHandler
     {
         protected override void Handler(Network network)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().GetOutNet(network);
+            Game.Scene.GetComponent<DistributionsComponent>().ResponseOutNetEndPointMessage(network);
         }
     }
 
     [HandlerCMD(InnerMessageCMD.GetInServerCmd)]
-    public class InnerMessageSync : AMessageHandler
+    public class InnerMessageSyncHandler : AMessageHandler
     {
         protected override void Handler(Network network)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().GetInner(network);
+            Game.Scene.GetComponent<DistributionsComponent>().ResponseInnerEndPintMessage(network);
         }
     }
 
@@ -147,7 +147,7 @@ namespace H6Game.Base
             }
         }
 
-        public void AddService(Network network, NetEndPointMessage message)
+        public void AddServerConnection(Network network, NetEndPointMessage message)
         {
             if (InNetMapManager.Existed(message))
                 return;
@@ -165,12 +165,12 @@ namespace H6Game.Base
             }
         }
 
-        public void GetOutNet(Network network)
+        public void ResponseOutNetEndPointMessage(Network network)
         {
             network.Response(OutNetMessage);
         }
 
-        public void GetInner(Network network)
+        public void ResponseInnerEndPintMessage(Network network)
         {
             network.Response(InNetMessage);
         }
