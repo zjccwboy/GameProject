@@ -9,27 +9,27 @@ using H6Game.Hotfix.Messages.Enums;
 namespace H6Game.Base
 {
     [HandlerCMD(InnerMessageCMD.AddInServerCmd)]
-    public class DistributionsHandler : AMessageHandler<NetEndPointMessage>
+    public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
     {
-        protected override void Handler(Network network, NetEndPointMessage message)
+        protected override void Subscribe(Network network, NetEndPointMessage message)
         {
             Game.Scene.GetComponent<DistributionsComponent>().AddServerConnection(network, message);
         }
     }
 
     [HandlerCMD(InnerMessageCMD.GetOutServerCmd)]
-    public class OutNetMessageSyncHandler : AMessageHandler
+    public class OutNetMessageSyncSubscriber : AMsgSubscriber
     {
-        protected override void Handler(Network network)
+        protected override void Subscribe(Network network)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseOutNetEndPointMessage(network);
         }
     }
 
     [HandlerCMD(InnerMessageCMD.GetInServerCmd)]
-    public class InnerMessageSyncHandler : AMessageHandler
+    public class InnerMessageSyncSubscriber : AMsgSubscriber
     {
-        protected override void Handler(Network network)
+        protected override void Subscribe(Network network)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseInnerEndPintMessage(network);
         }

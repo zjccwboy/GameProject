@@ -84,7 +84,7 @@ namespace H6Game.Base
             var messageBaseType = typeof(IMessage);
             var messageTypes = new HashSet<Type>();
 
-            var handlerType = typeof(IHandler);
+            var handlerType = typeof(ISubscriber);
             var handlerTypes = new HashSet<Type>();
 
             var entityBaseType = typeof(BaseEntity);

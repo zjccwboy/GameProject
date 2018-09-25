@@ -13,9 +13,9 @@ namespace H6Game.Base
     /// 订阅与处理Actor新增消息
     /// </summary>
     [HandlerCMD(InnerMessageCMD.AddActorCmd)]
-    public class ActorAddHandler : AActorMessageHandler<ActorSyncMessage>
+    public class ActorAddSubscriber : AActorSubscriber<ActorSyncMessage>
     {
-        protected override void Handler(Network network, ActorSyncMessage message)
+        protected override void Subscribe(Network network, ActorSyncMessage message)
         {
             Log.Info(message.ToJson(), LoggerBllType.System);
             Game.Actor.GetActorPool(message.ActorType).AddRemote(message, network);
@@ -26,9 +26,9 @@ namespace H6Game.Base
     /// 订阅与处理Actor删除消息
     /// </summary>
     [HandlerCMD(InnerMessageCMD.RemoveActorCmd)]
-    public class ActorRemoveHandler : AActorMessageHandler
+    public class ActorRemoveSubscriber : AActorSubscriber
     {
-        protected override void Handler(Network network)
+        protected override void Subscribe(Network network)
         {
             Log.Info(network.RecvPacket.MessageCmd.ToString(), LoggerBllType.System);
             if (Game.Scene.GetComponent(network.RecvPacket.ActorId, out BaseComponent component))
@@ -40,16 +40,16 @@ namespace H6Game.Base
     /// 订阅与回发全量的本地LocalActor信息
     /// </summary>
     [HandlerCMD(InnerMessageCMD.SyncActorInfoCmd)]
-    public class SyncFullActorHandler : AMessageHandler
+    public class SyncFullActorSubscriber : AMsgSubscriber
     {
-        protected override void Handler(Network network)
+        protected override void Subscribe(Network network)
         {
             //回发AMessageCMD.AddActorCmd消息告诉远程订阅服务新增RemoteActor
             network.RecvPacket.MessageCmd = (int)InnerMessageCMD.AddActorCmd;
 
             var components = Game.Scene.GetComponents<ActorPoolComponent>();
             foreach (var component in components)
-                (component as ActorPoolComponent).GetFullActor(network);
+                (component as ActorPoolComponent).ResponseFullActor(network);
         }
     }
 
@@ -157,7 +157,7 @@ namespace H6Game.Base
                 NotifyAllServerWithRemove(component.ActorEntity);
         }
 
-        public void GetFullActor(Network network)
+        public void ResponseFullActor(Network network)
         {
             var count = 0;
             foreach (var localComponent in LocalComponents)

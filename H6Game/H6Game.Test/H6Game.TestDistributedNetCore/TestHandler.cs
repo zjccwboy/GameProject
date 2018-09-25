@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace H6Game.TestDistributedNetCore
 {
     [HandlerCMD(InnerMessageCMD.TestCMD1)]
-    public class TestHandler : AMessageHandler<TestMessage>
+    public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
-        protected override void Handler(Network network, TestMessage message)
+        protected override void Subscribe(Network network, TestMessage message)
         {
             network.Response(message);
         }

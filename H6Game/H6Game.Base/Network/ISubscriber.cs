@@ -6,23 +6,23 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发接口
     /// </summary>
-    public interface IHandler<Message> : IHandler
+    public interface ISubscriber<Message> : ISubscriber
     {
 
     }
 
-    public interface IHandler
+    public interface ISubscriber
     {
         Type MessageType { get; }
         void Receive(Network network);
     }
 
-    public interface IActorHandler<Message> : IActorHandler
+    public interface IActorSubscriber<Message> : IActorSubscriber
     {
 
     }
 
-    public interface IActorHandler : IHandler
+    public interface IActorSubscriber : ISubscriber
     {
 
     }

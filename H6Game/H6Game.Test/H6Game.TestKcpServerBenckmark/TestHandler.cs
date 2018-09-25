@@ -7,18 +7,18 @@ using H6Game.Hotfix.Messages.Enums;
 namespace H6Game.TestKcpServerBenckmark
 {
     [HandlerCMD(1024)]
-    public class TestHandler : AMessageHandler<TestMessage>
+    public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
-        protected override void Handler(Network network, TestMessage message)
+        protected override void Subscribe(Network network, TestMessage message)
         {
             network.Response(message);
         }
     }
 
     [HandlerCMD(1024)]
-    public class TestHandlerInt : AMessageHandler<int>
+    public class TestSubscriberInt : AMsgSubscriber<int>
     {
-        protected override void Handler(Network network, int message)
+        protected override void Subscribe(Network network, int message)
         {
             network.Response(message);
         }

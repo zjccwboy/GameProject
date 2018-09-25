@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace H6Game.Account.Model
 {
     [HandlerCMD(OutNetMessageCMD.ClientLogin)]
-    public class LoginHandler : AMessageHandler<LoginRequestMessage>
+    public class LoginSubscriber : AMsgSubscriber<LoginRequestMessage>
     {
-        protected override void Handler(Network network, LoginRequestMessage message)
+        protected override void Subscribe(Network network, LoginRequestMessage message)
         {
             Game.Scene.GetComponent<LoginComponent>().LoginHandler(network, message);
         }

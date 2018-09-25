@@ -10,8 +10,8 @@ namespace H6Game.Base
 {
     public static class HandlerMsgPool
     {
-        private static Dictionary<int, HashSet<IHandler>> HandlerDictionary { get; } = new Dictionary<int, HashSet<IHandler>>();
-        private static Dictionary<int, HashSet<IActorHandler>> ActorHandlerDictionary { get; } = new Dictionary<int, HashSet<IActorHandler>>();
+        private static Dictionary<int, HashSet<ISubscriber>> HandlerDictionary { get; } = new Dictionary<int, HashSet<ISubscriber>>();
+        private static Dictionary<int, HashSet<IActorSubscriber>> ActorHandlerDictionary { get; } = new Dictionary<int, HashSet<IActorSubscriber>>();
         private static Dictionary<int, HashSet<Type>> CmdTypeDictionary { get; } = new Dictionary<int, HashSet<Type>>();
         private static Dictionary<Type, HashSet<int>> TypeCmdDictionary { get; } = new Dictionary<Type, HashSet<int>>();
         private static Dictionary<Type, int> MsgCodeDictionary { get; } = new Dictionary<Type, int>();
@@ -69,7 +69,7 @@ namespace H6Game.Base
 
         private static void LoadHandler()
         {
-            var handlerTypes = TypePool.GetTypes<IHandler>();
+            var handlerTypes = TypePool.GetTypes<ISubscriber>();
             foreach (var type in handlerTypes)
             {
                 var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();
@@ -80,26 +80,26 @@ namespace H6Game.Base
                     throw new Exception($"类型:{type}必须有HandlerCMDAttribute特性器指定订阅消息类型.");
 
                 var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c => c).Distinct().ToList();
-                var handler = (IHandler)Activator.CreateInstance(type);
+                var handler = (ISubscriber)Activator.CreateInstance(type);
 
                 foreach (var cmd in cmds)
                 {
                     try
                     {
-                        if (handler is IActorHandler)
+                        if (handler is IActorSubscriber)
                         {
-                            if (!ActorHandlerDictionary.TryGetValue(cmd, out HashSet<IActorHandler> handlers))
+                            if (!ActorHandlerDictionary.TryGetValue(cmd, out HashSet<IActorSubscriber> handlers))
                             {
-                                handlers = new HashSet<IActorHandler>();
+                                handlers = new HashSet<IActorSubscriber>();
                                 ActorHandlerDictionary[cmd] = handlers;
                             }
-                            handlers.Add(handler as IActorHandler);
+                            handlers.Add(handler as IActorSubscriber);
                         }
                         else
                         {
-                            if (!HandlerDictionary.TryGetValue(cmd, out HashSet<IHandler> handlers))
+                            if (!HandlerDictionary.TryGetValue(cmd, out HashSet<ISubscriber> handlers))
                             {
-                                handlers = new HashSet<IHandler>();
+                                handlers = new HashSet<ISubscriber>();
                                 HandlerDictionary[cmd] = handlers;
                             }
                             handlers.Add(handler);
@@ -163,18 +163,18 @@ namespace H6Game.Base
             return cmds.Contains(messageCmd);
         }
 
-        public static IEnumerable<IHandler> GetHandler(int messageCmd)
+        public static IEnumerable<ISubscriber> GetHandler(int messageCmd)
         {
-            if (!HandlerDictionary.TryGetValue(messageCmd, out HashSet<IHandler> value))
+            if (!HandlerDictionary.TryGetValue(messageCmd, out HashSet<ISubscriber> value))
             {
                 throw new Exception($"MessageCMD:{messageCmd} 没有IHandler订阅该消息.");
             }
             return value;
         }
 
-        public static IEnumerable<IActorHandler> GetActorHandler(int messageCmd)
+        public static IEnumerable<IActorSubscriber> GetActorHandler(int messageCmd)
         {
-            if(!ActorHandlerDictionary.TryGetValue(messageCmd, out HashSet<IActorHandler> value))
+            if(!ActorHandlerDictionary.TryGetValue(messageCmd, out HashSet<IActorSubscriber> value))
             {
                 throw new Exception($"MessageCMD:{messageCmd} 没有ActorHandler订阅该消息.");
             }
