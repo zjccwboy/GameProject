@@ -8,10 +8,10 @@ using System.Reflection;
 
 namespace H6Game.Base
 {
-    public static class TypePool
+    public static class ObjectPool
     {
-        private static Dictionary<Type, HashSet<Type>> ObjcetDictionary { get; } = new Dictionary<Type, HashSet<Type>>();
-        private static Dictionary<Type, EventType> EventTypeDictionary { get; } = new Dictionary<Type, EventType>();
+        private static Dictionary<Type, HashSet<Type>> Objcets { get; } = new Dictionary<Type, HashSet<Type>>();
+        private static Dictionary<Type, EventType> EventTypes { get; } = new Dictionary<Type, EventType>();
 
         public static void Load()
         {
@@ -21,12 +21,12 @@ namespace H6Game.Base
 
         public static HashSet<Type> GetTypes<T>()
         {
-            return ObjcetDictionary[typeof(T)];
+            return Objcets[typeof(T)];
         }
 
         public static EventType GetEvent(Type type)
         {
-            if(!EventTypeDictionary.TryGetValue(type, out EventType value))
+            if(!EventTypes.TryGetValue(type, out EventType value))
             {
                 return EventType.None;
             }
@@ -36,7 +36,7 @@ namespace H6Game.Base
         private static void LoadEvent()
         {
             var type = typeof(BaseComponent);
-            if(ObjcetDictionary.TryGetValue(type, out HashSet<Type> types))
+            if(Objcets.TryGetValue(type, out HashSet<Type> types))
             {
                 foreach(var componentType in types)
                 {
@@ -44,7 +44,7 @@ namespace H6Game.Base
                     if (!attributes.Any())
                         continue;
 
-                    EventTypeDictionary[componentType] = attributes.First().EventType;
+                    EventTypes[componentType] = attributes.First().EventType;
                 }
             }
         }
@@ -134,11 +134,11 @@ namespace H6Game.Base
                 }
             }
 
-            ObjcetDictionary[messageBaseType] = messageTypes;
-            ObjcetDictionary[componentBaseType] = componentTypes;
-            ObjcetDictionary[handlerType] = handlerTypes;
-            ObjcetDictionary[entityBaseType] = entityTypes;
-            ObjcetDictionary[rpositoryBaseType] = rpositoryTypes;
+            Objcets[messageBaseType] = messageTypes;
+            Objcets[componentBaseType] = componentTypes;
+            Objcets[handlerType] = handlerTypes;
+            Objcets[entityBaseType] = entityTypes;
+            Objcets[rpositoryBaseType] = rpositoryTypes;
         }
 
     }

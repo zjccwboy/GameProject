@@ -24,7 +24,7 @@ namespace H6Game.Base
 
         private static void LoadMessageType()
         {
-            var msgTypes = TypePool.GetTypes<IMessage>();
+            var msgTypes = ObjectPool.GetTypes<IMessage>();
             foreach(var type in msgTypes)
             {
                 var attribute = type.GetCustomAttribute<MessageTypeAttribute>();
@@ -69,7 +69,7 @@ namespace H6Game.Base
 
         private static void LoadHandler()
         {
-            var handlerTypes = TypePool.GetTypes<ISubscriber>();
+            var handlerTypes = ObjectPool.GetTypes<ISubscriber>();
             foreach (var type in handlerTypes)
             {
                 var attributes = type.GetCustomAttributes<HandlerCMDAttribute>();

@@ -26,7 +26,7 @@ namespace H6Game.Base
             var logDbClient = new MongoClient(logConfig.ConnectionString);
             var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);
 
-            var types = TypePool.GetTypes<IRpository>();
+            var types = ObjectPool.GetTypes<IRpository>();
             foreach (var type in types)
             {
                 AddComponent(type, sysConfig, logConfig, sysDbClient, logDbClient, sysDb, logDb);

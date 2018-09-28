@@ -55,7 +55,8 @@ namespace H6Game.Base
         public ActorEntity ActorEntity { get; } = new ActorEntity();
         public abstract ActorType ActorType { get;}
         public bool IsLocalActor { get; protected set; }
-        public void SendLocalActorInfoMessage(Network network)
+
+        public void SendMySelf(Network network)
         {
             network.RecvPacket.ActorId = this.Id;
             var syncMessage = new ActorSyncMessage

@@ -49,7 +49,7 @@ namespace H6Game.Base
 
             var components = Game.Scene.GetComponents<ActorPoolComponent>();
             foreach (var component in components)
-                (component as ActorPoolComponent).ResponseFullActor(network);
+                (component as ActorPoolComponent).ResponseLocalActors(network);
         }
     }
 
@@ -57,14 +57,12 @@ namespace H6Game.Base
     [Event(EventType.Awake)]
     public class ActorPoolComponent : BaseComponent
     {
-        private ConcurrentDictionary<int, Dictionary<int, BaseActorEntityComponent>> NetChannelIdEntitys { get; } = new ConcurrentDictionary<int, Dictionary<int, BaseActorEntityComponent>>();
-        private ConcurrentDictionary<int, BaseActorEntityComponent> LocalComponentDictionary { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
-        private ConcurrentDictionary<int, BaseActorEntityComponent> RemoteComponentDictionary { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
-        private ConcurrentDictionary<string, BaseActorEntityComponent> AllComponentDictionary { get; } = new ConcurrentDictionary<string, BaseActorEntityComponent>();
-        private IEnumerable<BaseActorEntityComponent> LocalComponents { get { return LocalComponentDictionary.Values; } }
-
+        private ConcurrentDictionary<int, Dictionary<int, BaseActorEntityComponent>> NetIdActors { get; } = new ConcurrentDictionary<int, Dictionary<int, BaseActorEntityComponent>>();
+        private ConcurrentDictionary<int, BaseActorEntityComponent> LocalActors { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
+        private ConcurrentDictionary<int, BaseActorEntityComponent> RemoteActors { get; } = new ConcurrentDictionary<int, BaseActorEntityComponent>();
+        private ConcurrentDictionary<string, BaseActorEntityComponent> AllActors { get; } = new ConcurrentDictionary<string, BaseActorEntityComponent>();
         public static Action<ANetChannel> OnServerDisconnected { get; set; }
-        public static Action<ANetChannel> OnInnerClientConnected { get; set; }
+        public static Action<ANetChannel> OnClientConnected { get; set; }
 
         public ActorType ActorType { get; }
         public ActorPoolComponent(ActorType actorType)
@@ -81,7 +79,7 @@ namespace H6Game.Base
             {
                 OnServerDisconnected = c =>
                 {
-                    if (!NetChannelIdEntitys.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+                    if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
                         return;
 
                     foreach (var kv in dicVal)
@@ -91,19 +89,19 @@ namespace H6Game.Base
             }
 
             //连接消息只注册一次
-            if(OnInnerClientConnected == null)
+            if(OnClientConnected == null)
             {
-                OnInnerClientConnected = c => { c.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd); };
-                innerComponent.OnInnerClientConnected += OnInnerClientConnected;
+                OnClientConnected = c => { c.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd); };
+                innerComponent.OnInnerClientConnected += OnClientConnected;
             }
         }
 
         public void AddLocal(BaseActorEntityComponent component)
         {
-            if (!LocalComponentDictionary.TryAdd(component.Id, component))
+            if (!LocalActors.TryAdd(component.Id, component))
                 return;
 
-            AllComponentDictionary[component.ActorEntity.Id] = component;
+            AllActors[component.ActorEntity.Id] = component;
 
             NotifyAllServerWithAdd(component.ActorEntity);
         }
@@ -138,32 +136,31 @@ namespace H6Game.Base
 
         public void RemoveRemote(ActorEntity entity)
         {
-            if (!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+            if (!NetIdActors.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
                 return;
 
             if (!dicVal.TryGetValue(entity.ActorId, out BaseActorEntityComponent component))
                 return;
 
-            if (RemoteComponentDictionary.TryRemove(component.Id, out component))
-                AllComponentDictionary.TryRemove(component.ActorEntity.Id, out component);
+            if (RemoteActors.TryRemove(component.Id, out component))
+                AllActors.TryRemove(component.ActorEntity.Id, out component);
         }
 
         public void RemoveLocal(ActorEntity entity)
         {
-            if (!AllComponentDictionary.TryRemove(entity.Id, out BaseActorEntityComponent component))
+            if (!AllActors.TryRemove(entity.Id, out BaseActorEntityComponent component))
                 return;
 
-            if (LocalComponentDictionary.TryRemove(component.Id, out component))
+            if (LocalActors.TryRemove(component.Id, out component))
                 NotifyAllServerWithRemove(component.ActorEntity);
         }
 
-        public void ResponseFullActor(Network network)
+        public void ResponseLocalActors(Network network)
         {
             var count = 0;
-            foreach (var localComponent in LocalComponents)
+            foreach (var actor in LocalActors.Values)
             {
-                localComponent.SendLocalActorInfoMessage(network);
-
+                actor.SendMySelf(network);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
@@ -177,18 +174,18 @@ namespace H6Game.Base
 
         private void AddRemote(BaseActorEntityComponent component)
         {
-            if (!RemoteComponentDictionary.TryAdd(component.Id, component))
+            if (!RemoteActors.TryAdd(component.Id, component))
                 return;
 
             var entity = component.ActorEntity;
-            if (!NetChannelIdEntitys.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+            if (!NetIdActors.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
             {
                 dicVal = new Dictionary<int, BaseActorEntityComponent>();
-                NetChannelIdEntitys[entity.Network.Channel.Id] = dicVal;
+                NetIdActors[entity.Network.Channel.Id] = dicVal;
             }
             dicVal[entity.ActorId] = component;
 
-            AllComponentDictionary[component.ActorEntity.Id] = component;
+            AllActors[component.ActorEntity.Id] = component;
         }
 
         private void NotifyAllServerWithAdd(ActorEntity entity)

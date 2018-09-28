@@ -25,7 +25,7 @@ namespace H6Game.Base
         {
             var type = typeof(T);
 
-            var eventType = TypePool.GetEvent(type);
+            var eventType = ObjectPool.GetEvent(type);
             if (eventType == EventType.None)
                 return false;
 

@@ -41,7 +41,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            var types = TypePool.GetTypes<BaseEntity>();
+            var types = ObjectPool.GetTypes<BaseEntity>();
             SetPropertiesName(types);
         }
 
