@@ -12,7 +12,7 @@ namespace H6Game.Base
         {
             ObjectPool.Load();
             ComponentPool.Load();
-            HandlerMsgPool.Load();
+            SubscriberMsgPool.Load();
 
             Scene = new SceneManager();
             Event = new EventManager();

@@ -19,7 +19,7 @@ namespace H6Game.Base
             get
             {
                 if(typeCode <=0)
-                    typeCode = HandlerMsgPool.GetTypeCode(this.MessageType);
+                    typeCode = SubscriberMsgPool.GetMsgCode(this.MessageType);
 
                 return typeCode;
             }

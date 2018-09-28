@@ -8,7 +8,7 @@ using H6Game.Hotfix.Messages.Enums;
 
 namespace H6Game.Base
 {
-    [HandlerCMD(InnerMessageCMD.AddInServerCmd)]
+    [SubscriberCMD(InnerMessageCMD.AddInServerCmd)]
     public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
     {
         protected override void Subscribe(Network network, NetEndPointMessage message)
@@ -17,7 +17,7 @@ namespace H6Game.Base
         }
     }
 
-    [HandlerCMD(InnerMessageCMD.GetOutServerCmd)]
+    [SubscriberCMD(InnerMessageCMD.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network)
@@ -26,7 +26,7 @@ namespace H6Game.Base
         }
     }
 
-    [HandlerCMD(InnerMessageCMD.GetInServerCmd)]
+    [SubscriberCMD(InnerMessageCMD.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network)

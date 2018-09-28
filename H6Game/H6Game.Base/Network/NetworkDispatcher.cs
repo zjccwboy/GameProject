@@ -14,19 +14,19 @@ namespace H6Game.Base
             {
                 if (packet.ActorId > 0)
                 {
-                    var handlers = HandlerMsgPool.GetActorHandler(packet.MessageCmd);
-                    foreach(var handler in handlers)
+                    var subscribers = SubscriberMsgPool.GetActorSubscriber(packet.MessageCmd);
+                    foreach(var subscriber in subscribers)
                     {
-                        handler.Receive(network);
+                        subscriber.Receive(network);
                     }
                     return;
                 }
                 else
                 {
-                    var handlers = HandlerMsgPool.GetHandler(packet.MessageCmd);
-                    foreach (var handler in handlers)
+                    var subscribers = SubscriberMsgPool.GetSubscriber(packet.MessageCmd);
+                    foreach (var subscriber in subscribers)
                     {
-                        handler.Receive(network);
+                        subscriber.Receive(network);
                     }
                     return;
                 }

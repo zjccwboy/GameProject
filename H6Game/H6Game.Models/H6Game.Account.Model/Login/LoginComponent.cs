@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace H6Game.Account.Model
 {
-    [HandlerCMD(OutNetMessageCMD.ClientLogin)]
+    [SubscriberCMD(OutNetMessageCMD.ClientLogin)]
     public class LoginSubscriber : AMsgSubscriber<LoginRequestMessage>
     {
         protected override void Subscribe(Network network, LoginRequestMessage message)

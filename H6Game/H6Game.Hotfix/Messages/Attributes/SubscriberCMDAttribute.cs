@@ -6,11 +6,11 @@ using System.Linq;
 namespace H6Game.Hotfix.Messages.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class HandlerCMDAttribute : Attribute
+    public class SubscriberCMDAttribute : Attribute
     {
         public List<int> MessageCmds { get;} = new List<int>();
 
-        public HandlerCMDAttribute(params int[] commands)
+        public SubscriberCMDAttribute(params int[] commands)
         {
             if(!commands.Any())
             {
@@ -19,7 +19,7 @@ namespace H6Game.Hotfix.Messages.Attributes
             this.MessageCmds.AddRange(commands.Select(c=>c));
         }
 
-        public HandlerCMDAttribute(params InnerMessageCMD[] commands)
+        public SubscriberCMDAttribute(params InnerMessageCMD[] commands)
         {
             if (!commands.Any())
             {
@@ -28,7 +28,7 @@ namespace H6Game.Hotfix.Messages.Attributes
             this.MessageCmds.AddRange(commands.Select(c => (int)c));
         }
 
-        public HandlerCMDAttribute(params OutNetMessageCMD[] commands)
+        public SubscriberCMDAttribute(params OutNetMessageCMD[] commands)
         {
             if (!commands.Any())
             {

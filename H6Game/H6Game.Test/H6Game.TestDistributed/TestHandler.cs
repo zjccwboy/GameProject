@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace TestDistributed
 {
-    [HandlerCMD(InnerMessageCMD.TestCMD1)]
+    [SubscriberCMD(InnerMessageCMD.TestCMD1)]
     public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
         protected override void Subscribe(Network network, TestMessage message)
