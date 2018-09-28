@@ -230,7 +230,7 @@ namespace H6Game.Base
                     ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, e);
                     break;
                 default:
-                    throw new Exception($"socket error: {e.LastOperation}");
+                    throw new NetworkException($"socket error: {e.LastOperation}");
             }
         }
 

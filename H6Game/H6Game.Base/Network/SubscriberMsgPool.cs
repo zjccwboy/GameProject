@@ -21,7 +21,7 @@ namespace H6Game.Base
 
         public static void Load()
         {
-            LoadHandler();
+            LoadSubscriber();
             LoadMessageType();
         }
 
@@ -70,7 +70,7 @@ namespace H6Game.Base
             return result;
         }
 
-        private static void LoadHandler()
+        private static void LoadSubscriber()
         {
             var handlerTypes = ObjectPool.GetTypes<ISubscriber>();
             foreach (var type in handlerTypes)
@@ -83,20 +83,20 @@ namespace H6Game.Base
                     throw new Exception($"类型:{type}必须有SubscriberCMDAttribute特性器指定订阅消息类型.");
 
                 var cmds = attributes.Select(a => a.MessageCmds).SelectMany(c => c).Distinct().ToList();
-                var handler = (ISubscriber)Activator.CreateInstance(type);
+                var subscriber = (ISubscriber)Activator.CreateInstance(type);
 
                 foreach (var cmd in cmds)
                 {
                     try
                     {
-                        if (handler is IActorSubscriber)
+                        if (subscriber is IActorSubscriber)
                         {
                             if (!ActorSubscribers.TryGetValue(cmd, out HashSet<IActorSubscriber> handlers))
                             {
                                 handlers = new HashSet<IActorSubscriber>();
                                 ActorSubscribers[cmd] = handlers;
                             }
-                            handlers.Add(handler as IActorSubscriber);
+                            handlers.Add(subscriber as IActorSubscriber);
                         }
                         else
                         {
@@ -105,10 +105,10 @@ namespace H6Game.Base
                                 handlers = new HashSet<ISubscriber>();
                                 Subscribers[cmd] = handlers;
                             }
-                            handlers.Add(handler);
+                            handlers.Add(subscriber);
                         }
 
-                        if (handler.MessageType == null)
+                        if (subscriber.MessageType == null)
                             continue;
 
                         if (!CmdTypes.TryGetValue(cmd, out HashSet<Type> types))
@@ -116,12 +116,12 @@ namespace H6Game.Base
                             types = new HashSet<Type>();
                             CmdTypes[cmd] = types;
                         }
-                        types.Add(handler.MessageType);
+                        types.Add(subscriber.MessageType);
 
-                        if (!TypeCmds.TryGetValue(handler.MessageType, out HashSet<int> msgCmds))
+                        if (!TypeCmds.TryGetValue(subscriber.MessageType, out HashSet<int> msgCmds))
                         {
                             msgCmds = new HashSet<int>();
-                            TypeCmds[handler.MessageType] = msgCmds;
+                            TypeCmds[subscriber.MessageType] = msgCmds;
                         }
                         msgCmds.Add(cmd);
                     }
@@ -148,6 +148,29 @@ namespace H6Game.Base
             return ExistCmd(type, packet.MessageCmd) && ExistType(packet.MessageCmd, type);
         }
 
+        public static IEnumerable<ISubscriber> GetSubscriber(int messageCmd)
+        {
+            if (!Subscribers.TryGetValue(messageCmd, out HashSet<ISubscriber> value))
+            {
+                throw new Exception($"MessageCMD:{messageCmd} 没有Subscriber订阅该消息.");
+            }
+            return value;
+        }
+
+        public static IEnumerable<IActorSubscriber> GetActorSubscriber(int messageCmd)
+        {
+            if (!ActorSubscribers.TryGetValue(messageCmd, out HashSet<IActorSubscriber> value))
+            {
+                throw new Exception($"MessageCMD:{messageCmd} 没有ActorSubscriber订阅该消息.");
+            }
+            return value;
+        }
+
+        public static T GetMessage<T>(this Packet packet)
+        {
+            return packet.Read<T>();
+        }
+
         private static bool ExistType(int messageCmd, Type type)
         {
             if (!CmdTypes.TryGetValue(messageCmd, out HashSet<Type> types))
@@ -164,29 +187,6 @@ namespace H6Game.Base
                 return false;
             }
             return cmds.Contains(messageCmd);
-        }
-
-        public static IEnumerable<ISubscriber> GetSubscriber(int messageCmd)
-        {
-            if (!Subscribers.TryGetValue(messageCmd, out HashSet<ISubscriber> value))
-            {
-                throw new Exception($"MessageCMD:{messageCmd} 没有Subscriber订阅该消息.");
-            }
-            return value;
-        }
-
-        public static IEnumerable<IActorSubscriber> GetActorSubscriber(int messageCmd)
-        {
-            if(!ActorSubscribers.TryGetValue(messageCmd, out HashSet<IActorSubscriber> value))
-            {
-                throw new Exception($"MessageCMD:{messageCmd} 没有ActorSubscriber订阅该消息.");
-            }
-            return value;
-        }
-
-        public static T GetMessage<T>(this Packet packet)
-        {
-            return packet.Read<T>();
         }
     }
 }
