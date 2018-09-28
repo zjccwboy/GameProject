@@ -7,7 +7,7 @@ namespace H6Game.Hotfix.Messages.Enums
     /// </summary>
     public enum OutNetMessageCMD
     {
-        #region 游戏客户端交互消息指令50001开始
+        #region 游戏客户端交互消息指令1开始
         /// <summary>
         /// 获取一个网关连接地址
         /// </summary>
