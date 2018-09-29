@@ -8,6 +8,7 @@ namespace H6Game.Account.Model
 {
     public class AccountLogin : ALogin
     {
+        public override LoginType LoginType { get { return LoginType.Account; } }
         public override LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account)
         {
             var result = new LoginResponeMessage { LoginResult = LoginResutlCode.UnKnown};
@@ -15,9 +16,7 @@ namespace H6Game.Account.Model
             {
                 result.LoginResult = LoginResutlCode.Success;
                 SetRespose(result, account);
-                return result;
             }
-
             return result;
         }
     }

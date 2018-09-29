@@ -12,6 +12,7 @@ namespace H6Game.Base
     {
         private static Dictionary<Type, HashSet<Type>> Objcets { get; } = new Dictionary<Type, HashSet<Type>>();
         private static Dictionary<Type, EventType> EventTypes { get; } = new Dictionary<Type, EventType>();
+        public static List<Assembly> Assemblies { get; private set; } = new List<Assembly>();
 
         public static void Load()
         {
@@ -77,6 +78,7 @@ namespace H6Game.Base
                     assemblys.Add(assembly);
                 }
             }
+            Assemblies = assemblys;
 
             var componentBaseType = typeof(BaseComponent);
             var componentTypes = new HashSet<Type>();

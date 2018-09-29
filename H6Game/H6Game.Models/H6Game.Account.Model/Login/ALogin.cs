@@ -6,6 +6,7 @@ namespace H6Game.Account.Model
 {
     public abstract class ALogin : ILogin
     {
+        public abstract LoginType LoginType { get; }
         public abstract LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account);
         public void SetRespose(LoginResponeMessage response, TAccount account)
         {

@@ -5,20 +5,20 @@ namespace H6Game.Base
     public class ConsoleLoggerFactory
     {
 
-        private Dictionary<LogLevel, IConsoleLogger> FileWriters { get; } = new Dictionary<LogLevel, IConsoleLogger>();
+        private Dictionary<LogLevel, IConsoleLogger> ConsoleWriters { get; } = new Dictionary<LogLevel, IConsoleLogger>();
 
         public void Create()
         {
             var levels = FileInfoManager.NameLevels.Values;
             foreach (var level in levels)
             {
-                FileWriters[level] = Create(level);
+                ConsoleWriters[level] = Create(level);
             }
         }
 
         public void WriteMessage(TLogger entity)
         {
-            FileWriters[entity.FLogLevel].ShowMessage(entity);
+            ConsoleWriters[entity.FLogLevel].ShowMessage(entity);
         }
 
         public static IConsoleLogger Create(LogLevel logLevel)

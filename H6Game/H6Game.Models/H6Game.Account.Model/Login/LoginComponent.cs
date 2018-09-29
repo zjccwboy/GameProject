@@ -13,7 +13,7 @@ namespace H6Game.Account.Model
     {
         protected override void Subscribe(Network network, LoginRequestMessage message)
         {
-            Game.Scene.GetComponent<LoginComponent>().LoginHandler(network, message);
+            Game.Scene.GetComponent<LoginComponent>().OnLogin(network, message);
         }
     }
 
@@ -21,24 +21,19 @@ namespace H6Game.Account.Model
     [SingletCase]
     public class LoginComponent : BaseComponent
     {
-        private Dictionary<LoginType, ILogin> Logins { get; } = new Dictionary<LoginType, ILogin>();
-
         public override void Awake()
         {
-            Logins[LoginType.Account] = new AccountLogin();
-            Logins[LoginType.AliPayLogin] = new AliPayLogin();
-            Logins[LoginType.SMSLogin] = new SMSLogin();
-            Logins[LoginType.WXLogin] = new WXLogin();
+            LoginFactory.Load();
         }
 
-        public async void LoginHandler(Network network, LoginRequestMessage message)
+        public async void OnLogin(Network network, LoginRequestMessage message)
         {
             LoginResponeMessage response = null;
             switch (message.LoginType)
             {
                 case LoginType.Account:
                     {
-                        var login = Logins[LoginType.Account];
+                        var login = LoginFactory.Create(LoginType.Account);
                         var account = await Game.Scene.GetComponent<AccountRpository>().GetByName(message.Account);
                         response = login.VerifyLogin(message, account);
                         if (response.LoginResult == LoginResutlCode.Success)
