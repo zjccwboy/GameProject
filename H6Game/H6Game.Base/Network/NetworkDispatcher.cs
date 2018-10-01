@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// </summary>
     public class NetworkDispatcher
     {
-        public static void DoReceive(Network network, Packet packet)
+        public static void Dispatch(Network network, Packet packet)
         {
             try
             {
