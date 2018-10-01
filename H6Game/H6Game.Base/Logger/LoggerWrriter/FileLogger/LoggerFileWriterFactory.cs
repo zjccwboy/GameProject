@@ -6,13 +6,13 @@ namespace H6Game.Base
     public class LoggerFileWriterFactory
     {
         private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
-        private LoggerConfigEntity Config { get; }
+        private LoggerConfig Config { get; }
 
         public LoggerFileWriterFactory()
         {
             FileWriters = new Dictionary<LogLevel, ILoggerFileWriter>();
             FileInfoManager.Load();
-            Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
+            Config = LoggerFactory.Config;
             FileInfoManager.UpdateLastCreateFileInfo(Config.Path);
         }
 

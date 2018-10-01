@@ -20,7 +20,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = Game.Scene.AddComponent<OutNetConfigComponent>().OutNetConfig;
+            this.Config = new OutNetConfigComponent().Config;
             this.Connecting(GetLoginServerEndPoint());
         }
 

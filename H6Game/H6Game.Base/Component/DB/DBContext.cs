@@ -18,13 +18,11 @@ namespace H6Game.Base
     /// <typeparam name="TEntity"></typeparam>
     public class DBContext<TEntity> where TEntity : BaseEntity
     {
+        #region 私有变量
         private string DatabaseName { get; set; }
         private MongoClient DBClient { get; set; }
+        #endregion
 
-        /// <summary>
-        /// Mongo server.
-        /// </summary>
-        public MongoServer DBServer => DBClient.GetServer();
         #region 构造函数
 
         /// <summary>
@@ -42,6 +40,11 @@ namespace H6Game.Base
         #endregion
 
         #region 公共接口
+
+        /// <summary>
+        /// Mongo server.
+        /// </summary>
+        public MongoServer DBServer => DBClient.GetServer();
 
         /// <summary>
         /// Mongo database.

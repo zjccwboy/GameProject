@@ -5,20 +5,18 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
-    public sealed class DistributionsConfigComponent : BaseComponent
+    public sealed class DistributionsConfigComponent
     {
-        public DistributionsConfig InnerConfig { get; private set; }
+        public DistributionsConfig Config { get; private set; }
 
-        public override void Awake()
+        public DistributionsConfigComponent()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigile(fullName);
 
-            PacketConfig.IsCompress = InnerConfig.IsCompress;
-            PacketConfig.IsEncrypt = InnerConfig.IsEncrypt;
+            PacketConfig.IsCompress = Config.IsCompress;
+            PacketConfig.IsEncrypt = Config.IsEncrypt;
         }
 
         private bool ReadConfigFile(string path)
@@ -31,16 +29,16 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    InnerConfig = BsonSerializer.Deserialize<DistributionsConfig>(json);
+                    Config = BsonSerializer.Deserialize<DistributionsConfig>(json);
                 }
             }
 
-            if(InnerConfig.InnerListenConfig == null || InnerConfig.OutListenConfig == null)
+            if(Config.InnerListenConfig == null || Config.OutListenConfig == null)
                 return false;
 
-            if (InnerConfig.InnerListenConfig.CenterEndPoint != null
-                && !string.IsNullOrEmpty(InnerConfig.InnerListenConfig.CenterEndPoint.IP)
-                && !string.IsNullOrEmpty(InnerConfig.InnerListenConfig.LocalEndPoint.IP))
+            if (Config.InnerListenConfig.CenterEndPoint != null
+                && !string.IsNullOrEmpty(Config.InnerListenConfig.CenterEndPoint.IP)
+                && !string.IsNullOrEmpty(Config.InnerListenConfig.LocalEndPoint.IP))
                 return true;
 
             return false;
@@ -48,7 +46,7 @@ namespace H6Game.Base
 
         private async void SaveConfigile(string fullName)
         {
-            InnerConfig = new DistributionsConfig
+            Config = new DistributionsConfig
             {
                 IsCenterServer = false,
                 IsCompress = false,
@@ -71,7 +69,7 @@ namespace H6Game.Base
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = InnerConfig.ToJson();
+                    var json = Config.ToJson();
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
                     Console.ForegroundColor = ConsoleColor.Red;

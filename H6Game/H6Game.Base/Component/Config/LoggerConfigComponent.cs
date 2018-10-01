@@ -5,12 +5,10 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
-    public class LoggerConfigComponent : BaseComponent
+    public class LoggerConfigComponent
     {
-        public LoggerConfigEntity Config { get; private set; }
-        public override void Awake()
+        public LoggerConfig Config { get; private set; }
+        public LoggerConfigComponent()
         {
             var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\H6Game.LoggerConfig.json";
             if (!ReadConfigFile(fullName))
@@ -27,7 +25,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    this.Config = BsonSerializer.Deserialize<LoggerConfigEntity>(json);
+                    this.Config = BsonSerializer.Deserialize<LoggerConfig>(json);
                 }
             }
 
@@ -50,7 +48,7 @@ namespace H6Game.Base
 
         private void SaveConfigile(string fullName)
         {
-            this.Config = new LoggerConfigEntity
+            this.Config = new LoggerConfig
             {
                 Path = Path.GetDirectoryName(this.GetType().Assembly.Location) + "\\Logs",
                 DBConfig = new DbConfig

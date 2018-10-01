@@ -8,10 +8,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<DBConfigComponent>();
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<LoggerConfigComponent>();
-            Game.Scene.AddComponent<DistributionsConfigComponent>();
             Game.Scene.AddComponent<DistributionsComponent>();
             while (true)
             {

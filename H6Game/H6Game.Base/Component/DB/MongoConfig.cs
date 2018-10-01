@@ -11,18 +11,17 @@ namespace H6Game.Base
         public override void Awake()
         {
             Game.Scene.AddComponent<EntityComponent>();
-            Game.Scene.AddComponent<DBConfigComponent>();
             AddRpositoryComponents();
             Log.Info("MongoDB初始化成功。", LoggerBllType.System);
         }
 
         private void AddRpositoryComponents()
         {
-            var sysConfig = Game.Scene.GetComponent<DBConfigComponent>().DBConfig;
+            var sysConfig = new DBConfigComponent().Config;
             var sysDbClient = new MongoClient(sysConfig.ConnectionString);
             var sysDb = sysDbClient.GetDatabase(sysConfig.DatabaseName);
             
-            var logConfig = Game.Scene.AddComponent<LoggerConfigComponent>().Config.DBConfig;
+            var logConfig = new LoggerConfigComponent().Config.DBConfig;
             var logDbClient = new MongoClient(logConfig.ConnectionString);
             var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);
 

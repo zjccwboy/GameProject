@@ -1,7 +1,7 @@
 ﻿
 namespace H6Game.Base
 {
-    public class LoggerConfigEntity
+    public class LoggerConfig
     {
         /// <summary>
         /// 日志文件存放目录路径

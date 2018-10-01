@@ -1,7 +1,5 @@
 ﻿
 
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace H6Game.Base
 {
     public class DbConfig

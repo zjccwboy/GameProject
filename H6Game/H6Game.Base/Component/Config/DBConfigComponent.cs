@@ -5,12 +5,10 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
-    public class DBConfigComponent : BaseComponent
+    public class DBConfigComponent
     {
-        public DbConfig DBConfig { get; private set; }
-        public override void Awake()
+        public DbConfig Config { get; private set; }
+        public DBConfigComponent()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
             if (!ReadConfigFile(fullName))
@@ -27,11 +25,11 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    DBConfig = BsonSerializer.Deserialize<DbConfig>(json);
+                    Config = BsonSerializer.Deserialize<DbConfig>(json);
                 }
             }
 
-            if (DBConfig == null || string.IsNullOrWhiteSpace(DBConfig.ConnectionString) || string.IsNullOrWhiteSpace(DBConfig.DatabaseName)) 
+            if (Config == null || string.IsNullOrWhiteSpace(Config.ConnectionString) || string.IsNullOrWhiteSpace(Config.DatabaseName)) 
                 return false;
 
             return true;
@@ -39,7 +37,7 @@ namespace H6Game.Base
 
         private async void SaveConfigile(string fullName)
         {
-            DBConfig = new DbConfig
+            Config = new DbConfig
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "H6Game",
@@ -49,7 +47,7 @@ namespace H6Game.Base
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = DBConfig.ToJson();
+                    var json = Config.ToJson();
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
                     Console.ForegroundColor = ConsoleColor.Red;

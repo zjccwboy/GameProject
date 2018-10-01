@@ -186,25 +186,11 @@ namespace TestMogodb
             };
 
 
-            var config = Game.Scene.GetComponent<DBConfigComponent>();
-            var mongoDbHelper = new MongoDbCsharpHelper(config.DBConfig.ConnectionString, "H6Game");
+
 
             var tableName = accountInfo.GetType().Name;
 
             //mongoDbHelper.CreateCollection<TestAccount>(tableName, new[] { "LogDT" });
-
-            var listFromLevel = mongoDbHelper.Find<TestAccount>(tableName, t => t.FVIPLevel == 1);
-
-            int rsCount = 0;
-            var pages = mongoDbHelper.FindByPage<TestAccount, byte>(tableName, t => t.FVIPLevel == 1, t => t.FVIPLevel, 1, 20, out rsCount);
-
-            mongoDbHelper.Insert<TestAccount>(tableName, new TestAccount { FCreateTime = DateTime.Now, FVIPLevel = 1, FAccount = "测试消息" });
-
-            mongoDbHelper.Update<TestAccount>(tableName, new TestAccount { FCreateTime = DateTime.Now, FVIPLevel = 1, FAccount = "测试消息2" }, t => t.FCreateTime == new DateTime(1900, 1, 1));
-
-            mongoDbHelper.Delete<TestAccount>(t => t.FVIPLevel == 1);
-
-            mongoDbHelper.ClearCollection<TestAccount>(tableName);
 
 
             Console.WriteLine(accountInfo.ToJson());

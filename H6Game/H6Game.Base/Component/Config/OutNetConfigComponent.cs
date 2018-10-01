@@ -5,19 +5,18 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
-    public class OutNetConfigComponent : BaseComponent
+    public class OutNetConfigComponent
     {
-        public OutNetConfig OutNetConfig { get; private set; }
-        public override void Awake()
+        public OutNetConfig Config { get; private set; }
+
+        public OutNetConfigComponent()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigile(fullName);
 
-            PacketConfig.IsCompress = OutNetConfig.IsCompress;
-            PacketConfig.IsEncrypt = OutNetConfig.IsEncrypt;
+            PacketConfig.IsCompress = Config.IsCompress;
+            PacketConfig.IsEncrypt = Config.IsEncrypt;
         }
 
         private bool ReadConfigFile(string path)
@@ -30,11 +29,11 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    OutNetConfig = BsonSerializer.Deserialize<OutNetConfig>(json);
+                    Config = BsonSerializer.Deserialize<OutNetConfig>(json);
                 }
             }
 
-            if (OutNetConfig == null || string.IsNullOrWhiteSpace(OutNetConfig.OutNetHost))
+            if (Config == null || string.IsNullOrWhiteSpace(Config.OutNetHost))
                 return false;
 
             return true;
@@ -42,7 +41,7 @@ namespace H6Game.Base
 
         private async void SaveConfigile(string fullName)
         {
-            OutNetConfig = new OutNetConfig
+            Config = new OutNetConfig
             {
                 OutNetHost = "payapi.test.com",
                 IsCompress = false,
@@ -54,7 +53,7 @@ namespace H6Game.Base
             {
                 using (var sr = new StreamWriter(fileStream))
                 {
-                    var json = OutNetConfig.ToJson();
+                    var json = Config.ToJson();
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
                     Console.ForegroundColor = ConsoleColor.Red;

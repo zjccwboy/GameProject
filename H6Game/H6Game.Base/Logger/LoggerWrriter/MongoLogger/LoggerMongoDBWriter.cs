@@ -4,10 +4,10 @@ namespace H6Game.Base
 {
     public class LoggerMongoDBWriter : ILoggerWriter
     {
-        private LoggerConfigEntity Config { get; set; }
+        private LoggerConfig Config { get; set; }
         public LoggerMongoDBWriter()
         {
-            this.Config = Game.Scene.GetComponent<LoggerConfigComponent>().Config;
+            this.Config = LoggerFactory.Config;
         }
 
         public async Task WriteMessage(TLogger entity)

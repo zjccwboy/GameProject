@@ -102,7 +102,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = Game.Scene.AddComponent<DistributionsConfigComponent>().InnerConfig;
+            this.Config = new DistributionsConfigComponent().Config;
         }
 
         public override void Start()

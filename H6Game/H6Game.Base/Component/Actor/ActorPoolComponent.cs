@@ -16,7 +16,8 @@ namespace H6Game.Base
     {
         protected override void Subscribe(Network network, ActorSyncMessage message, int messageCmd, int actorId)
         {
-            Log.Info(message.ToJson(), LoggerBllType.System);
+            var logs = $"CMD:{messageCmd} ActorId:{actorId} MSG:{message.ToJson()}";
+            Log.Info(logs, LoggerBllType.System);
             switch (message.ActorType)
             {
                 case ActorType.Player:
