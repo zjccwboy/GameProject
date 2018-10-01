@@ -11,6 +11,9 @@ namespace H6Game.Base
         [BsonElement("BT")]
         public LoggerBllType FBllType { get; set; }
 
+        [BsonElement("SI")]
+        public string FStackInfo { get; set; }
+
         [BsonElement("MSG")]
         public string FMessage { get; set; }
 

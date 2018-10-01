@@ -18,12 +18,13 @@ namespace H6Game.Base
 #endif
         }
 
-        public async Task WriteMessage(LogLevel FLogLevel, string message, string args, LoggerBllType bllType, Exception exception)
+        public async Task WriteMessage(LogLevel FLogLevel, string stackInfo, string message, string args, LoggerBllType bllType, Exception exception)
         {
             var entity = new TLogger
             {
                 FBllType = bllType,
                 FLogLevel = FLogLevel,
+                FStackInfo = stackInfo,
                 FMessage = message,
                 FArgs = args,
             };

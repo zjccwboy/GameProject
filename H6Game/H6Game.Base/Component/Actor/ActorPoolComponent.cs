@@ -48,12 +48,12 @@ namespace H6Game.Base
     /// 订阅与处理Actor删除消息
     /// </summary>
     [SubscriberCMD(InnerMessageCMD.RemoveActorCmd)]
-    public class ActorRemoveSubscriber : AActorSubscriber<int>
+    public class ActorRemoveSubscriber : AActorSubscriber
     {
-        protected override void Subscribe(Network network, int message, int messageCmd, int actorId)
+        protected override void Subscribe(Network network, int messageCmd, int actorId)
         {
             var pool = Game.Scene.GetComponent<ActorPoolComponent>();
-            var actor = pool.GetActor(network.Channel.Id, actorId, (ActorType)message);
+            var actor = pool.GetActor(network.Channel.Id, actorId);
             Game.Scene.GetComponent<ActorPoolComponent>().RemoveRemote(actor);
 
             Log.Info(network.RecvPacket.MessageCmd.ToString(), LoggerBllType.System);
@@ -69,11 +69,7 @@ namespace H6Game.Base
         protected override void Subscribe(Network network)
         {
             //回发AMessageCMD.AddActorCmd消息告诉远程订阅服务新增RemoteActor
-            network.RecvPacket.MessageCmd = (int)InnerMessageCMD.AddActorCmd;
-
-            var components = Game.Scene.GetComponents<ActorPoolComponent>();
-            foreach (var component in components)
-                (component as ActorPoolComponent).ResponseLocalActors(network);
+            Game.Scene.GetComponent<ActorPoolComponent>().ResponseLocalActors(network, (int)InnerMessageCMD.AddActorCmd);
         }
     }
 
@@ -149,12 +145,23 @@ namespace H6Game.Base
             return component;
         }
 
-        public BaseActorEntityComponent GetActor(int netChannelId, int actorId, ActorType actorType)
+        public BaseActorEntityComponent GetActor(int netChannelId, int actorId)
         {
             if (!NetIdActors.TryGetValue(netChannelId, out Dictionary<int, BaseActorEntityComponent> dicVal))
                 return null;
 
             if (!dicVal.TryGetValue(actorId, out BaseActorEntityComponent component))
+                return null;
+
+            return component;
+        }
+
+        public BaseActorEntityComponent GetActor(int componentId, ActorType actorType)
+        {
+            if (!TypeComponentIdActors.TryGetValue(actorType, out Dictionary<int, BaseActorEntityComponent> dicVal))
+                return null;
+
+            if (!dicVal.TryGetValue(componentId, out BaseActorEntityComponent component))
                 return null;
 
             return component;
@@ -208,12 +215,12 @@ namespace H6Game.Base
             component.Dispose();
         }
 
-        public void ResponseLocalActors(Network network)
+        public void ResponseLocalActors(Network network, int messageCmd)
         {
             var count = 0;
             foreach (var actor in LocalActors.Values)
             {
-                actor.SendMySelf(network);
+                actor.SendMySelf(network, messageCmd);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
@@ -267,7 +274,7 @@ namespace H6Game.Base
 
         private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorEntityComponent component)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.BroadcastActor((int)component.ActorType, (int)InnerMessageCMD.RemoveActorCmd, component.Id);
+            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.BroadcastActor((int)InnerMessageCMD.RemoveActorCmd, component.Id);
         }
     }
 }

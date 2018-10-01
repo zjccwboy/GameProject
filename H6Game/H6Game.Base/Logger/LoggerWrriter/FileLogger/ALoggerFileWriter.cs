@@ -89,7 +89,7 @@ namespace H6Game.Base
             }
 
             MessageBuilder.Clear();
-            MessageBuilder.Append($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ")}{Enum.GetName(typeof(LogLevel), this.LogLevel)}");
+            MessageBuilder.Append($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ")}{Enum.GetName(typeof(LogLevel), this.LogLevel)} {entity.FStackInfo}");
             if (!string.IsNullOrEmpty(entity.FMessage))
             {
                 MessageBuilder.Append($" {entity.FMessage}");

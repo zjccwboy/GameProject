@@ -21,72 +21,72 @@ namespace H6Game.Base
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Fatal, logMsg, bllType, null, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Fatal, stackInfo, message, bllType, null, args);
         }
 
         public static void Fatal(string message, Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Fatal, logMsg, bllType, exception, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Fatal, stackInfo, message, bllType, null, args);
         }
 
         public static void Info(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Info, logMsg, bllType, null, args);
+            var stackInfo = $"{GetFileInfo(file, line, member)}";
+            Write(LogLevel.Info, stackInfo, message, bllType, null, args);
         }
 
         public static void Notice(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Notice, logMsg, bllType, null, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Notice, stackInfo, message, bllType, null, args);
         }
 
-        public static void Warning(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
+        public static void Warn(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Warn, logMsg, bllType, null, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Warn, stackInfo, message, bllType, null, args);
         }
 
         public static void Error(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Error, logMsg, bllType, null, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Error, stackInfo, message, bllType, null, args);
         }
 
         public static void Error(string message, Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Error, logMsg, bllType, exception, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Error, stackInfo, message, bllType, null, args);
         }
 
         public static void Error(Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)}";
-            Write(LogLevel.Error, logMsg, bllType, exception, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Error, stackInfo, exception.StackTrace, bllType, null, args);
         }
 
         public static void Debug(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)
         {
-            var logMsg = $"{GetFileInfo(file, line, member)} {message}";
-            Write(LogLevel.Debug, logMsg, bllType, null, args);
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Debug, stackInfo, message, bllType, null, args);
         }
 
         private static string GetFileInfo(string file, int line, string member)
@@ -94,13 +94,13 @@ namespace H6Game.Base
             return $"{file}:{line} - {member}";
         }
 
-        private static async void Write(LogLevel FLogLevel, string message, LoggerBllType bllType, Exception exception, object args)
+        private static async void Write(LogLevel FLogLevel, string stackInfo, string message, LoggerBllType bllType, Exception exception, object args)
         {
             string argsStr = null;
             if (args != null)
                 argsStr = args.ToJson();
 
-           await  MyLogger.WriteMessage(FLogLevel, message, argsStr, bllType, exception);
+           await  MyLogger.WriteMessage(FLogLevel, stackInfo, message, argsStr, bllType, exception);
         }
     }
 }

@@ -44,14 +44,14 @@ namespace H6Game.Base
         public abstract ActorType ActorType { get;}
         public bool IsLocalActor { get; protected set; }
 
-        public void SendMySelf(Network network)
+        public void SendMySelf(Network network, int messageCmd)
         {
             var syncMessage = new ActorSyncMessage
             {
                 ObjectId = this.ActorEntity.Id,
                 ActorType = this.ActorEntity.ActorType,
             };
-            network.SendActor(syncMessage, network.RecvPacket.MessageCmd, this.Id);
+            network.SendActor(syncMessage, messageCmd, this.Id);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using H6Game.Base;
 using H6Game.Hotfix.Enums;
+using System.Threading;
 
 namespace H6Game.TestActorMessage
 {
@@ -20,6 +21,7 @@ namespace H6Game.TestActorMessage
             while (true)
             {
                 Game.Update();
+                Thread.Sleep(1);
             }
         }
     }
