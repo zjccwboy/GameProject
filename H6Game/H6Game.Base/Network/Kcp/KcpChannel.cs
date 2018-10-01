@@ -163,9 +163,9 @@ namespace H6Game.Base
             if (!this.Connected)
                 return;
 
+            this.TimeNow = TimeUitls.Now();
             while (this.SendParser.Buffer.DataSize > 0)
             {
-                this.TimeNow = TimeUitls.Now();
                 this.LastSendTime = this.TimeNow;
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
