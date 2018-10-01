@@ -12,7 +12,7 @@ namespace H6Game.Base
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
             if (!ReadConfigFile(fullName))
-                SaveConfigile(fullName);
+                SaveConfigFile(fullName);
         }
 
         private bool ReadConfigFile(string path)
@@ -35,7 +35,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private async void SaveConfigile(string fullName)
+        private async void SaveConfigFile(string fullName)
         {
             Config = new DbConfig
             {

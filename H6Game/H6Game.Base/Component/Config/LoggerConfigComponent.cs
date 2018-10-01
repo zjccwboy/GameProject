@@ -12,7 +12,7 @@ namespace H6Game.Base
         {
             var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\H6Game.LoggerConfig.json";
             if (!ReadConfigFile(fullName))
-                SaveConfigile(fullName);
+                SaveConfigFile(fullName);
         }
 
         private bool ReadConfigFile(string path)
@@ -46,7 +46,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private void SaveConfigile(string fullName)
+        private void SaveConfigFile(string fullName)
         {
             this.Config = new LoggerConfig
             {

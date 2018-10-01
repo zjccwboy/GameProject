@@ -13,7 +13,7 @@ namespace H6Game.Base
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
             if (!ReadConfigFile(fullName))
-                SaveConfigile(fullName);
+                SaveConfigFile(fullName);
 
             PacketConfig.IsCompress = Config.IsCompress;
             PacketConfig.IsEncrypt = Config.IsEncrypt;
@@ -39,7 +39,7 @@ namespace H6Game.Base
             return true;
         }
 
-        private async void SaveConfigile(string fullName)
+        private async void SaveConfigFile(string fullName)
         {
             Config = new OutNetConfig
             {
