@@ -85,33 +85,28 @@ namespace H6Game.Base
         private Dictionary<ActorType, Dictionary<string, BaseActorEntityComponent>> TypeObjectIdActors { get; } = new Dictionary<ActorType, Dictionary<string, BaseActorEntityComponent>>();
         private Dictionary<int, BaseActorEntityComponent> LocalActors { get; } = new Dictionary<int, BaseActorEntityComponent>();
         private Dictionary<int, BaseActorEntityComponent> RemoteActors { get; } = new Dictionary<int, BaseActorEntityComponent>();
-        public static Action<ANetChannel> OnServerDisconnected { get; set; }
-        public static Action<ANetChannel> OnClientConnected { get; set; }
+        public Action<ANetChannel> OnDisconnected { get; set; }
+        public Action<ANetChannel> OnConnected { get; set; }
         public override void Awake()
         {
-            var innerComponent = Game.Scene.AddComponent<DistributionsComponent>();
-
-            //断开消息只注册一次
-            if (OnServerDisconnected == null)
+            var innerComponent = Game.Scene.AddComponent<DistributionsComponent>();            
+            innerComponent.OnInnerClientDisconnected += c =>
             {
-                OnServerDisconnected = c =>
-                {
-                    if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
-                        return;
+                if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
+                    return;
 
-                    var components = dicVal.Values.ToList();
-                    foreach (var component in components)
-                        this.RemoveRemote(component);
-                };
-                innerComponent.OnInnerServerDisconnected += OnServerDisconnected;
-            }
+                this.OnDisconnected?.Invoke(c);
 
-            //连接消息只注册一次
-            if(OnClientConnected == null)
+                var components = dicVal.Values.ToList();
+                foreach (var component in components)
+                    this.RemoveRemote(component);
+            };
+
+            innerComponent.OnInnerClientConnected += c => 
             {
-                OnClientConnected = c => { c.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd); };
-                innerComponent.OnInnerClientConnected += OnClientConnected;
-            }
+                this.OnConnected?.Invoke(c);
+                c.Network.Send((int)InnerMessageCMD.SyncActorInfoCmd);
+            };
         }
 
         public void AddLocal(BaseActorEntityComponent component)

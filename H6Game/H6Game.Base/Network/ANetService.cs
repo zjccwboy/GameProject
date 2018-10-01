@@ -171,8 +171,8 @@ namespace H6Game.Base
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                OnServerDisconnected?.Invoke(channel);
                 Log.Info($"客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                OnServerDisconnected?.Invoke(channel);
             }
         }
 
@@ -184,8 +184,8 @@ namespace H6Game.Base
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                OnClientDisconnected?.Invoke(value);
                 Log.Info($"与服务端{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                OnClientDisconnected?.Invoke(value);
             }
         }
 
