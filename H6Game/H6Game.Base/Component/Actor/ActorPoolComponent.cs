@@ -5,6 +5,7 @@ using H6Game.Hotfix.Messages.Inner;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace H6Game.Base
 {
@@ -98,8 +99,9 @@ namespace H6Game.Base
                     if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
                         return;
 
-                    foreach (var kv in dicVal)
-                        this.RemoveRemote(kv.Value);
+                    var components = dicVal.Values.ToList();
+                    foreach (var component in components)
+                        this.RemoveRemote(component);
                 };
                 innerComponent.OnInnerServerDisconnected += OnServerDisconnected;
             }
