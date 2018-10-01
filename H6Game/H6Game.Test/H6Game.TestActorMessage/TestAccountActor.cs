@@ -34,7 +34,9 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TAccount account)
         {
-            Game.Scene.AddComponent<PlayerComponent>().AddLocal(account);
+            var actor = Game.Scene.AddComponent<PlayerComponent>();
+            actor.SetLocal(account);
+            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(actor);
         }
     }
 }

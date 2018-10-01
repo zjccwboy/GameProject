@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace H6Game.Base
 {
     public class BaseManager
     {
-        protected internal ConcurrentDictionary<Type, HashSet<BaseComponent>> TypeComponents { get; } = new ConcurrentDictionary<Type, HashSet<BaseComponent>>();
-        protected internal ConcurrentDictionary<int, BaseComponent> IdComponents { get; } = new ConcurrentDictionary<int, BaseComponent>();
-        protected internal ConcurrentDictionary<Type, BaseComponent> SingleComponents { get; } = new ConcurrentDictionary<Type, BaseComponent>();
+        protected internal Dictionary<Type, HashSet<BaseComponent>> TypeComponents { get; } = new Dictionary<Type, HashSet<BaseComponent>>();
+        protected internal Dictionary<int, BaseComponent> IdComponents { get; } = new Dictionary<int, BaseComponent>();
+        protected internal Dictionary<Type, BaseComponent> SingleComponents { get; } = new Dictionary<Type, BaseComponent>();
 
         /// <summary>
         /// 添加一个组件。
@@ -25,19 +24,25 @@ namespace H6Game.Base
             var isNew = false;
             if (isSingle)
             {
-                isNew = SingleComponents.TryAdd(type, component);
+                isNew = !SingleComponents.ContainsKey(type);
+                if (isNew)
+                {
+                    SingleComponents[type] = component;
+                }
             }
             else
             {
-                isNew = IdComponents.TryAdd(component.Id, component);
+                isNew = !IdComponents.ContainsKey(component.Id);
                 if (isNew)
                 {
+                    IdComponents[component.Id] = component;
                     if (!TypeComponents.TryGetValue(type, out HashSet<BaseComponent> components))
                     {
                         components = new HashSet<BaseComponent>();
                         TypeComponents[type] = components;
                     }
                     components.Add(component);
+
                 }
             }
 
@@ -257,14 +262,15 @@ namespace H6Game.Base
         /// <returns>删除成功返回true，失败返回false</returns>
         public virtual bool Remove(BaseComponent component)
         {
-            if (IdComponents.TryGetValue(component.Id, out BaseComponent value))
+            if (!IdComponents.TryGetValue(component.Id, out BaseComponent value))
+                return false;
+
+            if (TypeComponents.TryGetValue(component.GetType(), out HashSet<BaseComponent> hashVal))
             {
-                if (TypeComponents.TryGetValue(component.GetType(), out HashSet<BaseComponent> hashVal))
-                {
-                    if (hashVal.Remove(component))
-                        return Game.Event.Remove(component);
-                }
+                if (hashVal.Remove(component))
+                    return Game.Event.Remove(component);
             }
+
             return false;
         }
     }

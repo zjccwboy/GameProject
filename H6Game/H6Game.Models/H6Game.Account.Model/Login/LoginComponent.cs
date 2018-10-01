@@ -37,7 +37,12 @@ namespace H6Game.Account.Model
                         var account = await Game.Scene.GetComponent<AccountRpository>().GetByName(message.Account);
                         response = login.VerifyLogin(message, account);
                         if (response.LoginResult == LoginResutlCode.Success)
-                            Game.Scene.AddComponent<PlayerComponent>().AddLocal(account);
+                        {
+                            var actor = Game.Scene.AddComponent<PlayerComponent>();
+                            actor.SetLocal(account);
+                            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(actor);
+                        }
+
                     }
                     break;
                 case LoginType.AliPayLogin:

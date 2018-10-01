@@ -10,17 +10,7 @@ namespace H6Game.Base
 
         public override void Dispose()
         {
-            if (this.IsLocalActor)
-            {
-                Game.Actor.GetActorPool(this.ActorType).RemoveLocal(this.ActorEntity);
-            }
-            else
-            {
-                Game.Actor.GetActorPool(this.ActorType).RemoveRemote(this.ActorEntity);
-            }
-
             this.EntityInfo = null;
-            this.ActorEntity.ActorId = 0;
             this.ActorEntity.Id = null;
             this.ActorEntity.ActorInfo = null;
             this.ActorEntity.Network = null;
@@ -28,19 +18,17 @@ namespace H6Game.Base
             base.Dispose();
         }
 
-        public void AddLocal(TEntity entityInfo)
+        public void SetLocal(TEntity entityInfo)
         {
-            this.EntityInfo = entityInfo;
             this.ActorEntity.ActorId = this.Id;
+            this.EntityInfo = entityInfo;
             this.ActorEntity.Id = entityInfo.Id;
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.ActorInfo = entityInfo;
             this.IsLocalActor = true;
-
-            Game.Actor.GetActorPool(this.ActorType).AddLocal(this);
         }
 
-        public void AddRemote(string objectId, Network network)
+        public void SetRemote(string objectId, Network network)
         {
             this.ActorEntity.ActorId = network.RecvPacket.ActorId;
             this.ActorEntity.Id = objectId;
@@ -58,13 +46,12 @@ namespace H6Game.Base
 
         public void SendMySelf(Network network)
         {
-            network.RecvPacket.ActorId = this.Id;
             var syncMessage = new ActorSyncMessage
             {
                 ObjectId = this.ActorEntity.Id,
                 ActorType = this.ActorEntity.ActorType,
             };
-            network.Response(syncMessage);
+            network.SendActor(syncMessage, network.RecvPacket.MessageCmd, this.Id);
         }
     }
 }

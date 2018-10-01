@@ -27,7 +27,9 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TGame game)
         {
-            Game.Scene.AddComponent<GameComponent>().AddLocal(game);
+            var actor = Game.Scene.AddComponent<GameComponent>();
+            actor.SetLocal(game);
+            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(actor);
         }
     }
 }

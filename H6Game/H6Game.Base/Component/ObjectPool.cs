@@ -1,6 +1,5 @@
 ﻿using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Messages;
-using H6Game.Hotfix.Messages.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

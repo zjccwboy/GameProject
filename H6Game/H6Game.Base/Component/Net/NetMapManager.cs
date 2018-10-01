@@ -11,8 +11,8 @@ namespace H6Game.Base
     public class NetMapManager
     {
         private readonly HashSet<NetEndPointMessage> ConnectEntities = new HashSet<NetEndPointMessage>();
-        private readonly ConcurrentDictionary<int, NetEndPointMessage> ChannelIdMapMsg = new ConcurrentDictionary<int, NetEndPointMessage>();
-        private readonly ConcurrentDictionary<int, ANetChannel> HCodeMapChannel = new ConcurrentDictionary<int, ANetChannel>();
+        private readonly Dictionary<int, NetEndPointMessage> ChannelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
+        private readonly Dictionary<int, ANetChannel> HCodeMapChannel = new Dictionary<int, ANetChannel>();
 
         public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
 
@@ -34,11 +34,11 @@ namespace H6Game.Base
         {
             if (ConnectEntities.Remove(message))
             {
-                if (HCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
-                {
-                    HCodeMapChannel.TryRemove(message.GetHashCode(), out ANetChannel channelVal);
-                    ChannelIdMapMsg.TryRemove(channel.Id, out NetEndPointMessage messageVal);
-                }
+                if (!HCodeMapChannel.TryGetValue(message.GetHashCode(), out ANetChannel channel))
+                    return;
+
+                HCodeMapChannel.Remove(message.GetHashCode());
+                ChannelIdMapMsg.Remove(channel.Id);
             }
         }
 

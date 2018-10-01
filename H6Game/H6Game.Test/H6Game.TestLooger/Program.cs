@@ -12,9 +12,7 @@ namespace H6Game.TestLooger
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<LoggerConfigComponent>();
             Game.Scene.AddComponent<DistributionsComponent>();
-            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Player);
-            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Room);
-            Game.Scene.AddComponent<ActorPoolComponent, ActorType>(ActorType.Game);
+            Game.Scene.AddComponent<ActorPoolComponent>();
 
             TestWriteLog();
 
