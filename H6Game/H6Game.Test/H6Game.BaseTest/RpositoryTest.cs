@@ -105,8 +105,8 @@ namespace H6Game.BaseTest
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             Account.SetUpdater("UpdateManyAsAsync");
-            var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime) };
-            var result = await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", updates);
+            //var updates = new string[] { nameof(Account.FUpdater), nameof(Account.FUpdateTime) };
+            var result = await rpository.DBContext.UpdateManyAsAsync(Account, a => a.FAccountName == "SAM", nameof(Account.FUpdater), nameof(Account.FUpdateTime));
             Assert.True(result > 0);
         }
 
@@ -134,8 +134,8 @@ namespace H6Game.BaseTest
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount { FAccountName = "SAM" };
-            var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
-            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, fs);
+            //var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
+            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)));
             Assert.NotNull(q);
         }
 

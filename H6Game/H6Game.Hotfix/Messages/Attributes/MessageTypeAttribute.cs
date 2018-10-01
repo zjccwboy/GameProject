@@ -3,7 +3,7 @@ using System;
 
 namespace H6Game.Hotfix.Messages.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class MessageTypeAttribute : Attribute
     {
         public int TypeCode { get; }
