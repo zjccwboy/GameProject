@@ -8,7 +8,7 @@ namespace H6Game.Base
     [SingletCase]
     public sealed class OuterComponent : BaseComponent
     {
-        private OutNetConfig Config { get; set; }
+        private OutNetConfigEntity Config { get; set; }
 
         public Network Network { get; private set; }
 
@@ -20,7 +20,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = new OutNetConfigComponent().Config;
+            this.Config = new OutNetConfig().Config;
             this.Connecting(GetLoginServerEndPoint());
         }
 

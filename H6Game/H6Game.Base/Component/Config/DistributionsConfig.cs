@@ -5,11 +5,11 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public sealed class DistributionsConfigComponent
+    public sealed class DistributionsConfig
     {
-        public DistributionsConfig Config { get; private set; }
+        public DistributionsConfigEntity Config { get; private set; }
 
-        public DistributionsConfigComponent()
+        public DistributionsConfig()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
             if (!ReadConfigFile(fullName))
@@ -29,7 +29,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    Config = BsonSerializer.Deserialize<DistributionsConfig>(json);
+                    Config = BsonSerializer.Deserialize<DistributionsConfigEntity>(json);
                 }
             }
 
@@ -46,19 +46,19 @@ namespace H6Game.Base
 
         private async void SaveConfigFile(string fullName)
         {
-            Config = new DistributionsConfig
+            Config = new DistributionsConfigEntity
             {
                 IsCenterServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
 
-                InnerListenConfig = new InnerListenConfig
+                InnerListenConfig = new InnerListenConfigEntity
                 {
-                    CenterEndPoint = new EndPointConfig { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
-                    LocalEndPoint = new EndPointConfig { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
+                    CenterEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
+                    LocalEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
                 },
 
-                OutListenConfig = new EndPointConfig
+                OutListenConfig = new EndPointConfigEntity
                 {
                     Port = 50000,
                     IP = "127.0.0.1",

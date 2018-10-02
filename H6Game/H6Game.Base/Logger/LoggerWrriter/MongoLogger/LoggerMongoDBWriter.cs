@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     public class LoggerMongoDBWriter : ILoggerWriter
     {
-        private LoggerConfig Config { get; set; }
+        private LoggerConfigEntity Config { get; set; }
         public LoggerMongoDBWriter()
         {
             this.Config = LoggerFactory.Config;

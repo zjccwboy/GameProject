@@ -17,11 +17,11 @@ namespace H6Game.Base
 
         private void AddRpositoryComponents()
         {
-            var sysConfig = new DBConfigComponent().Config;
+            var sysConfig = new DBConfig().Config;
             var sysDbClient = new MongoClient(sysConfig.ConnectionString);
             var sysDb = sysDbClient.GetDatabase(sysConfig.DatabaseName);
             
-            var logConfig = new LoggerConfigComponent().Config.DBConfig;
+            var logConfig = new LoggerConfig().Config.DBConfig;
             var logDbClient = new MongoClient(logConfig.ConnectionString);
             var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);
 
@@ -32,7 +32,7 @@ namespace H6Game.Base
             }
         }
 
-        private void AddComponent(Type type, DbConfig sysConfig, DbConfig logConfig, MongoClient sysDbClient, MongoClient logDbClient, IMongoDatabase sysDb, IMongoDatabase logDb)
+        private void AddComponent(Type type, DBConfigEntity sysConfig, DBConfigEntity logConfig, MongoClient sysDbClient, MongoClient logDbClient, IMongoDatabase sysDb, IMongoDatabase logDb)
         {
             if (!typeof(IRpository).IsAssignableFrom(type))
                 return;

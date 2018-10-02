@@ -5,10 +5,10 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public class LoggerConfigComponent
+    public class LoggerConfig
     {
-        public LoggerConfig Config { get; private set; }
-        public LoggerConfigComponent()
+        public LoggerConfigEntity Config { get; private set; }
+        public LoggerConfig()
         {
             var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\H6Game.LoggerConfig.json";
             if (!ReadConfigFile(fullName))
@@ -25,7 +25,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    this.Config = BsonSerializer.Deserialize<LoggerConfig>(json);
+                    this.Config = BsonSerializer.Deserialize<LoggerConfigEntity>(json);
                 }
             }
 
@@ -48,10 +48,10 @@ namespace H6Game.Base
 
         private void SaveConfigFile(string fullName)
         {
-            this.Config = new LoggerConfig
+            this.Config = new LoggerConfigEntity
             {
                 Path = Path.GetDirectoryName(this.GetType().Assembly.Location) + "\\Logs",
-                DBConfig = new DbConfig
+                DBConfig = new DBConfigEntity
                 {
                     ConnectionString = "mongodb://localhost:27017",
                     DatabaseName = "H6GameLogger",

@@ -3,7 +3,7 @@ using H6Game.Hotfix.Messages.Inner;
 
 namespace H6Game.Base
 {
-    public class DistributionsConfig
+    public class DistributionsConfigEntity
     {
         public bool IsCenterServer { get; set; }
 
@@ -11,9 +11,9 @@ namespace H6Game.Base
 
         public bool IsEncrypt { get; set; }
 
-        public InnerListenConfig InnerListenConfig { get; set; }
+        public InnerListenConfigEntity InnerListenConfig { get; set; }
 
-        public EndPointConfig OutListenConfig { get; set; }
+        public EndPointConfigEntity OutListenConfig { get; set; }
 
         public NetEndPointMessage GetCenterMessage()
         {
@@ -31,14 +31,14 @@ namespace H6Game.Base
         }
     }
 
-    public class InnerListenConfig
+    public class InnerListenConfigEntity
     {
-        public EndPointConfig CenterEndPoint { get; set; }
+        public EndPointConfigEntity CenterEndPoint { get; set; }
 
-        public EndPointConfig LocalEndPoint { get; set; }
+        public EndPointConfigEntity LocalEndPoint { get; set; }
     }
 
-    public class EndPointConfig
+    public class EndPointConfigEntity
     {
         public int Port { get; set; }
 

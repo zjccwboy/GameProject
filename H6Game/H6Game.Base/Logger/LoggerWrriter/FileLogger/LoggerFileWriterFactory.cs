@@ -6,7 +6,7 @@ namespace H6Game.Base
     public class LoggerFileWriterFactory
     {
         private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
-        private LoggerConfig Config { get; }
+        private LoggerConfigEntity Config { get; }
 
         public LoggerFileWriterFactory()
         {

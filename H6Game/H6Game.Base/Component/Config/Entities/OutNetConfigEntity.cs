@@ -1,7 +1,7 @@
 ﻿
 namespace H6Game.Base
 {
-    public class OutNetConfig
+    public class OutNetConfigEntity
     {
         public string OutNetHost { get; set; }
 

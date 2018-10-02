@@ -1,7 +1,7 @@
 ﻿
 namespace H6Game.Base
 {
-    public class LoggerConfig
+    public class LoggerConfigEntity
     {
         /// <summary>
         /// 日志文件存放目录路径
@@ -11,7 +11,7 @@ namespace H6Game.Base
         /// <summary>
         /// 日志MongoDB配置项
         /// </summary>
-        public DbConfig DBConfig { get; set; }
+        public DBConfigEntity DBConfig { get; set; }
 
         /// <summary>
         /// 创建新文件的时间隔，秒为单位

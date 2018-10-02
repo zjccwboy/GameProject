@@ -2,7 +2,7 @@
 
 namespace H6Game.Base
 {
-    public class DbConfig
+    public class DBConfigEntity
     {
         public string ConnectionString { get; set; }
 

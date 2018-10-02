@@ -5,14 +5,18 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public class DBConfigComponent
+    public class OutNetConfig
     {
-        public DbConfig Config { get; private set; }
-        public DBConfigComponent()
+        public OutNetConfigEntity Config { get; private set; }
+
+        public OutNetConfig()
         {
-            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
+            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigFile(fullName);
+
+            PacketConfig.IsCompress = Config.IsCompress;
+            PacketConfig.IsEncrypt = Config.IsEncrypt;
         }
 
         private bool ReadConfigFile(string path)
@@ -25,11 +29,11 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    Config = BsonSerializer.Deserialize<DbConfig>(json);
+                    Config = BsonSerializer.Deserialize<OutNetConfigEntity>(json);
                 }
             }
 
-            if (Config == null || string.IsNullOrWhiteSpace(Config.ConnectionString) || string.IsNullOrWhiteSpace(Config.DatabaseName)) 
+            if (Config == null || string.IsNullOrWhiteSpace(Config.OutNetHost))
                 return false;
 
             return true;
@@ -37,10 +41,12 @@ namespace H6Game.Base
 
         private async void SaveConfigFile(string fullName)
         {
-            Config = new DbConfig
+            Config = new OutNetConfigEntity
             {
-                ConnectionString = "mongodb://localhost:27017",
-                DatabaseName = "H6Game",
+                OutNetHost = "payapi.test.com",
+                IsCompress = false,
+                IsEncrypt = false,
+                Port = 50000,
             };
 
             using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))
@@ -51,10 +57,9 @@ namespace H6Game.Base
                     await sr.WriteAsync(json);
                     await sr.FlushAsync();
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"数据库连接信息未配置，系统会自动生成模板：{fullName}");
+                    Console.WriteLine($"外网连接信息未配置，系统会自动生成模板：{fullName}");
                 }
             }
         }
-
     }
 }

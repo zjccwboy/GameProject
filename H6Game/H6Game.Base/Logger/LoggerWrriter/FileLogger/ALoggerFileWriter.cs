@@ -8,7 +8,7 @@ namespace H6Game.Base
 {
     public abstract class ALoggerFileWriter : ILoggerFileWriter
     {
-        private LoggerConfig Config { get; }
+        private LoggerConfigEntity Config { get; }
         private StreamWriter logOutput { get; set; }
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
         private string Path { get; }

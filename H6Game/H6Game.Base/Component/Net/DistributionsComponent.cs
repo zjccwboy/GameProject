@@ -42,8 +42,8 @@ namespace H6Game.Base
     [SingletCase]
     public sealed class DistributionsComponent : BaseComponent
     {
-        private DistributionsConfig Config { get; set; }
-        private EndPointConfig DefaultCenterEndPoint { get; set; }
+        private DistributionsConfigEntity Config { get; set; }
+        private EndPointConfigEntity DefaultCenterEndPoint { get; set; }
 
         private readonly ConcurrentDictionary<int, Session> InConnectedSessions = new ConcurrentDictionary<int, Session>();
         private readonly ConcurrentDictionary<int, Session> DisconnectedSessions = new ConcurrentDictionary<int, Session>();
@@ -102,7 +102,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = new DistributionsConfigComponent().Config;
+            this.Config = new DistributionsConfig().Config;
         }
 
         public override void Start()

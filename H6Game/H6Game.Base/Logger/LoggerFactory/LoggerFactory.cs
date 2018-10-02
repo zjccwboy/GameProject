@@ -3,11 +3,11 @@ namespace H6Game.Base
 {
     public static class LoggerFactory
     {
-        public static LoggerConfig Config { get; }
+        public static LoggerConfigEntity Config { get; }
 
         static LoggerFactory()
         {
-            Config = new LoggerConfigComponent().Config;
+            Config = new LoggerConfig().Config;
         }
 
         public static IMyLog Create()
