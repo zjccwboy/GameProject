@@ -24,9 +24,9 @@ namespace H6Game.Base
         private uint LastCheckHeadbeatTime = TimeUitls.Now();
 
         private const uint KcpHeartbeatTime = 20 * 1000;
-        private const uint TcpHeartbeatTime = 6 * 1000;
+        private const uint TcpHeartbeatTime = 4 * 1000;
         /// <summary>
-        /// 心跳超时时长，服务端6秒,客户端20秒
+        /// 心跳超时时长，服务端4秒,客户端20秒
         /// </summary>
         public uint HeartbeatTime
         {
@@ -40,7 +40,7 @@ namespace H6Game.Base
                 {
                     return TcpHeartbeatTime;
                 }
-                return 99999 * 1000;
+                throw new NetworkException("协议类型不存在。");
             }
         }
 
@@ -131,13 +131,12 @@ namespace H6Game.Base
                     this.ClientChannel.LastSendTime = TimeUitls.Now();
                     this.ClientChannel.SendParser.Packet.IsHeartbeat = true;
                     this.ClientChannel.SendParser.Packet.WriteTo(null);
-                    //this.Log(LogLevel.Info, "CheckHeadbeat", $"发送心跳包到服务端:{this.ClientChannel.RemoteEndPoint}.");
                 }
             }
             else if (this.ServiceType == NetServiceType.Server)
             {
                 var lastCheckSpan = now - this.LastCheckHeadbeatTime;
-                if (lastCheckSpan < HeartbeatTime)
+                if (lastCheckSpan < HeartbeatTime / 2)
                     return;
                 LastCheckHeadbeatTime = now;
 
@@ -145,7 +144,7 @@ namespace H6Game.Base
                 foreach (var channel in channels)
                 {
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime + 3000) //允许3秒网络延迟
+                    if (timeSpan > HeartbeatTime)
                     {
                         Log.Info($"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
                         channel.DisConnect();
