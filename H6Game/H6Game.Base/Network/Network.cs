@@ -55,7 +55,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 创建一个连接的Network。
+        /// 创建一个Session。
         /// </summary>
         /// <param name="endPoint">服务端监听IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
@@ -67,7 +67,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 创建一个连接的Network。
+        /// 创建一个监听连接的Network。
         /// </summary>
         /// <param name="endPoint">服务端监听IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
@@ -81,7 +81,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 创建一个连接的Network。
+        /// 创建一个监听连接的Network。
         /// </summary>
         /// <param name="endPoint">服务端监听IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
