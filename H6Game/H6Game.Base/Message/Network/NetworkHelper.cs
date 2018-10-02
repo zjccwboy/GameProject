@@ -674,7 +674,7 @@ public static class NetworkHelper
 
     #region  CallMessage
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
@@ -690,7 +690,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
@@ -704,7 +704,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -718,7 +718,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -732,7 +732,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -746,7 +746,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -760,7 +760,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -774,7 +774,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -788,7 +788,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -802,7 +802,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -816,7 +816,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -830,7 +830,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -844,7 +844,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -858,7 +858,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -872,7 +872,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -886,7 +886,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -900,7 +900,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -917,7 +917,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -932,7 +932,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -948,7 +948,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -964,7 +964,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -980,7 +980,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -996,7 +996,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1012,7 +1012,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1028,7 +1028,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1044,7 +1044,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1060,7 +1060,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1076,7 +1076,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1092,7 +1092,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1108,7 +1108,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1124,7 +1124,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1140,7 +1140,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Response">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -1159,13 +1159,14 @@ public static class NetworkHelper
 
     #region CallMessageAsync
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Rquest"></typeparam>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Rquest">返回消息类型</typeparam>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd)
         where Rquest : class
     {
@@ -1181,12 +1182,12 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1200,12 +1201,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, string data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1219,12 +1221,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1238,12 +1241,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, uint data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1257,12 +1261,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, long data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1276,12 +1281,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ulong data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1295,12 +1301,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, float data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1314,12 +1321,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, double data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1333,12 +1341,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, decimal data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1352,12 +1361,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, short data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1371,12 +1381,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ushort data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1390,12 +1401,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, byte data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1409,12 +1421,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, sbyte data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1428,12 +1441,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, char data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1447,12 +1461,13 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条RPC消息
+    /// 订阅一条RPC消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回消息类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, bool data, int messageCmd)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -1468,7 +1483,7 @@ public static class NetworkHelper
 
     #region CallActor
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <param name="network">网络类</param>
@@ -1486,7 +1501,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
@@ -1502,7 +1517,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1518,7 +1533,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1534,7 +1549,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1550,7 +1565,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1566,7 +1581,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1582,7 +1597,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1598,7 +1613,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1614,7 +1629,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1630,7 +1645,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1646,7 +1661,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1662,7 +1677,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1678,7 +1693,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1694,7 +1709,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1710,7 +1725,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1726,7 +1741,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -1746,7 +1761,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1763,7 +1778,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1782,7 +1797,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1801,7 +1816,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1820,7 +1835,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1839,7 +1854,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1858,7 +1873,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1877,7 +1892,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1896,7 +1911,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1915,7 +1930,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1934,7 +1949,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1953,7 +1968,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1972,7 +1987,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -1991,7 +2006,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -2010,7 +2025,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
@@ -2031,7 +2046,7 @@ public static class NetworkHelper
 
     #region CallActorAsync
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Rquest"></typeparam>
     /// <typeparam name="Response"></typeparam>
@@ -2060,7 +2075,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2087,7 +2102,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2114,7 +2129,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2141,7 +2156,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2168,7 +2183,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2195,7 +2210,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2222,7 +2237,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2249,7 +2264,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2276,7 +2291,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2303,7 +2318,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2330,7 +2345,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2357,7 +2372,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2384,7 +2399,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2411,7 +2426,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="data"></param>
@@ -2438,7 +2453,7 @@ public static class NetworkHelper
     }
 
     /// <summary>
-    /// 发送并订阅一条Actor Rpc消息
+    /// 订阅一条Actor Rpc消息
     /// </summary>
     /// <typeparam name="Response"></typeparam>
     /// <param name="messageCmd"></param>
