@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Hotfix.Entities.Enums
+namespace H6Game.Hotfix.Enums
 {
     public enum AgentLevel
     {

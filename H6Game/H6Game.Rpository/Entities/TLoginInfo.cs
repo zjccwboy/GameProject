@@ -1,8 +1,8 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using H6Game.Base;
-using H6Game.Hotfix.Entities.Enums;
+using H6Game.Hotfix.Enums;
 
-namespace H6Game.Hotfix.Entities
+namespace H6Game.Rpository
 {
     public class TLoginInfo : BaseEntity
     {

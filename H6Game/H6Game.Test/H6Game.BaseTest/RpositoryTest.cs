@@ -3,7 +3,6 @@ using Xunit;
 using H6Game.Base;
 using H6Game.Rpository;
 using MongoDB.Driver;
-using H6Game.Hotfix.Entities;
 
 namespace H6Game.BaseTest
 {
