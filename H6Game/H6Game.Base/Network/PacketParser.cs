@@ -72,11 +72,10 @@ namespace H6Game.Base
         public Packet Packet { get; }
         public int BlockSize { get;} = 8192;
 
-        private int readLength = 0;
-        private int packetSize = 0;
-        private int state = ParseState.Size;
-        private bool isOk;
-        private bool finish;
+        private int ReadLength = 0;
+        private int PacketSize = 0;
+        private int State = ParseState.Size;
+        private bool IsOk;
 
         /// <summary>
         /// 包头协议中表示数据包大小的第一个协议字节数，4个字节
@@ -113,20 +112,18 @@ namespace H6Game.Base
         private void Parse()
         {
             var tryCount = 0;
-            isOk = false;
             while (true)
             {
                 if (tryCount > 6)
                     throw new PacketParserException("解包错误，数据包非法.");
 
                 tryCount++;
-                switch (state)
+                switch (State)
                 {
                     case ParseState.Size:
                         {
-                            if (readLength == 0 && Buffer.DataSize < HeadSize)
+                            if (ReadLength == 0 && Buffer.DataSize < HeadSize)
                             {
-                                finish = true;
                                 return;
                             }
 
@@ -143,14 +140,14 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, LengthFlagSize - count);
                                 Buffer.UpdateRead(LengthFlagSize - count);
                             }
-                            readLength += LengthFlagSize;
-                            packetSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, 0));
+                            ReadLength += LengthFlagSize;
+                            PacketSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, 0));
 
                             System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
                             Buffer.UpdateRead(BitFlagSize);
-                            readLength += BitFlagSize;
+                            ReadLength += BitFlagSize;
                             SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
-                            state = ParseState.Msg;
+                            State = ParseState.Msg;
                             break;
                         }                        
                     case ParseState.Msg:
@@ -169,9 +166,9 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MessageIdFlagSize - count);
                                 Buffer.UpdateRead(MessageIdFlagSize - count);
                             }
-                            readLength += MessageIdFlagSize;
+                            ReadLength += MessageIdFlagSize;
                             Packet.MessageCmd = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
-                            state = ParseState.MsgType;
+                            State = ParseState.MsgType;
                             break;
                         }
                     case ParseState.MsgType:
@@ -190,9 +187,9 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeSize - count);
                                 Buffer.UpdateRead(MsgTypeSize - count);
                             }
-                            readLength += MsgTypeSize;
+                            ReadLength += MsgTypeSize;
                             Packet.MsgTypeCode = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
-                            state = ParseState.Rpc;
+                            State = ParseState.Rpc;
                             break;
                         }
                     case ParseState.Rpc:
@@ -211,9 +208,9 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
                                 Buffer.UpdateRead(RpcFlagSize - count);
                             }
-                            readLength += RpcFlagSize;
+                            ReadLength += RpcFlagSize;
                             Packet.RpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
-                            state = ParseState.Actor;
+                            State = ParseState.Actor;
                             break;
                         }
                     case ParseState.Actor:
@@ -232,35 +229,35 @@ namespace H6Game.Base
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, ActorIdFlagSize - count);
                                 Buffer.UpdateRead(ActorIdFlagSize - count);
                             }
-                            readLength += ActorIdFlagSize;
+                            ReadLength += ActorIdFlagSize;
                             Packet.ActorId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
-                            state = ParseState.Body;
+                            State = ParseState.Body;
                             break;
                         }
                     case ParseState.Body:
                         {
-                            var needSize = packetSize - readLength;
+                            var needSize = PacketSize - ReadLength;
                             if (Buffer.DataSize >= needSize)
                             {
                                 if (Buffer.FirstDataSize >= needSize)
                                 {
                                     Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, needSize);
                                     Buffer.UpdateRead(needSize);
-                                    readLength += needSize;
+                                    ReadLength += needSize;
                                 }
                                 else
                                 {
-                                    while (readLength < packetSize)
+                                    while (ReadLength < PacketSize)
                                     {
                                         var count = Buffer.FirstDataSize;
                                         Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
                                         Buffer.UpdateRead(count);
-                                        readLength += count;
+                                        ReadLength += count;
                                         needSize -= count;
                                         count = needSize > Buffer.FirstDataSize ? Buffer.FirstDataSize : needSize;
                                         Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
                                         Buffer.UpdateRead(count);
-                                        readLength += count;
+                                        ReadLength += count;
                                     }
                                 }
                             }
@@ -268,25 +265,22 @@ namespace H6Game.Base
                         }                        
                 }
 
-                if (Buffer.DataSize == 0)
-                    finish = true;
-
-                if (Buffer.DataSize < packetSize - readLength)
-                    finish = true;
-
-                if (readLength == packetSize)
-                    isOk = true;
-
-                if (isOk)
+                if (ReadLength == PacketSize)
                 {
                     Packet.BodyStream.Seek(0, SeekOrigin.Begin);
-                    Packet.BodyStream.SetLength(packetSize - HeadSize);
-                    state = ParseState.Size;
-                    break;
+                    Packet.BodyStream.SetLength(PacketSize - HeadSize);
+                    State = ParseState.Size;
+                    IsOk = true;
+                    return;
                 }
-
-                if (finish)
-                    break;
+                else if (Buffer.DataSize == 0)
+                {
+                    return;
+                }
+                else if (Buffer.DataSize < PacketSize - ReadLength)
+                {
+                    return;
+                }
             }
         }
 
@@ -307,9 +301,7 @@ namespace H6Game.Base
         /// </summary>
         internal void Clear()
         {
-            state = ParseState.Size;
-            isOk = false;
-            finish = false;
+            State = ParseState.Size;
             Flush();
             Buffer.Flush();
         }
@@ -320,8 +312,9 @@ namespace H6Game.Base
         private void Flush()
         {
             Packet.Flush();
-            readLength = 0;
-            packetSize = 0;
+            ReadLength = 0;
+            PacketSize = 0;
+            IsOk = false;
         }
 
         /// <summary>
@@ -330,19 +323,11 @@ namespace H6Game.Base
         /// <returns></returns>
         internal bool TryRead()
         {
-            if (isOk)
+            if (IsOk)
                 Flush();
 
-            finish = false;
-            while (!finish)
-            {
-                Parse();
-                if (isOk)
-                {
-                    return true;
-                }
-            }
-            return false;
+            Parse();
+            return IsOk;
         }
 
         /// <summary>

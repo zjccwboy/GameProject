@@ -47,11 +47,16 @@ namespace H6Game.TestKcpClientBenckmark
         private static async Task Call()
         {
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            await network.CallMessageAsync<int>(1024, 1024);
+            var result = await network.CallMessageAsync<int>(1024, 1024);
+            if (!result.Result)
+            {
+                Log.Error($"RPC请求失败。", LoggerBllType.System);
+            }
 
-
-            if (Thread.CurrentThread.ManagedThreadId != 1)
-                Console.WriteLine("Thread.CurrentThread.ManagedThreadId");
+            if (result.Content != 1024)
+            {
+                Log.Error($"解包出错。", LoggerBllType.System);
+            }
 
             Count++;
             if (Swatch.ElapsedMilliseconds >= 1000)
