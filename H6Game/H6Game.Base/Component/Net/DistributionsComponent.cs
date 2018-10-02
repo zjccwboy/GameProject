@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Collections.Concurrent;
-using H6Game.Hotfix.Messages.Attributes;
-using H6Game.Hotfix.Messages.Inner;
-using H6Game.Hotfix.Messages.Enums;
 
 namespace H6Game.Base
 {
@@ -38,8 +35,8 @@ namespace H6Game.Base
     /// <summary>
     /// 内网分布式连接核心组件
     /// </summary>
-    [Event(EventType.Awake | EventType.Start | EventType.Update)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
+    [SingleCase]
     public sealed class DistributionsComponent : BaseComponent
     {
         private DistributionsConfigEntity Config { get; set; }

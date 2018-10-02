@@ -1,5 +1,4 @@
-﻿using H6Game.Hotfix.Entities;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System.Linq;
 
 namespace H6Game.Base

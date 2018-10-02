@@ -1,7 +1,4 @@
-﻿using H6Game.Hotfix.Entities;
-using H6Game.Hotfix.Enums;
-using H6Game.Hotfix.Messages.Inner;
-
+﻿
 namespace H6Game.Base
 {
     public abstract class BaseActorComponent<TEntity> : BaseActorEntityComponent where TEntity : BaseEntity

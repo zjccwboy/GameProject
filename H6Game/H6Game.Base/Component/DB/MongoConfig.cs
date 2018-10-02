@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake)]
+    [SingleCase]
     public class MongoConfig : BaseComponent
     {
         public override void Awake()

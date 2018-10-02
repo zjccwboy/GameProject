@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using H6Game.Base;
-using H6Game.Hotfix.Enums;
 
 namespace TestDistributed
 {

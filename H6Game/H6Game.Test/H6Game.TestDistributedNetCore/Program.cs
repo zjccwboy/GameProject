@@ -1,5 +1,4 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Enums;
 using System.Threading;
 
 namespace H6Game.TestDistributedNetCore

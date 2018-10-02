@@ -1,8 +1,7 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Enums;
+using H6Game.Hotfix.Entities.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace H6Game.Account.Model
 {

@@ -1,8 +1,4 @@
-﻿using H6Game.Hotfix.Enums;
-using H6Game.Hotfix.Messages.Attributes;
-using H6Game.Hotfix.Messages.Enums;
-using H6Game.Hotfix.Messages.Inner;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,8 +72,8 @@ namespace H6Game.Base
     }
 
 
-    [Event(EventType.Awake)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake)]
+    [SingleCase]
     public class ActorPoolComponent : BaseComponent
     {
         private Dictionary<int, Dictionary<int, BaseActorEntityComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorEntityComponent>>();

@@ -1,13 +1,12 @@
-﻿using H6Game.Hotfix.Entities;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake)]
+    [SingleCase]
     public class EntityComponent : BaseComponent
     {
         private Dictionary<Type, Dictionary<string, string>> EntitiesPropertiesElementName { get; } = new Dictionary<Type, Dictionary<string, string>>();

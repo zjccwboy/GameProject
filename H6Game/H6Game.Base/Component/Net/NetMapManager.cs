@@ -1,6 +1,4 @@
-﻿using H6Game.Hotfix.Messages.Inner;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace H6Game.Base
 {

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
-using H6Game.Hotfix.Messages;
-using H6Game.Hotfix.Messages.Attributes;
-using H6Game.Hotfix.Messages.Enums;
 
 namespace H6Game.Base
 {
@@ -35,7 +32,7 @@ namespace H6Game.Base
                 if (attribute == null)
                     throw new Exception($"类型:{type}必须有MessageTypeAttribute特性器指定消息类型.");
 
-                if (attribute.TypeCode == (int)MessageType.Ignore)
+                if (attribute.TypeCode == (int)BasicMessageType.Ignore)
                     continue;
 
                 MsgCodes[type] = attribute.TypeCode;
@@ -48,25 +45,25 @@ namespace H6Game.Base
             }
         }
 
-        private static IDictionary<Type, MessageType> GetValueTypeCode()
+        private static IDictionary<Type, BasicMessageType> GetValueTypeCode()
         {
-            var result = new Dictionary<Type, MessageType>();
-            result.Add(typeof(string), MessageType.String);
-            result.Add(typeof(int), MessageType.Int);
-            result.Add(typeof(uint), MessageType.Uint);
-            result.Add(typeof(long), MessageType.Long);
-            result.Add(typeof(ulong), MessageType.ULong);
-            result.Add(typeof(short), MessageType.Short);
-            result.Add(typeof(ushort), MessageType.UShort);
-            result.Add(typeof(byte), MessageType.Byte);
-            result.Add(typeof(sbyte), MessageType.Sbyte);
-            result.Add(typeof(float), MessageType.Float);
-            result.Add(typeof(double), MessageType.Double);
-            result.Add(typeof(decimal), MessageType.Decimal);
-            result.Add(typeof(char), MessageType.Char);
-            result.Add(typeof(bool), MessageType.BooLean);
-            result.Add(typeof(Guid), MessageType.Guid);
-            result.Add(typeof(DateTime), MessageType.DateTime);
+            var result = new Dictionary<Type, BasicMessageType>();
+            result.Add(typeof(string), BasicMessageType.String);
+            result.Add(typeof(int), BasicMessageType.Int);
+            result.Add(typeof(uint), BasicMessageType.Uint);
+            result.Add(typeof(long), BasicMessageType.Long);
+            result.Add(typeof(ulong), BasicMessageType.ULong);
+            result.Add(typeof(short), BasicMessageType.Short);
+            result.Add(typeof(ushort), BasicMessageType.UShort);
+            result.Add(typeof(byte), BasicMessageType.Byte);
+            result.Add(typeof(sbyte), BasicMessageType.Sbyte);
+            result.Add(typeof(float), BasicMessageType.Float);
+            result.Add(typeof(double), BasicMessageType.Double);
+            result.Add(typeof(decimal), BasicMessageType.Decimal);
+            result.Add(typeof(char), BasicMessageType.Char);
+            result.Add(typeof(bool), BasicMessageType.BooLean);
+            result.Add(typeof(Guid), BasicMessageType.Guid);
+            result.Add(typeof(DateTime), BasicMessageType.DateTime);
             return result;
         }
 

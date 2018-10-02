@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 
 namespace H6Game.Base
 {
-    [Event(EventType.Awake | EventType.Update)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake | EventType.Update)]
+    [SingleCase]
     public sealed class OuterComponent : BaseComponent
     {
         private OutNetConfigEntity Config { get; set; }

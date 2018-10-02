@@ -2,7 +2,7 @@
 
 namespace H6Game.Base
 {
-    [SingletCase]
+    [SingleCase]
     public class LoggerRpository : ARpository<TLogger>
     {
         public override DBType DBType => DBType.LoggerDb;

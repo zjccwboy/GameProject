@@ -6,8 +6,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
-using H6Game.Hotfix.Entities;
-using H6Game.Hotfix.Enums;
 
 namespace TestMogodb
 {

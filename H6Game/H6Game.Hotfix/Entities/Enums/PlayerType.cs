@@ -1,6 +1,6 @@
 ﻿
 
-namespace H6Game.Hotfix.Enums
+namespace H6Game.Hotfix.Entities.Enums
 {
     public enum PlayerType
     {

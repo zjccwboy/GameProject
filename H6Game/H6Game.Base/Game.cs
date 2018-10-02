@@ -4,7 +4,7 @@ namespace H6Game.Base
 {
     public class Game
     {
-        public static SceneManager Scene { get; }
+        public static Scene Scene { get; }
         public static EventManager Event { get;}
 
         static Game()
@@ -13,7 +13,7 @@ namespace H6Game.Base
             ComponentPool.Load();
             SubscriberMsgPool.Load();
 
-            Scene = new SceneManager();
+            Scene = new Scene();
             Event = new EventManager();
         }
 

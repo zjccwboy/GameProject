@@ -1,5 +1,4 @@
-﻿using H6Game.Hotfix.Entities;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base
 {

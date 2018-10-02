@@ -1,6 +1,4 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Messages;
-using H6Game.Hotfix.Messages.Attributes;
 using H6Game.Hotfix.Messages.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -8,7 +6,7 @@ using System.Collections.Generic;
 
 namespace TestDistributed
 {
-    [SubscriberCMD(InnerMessageCMD.TestCMD1)]
+    [SubscriberCMD(TestCMD.TestCmd)]
     public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
         protected override void Subscribe(Network network, TestMessage message)
@@ -17,8 +15,13 @@ namespace TestDistributed
         }
     }
 
+    public enum TestCMD
+    {
+        TestCmd = 1099999,
+    }
+
     [ProtoBuf.ProtoContract]
-    [MessageType( MessageType.TestDistributedTestMessage)]
+    [MessageType(OutMessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [BsonElement]

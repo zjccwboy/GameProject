@@ -76,6 +76,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestDistributed", "H6Game.Test\H6Game.TestDistributed\H6Game.TestDistributed.csproj", "{733B3765-3EE3-4416-B738-9C37C68121B8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
 		{7D5262A8-CC7E-458B-BE9E-8C9F14868463} = {7D5262A8-CC7E-458B-BE9E-8C9F14868463}
 	EndProjectSection
 EndProject
@@ -89,15 +90,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpClientBenckmark", "H6Game.Test\H6Game.TestKcpClientBenckmark\H6Game.TestKcpClientBenckmark.csproj", "{1CF0C878-2E0D-45D4-9B9F-1DF8B542B5A5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestKcpServerBenckmark", "H6Game.Test\H6Game.TestKcpServerBenckmark\H6Game.TestKcpServerBenckmark.csproj", "{F8C2593B-CFCB-4E99-8B05-1615A5449A4F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestActorMessage", "H6Game.Test\H6Game.TestActorMessage\H6Game.TestActorMessage.csproj", "{83AC1E22-95C6-4890-AC6E-754ED60340A5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
 		{7D5262A8-CC7E-458B-BE9E-8C9F14868463} = {7D5262A8-CC7E-458B-BE9E-8C9F14868463}
 	EndProjectSection
 EndProject
@@ -114,15 +119,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestLooger", "H6Game
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestKcpServerBenckmarkCore", "H6Game.Test\H6Game.TestKcpServerBenckmarkCore\H6Game.TestKcpServerBenckmarkCore.csproj", "{B21094BF-66CF-421F-A691-1F12D2B81161}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.TestKcpClientBenckmarkCore", "H6Game.Test\H6Game.TestKcpClientBenckmarkCore\H6Game.TestKcpClientBenckmarkCore.csproj", "{8AB0C28C-255B-40B8-8EBF-69A1F2681A9D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{25A0602D-0BE2-4850-B5D8-897BAF371B50} = {25A0602D-0BE2-4850-B5D8-897BAF371B50}
+		{A0993B42-FEB8-4325-B009-6928DB8407CA} = {A0993B42-FEB8-4325-B009-6928DB8407CA}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.Hotfix.Client", "H6Game.Hotfix.Client\H6Game.Hotfix.Client.csproj", "{D780C1F7-B016-4B84-94D3-F092A361F215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Base.Client", "H6Game.Base.Client\H6Game.Base.Client.csproj", "{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.Base.Client", "H6Game.Base.Client\H6Game.Base.Client.csproj", "{9EB28CB4-DC5E-45CD-852D-340DD178B4FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

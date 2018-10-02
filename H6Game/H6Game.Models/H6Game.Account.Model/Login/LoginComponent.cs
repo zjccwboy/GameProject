@@ -1,10 +1,8 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Enums;
-using H6Game.Hotfix.Messages.Attributes;
+using H6Game.Hotfix.Entities.Enums;
 using H6Game.Hotfix.Messages.Enums;
 using H6Game.Hotfix.Messages.OutNet;
 using H6Game.Rpository;
-using System.Collections.Generic;
 
 namespace H6Game.Account.Model
 {
@@ -17,8 +15,8 @@ namespace H6Game.Account.Model
         }
     }
 
-    [Event(EventType.Awake)]
-    [SingletCase]
+    [ComponentEvent(EventType.Awake)]
+    [SingleCase]
     public class LoginComponent : BaseComponent
     {
         public override void Awake()

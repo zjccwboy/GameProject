@@ -1,11 +1,10 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace H6Game.Rpository
 {
-    [SingletCase]
+    [SingleCase]
     public class AccountRpository : ARpository<TAccount>
     {
         public async Task<TAccount> GetById(string objectId)
