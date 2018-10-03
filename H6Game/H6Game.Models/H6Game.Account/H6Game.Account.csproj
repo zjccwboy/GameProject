@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Bin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="Google.Protobuf">
       <HintPath>..\..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
