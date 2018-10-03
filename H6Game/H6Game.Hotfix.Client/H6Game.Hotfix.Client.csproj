@@ -4,6 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Bin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\H6Game.Hotfix\**\*.cs;" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
   </ItemGroup>
@@ -21,16 +25,16 @@
 
   <ItemGroup>
     <Reference Include="Google.Protobuf">
-      <HintPath>..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
+      <HintPath>..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Base">
-      <HintPath>..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
+      <HintPath>..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Bson">
-      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
+      <HintPath>..\Bin\netstandard2.0\MongoDB.Bson.dll</HintPath>
     </Reference>
     <Reference Include="MongoDB.Driver">
-      <HintPath>..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
+      <HintPath>..\Bin\netstandard2.0\MongoDB.Driver.dll</HintPath>
     </Reference>
   </ItemGroup>
   

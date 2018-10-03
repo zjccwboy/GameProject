@@ -32,18 +32,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
+    <Reference Include="Google.Protobuf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
+    <Reference Include="H6Game.Actor">
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Actor.dll</HintPath>
+    </Reference>
+    <Reference Include="H6Game.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Hotfix, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\H6Game.Hotfix\bin\Debug\netstandard2.0\H6Game.Hotfix.dll</HintPath>
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Rpository">
-      <HintPath>..\..\H6Game.Rpository\bin\Debug\netstandard2.0\H6Game.Rpository.dll</HintPath>
+    <Reference Include="H6Game.Rpository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Rpository.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\netstandard2.0\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\netstandard2.0\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

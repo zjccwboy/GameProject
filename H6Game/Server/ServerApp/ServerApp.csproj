@@ -10,20 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="H6Game.Account.Model">
-      <HintPath>..\..\H6Game.Models\H6Game.Account.Model\bin\Debug\netstandard2.0\H6Game.Account.Model.dll</HintPath>
+    <Reference Include="H6Game.Actor">
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Actor.dll</HintPath>
     </Reference>
     <Reference Include="H6Game.Base">
-      <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.Game.Model">
-      <HintPath>..\..\H6Game.Models\H6Game.Game.Model\bin\Debug\netstandard2.0\H6Game.Game.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Gate.Model">
-      <HintPath>..\..\H6Game.Models\H6Game.Gate.Model\bin\Debug\netstandard2.0\H6Game.Gate.Model.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Pay.Model">
-      <HintPath>..\..\H6Game.Models\H6Game.Pay.Model\bin\Debug\netstandard2.0\H6Game.Pay.Model.dll</HintPath>
+    <Reference Include="H6Game.Hotfix">
+      <HintPath>..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
   </ItemGroup>
 

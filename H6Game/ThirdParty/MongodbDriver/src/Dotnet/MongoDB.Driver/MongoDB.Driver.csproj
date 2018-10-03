@@ -14,6 +14,10 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\MongoDB.Driver\**\*.cs;..\..\MongoDB.Shared\ApplicationNameHelper.cs;..\..\MongoDB.Shared\Hasher.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
   </ItemGroup>

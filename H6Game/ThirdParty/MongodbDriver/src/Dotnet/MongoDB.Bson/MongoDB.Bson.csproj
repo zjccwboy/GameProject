@@ -14,6 +14,11 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\..\..\Bin\</OutputPath>
+    <DocumentationFile>obj\Debug\netstandard2.0\MongoDB.Bson.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\..\MongoDB.Bson\**\*.cs;..\..\MongoDB.Shared\Hasher.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
   </ItemGroup>
