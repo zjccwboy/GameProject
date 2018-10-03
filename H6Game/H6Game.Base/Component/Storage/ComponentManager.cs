@@ -17,7 +17,7 @@ namespace H6Game.Base
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="component">组件实体。</param>
         /// <returns>新增成功返回true,失败返回false，如果返回false表示池中已经存在该组件。</returns>
-        public virtual bool AddComponent<T>(T component) where T : BaseComponent
+        public virtual bool AddComponent(BaseComponent component)
         {
             var type = component.GetType();
             var isSingle = ComponentPool.IsSingleType(type);

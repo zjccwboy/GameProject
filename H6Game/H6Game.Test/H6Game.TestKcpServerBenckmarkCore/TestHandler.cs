@@ -8,7 +8,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [SubscriberCMD(1024)]
     public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
-        protected override void Subscribe(Network network, TestMessage message)
+        protected override void Subscribe(Network network, TestMessage message, int messageCmd)
         {
             network.Response(message);
         }
@@ -17,7 +17,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [SubscriberCMD(1024)]
     public class TestSubscriberInt : AMsgSubscriber<int>
     {
-        protected override void Subscribe(Network network, int message)
+        protected override void Subscribe(Network network, int message, int messageCmd)
         {
             network.Response(message);
         }

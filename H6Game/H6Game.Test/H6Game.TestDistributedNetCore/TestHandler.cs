@@ -10,7 +10,7 @@ namespace H6Game.TestDistributedNetCore
     [SubscriberCMD(TestCMD.TestCmd)]
     public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
-        protected override void Subscribe(Network network, TestMessage message)
+        protected override void Subscribe(Network network, TestMessage message, int messageCmd)
         {
             network.Response(message);
         }

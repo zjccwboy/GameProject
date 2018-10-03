@@ -7,9 +7,12 @@ namespace H6Game.Base
     public class ActorSyncMessage : IMessage
     {
         [ProtoMember(1)]
-        public string ObjectId { get; set; }
+        public int ActorId { get; set; }
 
         [ProtoMember(2)]
+        public string ObjectId { get; set; }
+
+        [ProtoMember(3)]
         public ActorType ActorType { get; set; }
     }
 }

@@ -330,13 +330,12 @@ namespace H6Game.Base
             return (T)result;
         }
 
-        public static void PutBack<T>(this T component) where T : BaseComponent
+        public static void PutBack(this BaseComponent component)
         {
-            var baseComponent = component as BaseComponent;
             if (!IdComponents.Remove(component.Id))
                 return;
 
-            var type = typeof(T);
+            var type = component.GetType();
             if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
             {
                 queue = new Queue<BaseComponent>();

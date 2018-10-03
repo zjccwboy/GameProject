@@ -8,7 +8,7 @@ namespace H6Game.Base
     [SubscriberCMD(InnerMessageCMD.AddInServerCmd)]
     public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
     {
-        protected override void Subscribe(Network network, NetEndPointMessage message)
+        protected override void Subscribe(Network network, NetEndPointMessage message, int messageCmd)
         {
             Game.Scene.GetComponent<DistributionsComponent>().AddServerConnection(network, message);
         }
@@ -17,7 +17,7 @@ namespace H6Game.Base
     [SubscriberCMD(InnerMessageCMD.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : AMsgSubscriber
     {
-        protected override void Subscribe(Network network)
+        protected override void Subscribe(Network network, int messageCmd)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseOutNetEndPointMessage(network);
         }
@@ -26,7 +26,7 @@ namespace H6Game.Base
     [SubscriberCMD(InnerMessageCMD.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : AMsgSubscriber
     {
-        protected override void Subscribe(Network network)
+        protected override void Subscribe(Network network, int messageCmd)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseInnerEndPintMessage(network);
         }

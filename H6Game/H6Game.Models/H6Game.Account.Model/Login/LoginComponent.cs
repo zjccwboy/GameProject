@@ -9,7 +9,7 @@ namespace H6Game.Account.Model
     [SubscriberCMD(OutNetMessageCMD.ClientLogin)]
     public class LoginSubscriber : AMsgSubscriber<LoginRequestMessage>
     {
-        protected override void Subscribe(Network network, LoginRequestMessage message)
+        protected override void Subscribe(Network network, LoginRequestMessage message, int messageCmd)
         {
             Game.Scene.GetComponent<LoginComponent>().OnLogin(network, message);
         }
@@ -38,7 +38,6 @@ namespace H6Game.Account.Model
                         {
                             var actor = Game.Scene.AddComponent<PlayerComponent>();
                             actor.SetLocal(account);
-                            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(actor);
                         }
 
                     }

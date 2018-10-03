@@ -24,22 +24,27 @@ namespace H6Game.Base
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.ActorInfo = entityInfo;
             this.IsLocalActor = true;
+
+            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(this);
         }
 
-        public void SetRemote(string objectId, Network network)
+        public override void SetRemote(string objectId, Network network)
         {
             this.ActorEntity.ActorId = network.RecvPacket.ActorId;
             this.ActorEntity.Id = objectId;
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.Network = network;
             this.IsLocalActor = false;
+
+            Game.Scene.GetComponent<ActorPoolComponent>().AddRemote(this);
         }
     }
 
     public abstract class BaseActorEntityComponent : BaseComponent
     {
         public ActorEntity ActorEntity { get; } = new ActorEntity();
-        public abstract ActorType ActorType { get;}
         public bool IsLocalActor { get; protected set; }
+        public abstract ActorType ActorType { get;}
+        public abstract void SetRemote(string objectId, Network network);
     }
 }

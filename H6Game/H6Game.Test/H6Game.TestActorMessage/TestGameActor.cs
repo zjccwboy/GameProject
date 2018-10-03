@@ -28,7 +28,6 @@ namespace H6Game.TestActorMessage
         {
             var actor = Game.Scene.AddComponent<GameComponent>();
             actor.SetLocal(game);
-            Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(actor);
         }
     }
 }

@@ -40,6 +40,12 @@ namespace H6Game.Base
             Subscribe(network, message, network.RecvPacket.MessageCmd, network.RecvPacket.ActorId);
         }
 
+        public BaseActorEntityComponent GetActor(int actorId)
+        {
+            var pool = Game.Scene.GetComponent<ActorPoolComponent>();
+            return pool.GetActor(actorId);
+        }
+
         /// <summary>
         /// 消息订阅接口
         /// </summary>
@@ -70,6 +76,12 @@ namespace H6Game.Base
                 throw new NetworkException($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
 
             Subscribe(network, network.RecvPacket.MessageCmd, network.RecvPacket.ActorId);
+        }
+
+        public BaseActorEntityComponent GetActor(int actorId)
+        {
+            var pool = Game.Scene.GetComponent<ActorPoolComponent>();
+            return pool.GetActor(actorId);
         }
 
         /// <summary>

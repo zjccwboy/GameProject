@@ -92,6 +92,9 @@ namespace H6Game.Base
             var rpositoryBaseType = typeof(IRpository);
             var rpositoryTypes = new HashSet<Type>();
 
+            var actorBaseType = typeof(BaseActorEntityComponent);
+            var actorTypes = new HashSet<Type>();
+
             foreach (var assembly in assemblys)
             {
                 try
@@ -109,19 +112,23 @@ namespace H6Game.Base
                         {
                             messageTypes.Add(t);
                         }
-                        else if (t.BaseType == componentBaseType)
+                        if (CompareBaseType(t, componentBaseType))//t.BaseType == componentBaseType)
                         {
                             componentTypes.Add(t);
                         }
-                        else if (handlerType.IsAssignableFrom(t))
+                        if (CompareBaseType(t, actorBaseType))
+                        {
+                            actorTypes.Add(t);
+                        }
+                        if (handlerType.IsAssignableFrom(t))
                         {
                             handlerTypes.Add(t);
                         }
-                        else if (t.BaseType == entityBaseType)
+                        if (CompareBaseType(t, entityBaseType))//t.BaseType == entityBaseType)
                         {
                             entityTypes.Add(t);
                         }
-                        else if (rpositoryBaseType.IsAssignableFrom(t))
+                        if (rpositoryBaseType.IsAssignableFrom(t))
                         {
                             rpositoryTypes.Add(t);
                         }
@@ -138,6 +145,21 @@ namespace H6Game.Base
             Objcets[handlerType] = handlerTypes;
             Objcets[entityBaseType] = entityTypes;
             Objcets[rpositoryBaseType] = rpositoryTypes;
+            Objcets[actorBaseType] = actorTypes;
+        }
+
+        private static bool CompareBaseType(Type compare, Type baseType)
+        {
+            if (compare.BaseType == null)
+                return false;
+
+            if (compare.BaseType == typeof(object))
+                return false;
+
+            if (compare.BaseType == baseType)
+                return true;
+
+            return CompareBaseType(compare.BaseType, baseType);
         }
 
     }
