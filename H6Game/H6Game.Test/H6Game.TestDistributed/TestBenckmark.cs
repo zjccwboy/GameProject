@@ -1,5 +1,5 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Messages.Enums;
+using H6Game.Hotfix.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;

@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
-    [SubscriberCMD(InnerMessageCMD.AddInServerCmd)]
+    [SubscriberCMD(DistributionCMD.AddInServerCmd)]
     public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
     {
         protected override void Subscribe(Network network, NetEndPointMessage message, int messageCmd)
@@ -14,7 +14,7 @@ namespace H6Game.Base
         }
     }
 
-    [SubscriberCMD(InnerMessageCMD.GetOutServerCmd)]
+    [SubscriberCMD(DistributionCMD.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)
@@ -23,7 +23,7 @@ namespace H6Game.Base
         }
     }
 
-    [SubscriberCMD(InnerMessageCMD.GetInServerCmd)]
+    [SubscriberCMD(DistributionCMD.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)
@@ -49,18 +49,17 @@ namespace H6Game.Base
         private readonly ConcurrentDictionary<int, Network> OuAcceptNetworks = new ConcurrentDictionary<int, Network>();
 
         private Session InAcceptSession;
-        private Session OutAcceptSession;
         private Session CenterConnectSession;
+
+        /// <summary>
+        /// 监听外网连接网络类。
+        /// </summary>
+        public Network OutAcceptNetwork { get; private set; }
 
         /// <summary>
         /// 内网所有客户端连接网络对象集合。
         /// </summary>
         public IEnumerable<Network> InConnNets { get { return InConnectedNetworks.Values; } }
-
-        /// <summary>
-        /// 外网服务端所有监听连接网络对象集合。
-        /// </summary>
-        public IEnumerable<Network> OuAccNets { get { return OuAcceptNetworks.Values; } }
 
         /// <summary>
         /// 内网监听IP端口消息类。
@@ -121,8 +120,8 @@ namespace H6Game.Base
         /// </summary>
         public override void Update()
         {
-            if(OutAcceptSession != null)
-                OutAcceptSession.Update();
+            if(OutAcceptNetwork != null)
+                OutAcceptNetwork.Session.Update();
 
             if (InAcceptSession != null)
                 InAcceptSession.Update();
@@ -154,7 +153,7 @@ namespace H6Game.Base
             {
                 InNetMapManager.Add(network.Channel, message);
 
-                network.Broadcast(message, (int)InnerMessageCMD.AddInServerCmd);
+                network.Broadcast(message, (int)DistributionCMD.AddInServerCmd);
                 foreach (var entity in InNetMapManager.Entities)
                 {
                     network.Response(entity);
@@ -223,21 +222,14 @@ namespace H6Game.Base
 
         private void HandleOutAccept(NetEndPointMessage message)
         {
-            var session = Network.CreateSession(GetIPEndPoint(message), ProtocalType.Kcp);
-            if (!session.Accept())
-                throw new Exception($"服务端口:{message.Port}被占用.");
-
-            session.OnServerConnected = (c) =>
+            this.OutAcceptNetwork = Network.CreateAcceptor(GetIPEndPoint(message), ProtocalType.Kcp, c =>
             {
                 OuAcceptNetworks.TryAdd(c.Id, c.Network);
-            };
-
-            session.OnServerDisconnected = (c) => 
+            }, c =>
             {
                 OuAcceptNetworks.TryRemove(c.Id, out Network network);
-            };
-
-            this.OutAcceptSession = session;
+            }
+            );
             Log.Info($"监听外网端口:{message.Port}成功.", LoggerBllType.System);
         }
 
@@ -276,19 +268,19 @@ namespace H6Game.Base
                 this.InNetMapManager.Add(c, message);
 
                 //连接成功后把本地监听端口发送给远程进程
-                c.Network.Send(localMessage, (int)InnerMessageCMD.AddInServerCmd);
+                c.Network.Send(localMessage, (int)DistributionCMD.AddInServerCmd);
 
                 //把当前所有连接的内网监听服务发送给远程进程
                 foreach(var entity in this.InNetMapManager.Entities)
                 {
-                    c.Network.Send(entity, (int)InnerMessageCMD.AddInServerCmd);
+                    c.Network.Send(entity, (int)DistributionCMD.AddInServerCmd);
                 }
 
                 if (message != this.Config.GetCenterMessage())
                 {
                     InConnectedNetworks.TryAdd(c.Id, c.Network);
 
-                    var callResult = await c.Network.CallMessageAsync<NetEndPointMessage>((int)InnerMessageCMD.GetOutServerCmd);
+                    var callResult = await c.Network.CallMessageAsync<NetEndPointMessage>((int)DistributionCMD.GetOutServerCmd);
                     if (callResult.Result)
                     {
                         //this.Log(LogLevel.Debug, "Connecting", $"收到:{c.RemoteEndPoint} 消息CMD:{(int)MessageCMD.GetOutServerCmd} :{callResult.Content.ToJson()}");

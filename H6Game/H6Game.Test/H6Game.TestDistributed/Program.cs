@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using H6Game.Actor;
 using H6Game.Base;
 
 namespace TestDistributed

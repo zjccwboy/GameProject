@@ -16,10 +16,5 @@ namespace H6Game.Base
         {
             TypeCode = (int)type;
         }
-
-        public MessageTypeAttribute(SysMessageType type)
-        {
-            TypeCode = (int)type;
-        }
     }
 }

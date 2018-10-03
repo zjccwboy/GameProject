@@ -30,7 +30,7 @@ namespace H6Game.Base
                      [CallerMemberName] string member = null)
         {
             var stackInfo = GetFileInfo(file, line, member);
-            Write(LogLevel.Fatal, stackInfo, message, bllType, null, args);
+            Write(LogLevel.Fatal, stackInfo, message, bllType, exception, args);
         }
 
         public static void Info(object message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
@@ -78,7 +78,7 @@ namespace H6Game.Base
                      [CallerMemberName] string member = null)
         {
             var stackInfo = GetFileInfo(file, line, member);
-            Write(LogLevel.Error, stackInfo, message, bllType, null, args);
+            Write(LogLevel.Error, stackInfo, message, bllType, exception, args);
         }
 
         public static void Error(Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
@@ -86,7 +86,7 @@ namespace H6Game.Base
                      [CallerMemberName] string member = null)
         {
             var stackInfo = GetFileInfo(file, line, member);
-            Write(LogLevel.Error, stackInfo, exception.StackTrace, bllType, null, args);
+            Write(LogLevel.Error, stackInfo, exception.StackTrace, bllType, exception, args);
         }
 
         public static void Debug(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,

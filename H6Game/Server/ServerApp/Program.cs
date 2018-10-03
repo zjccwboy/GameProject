@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using H6Game.Account.Model;
 using H6Game.Base;
 
 namespace ServerApp

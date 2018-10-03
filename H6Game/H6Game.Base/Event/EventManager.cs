@@ -21,10 +21,9 @@ namespace H6Game.Base
             }
         }
 
-        public bool Add<T>(T component) where T : BaseComponent
+        public bool Add(BaseComponent component)
         {
-            var type = typeof(T);
-
+            var type = component.GetType();
             var eventType = ObjectPool.GetEvent(type);
             if (eventType == EventType.None)
                 return false;

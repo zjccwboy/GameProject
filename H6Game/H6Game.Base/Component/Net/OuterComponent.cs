@@ -30,7 +30,7 @@ namespace H6Game.Base
             {
                 Network.Update();
             }
-        }
+        }        
 
         public void ReConnect()
         {

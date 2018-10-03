@@ -92,7 +92,7 @@ namespace H6Game.Base
             var rpositoryBaseType = typeof(IRpository);
             var rpositoryTypes = new HashSet<Type>();
 
-            var actorBaseType = typeof(BaseActorEntityComponent);
+            var actorBaseType = typeof(BaseActorEntity);
             var actorTypes = new HashSet<Type>();
 
             foreach (var assembly in assemblys)

@@ -14,23 +14,19 @@ namespace H6Game.Base
             {
                 if (packet.ActorId > 0)
                 {
-                    var subscribers = SubscriberMsgPool.GetActorSubscriber(packet.MessageCmd);
-                    foreach(var subscriber in subscribers)
+                    var actorSubscribers = SubscriberMsgPool.GetActorSubscriber(packet.MessageCmd);
+                    foreach(var subscriber in actorSubscribers)
                     {
                         subscriber.Receive(network);
                     }
                     return;
                 }
-                else
+
+                var subscribers = SubscriberMsgPool.GetSubscriber(packet.MessageCmd);
+                foreach (var subscriber in subscribers)
                 {
-                    var subscribers = SubscriberMsgPool.GetSubscriber(packet.MessageCmd);
-                    foreach (var subscriber in subscribers)
-                    {
-                        subscriber.Receive(network);
-                    }
-                    return;
+                    subscriber.Receive(network);
                 }
-                throw new NetworkException($"MessageCMD:{packet.MessageCmd}没有在Subscriber实现类中加入MessageCMDAttribute.");
             }
             catch (Exception e)
             {

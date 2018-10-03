@@ -75,7 +75,8 @@ namespace H6Game.Base
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType)
         {
             var session = new Session(endPoint, protocalType);
-            session.Accept();
+            if (!session.Accept())
+                throw new Exception($"服务端口:{endPoint.Port}被占用.");
             var network = new Network(session, session.NService, null);
             return network;
         }
@@ -94,7 +95,8 @@ namespace H6Game.Base
             var session = new Session(endPoint, protocalType);            
             session.OnServerConnected += connectedAction;
             session.OnServerDisconnected += disconnectedAction;
-            session.Accept();
+            if (!session.Accept())
+                throw new Exception($"服务端口:{endPoint.Port}被占用.");
             var network = new Network(session, session.NService, null);
             return network;
         }

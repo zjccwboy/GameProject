@@ -1,6 +1,6 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Messages;
-using H6Game.Hotfix.Messages.Enums;
+
+using H6Game.Hotfix.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace H6Game.TestDistributedNetCore
     }
 
     [ProtoBuf.ProtoContract]
-    [MessageType(OutMessageType.TestDistributedTestMessage)]
+    [MessageType(MessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [BsonElement]

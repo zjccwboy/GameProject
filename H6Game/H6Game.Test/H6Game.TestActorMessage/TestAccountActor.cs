@@ -1,4 +1,6 @@
-﻿using H6Game.Base;
+﻿using H6Game.Actor;
+using H6Game.Base;
+using H6Game.Hotfix.Entities;
 using H6Game.Rpository;
 using System;
 using System.Threading.Tasks;

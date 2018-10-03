@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace H6Game.Base
 {
-    internal static class ComponentPool
+    public static class ComponentPool
     {
         private static Dictionary<int, BaseComponent> IdComponents{ get; } = new Dictionary<int, BaseComponent>();
         private static Dictionary<Type, Queue<BaseComponent>> TypeComponents { get; } = new Dictionary<Type, Queue<BaseComponent>>();

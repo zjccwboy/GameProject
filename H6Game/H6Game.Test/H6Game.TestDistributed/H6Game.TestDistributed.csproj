@@ -39,6 +39,9 @@
     <Reference Include="Google.Protobuf">
       <HintPath>..\..\ThirdParty\Google.Protobuf\bin\Debug\netstandard2.0\Google.Protobuf.dll</HintPath>
     </Reference>
+    <Reference Include="H6Game.Actor">
+      <HintPath>..\..\H6Game.Models\H6Game.Actor\bin\Debug\netstandard2.0\H6Game.Actor.dll</HintPath>
+    </Reference>
     <Reference Include="H6Game.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\H6Game.Base\bin\Debug\netstandard2.0\H6Game.Base.dll</HintPath>

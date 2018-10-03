@@ -1,6 +1,7 @@
 ﻿using H6Game.Base;
 using System.Linq;
 using System.Threading.Tasks;
+using H6Game.Hotfix.Entities;
 
 namespace H6Game.Rpository
 {

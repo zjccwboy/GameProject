@@ -1,4 +1,5 @@
-﻿using H6Game.Base;
+﻿using H6Game.Actor;
+using H6Game.Base;
 using System.Threading;
 
 namespace H6Game.TestDistributedNetCore

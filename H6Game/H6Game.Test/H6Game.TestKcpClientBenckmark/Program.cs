@@ -1,6 +1,5 @@
 ﻿using H6Game.Base;
-using H6Game.Hotfix.Messages;
-using H6Game.Hotfix.Messages.Enums;
+using H6Game.Hotfix.Enums;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -69,7 +68,7 @@ namespace H6Game.TestKcpClientBenckmark
 
 
     [ProtoBuf.ProtoContract]
-    [MessageType(OutMessageType.TestGServerTestMessage)]
+    [MessageType(MessageType.TestGServerTestMessage)]
     public class TestMessage : IMessage
     {
         [ProtoBuf.ProtoMember(1)]

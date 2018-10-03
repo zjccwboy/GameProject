@@ -18,15 +18,6 @@ namespace H6Game.Base
             this.MessageCmds.AddRange(commands.Select(c=>c));
         }
 
-        public SubscriberCMDAttribute(params InnerMessageCMD[] commands)
-        {
-            if (!commands.Any())
-            {
-                throw new NullReferenceException("消息commands不能为空.");
-            }
-            this.MessageCmds.AddRange(commands.Select(c => (int)c));
-        }
-
         public SubscriberCMDAttribute(params object[] commands)
         {
             if (!commands.Any())

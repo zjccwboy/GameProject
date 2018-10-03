@@ -1,11 +1,11 @@
 ﻿using H6Game.Base;
+using H6Game.Hotfix.Entities.Enums;
 using H6Game.Hotfix.Enums;
-using H6Game.Hotfix.Messages.Enums;
 using ProtoBuf;
 
 namespace H6Game.Hotfix.Messages.OutNet
 {
-    [MessageType(OutMessageType.LoginResponeMessage)]
+    [MessageType(MessageType.LoginResponeMessage)]
     [ProtoContract]
     public class LoginResponeMessage : LoginMessage
     {
@@ -78,7 +78,7 @@ namespace H6Game.Hotfix.Messages.OutNet
     }
 
 
-    [MessageType(OutMessageType.LoginRequestMessage)]
+    [MessageType(MessageType.LoginRequestMessage)]
     [ProtoContract]
     public class LoginRequestMessage : LoginMessage
     {
@@ -110,7 +110,7 @@ namespace H6Game.Hotfix.Messages.OutNet
     }
 
 
-    [MessageType(OutMessageType.LogoutRequestMessage)]
+    [MessageType(MessageType.LogoutRequestMessage)]
     [ProtoContract]
     public class LogoutRequestMessage : IMessage
     {
