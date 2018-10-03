@@ -2048,12 +2048,13 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Rquest"></typeparam>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Rquest">发送数据类型</typeparam>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd, int actorId)
         where Rquest : class
     {
@@ -2077,11 +2078,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, string data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2104,11 +2106,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2131,11 +2134,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, uint data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2158,11 +2162,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, long data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2185,11 +2190,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ulong data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2212,11 +2218,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, float data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2239,11 +2246,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, double data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2266,11 +2274,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, decimal data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2293,11 +2302,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, short data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2320,11 +2330,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ushort data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2347,11 +2358,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, byte data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2374,11 +2386,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, sbyte data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2401,11 +2414,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, char data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2428,11 +2442,12 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="data"></param>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, bool data, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
@@ -2455,10 +2470,11 @@ public static class NetworkHelper
     /// <summary>
     /// 订阅一条Actor Rpc消息
     /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="messageCmd"></param>
-    /// <param name="actorId"></param>
-    /// <returns></returns>
+    /// <typeparam name="Response">返回数据类型</typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="messageCmd">消息指令</param>
+    /// <param name="actorId">Actor Id</param>
+    /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int messageCmd, int actorId)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
