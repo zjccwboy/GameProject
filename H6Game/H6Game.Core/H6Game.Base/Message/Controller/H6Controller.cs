@@ -12,7 +12,7 @@ namespace H6Game.Base
             switch(context.MetodType)
             {
                 case MetodType.Invoke:
-                    if(context.ParameterTypes == null || context.ParameterTypes.Length == 0)
+                    if(context.ParameterTypes.Length == 0)
                     {
                         InvokeSync(context, network);
                     }
@@ -23,7 +23,7 @@ namespace H6Game.Base
                     }
                     break;
                 case MetodType.ExistReturnInvoke:
-                    if (context.ParameterTypes == null || context.ParameterTypes.Length == 0)
+                    if (context.ParameterTypes.Length == 0)
                     {
                         ExistReturnInvokeSync(context, network);
                     }
@@ -34,7 +34,7 @@ namespace H6Game.Base
                     }
                     break;
                 case MetodType.InvokeAsync:
-                    if (context.ParameterTypes == null || context.ParameterTypes.Length == 0)
+                    if (context.ParameterTypes.Length == 0)
                     {
                         InvokeAsync(context, network);
                     }
@@ -45,7 +45,7 @@ namespace H6Game.Base
                     }
                     break;
                 case MetodType.ExistReturnInvokeAsync:
-                    if (context.ParameterTypes == null || context.ParameterTypes.Length == 0)
+                    if (context.ParameterTypes.Length == 0)
                     {
                         ExistReturnInvokeAsync(context, network);
                     }

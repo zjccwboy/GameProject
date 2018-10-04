@@ -34,12 +34,12 @@ namespace H6Game.Base
                         continue;
 
                     var parameters = method.GetParameters();
-                    var parameterTypes = parameters == null? null: parameters.Select(a => a.ParameterType).ToArray();
+                    var parameterTypes = parameters == null? new Type[0]: parameters.Select(a => a.ParameterType).ToArray();
                     var context = new MetodContext
                     {
                         Owner = controller,
                         ParameterTypes = parameterTypes,
-                        Parameters = parameterTypes == null ? null : new object[parameterTypes.Length],
+                        Parameters = new object[parameterTypes.Length],
                         ReturnType = method.ReturnType,
                         IsAsyncMetod = method.ReturnType.BaseType == typeof(Task) || method.ReturnType == typeof(Task),
                         MethodInfo = method,
