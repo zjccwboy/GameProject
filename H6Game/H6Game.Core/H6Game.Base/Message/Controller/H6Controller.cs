@@ -117,14 +117,91 @@ namespace H6Game.Base
         private static async void ExistReturnInvokeAsync(MetodContext context, Network network, object message)
         {
             context.Parameters[0] = message;
-            var response = await (Task<object>)context.MethodInfo.Invoke(context.Owner, context.Parameters);
-            network.Response(response);
+            await Response(context, network, context.Parameters);
         }
 
         private static async void ExistReturnInvokeAsync(MetodContext context, Network network)
         {
-            var response = await (Task<object>)context.MethodInfo.Invoke(context.Owner, null);
-            network.Response(response);
+            await Response(context, network, null);
+        }
+
+        private static async Task Response(MetodContext context, Network network, object[] message)
+        {
+            var type = context.ReturnType.GenericTypeArguments[0];
+            if (type == typeof(string))
+            {
+                var response = await (Task<string>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(int))
+            {
+                var response = await (Task<int>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(uint))
+            {
+                var response = await (Task<uint>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(long))
+            {
+                var response = await (Task<long>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(ulong))
+            {
+                var response = await (Task<ulong>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(float))
+            {
+                var response = await (Task<float>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(decimal))
+            {
+                var response = await (Task<decimal>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(double))
+            {
+                var response = await (Task<double>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(byte))
+            {
+                var response = await (Task<byte>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(sbyte))
+            {
+                var response = await (Task<sbyte>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(bool))
+            {
+                var response = await (Task<bool>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(short))
+            {
+                var response = await (Task<short>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(ushort))
+            {
+                var response = await (Task<ushort>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (typeof(IMessage).IsAssignableFrom(type))
+            {
+                var response = await (Task<IMessage>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response((object)response);
+            }
+            else
+            {
+                throw new NetworkException($"消息类型:{type}不支持。");
+            }
         }
     }
 }

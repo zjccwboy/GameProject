@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
@@ -45,7 +46,7 @@ namespace H6Game.Base
 
 
         private static Type VoidType = typeof(void);
-        private static Type TaskType = typeof(void);
+        private static Type TaskType = typeof(Task);
 
         /// <summary>
         /// 是否存在返回参数

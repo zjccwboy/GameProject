@@ -42,7 +42,7 @@ namespace H6Game.TestControllerClient
         private static async Task Call()
         {
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            var result = await network.CallMessageAsync<int>(8888);
+            var result = await network.CallMessageAsync<int>(8001);
             if (!result.Result)
             {
                 Log.Error($"RPC请求失败。", LoggerBllType.System);
@@ -53,7 +53,7 @@ namespace H6Game.TestControllerClient
                 Log.Error($"解包出错。", LoggerBllType.System);
             }
 
-            result = await network.CallMessageAsync<int>(1000, 8888);
+            result = await network.CallMessageAsync<int>(1000, 8002);
             if (!result.Result)
             {
                 Log.Error($"RPC请求失败。", LoggerBllType.System);
@@ -63,7 +63,18 @@ namespace H6Game.TestControllerClient
             {
                 Log.Error($"解包出错。", LoggerBllType.System);
             }
-            network.Send(8888);
+            network.Send(8003);
+
+            result = await network.CallMessageAsync<int>(8004);
+            if (!result.Result)
+            {
+                Log.Error($"RPC请求失败。", LoggerBllType.System);
+            }
+
+            if (result.Content != 100)
+            {
+                Log.Error($"解包出错。", LoggerBllType.System);
+            }
 
             Count++;
             if (Swatch.ElapsedMilliseconds >= 1000)
