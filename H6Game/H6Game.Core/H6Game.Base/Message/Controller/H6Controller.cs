@@ -68,7 +68,7 @@ namespace H6Game.Base
                 var isValue = ValueType.IsAssignableFrom(msgType) & context.ParameterTypes[0] != msgType;
                 if (isValue)
                 {
-                    return message.GetValue();
+                    return ValueHelper.GetValue(message);
                 }
                 else
                 {

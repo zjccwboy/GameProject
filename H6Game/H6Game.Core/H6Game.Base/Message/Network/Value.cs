@@ -29,7 +29,7 @@ namespace H6Game.Base
 
     public static class ValueHelper
     {
-        public static object GetValue(this object obj)
+        public static object GetValue(object obj)
         {
             var value = (IValue)obj;
             return value.GetValue();
