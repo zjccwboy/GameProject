@@ -4,7 +4,7 @@ using H6Game.Hotfix.Enums;
 
 namespace H6Game.TestKcpServerBenckmark
 {
-    [SubscriberCMD(1024)]
+    [NetCommand(1024)]
     public class TestSubscriber : AMsgSubscriber<TestMessage>
     {
         protected override void Subscribe(Network network, TestMessage message, int messageCmd)
@@ -13,7 +13,7 @@ namespace H6Game.TestKcpServerBenckmark
         }
     }
 
-    [SubscriberCMD(1024)]
+    [NetCommand(1024)]
     public class TestSubscriberInt : AMsgSubscriber<int>
     {
         protected override void Subscribe(Network network, int message, int messageCmd)

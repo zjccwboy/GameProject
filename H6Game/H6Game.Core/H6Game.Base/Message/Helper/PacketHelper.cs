@@ -6,7 +6,6 @@ using System.Text;
 
 public static class PacketHelper
 {
-
     /// <summary>
     /// 获取包头的字节数组
     /// </summary>
@@ -60,7 +59,7 @@ public static class PacketHelper
         packet.WriteBuffer();
     }
 
-    internal static void WriteTo<T>(this Packet packet, T obj) where T : class
+    internal static void WriteTo<T>(this Packet packet, T obj)
     {
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
@@ -68,6 +67,71 @@ public static class PacketHelper
         packet.MsgTypeCode = GetTypeCode(typeof(T));
         packet.WriteBuffer();
     }
+
+    internal static void WriteTo(this Packet packet, object obj)
+    {
+        var type = obj.GetType();
+        if(type == typeof(string))
+        {
+            WriteTo(packet, (string)obj);
+        }
+        else if(type == typeof(int))
+        {
+            WriteTo(packet, (int)obj);
+        }
+        else if(type == typeof(uint))
+        {
+            WriteTo(packet, (uint)obj);
+        }
+        else if(type == typeof(long))
+        {
+            WriteTo(packet, (long)obj);
+        }
+        else if(type == typeof(ulong))
+        {
+            WriteTo(packet, (ulong)obj);
+        }
+        else if(type == typeof(float))
+        {
+            WriteTo(packet, (float)obj);
+        }
+        else if(type == typeof(decimal))
+        {
+            WriteTo(packet, (decimal)obj);
+        }
+        else if(type == typeof(double))
+        {
+            WriteTo(packet, (double)obj);
+        }
+        else if(type == typeof(byte))
+        {
+            WriteTo(packet, (byte)obj);
+        }
+        else if(type == typeof(sbyte))
+        {
+            WriteTo(packet, (sbyte)obj);
+        }
+        else if(type == typeof(bool))
+        {
+            WriteTo(packet, (bool)obj);
+        }
+        else if(type == typeof(short))
+        {
+            WriteTo(packet, (short)obj);
+        }
+        else if(type == typeof(ushort))
+        {
+            WriteTo(packet, (ushort)obj);
+        }
+        else
+        {
+            if (obj != default)
+                Serializer.Serialize(packet.BodyStream, obj);
+            packet.MsgTypeCode = GetTypeCode(obj.GetType());
+            packet.WriteBuffer();
+        }
+    }
+
 
     internal static void WriteTo(this Packet packet, string data)
     {
@@ -186,7 +250,7 @@ public static class PacketHelper
 
     private static int GetTypeCode(Type type)
     {
-        return SubscriberMsgPool.GetMsgCode(type);
+        return MessageSubscriberPool.GetMsgCode(type);
     }
 
     public static T Read<T>(this Packet packet)
@@ -200,8 +264,8 @@ public static class PacketHelper
         var type = typeof(T);
         if (TryGetValueType(packet, type, out object obj))
         {
-            var objVal = obj as ValueObject<T>;
-            return objVal.Value;
+            var objVal = obj as Value<T>;
+            return objVal.Data;
         }
 
         var result = Serializer.Deserialize<T>(packet.BodyStream);
@@ -226,8 +290,8 @@ public static class PacketHelper
         var type = typeof(T);
         if (TryGetValueType(packet, type, out object obj))
         {
-            var objVal = obj as ValueObject<T>;
-            data = objVal.Value;
+            var objVal = obj as Value<T>;
+            data = objVal.Data;
             return true;
         }
 
@@ -243,14 +307,50 @@ public static class PacketHelper
         }
     }
 
+    public static bool TryRead(this Packet packet, Type type, out object data)
+    {
+        if (packet == null)
+        {
+            data = default;
+            return false;
+        }
+
+        if (packet.BodyStream.Length == 0)
+        {
+            data = default;
+            return false;
+        }
+
+        if (TryGetValueType(packet, type, out data))
+            return true;
+
+        try
+        {
+            data = Serializer.Deserialize(type, packet.BodyStream);
+            return true;
+        }
+        catch
+        {
+            data = default;
+            return false;
+        }
+    }
+
     private static readonly Type SType = typeof(string);
+    /// <summary>
+    /// 反序列号值类型，该方法无GC开销
+    /// </summary>
+    /// <param name="packet"></param>
+    /// <param name="type"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     private static bool TryGetValueType(Packet packet, Type type, out object value)
     {
         var bytes = packet.BodyStream.GetBuffer();
         if (type == SType)
         {
             var data = Encoding.UTF8.GetString(bytes, 0, (int)packet.BodyStream.Length);
-            value = ValueObject<string>.Instance.GetValue(data);
+            value = Value<string>.Instance.GetValue(data);
             return true;
         }
 
@@ -260,44 +360,44 @@ public static class PacketHelper
             case TypeCode.Int32:
                 {
                     var data = BitConverter.ToInt32(bytes, 0);
-                    value = ValueObject<int>.Instance.GetValue(data);
+                    value = Value<int>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.UInt32:
                 {
                     var data = BitConverter.ToUInt32(bytes, 0);
-                    value = ValueObject<uint>.Instance.GetValue(data);
+                    value = Value<uint>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Boolean:
                 {
                     var data = BitConverter.ToBoolean(bytes, 0);
-                    value = ValueObject<bool>.Instance.GetValue(data);
+                    value = Value<bool>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Int64:
                 {
                     var data = BitConverter.ToInt64(bytes, 0);
-                    value = ValueObject<long>.Instance.GetValue(data);
+                    value = Value<long>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.UInt64:
                 {
                     var data = BitConverter.ToUInt64(bytes, 0);
-                    value = ValueObject<ulong>.Instance.GetValue(data);
+                    value = Value<ulong>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Single:
                 {
                     var data = BitConverter.ToSingle(bytes, 0);
-                    value = ValueObject<float>.Instance.GetValue(data);
+                    value = Value<float>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Double:
             case TypeCode.Decimal:
                 {
                     var data = BitConverter.ToDouble(bytes, 0);
-                    value = ValueObject<double>.Instance.GetValue(data);
+                    value = Value<double>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Byte:
@@ -307,19 +407,19 @@ public static class PacketHelper
             case TypeCode.Char:
                 {
                     var data = BitConverter.ToChar(bytes, 0);
-                    value = ValueObject<char>.Instance.GetValue(data);
+                    value = Value<char>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.Int16:
                 {
                     var data = BitConverter.ToInt16(bytes, 0);
-                    value = ValueObject<short>.Instance.GetValue(data);
+                    value = Value<short>.Instance.GetValue(data);
                     return true;
                 }
             case TypeCode.UInt16:
                 {
                     var data = BitConverter.ToUInt16(bytes, 0);
-                    value = ValueObject<ushort>.Instance.GetValue(data);
+                    value = Value<ushort>.Instance.GetValue(data);
                     return true;
                 }
         }

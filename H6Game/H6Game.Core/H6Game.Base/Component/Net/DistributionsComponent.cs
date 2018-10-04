@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
-    [SubscriberCMD(DistributionCMD.AddInServerCmd)]
+    [NetCommand(DistributionCMD.AddInServerCmd)]
     public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
     {
         protected override void Subscribe(Network network, NetEndPointMessage message, int messageCmd)
@@ -14,7 +14,7 @@ namespace H6Game.Base
         }
     }
 
-    [SubscriberCMD(DistributionCMD.GetOutServerCmd)]
+    [NetCommand(DistributionCMD.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)
@@ -23,7 +23,7 @@ namespace H6Game.Base
         }
     }
 
-    [SubscriberCMD(DistributionCMD.GetInServerCmd)]
+    [NetCommand(DistributionCMD.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)

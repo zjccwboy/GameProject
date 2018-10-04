@@ -54,9 +54,6 @@ namespace H6Game.Base
         {
             var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(a => a.Name.StartsWith("H6Game")).ToList();
             var assemblys = AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName.StartsWith("H6Game")).ToList();
-
-            //var assemblyNames = Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList();
-            //var assemblys = AppDomain.CurrentDomain.GetAssemblies().ToList();
             foreach (var name in assemblyNames)
             {
                 var exist = false;
@@ -95,6 +92,9 @@ namespace H6Game.Base
             var actorBaseType = typeof(BaseActorEntity);
             var actorTypes = new HashSet<Type>();
 
+            var controllerBaseType = typeof(IController);
+            var controllerTypes = new HashSet<Type>();
+
             foreach (var assembly in assemblys)
             {
                 try
@@ -112,7 +112,19 @@ namespace H6Game.Base
                         {
                             messageTypes.Add(t);
                         }
-                        if (CompareBaseType(t, componentBaseType))//t.BaseType == componentBaseType)
+                        if (handlerType.IsAssignableFrom(t))
+                        {
+                            handlerTypes.Add(t);
+                        }
+                        if (rpositoryBaseType.IsAssignableFrom(t))
+                        {
+                            rpositoryTypes.Add(t);
+                        }
+                        if (controllerBaseType.IsAssignableFrom(t))
+                        {
+                            controllerTypes.Add(t);
+                        }
+                        if (CompareBaseType(t, componentBaseType))
                         {
                             componentTypes.Add(t);
                         }
@@ -120,17 +132,9 @@ namespace H6Game.Base
                         {
                             actorTypes.Add(t);
                         }
-                        if (handlerType.IsAssignableFrom(t))
-                        {
-                            handlerTypes.Add(t);
-                        }
-                        if (CompareBaseType(t, entityBaseType))//t.BaseType == entityBaseType)
+                        if (CompareBaseType(t, entityBaseType))
                         {
                             entityTypes.Add(t);
-                        }
-                        if (rpositoryBaseType.IsAssignableFrom(t))
-                        {
-                            rpositoryTypes.Add(t);
                         }
                     }
                 }
@@ -146,6 +150,7 @@ namespace H6Game.Base
             Objcets[entityBaseType] = entityTypes;
             Objcets[rpositoryBaseType] = rpositoryTypes;
             Objcets[actorBaseType] = actorTypes;
+            Objcets[controllerBaseType] = controllerTypes;
         }
 
         private static bool CompareBaseType(Type compare, Type baseType)

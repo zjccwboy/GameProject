@@ -4,7 +4,7 @@ using System;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 消息分发给所有订阅MessageCmd的Hadler类
+    /// 消息分发者类
     /// </summary>
     public class NetworkDispatcher
     {
@@ -12,9 +12,15 @@ namespace H6Game.Base
         {
             try
             {
+                if( MetodContextManager.TryGetContext(packet.MessageCmd, out MetodContext context))
+                {
+                    context.Owner.Invoke(context, network);
+                    return;
+                }
+
                 if (packet.ActorId > 0)
                 {
-                    var actorSubscribers = SubscriberMsgPool.GetActorSubscriber(packet.MessageCmd);
+                    var actorSubscribers = MessageSubscriberPool.GetActorSubscriber(packet.MessageCmd);
                     foreach(var subscriber in actorSubscribers)
                     {
                         subscriber.Receive(network);
@@ -22,7 +28,7 @@ namespace H6Game.Base
                     return;
                 }
 
-                var subscribers = SubscriberMsgPool.GetSubscriber(packet.MessageCmd);
+                var subscribers = MessageSubscriberPool.GetSubscriber(packet.MessageCmd);
                 foreach (var subscriber in subscribers)
                 {
                     subscriber.Receive(network);

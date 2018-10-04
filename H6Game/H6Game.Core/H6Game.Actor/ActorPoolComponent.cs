@@ -9,7 +9,7 @@ namespace H6Game.Actor
     /// <summary>
     /// 订阅与处理Actor新增消息
     /// </summary>
-    [SubscriberCMD(MessageCMD.AddActorCmd)]
+    [NetCommand(NetCommand.AddActorCmd)]
     public class AddActorSubscriber : AMsgSubscriber<ActorSyncMessage>
     {
         protected override void Subscribe(Network network, ActorSyncMessage message, int messageCmd)
@@ -27,7 +27,7 @@ namespace H6Game.Actor
     /// <summary>
     /// 订阅与处理Actor删除消息
     /// </summary>
-    [SubscriberCMD(MessageCMD.RemoveActorCmd)]
+    [NetCommand(NetCommand.RemoveActorCmd)]
     public class ActorRemoveSubscriber : AMsgSubscriber<ActorSyncMessage>
     {
         protected override void Subscribe(Network network, ActorSyncMessage message, int messageCmd)
@@ -43,7 +43,7 @@ namespace H6Game.Actor
     /// <summary>
     /// 订阅与回发全量的本地LocalActor信息
     /// </summary>
-    [SubscriberCMD(MessageCMD.SyncActorInfoCmd)]
+    [NetCommand(NetCommand.SyncActorInfoCmd)]
     public class SyncFullActorSubscriber : AMsgSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)
@@ -51,7 +51,7 @@ namespace H6Game.Actor
             Log.Info(messageCmd, LoggerBllType.System);
 
             //回发AMessageCMD.AddActorCmd消息告诉远程订阅服务新增RemoteActor
-            Game.Scene.GetComponent<ActorPoolComponent>().ResponseLocalActors(network, (int)MessageCMD.AddActorCmd);
+            Game.Scene.GetComponent<ActorPoolComponent>().ResponseLocalActors(network, (int)NetCommand.AddActorCmd);
         }
     }
 
@@ -94,7 +94,7 @@ namespace H6Game.Actor
             innerComponent.OnInnerClientConnected += c => 
             {
                 this.OnConnected?.Invoke(c);
-                c.Network.Send((int)MessageCMD.SyncActorInfoCmd);
+                c.Network.Send((int)NetCommand.SyncActorInfoCmd);
             };
         }
 
@@ -257,12 +257,12 @@ namespace H6Game.Actor
                 ObjectId = entity.Id,
                 ActorType = entity.ActorType,
             };
-            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast(message, (int)MessageCMD.AddActorCmd);
+            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast(message, (int)NetCommand.AddActorCmd);
         }
 
         private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorEntityComponent component)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast((int)MessageCMD.RemoveActorCmd, component.Id);
+            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast((int)NetCommand.RemoveActorCmd, component.Id);
         }
     }
 }

@@ -8,13 +8,14 @@ namespace H6Game.Base
     /// <summary>
     /// 订阅者与消息Code池
     /// </summary>
-    public static class SubscriberMsgPool
+    public static class MessageSubscriberPool
     {
         private static Dictionary<int, HashSet<ISubscriber>> Subscribers { get; } = new Dictionary<int, HashSet<ISubscriber>>();
         private static Dictionary<int, HashSet<IActorSubscriber>> ActorSubscribers { get; } = new Dictionary<int, HashSet<IActorSubscriber>>();
         private static Dictionary<int, HashSet<Type>> CmdTypes { get; } = new Dictionary<int, HashSet<Type>>();
         private static Dictionary<Type, HashSet<int>> TypeCmds { get; } = new Dictionary<Type, HashSet<int>>();
         private static Dictionary<Type, int> MsgCodes { get; } = new Dictionary<Type, int>();
+        private static Dictionary<int, Type> CodeMsgTypes { get; } = new Dictionary<int, Type>();
 
         public static void Load()
         {
@@ -36,12 +37,14 @@ namespace H6Game.Base
                     continue;
 
                 MsgCodes[type] = attribute.TypeCode;
+                CodeMsgTypes[attribute.TypeCode] = type;
             }
 
             var valTypes = GetValueTypeCode();
             foreach(var val in valTypes)
             {
                 MsgCodes[val.Key] = (int)val.Value;
+                CodeMsgTypes[(int)val.Value] = val.Key;
             }
         }
 
@@ -72,7 +75,7 @@ namespace H6Game.Base
             var handlerTypes = ObjectPool.GetTypes<ISubscriber>();
             foreach (var type in handlerTypes)
             {
-                var attributes = type.GetCustomAttributes<SubscriberCMDAttribute>();
+                var attributes = type.GetCustomAttributes<NetCommandAttribute>();
                 if (type.IsAbstract)
                     continue;
 
@@ -133,9 +136,15 @@ namespace H6Game.Base
         public static int GetMsgCode(Type type)
         {
             if(!MsgCodes.TryGetValue(type, out int result))
-            {
                 throw new Exception($"MessageType:{type} 不存在.");
-            }
+
+            return result;
+        }
+
+        public static Type GetMsgType(int msgCode)
+        {
+            if(!CodeMsgTypes.TryGetValue(msgCode, out Type result))
+                throw new Exception($"MessageType:{msgCode} 不存在.");
 
             return result;
         }
@@ -148,18 +157,16 @@ namespace H6Game.Base
         public static IEnumerable<ISubscriber> GetSubscriber(int messageCmd)
         {
             if (!Subscribers.TryGetValue(messageCmd, out HashSet<ISubscriber> value))
-            {
                 throw new Exception($"MessageCMD:{messageCmd} 没有Subscriber订阅该消息.");
-            }
+
             return value;
         }
 
         public static IEnumerable<IActorSubscriber> GetActorSubscriber(int messageCmd)
         {
             if (!ActorSubscribers.TryGetValue(messageCmd, out HashSet<IActorSubscriber> value))
-            {
                 throw new Exception($"MessageCMD:{messageCmd} 没有ActorSubscriber订阅该消息.");
-            }
+
             return value;
         }
 

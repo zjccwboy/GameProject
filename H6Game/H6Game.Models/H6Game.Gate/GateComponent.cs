@@ -8,7 +8,7 @@ using H6Game.Hotfix;
 
 namespace H6Game.Gate
 {
-    [SubscriberCMD(MessageCMD.AddClientActor)]
+    [NetCommand(NetCommand.AddClientActor)]
     public class PlayerActorAdSubscriber : AMsgSubscriber<int>
     {
         protected override void Subscribe(Network network, int message, int messageCmd)

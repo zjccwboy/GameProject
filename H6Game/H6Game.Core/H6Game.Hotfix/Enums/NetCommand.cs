@@ -4,7 +4,7 @@ namespace H6Game.Base
     /// <summary>
     /// 消息CMD定义，1开始
     /// </summary>
-    public enum MessageCMD
+    public enum NetCommand
     {
         #region 游戏客户端交互消息指令1-5000
         /// <summary>

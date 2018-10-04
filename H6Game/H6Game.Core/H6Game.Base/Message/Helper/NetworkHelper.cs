@@ -12,7 +12,22 @@ public static class NetworkHelper
     /// <typeparam name="T"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void Response<T>(this Network network, T data) where T : class
+    public static void Response<T>(this Network network, T data)
+    {
+        var session = network.Session;
+        var channel = network.Channel;
+        var messageCmd = network.RecvPacket.MessageCmd;
+        var rpcId = network.RecvPacket.RpcId;
+        var actorId = network.RecvPacket.ActorId;
+        session.Send(channel, data, messageCmd, rpcId, actorId);
+    }
+
+    /// <summary>
+    /// 回发消息，回发的消息所有的协议与接收到的消息保持一致
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">回发数据</param>
+    public static void Response(this Network network, object data)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -242,7 +257,6 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">表示这条消息指令</param>
     public static void Send<T>(this Network network, T data, int messageCmd)
-        where T : class
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -455,7 +469,6 @@ public static class NetworkHelper
     /// <param name="messageCmd">表示这条消息指令</param>
     /// <param name="actorId">Actor消息Id</param>
     public static void SendActor<T>(this Network network, T data, int messageCmd, int actorId)
-        where T : class
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -681,8 +694,7 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
-    public static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd) where Request : class
-
+    public static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1168,7 +1180,6 @@ public static class NetworkHelper
     /// <param name="messageCmd">消息指令</param>
     /// <returns>返回消息数据。</returns>
     public static Task<CallResult<Response>> CallMessageAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd)
-        where Rquest : class
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallMessage(data, (p) =>
@@ -1491,9 +1502,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Request>(this Network network, Request data, Action<Packet> notificationAction
-        , int messageCmd, int actorId) where Request : class
-
+    public static void CallActor<Request>(this Network network, Request data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1507,8 +1516,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, Action<Packet> notificationAction, int messageCmd, int actorId)
 
     {
         var session = network.Session;
@@ -1524,8 +1532,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, string data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, string data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1540,8 +1547,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, int data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, int data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1556,8 +1562,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, uint data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, uint data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1572,8 +1577,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, bool data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, bool data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1588,8 +1592,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, long data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, long data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1604,8 +1607,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, ulong data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, ulong data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1620,8 +1622,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, float data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, float data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1636,8 +1637,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, double data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, double data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1652,8 +1652,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, decimal data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, decimal data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1668,8 +1667,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, byte data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, byte data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1684,8 +1682,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, sbyte data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, sbyte data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1700,8 +1697,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, char data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, char data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1716,8 +1712,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, short data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, short data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1732,8 +1727,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, ushort data, Action<Packet> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor(this Network network, ushort data, Action<Packet> notificationAction, int messageCmd, int actorId)
     {
         var session = network.Session;
         var channel = network.Channel;
@@ -1750,8 +1744,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Request, Response>(this Network network, Request data, Action<Response> notificationAction
-        , int messageCmd, int actorId) where Request : class
+    public static void CallActor<Request, Response>(this Network network, Request data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1786,8 +1779,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, string data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, string data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1805,8 +1797,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, int data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, int data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1824,8 +1815,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, uint data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, uint data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1843,8 +1833,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, bool data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, bool data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1862,8 +1851,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, long data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, long data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1881,8 +1869,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, ulong data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, ulong data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1900,8 +1887,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, float data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, float data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1919,8 +1905,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, double data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, double data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1938,8 +1923,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, decimal data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, decimal data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1957,8 +1941,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, byte data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, byte data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1976,8 +1959,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, sbyte data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, sbyte data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -1995,8 +1977,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, char data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, char data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -2014,8 +1995,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, short data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, short data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -2033,8 +2013,7 @@ public static class NetworkHelper
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="messageCmd">消息指令</param>
     /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, ushort data, Action<Response> notificationAction
-        , int messageCmd, int actorId)
+    public static void CallActor<Response>(this Network network, ushort data, Action<Response> notificationAction, int messageCmd, int actorId)
     {
         network.CallActor(data, (p) =>
         {
@@ -2056,7 +2035,6 @@ public static class NetworkHelper
     /// <param name="actorId">Actor Id</param>
     /// <returns>返回消息数据</returns>
     public static Task<CallResult<Response>> CallActorAsync<Rquest, Response>(this Network network, Rquest data, int messageCmd, int actorId)
-        where Rquest : class
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
         network.CallActor(data, (p) =>
@@ -2504,7 +2482,6 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     public static void Broadcast<T>(this Network network, T data, int messageCmd)
-        where T : class
     {
         var session = network.Session;
         session.Broadcast(data, messageCmd, 0, 0);
@@ -2687,7 +2664,6 @@ public static class NetworkHelper
     /// <param name="data">发送数据</param>
     /// <param name="messageCmd">消息指令</param>
     public static void Broadcast<T>(this IEnumerable<Network> networks, T data, int messageCmd)
-        where T : class
     {
         foreach (var net in networks)
         {

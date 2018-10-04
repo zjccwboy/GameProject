@@ -120,7 +120,7 @@ namespace H6Game.Base
         /// <param name="messageCmd"></param>
         /// <param name="rpcId"></param>
         /// <param name="actorId"></param>
-        internal void Send<T>(ANetChannel channel, T data, int messageCmd, int rpcId, int actorId) where T : class
+        internal void Send<T>(ANetChannel channel, T data, int messageCmd, int rpcId, int actorId)
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -128,6 +128,21 @@ namespace H6Game.Base
             packet.WriteTo(data);
         }
 
+        /// <summary>
+        /// 通知消息
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        /// <param name="messageCmd"></param>
+        /// <param name="rpcId"></param>
+        /// <param name="actorId"></param>
+        internal void Send(ANetChannel channel, object data, int messageCmd, int rpcId, int actorId)
+        {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
+            var packet = channel.SendParser.Packet;
+            SetHead(packet, messageCmd, rpcId, actorId);
+            packet.WriteTo(data);
+        }
 
         /// <summary>
         /// 通知消息
@@ -385,7 +400,7 @@ namespace H6Game.Base
         /// <param name="notificationAction"></param>
         /// <param name="messageCmd"></param>
         /// <param name="actorId"></param>
-        internal void Subscribe<T>(ANetChannel channel, T data, Action<Packet> notificationAction, int messageCmd, int actorId) where T:class
+        internal void Subscribe<T>(ANetChannel channel, T data, Action<Packet> notificationAction, int messageCmd, int actorId)
         {
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
@@ -631,7 +646,6 @@ namespace H6Game.Base
         /// <param name="rpcId"></param>
         /// <param name="actorId"></param>
         internal void Broadcast<T>(T data, int messageCmd, int rpcId, int actorId)
-            where T : class
         {
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)

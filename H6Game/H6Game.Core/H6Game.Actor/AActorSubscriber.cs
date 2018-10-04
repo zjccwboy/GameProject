@@ -20,7 +20,7 @@ namespace H6Game.Actor
             get
             {
                 if(typeCode <=0)
-                    typeCode = SubscriberMsgPool.GetMsgCode(this.MessageType);
+                    typeCode = MessageSubscriberPool.GetMsgCode(this.MessageType);
 
                 return typeCode;
             }
