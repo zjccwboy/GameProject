@@ -394,16 +394,29 @@ public static class PacketHelper
                     return true;
                 }
             case TypeCode.Double:
-            case TypeCode.Decimal:
                 {
                     var data = BitConverter.ToDouble(bytes, 0);
                     value = Value<double>.Instance.GetValue(data);
                     return true;
                 }
+            case TypeCode.Decimal:
+                {
+                    var data = BitConverter.ToDouble(bytes, 0);
+                    value = Value<decimal>.Instance.GetValue((decimal)data);
+                    return true;
+                }
             case TypeCode.Byte:
+                {
+                    var data = bytes[0];
+                    value = Value<byte>.Instance.GetValue(data);
+                    return true;
+                }
             case TypeCode.SByte:
-                value = bytes[0];
-                return true;
+                {
+                    var data = (sbyte)bytes[0];
+                    value = Value<sbyte>.Instance.GetValue(data);
+                    return true;
+                }
             case TypeCode.Char:
                 {
                     var data = BitConverter.ToChar(bytes, 0);
