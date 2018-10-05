@@ -3,7 +3,7 @@
 namespace H6Game.Hotfix.Enums
 {
     /// <summary>
-    /// 网络消息类型，101-200为系统保留消息类型，不能在该枚举中定义。
+    /// 网络消息类型，1-200为系统保留消息类型，不能在该枚举中定义。
     /// </summary>
     public enum NetMessageType
     {

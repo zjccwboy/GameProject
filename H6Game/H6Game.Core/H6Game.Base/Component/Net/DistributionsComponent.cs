@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
-    [NetCommand(DistributionCMD.AddInServerCmd)]
+    [NetCommand(SysNetCommand.AddInServerCmd)]
     public class DistributionsSubscriber : NetSubscriber<NetEndPointMessage>
     {
         protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
@@ -14,7 +14,7 @@ namespace H6Game.Base
         }
     }
 
-    [NetCommand(DistributionCMD.GetOutServerCmd)]
+    [NetCommand(SysNetCommand.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : NetSubscriber
     {
         protected override void Subscribe(Network network, int netCommand)
@@ -23,7 +23,7 @@ namespace H6Game.Base
         }
     }
 
-    [NetCommand(DistributionCMD.GetInServerCmd)]
+    [NetCommand(SysNetCommand.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : NetSubscriber
     {
         protected override void Subscribe(Network network, int netCommand)
@@ -139,7 +139,7 @@ namespace H6Game.Base
             {
                 InNetMapManager.Add(network.Channel, message);
 
-                network.Broadcast(message, (int)DistributionCMD.AddInServerCmd);
+                network.Broadcast(message, (int)SysNetCommand.AddInServerCmd);
                 foreach (var entity in InNetMapManager.Entities)
                 {
                     network.Response(entity);
@@ -250,17 +250,17 @@ namespace H6Game.Base
             this.InNetMapManager.Add(channel, message);
 
             //连接成功后把本地监听端口发送给远程进程
-            channel.Network.Send(localMessage, (int)DistributionCMD.AddInServerCmd);
+            channel.Network.Send(localMessage, (int)SysNetCommand.AddInServerCmd);
 
             //把当前所有连接的内网监听服务发送给远程进程
             foreach (var entity in this.InNetMapManager.Entities)
             {
-                channel.Network.Send(entity, (int)DistributionCMD.AddInServerCmd);
+                channel.Network.Send(entity, (int)SysNetCommand.AddInServerCmd);
             }
 
             if (message != this.Config.GetCenterMessage())
             {
-                var callResult = await channel.Network.CallMessageAsync<NetEndPointMessage>((int)DistributionCMD.GetOutServerCmd);
+                var callResult = await channel.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
                 if (callResult.Result)
                 {
                     this.OutNetMapManager.Add(channel, callResult.Content);

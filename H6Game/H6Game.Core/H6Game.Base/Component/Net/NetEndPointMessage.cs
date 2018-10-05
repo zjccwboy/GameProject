@@ -3,7 +3,7 @@
 namespace H6Game.Base
 {
     [ProtoContract]
-    [NetMessageType(SysMessageType.NetEndPointMessage)]
+    [NetMessageType(SysNetMessageType.NetEndPointMessage)]
     public class NetEndPointMessage : IMessage
     {
         [ProtoMember(1)]

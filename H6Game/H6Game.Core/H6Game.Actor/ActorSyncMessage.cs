@@ -3,7 +3,7 @@ using ProtoBuf;
 
 namespace H6Game.Actor
 {
-    [NetMessageType(SysMessageType.ActorMessage)]
+    [NetMessageType(SysNetMessageType.ActorMessage)]
     [ProtoContract]
     public class ActorSyncMessage : IMessage
     {
