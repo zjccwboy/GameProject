@@ -40,48 +40,41 @@ namespace H6Game.Base
                     //校验订阅的NetCommand是否相同，相同抛出一个异常。
                     Validate(subscriber, cmd);
 
-                    try
+                    if (subscriber is IActorSubscriber)
                     {
-                        if (subscriber is IActorSubscriber)
+                        if (!ActorSubscribers.TryGetValue(cmd, out HashSet<IActorSubscriber> subscribers))
                         {
-                            if (!ActorSubscribers.TryGetValue(cmd, out HashSet<IActorSubscriber> subscribers))
-                            {
-                                subscribers = new HashSet<IActorSubscriber>();
-                                ActorSubscribers[cmd] = subscribers;
-                            }
-                            subscribers.Add(subscriber as IActorSubscriber);
+                            subscribers = new HashSet<IActorSubscriber>();
+                            ActorSubscribers[cmd] = subscribers;
                         }
-                        else
-                        {
-                            if (!Subscribers.TryGetValue(cmd, out HashSet<ISubscriber> subscribers))
-                            {
-                                subscribers = new HashSet<ISubscriber>();
-                                Subscribers[cmd] = subscribers;
-                            }
-                            subscribers.Add(subscriber);
-                        }
-
-                        if (subscriber.MessageType == null)
-                            continue;
-
-                        if (!CmdTypes.TryGetValue(cmd, out HashSet<Type> types))
-                        {
-                            types = new HashSet<Type>();
-                            CmdTypes[cmd] = types;
-                        }
-                        types.Add(subscriber.MessageType);
-
-                        if (!TypeCmds.TryGetValue(subscriber.MessageType, out HashSet<int> msgCmds))
-                        {
-                            msgCmds = new HashSet<int>();
-                            TypeCmds[subscriber.MessageType] = msgCmds;
-                        }
-                        msgCmds.Add(cmd);
+                        subscribers.Add(subscriber as IActorSubscriber);
                     }
-                    catch(Exception e)
+                    else
                     {
-                        Log.Error(e, LoggerBllType.System);
+                        if (!Subscribers.TryGetValue(cmd, out HashSet<ISubscriber> subscribers))
+                        {
+                            subscribers = new HashSet<ISubscriber>();
+                            Subscribers[cmd] = subscribers;
+                        }
+                        subscribers.Add(subscriber);
                     }
+
+                    if (subscriber.MessageType == null)
+                        continue;
+
+                    if (!CmdTypes.TryGetValue(cmd, out HashSet<Type> types))
+                    {
+                        types = new HashSet<Type>();
+                        CmdTypes[cmd] = types;
+                    }
+                    types.Add(subscriber.MessageType);
+
+                    if (!TypeCmds.TryGetValue(subscriber.MessageType, out HashSet<int> msgCmds))
+                    {
+                        msgCmds = new HashSet<int>();
+                        TypeCmds[subscriber.MessageType] = msgCmds;
+                    }
+                    msgCmds.Add(cmd);
                 }
             }
         }
