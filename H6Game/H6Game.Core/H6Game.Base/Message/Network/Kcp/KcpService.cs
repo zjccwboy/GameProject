@@ -116,7 +116,7 @@ namespace H6Game.Base
                 return;
             }
 
-            if (recvCount == 21)
+            if (recvCount == PacketParser.HeadSize)
             {
                 //握手处理
                 ConnectParser.WriteBuffer(ReuseRecvBytes, 0, recvCount);
