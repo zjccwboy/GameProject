@@ -21,7 +21,7 @@ namespace H6Game.TestControllerClient
                 Thread.Sleep(1);
             }
         }
-
+          
         static int Count;
         static Stopwatch Swatch = new Stopwatch();
 

@@ -109,10 +109,10 @@ namespace H6Game.Base
                 //两个无参方法不能订阅相同的NetCommand
                 if (context.ParameterTypes.Length == 0 && newContext.ParameterTypes.Length == 0)
                     ThrowRepeatError(context, newContext, netCommand);
-
-
+                
                 //两个参数一样的方法不能订阅相同的NetCommand
-                if (context.ParameterTypes[0] == newContext.ParameterTypes[0])
+                if (context.ParameterTypes.Length > 0 && newContext.ParameterTypes.Length > 0 
+                    && context.ParameterTypes[0] == newContext.ParameterTypes[0])
                     ThrowRepeatError(context, newContext, netCommand);
 
                 if(newContext.ParameterTypes.Length == 0)
@@ -136,8 +136,8 @@ namespace H6Game.Base
 
         private static void ThrowRepeatError(MetodContext context, MetodContext newContext, int netCommand)
         {
-            throw new ControllerException($"方法:{context.MethodInfo.ReflectedType.Name}/{context.MethodInfo.Name}" +
-                $"与方法:{newContext.MethodInfo.ReflectedType.Name}/{newContext.MethodInfo.Name}参数相同，" +
+            throw new ControllerException($"方法:{context.MethodInfo.ReflectedType}/{context.MethodInfo}" +
+                $"与方法:{newContext.MethodInfo.ReflectedType}/{newContext.MethodInfo}参数相同，" +
                 $"消息类型相同时不能订阅一样的NetCommand:{netCommand}");
         }
 
@@ -146,10 +146,10 @@ namespace H6Game.Base
             var builder = new StringBuilder();
             foreach (var subscriber in subscribers)
             {
-                builder.Append(nameof(subscriber));
+                builder.Append(subscriber.GetType());
                 builder.Append(",");
             }
-            throw new ControllerException($"方法:{newContext.MethodInfo.ReflectedType.Name}/{newContext.MethodInfo.Name} " +
+            throw new ControllerException($"方法:{newContext.MethodInfo.ReflectedType}/{newContext.MethodInfo} " +
                 $"与类:{builder.ToString()}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
         }
     }

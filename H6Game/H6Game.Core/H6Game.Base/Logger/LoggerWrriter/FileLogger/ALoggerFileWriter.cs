@@ -100,8 +100,10 @@ namespace H6Game.Base
             }
             if (!string.IsNullOrEmpty(entity.FExceptionName))
             {
-                MessageBuilder.AppendLine($"exception name:{entity.FExceptionName}");
-                MessageBuilder.AppendLine($"exception:{ entity.FExceptionInfo}");
+                MessageBuilder.AppendLine();
+                MessageBuilder.AppendLine($"name:{entity.FExceptionName}");
+                MessageBuilder.AppendLine($"message:{entity.FExceptionMessage}");
+                MessageBuilder.AppendLine($"exception:{entity.FExceptionInfo.Trim()}");
             }
             await this.logOutput.WriteLineAsync(MessageBuilder.ToString());
             this.logOutput.Flush();

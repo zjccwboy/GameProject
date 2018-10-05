@@ -37,6 +37,9 @@ namespace H6Game.Base
 
                 foreach (var cmd in cmds)
                 {
+                    //校验订阅的NetCommand是否相同，相同抛出一个异常。
+                    Validate(subscriber, cmd);
+
                     try
                     {
                         if (subscriber is IActorSubscriber)
@@ -138,6 +141,20 @@ namespace H6Game.Base
                 throw new Exception($"NetCommand:{netCommand} 没有ActorSubscriber订阅该消息.");
 
             return value;
+        }
+
+        private static void Validate(ISubscriber subscriber, int netCommand)
+        {
+            if(Subscribers.TryGetValue(netCommand, out HashSet<ISubscriber> oldSubscribers))
+            {
+                foreach(var odlSubscriber in oldSubscribers)
+                {
+                    if(subscriber.MessageType == odlSubscriber.MessageType)
+                    {
+                        throw new SubscribeException($"类:{subscriber.GetType()}与类:{odlSubscriber.GetType()}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
+                    }
+                }
+            }
         }
 
         private static bool ExistType(Type type, int netCommand)

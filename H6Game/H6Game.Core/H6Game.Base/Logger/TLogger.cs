@@ -19,6 +19,9 @@ namespace H6Game.Base
         [BsonElement("EN")]
         public string FExceptionName { get; set; }
 
+        [BsonElement("EM")]
+        public string FExceptionMessage { get; set; }
+
         [BsonElement("EI")]
         public string FExceptionInfo { get; set; }
 

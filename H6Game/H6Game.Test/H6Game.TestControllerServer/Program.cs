@@ -37,16 +37,31 @@ namespace H6Game.TestControllerServer
 
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<DistributionsComponent>();
-            Game.Scene.AddComponent<TestController>();
 
-            while (true)
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                Game.Update();
-                Thread.Sleep(1);
+                Log.Fatal("未处理异常。", e.ExceptionObject as Exception, LoggerBllType.System);
+            };
+
+            try
+            {
+                Game.Scene.AddComponent<MongoConfig>();
+                Game.Scene.AddComponent<DistributionsComponent>();
+                Game.Scene.AddComponent<TestController>();
+
+                while (true)
+                {
+                    Game.Update();
+                    Thread.Sleep(1);
+                }
+            }
+            catch(Exception e)
+            {
+                Log.Fatal("未处理异常。", e, LoggerBllType.System);
+                Console.ReadKey();
             }
         }
     }

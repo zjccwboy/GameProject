@@ -32,6 +32,7 @@ namespace H6Game.Base
             if(exception != null)
             {
                 entity.FExceptionName = exception.GetType().Name;
+                entity.FExceptionMessage = exception.Message;
                 entity.FExceptionInfo = exception.StackTrace;
             }
 
