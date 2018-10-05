@@ -196,9 +196,15 @@ namespace H6Game.Base
                 var response = await (Task<ushort>)context.MethodInfo.Invoke(context.Owner, message);
                 network.Response(response);
             }
+            else if(type == typeof(char))
+            {
+                var response = await (Task<char>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
             else if (typeof(IMessage).IsAssignableFrom(type))
             {
-                var response = await (Task<IMessage>)context.MethodInfo.Invoke(context.Owner, message);
+                var tcs = new TaskCompletionSource<IMessage>(context.MethodInfo.Invoke(context.Owner, message));
+                var response = await tcs.Task;
                 network.Response((object)response);
             }
             else

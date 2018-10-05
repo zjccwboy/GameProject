@@ -7,5 +7,6 @@ namespace H6Game.BaseTest
     public enum NetMessageTypeTest
     {
         TesterMessage = 666666,
+        TesterMyMessage = 7777777,
     }
 }
