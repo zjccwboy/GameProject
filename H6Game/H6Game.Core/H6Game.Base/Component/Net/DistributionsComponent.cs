@@ -6,27 +6,27 @@ using System.Collections.Concurrent;
 namespace H6Game.Base
 {
     [NetCommand(DistributionCMD.AddInServerCmd)]
-    public class DistributionsSubscriber : AMsgSubscriber<NetEndPointMessage>
+    public class DistributionsSubscriber : NetSubscriber<NetEndPointMessage>
     {
-        protected override void Subscribe(Network network, NetEndPointMessage message, int messageCmd)
+        protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
         {
             Game.Scene.GetComponent<DistributionsComponent>().AddServerConnection(network, message);
         }
     }
 
     [NetCommand(DistributionCMD.GetOutServerCmd)]
-    public class OutNetMessageSyncSubscriber : AMsgSubscriber
+    public class OutNetMessageSyncSubscriber : NetSubscriber
     {
-        protected override void Subscribe(Network network, int messageCmd)
+        protected override void Subscribe(Network network, int netCommand)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseOutNetEndPointMessage(network);
         }
     }
 
     [NetCommand(DistributionCMD.GetInServerCmd)]
-    public class InnerMessageSyncSubscriber : AMsgSubscriber
+    public class InnerMessageSyncSubscriber : NetSubscriber
     {
-        protected override void Subscribe(Network network, int messageCmd)
+        protected override void Subscribe(Network network, int netCommand)
         {
             Game.Scene.GetComponent<DistributionsComponent>().ResponseInnerEndPintMessage(network);
         }
@@ -134,7 +134,7 @@ namespace H6Game.Base
             if (InNetMapManager.Existed(message))
                 return;
 
-            AddSession(message);
+            AddNetwork(message);
             if (IsCenterServer)
             {
                 InNetMapManager.Add(network.Channel, message);
@@ -157,12 +157,12 @@ namespace H6Game.Base
             network.Response(InNetMessage);
         }
 
-        private void AddSession(NetEndPointMessage message)
+        private void AddNetwork(NetEndPointMessage message)
         {
             if (Config.IsCenterServer)
                 return;
 
-            //判断是否是本地服务，是排除掉
+            //排除掉本地服务
             if (message == this.Config.GetInnerMessage())
                 return;
 
@@ -216,7 +216,7 @@ namespace H6Game.Base
             if (this.InConnectedNetworks.ContainsKey(hashCode))
                 return;
 
-            //如果存在就不再创建新的Session
+            //如果存在就不再创建新的Network
             if (this.DisconnectedNetworks.ContainsKey(hashCode))
                 return;
 

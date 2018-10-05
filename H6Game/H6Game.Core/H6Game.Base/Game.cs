@@ -11,6 +11,7 @@ namespace H6Game.Base
         {
             ObjectPool.Load();
             ComponentPool.Load();
+            MessageCommandPool.Load();
             MessageSubscriberPool.Load();
 
             Scene = new Scene();

@@ -10,7 +10,7 @@ namespace H6Game.Actor
     /// 订阅与处理Actor新增消息
     /// </summary>
     [NetCommand(NetCommand.AddActorCmd)]
-    public class AddActorSubscriber : AMsgSubscriber<ActorSyncMessage>
+    public class AddActorSubscriber : NetSubscriber<ActorSyncMessage>
     {
         protected override void Subscribe(Network network, ActorSyncMessage message, int messageCmd)
         {
@@ -28,7 +28,7 @@ namespace H6Game.Actor
     /// 订阅与处理Actor删除消息
     /// </summary>
     [NetCommand(NetCommand.RemoveActorCmd)]
-    public class ActorRemoveSubscriber : AMsgSubscriber<ActorSyncMessage>
+    public class ActorRemoveSubscriber : NetSubscriber<ActorSyncMessage>
     {
         protected override void Subscribe(Network network, ActorSyncMessage message, int messageCmd)
         {
@@ -44,7 +44,7 @@ namespace H6Game.Actor
     /// 订阅与回发全量的本地LocalActor信息
     /// </summary>
     [NetCommand(NetCommand.SyncActorInfoCmd)]
-    public class SyncFullActorSubscriber : AMsgSubscriber
+    public class SyncFullActorSubscriber : NetSubscriber
     {
         protected override void Subscribe(Network network, int messageCmd)
         {

@@ -31,7 +31,7 @@ public static class PacketHelper
             packet.HeadBytes[4] |= (byte)(packet.KcpProtocal << 4);
 
         //写MessageId
-        packet.MessageCmd.WriteTo(packet.HeadBytes, 5);
+        packet.NetCommand.WriteTo(packet.HeadBytes, 5);
 
         //写MsgTypeCode
         packet.MsgTypeCode.WriteTo(packet.HeadBytes, 9);
@@ -250,7 +250,7 @@ public static class PacketHelper
 
     private static int GetTypeCode(Type type)
     {
-        return MessageSubscriberPool.GetMsgCode(type);
+        return MessageCommandPool.GetMsgCode(type);
     }
 
     public static T Read<T>(this Packet packet)

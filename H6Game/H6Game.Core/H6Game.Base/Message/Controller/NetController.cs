@@ -3,7 +3,10 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
-    public abstract class H6Controller : IController
+    /// <summary>
+    /// 网络控件组件
+    /// </summary>
+    public abstract class NetController : BaseComponent, IController
     {
         private static Type ValueType { get; } = typeof(IValue);
 
@@ -61,7 +64,7 @@ namespace H6Game.Base
         private static object GetMessage(MetodContext context, Network network)
         {
             var packet = network.RecvPacket;
-            var messageType = MessageSubscriberPool.GetMsgType(packet.MsgTypeCode);
+            var messageType = MessageCommandPool.GetMsgType(packet.MsgTypeCode);
             if (packet.TryRead(messageType, out object message))
             {
                 var msgType = message.GetType();

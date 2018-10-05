@@ -7,7 +7,7 @@ using H6Game.Rpository;
 namespace H6Game.Account
 {
     [NetCommand(NetCommand.ClientLogin)]
-    public class LoginSubscriber : AMsgSubscriber<LoginRequestMessage>
+    public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
         protected override void Subscribe(Network network, LoginRequestMessage message, int messageCmd)
         {

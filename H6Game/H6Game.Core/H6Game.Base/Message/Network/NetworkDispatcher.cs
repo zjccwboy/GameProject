@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using System;
+using System.Collections.Generic;
 
 namespace H6Game.Base
 {
@@ -12,15 +13,17 @@ namespace H6Game.Base
         {
             try
             {
-                if( MetodContextManager.TryGetContext(packet.MessageCmd, out MetodContext context))
+                if( MetodContextPool.TryGetContext(packet.NetCommand, out List<MetodContext> contexts))
                 {
-                    context.Owner.Invoke(context, network);
+                    foreach(var context in contexts)
+                        context.Owner.Invoke(context, network);
+
                     return;
                 }
 
                 if (packet.ActorId > 0)
                 {
-                    var actorSubscribers = MessageSubscriberPool.GetActorSubscriber(packet.MessageCmd);
+                    var actorSubscribers = MessageSubscriberPool.GetActorSubscribers(packet.NetCommand);
                     foreach(var subscriber in actorSubscribers)
                     {
                         subscriber.Receive(network);
@@ -28,7 +31,7 @@ namespace H6Game.Base
                     return;
                 }
 
-                var subscribers = MessageSubscriberPool.GetSubscriber(packet.MessageCmd);
+                var subscribers = MessageSubscriberPool.GetSubscribers(packet.NetCommand);
                 foreach (var subscriber in subscribers)
                 {
                     subscriber.Receive(network);

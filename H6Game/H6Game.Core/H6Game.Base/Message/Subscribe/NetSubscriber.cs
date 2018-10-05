@@ -6,7 +6,7 @@ namespace H6Game.Base
     /// 消息订阅者类
     /// </summary>
     /// <typeparam name="Message"></typeparam>
-    public abstract class AMsgSubscriber<Message> : ISubscriber<Message>
+    public abstract class NetSubscriber<Message> : ISubscriber<Message>
     {
         /// <summary>
         /// 返回数据约定类型
@@ -22,7 +22,7 @@ namespace H6Game.Base
             get
             {
                 if (typeCode <= 0)
-                    typeCode = MessageSubscriberPool.GetMsgCode(this.MessageType);
+                    typeCode = MessageCommandPool.GetMsgCode(this.MessageType);
 
                 return typeCode;
             }
@@ -33,24 +33,24 @@ namespace H6Game.Base
             if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
                 return;
 
-            if (!network.RecvPacket.IsValidMessage(this.MessageType))
+            if (!MessageSubscriberPool.ExistSubscriberCmd(network.RecvPacket.NetCommand, this.MessageType))
                 return;
 
-            var message = network.RecvPacket.GetMessage<Message>();
-            Subscribe(network, message, network.RecvPacket.MessageCmd);
+            var message = network.RecvPacket.Read<Message>();
+            Subscribe(network, message, network.RecvPacket.NetCommand);
         }
 
         /// <summary>
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Subscribe(Network network, Message message, int messageCmd);
+        protected abstract void Subscribe(Network network, Message message, int netCommand);
     }
 
     /// <summary>
     /// 消息订阅者类
     /// </summary>
-    public abstract class AMsgSubscriber : ISubscriber
+    public abstract class NetSubscriber : ISubscriber
     {
         /// <summary>
         /// 返回数据约定类型
@@ -66,13 +66,13 @@ namespace H6Game.Base
             if (network.RecvPacket.MsgTypeCode > 0)
                 return;
 
-            Subscribe(network, network.RecvPacket.MessageCmd);
+            Subscribe(network, network.RecvPacket.NetCommand);
         }
 
         /// <summary>
         /// 消息分发接口
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Subscribe(Network network, int messageCmd);
+        protected abstract void Subscribe(Network network, int netCommand);
     }
 }

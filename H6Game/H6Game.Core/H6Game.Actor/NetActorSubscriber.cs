@@ -7,7 +7,7 @@ namespace H6Game.Actor
     /// Actor消息订阅者类
     /// </summary>
     /// <typeparam name="Message"></typeparam>
-    public abstract class AActorSubscriber<Message> : IActorSubscriber<Message>
+    public abstract class NetActorSubscriber<Message> : IActorSubscriber<Message>
     {
         /// <summary>
         /// 返回数据约定类型
@@ -20,7 +20,7 @@ namespace H6Game.Actor
             get
             {
                 if(typeCode <=0)
-                    typeCode = MessageSubscriberPool.GetMsgCode(this.MessageType);
+                    typeCode = MessageCommandPool.GetMsgCode(this.MessageType);
 
                 return typeCode;
             }
@@ -34,11 +34,11 @@ namespace H6Game.Actor
             if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
                 return;
 
-            if (!network.RecvPacket.IsValidMessage(this.MessageType))
+            if (!MessageSubscriberPool.ExistSubscriberCmd(network.RecvPacket.NetCommand, this.MessageType))
                 return;
 
-            var message = network.RecvPacket.GetMessage<Message>();
-            Subscribe(network, message, network.RecvPacket.MessageCmd, network.RecvPacket.ActorId);
+            var message = network.RecvPacket.Read<Message>();
+            Subscribe(network, message, network.RecvPacket.NetCommand, network.RecvPacket.ActorId);
         }
 
         public BaseActorEntityComponent GetActor(int actorId)
@@ -57,7 +57,7 @@ namespace H6Game.Actor
     /// <summary>
     /// Actor消息订阅者类
     /// </summary>
-    public abstract class AActorSubscriber : IActorSubscriber
+    public abstract class NetActorSubscriber : IActorSubscriber
     {
         /// <summary>
         /// 返回数据约定类型
@@ -76,7 +76,7 @@ namespace H6Game.Actor
             if (network.RecvPacket.ActorId <= 0)
                 throw new NetworkException($"Actor消息分发错误ActorId:{network.RecvPacket.ActorId}");
 
-            Subscribe(network, network.RecvPacket.MessageCmd, network.RecvPacket.ActorId);
+            Subscribe(network, network.RecvPacket.NetCommand, network.RecvPacket.ActorId);
         }
 
         public BaseActorEntityComponent GetActor(int actorId)

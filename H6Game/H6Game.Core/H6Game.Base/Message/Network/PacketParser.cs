@@ -17,7 +17,7 @@ namespace H6Game.Base
         /// <summary>
         /// 消息Msg字段
         /// </summary>
-        public const int Msg = 2;
+        public const int Cmd = 2;
 
         /// <summary>
         /// 消息类型
@@ -147,10 +147,10 @@ namespace H6Game.Base
                             Buffer.UpdateRead(BitFlagSize);
                             ReadLength += BitFlagSize;
                             SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
-                            State = ParseState.Msg;
+                            State = ParseState.Cmd;
                             break;
                         }                        
-                    case ParseState.Msg:
+                    case ParseState.Cmd:
                         {
                             var offset = LengthFlagSize + BitFlagSize;
                             if (Buffer.FirstDataSize >= MessageIdFlagSize)
@@ -167,7 +167,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(MessageIdFlagSize - count);
                             }
                             ReadLength += MessageIdFlagSize;
-                            Packet.MessageCmd = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            Packet.NetCommand = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
                             State = ParseState.MsgType;
                             break;
                         }

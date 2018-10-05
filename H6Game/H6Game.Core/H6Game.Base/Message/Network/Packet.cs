@@ -34,9 +34,9 @@ namespace H6Game.Base
         public byte KcpProtocal;
 
         /// <summary>
-        /// MessageId
+        /// NetCommand
         /// </summary>
-        public int MessageCmd;
+        public int NetCommand;
 
         /// <summary>
         /// 消息类型指定代码
@@ -96,7 +96,7 @@ namespace H6Game.Base
             IsCompress = false;
             IsHeartbeat = false;
             KcpProtocal = 0;
-            MessageCmd = 0;
+            NetCommand = 0;
             RpcId = 0;
             ActorId = 0;
             MsgTypeCode = 0;

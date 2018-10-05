@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace H6Game.TestDistributedNetCore
 {
     [NetCommand(TestCMD.TestCmd)]
-    public class TestSubscriber : AMsgSubscriber<TestMessage>
+    public class TestSubscriber : NetSubscriber<TestMessage>
     {
         protected override void Subscribe(Network network, TestMessage message, int messageCmd)
         {

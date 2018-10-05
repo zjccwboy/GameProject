@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace TestDistributed
 {
     [NetCommand(TestCMD.TestCmd)]
-    public class TestSubscriber : AMsgSubscriber<TestMessage>
+    public class TestSubscriber : NetSubscriber<TestMessage>
     {
         protected override void Subscribe(Network network, TestMessage message, int messageCmd)
         {

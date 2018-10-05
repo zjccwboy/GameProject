@@ -8,7 +8,7 @@ using H6Game.Base;
 
 namespace H6Game.TestControllerServer
 {
-    public class TestController : H6Controller
+    public class TestController : NetController
     {
         [NetCommand(8001)]
         public int TestGetInt()
@@ -41,6 +41,7 @@ namespace H6Game.TestControllerServer
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<DistributionsComponent>();
+            Game.Scene.AddComponent<TestController>();
 
             while (true)
             {

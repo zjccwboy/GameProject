@@ -42,12 +42,15 @@ namespace H6Game.Base
                         TypeComponents[type] = components;
                     }
                     components.Add(component);
-
                 }
             }
 
             if (isNew)
             {
+                if (typeof(IController).IsAssignableFrom(type))
+                {
+                    MetodContextPool.Add((IController)component);
+                }
                 Game.Event.Add(component);
             }
 
@@ -268,9 +271,14 @@ namespace H6Game.Base
             if (TypeComponents.TryGetValue(component.GetType(), out HashSet<BaseComponent> hashVal))
             {
                 if (hashVal.Remove(component))
+                {
+                    if (typeof(IController).IsAssignableFrom(component.GetType()))
+                    {
+                        MetodContextPool.Remove((IController)component);
+                    }
                     return Game.Event.Remove(component);
+                }
             }
-
             return false;
         }
     }
