@@ -26,7 +26,7 @@ namespace H6Game.Base
         private const uint KcpHeartbeatTime = 20 * 1000;
         private const uint TcpHeartbeatTime = 4 * 1000;
         /// <summary>
-        /// 心跳超时时长，服务端4秒,客户端20秒
+        /// 心跳超时时长，TCP 4秒,KCP 20秒
         /// </summary>
         public uint HeartbeatTime
         {
@@ -52,22 +52,22 @@ namespace H6Game.Base
         /// <summary>
         /// 接受连接请求Socket
         /// </summary>
-        protected Socket Acceptor;
+        protected Socket Acceptor { get; set; }
 
         /// <summary>
         /// 网络服务类型
         /// </summary>
-        protected NetServiceType ServiceType;
+        protected NetServiceType ServiceType { get; set; }
 
         /// <summary>
         /// 客户端连接ANetChannel
         /// </summary>
-        protected ANetChannel ClientChannel;
+        protected ANetChannel ClientChannel { get; set; }
 
         /// <summary>
         /// 连接通道池
         /// </summary>
-        public readonly ConcurrentDictionary<long, ANetChannel> Channels = new ConcurrentDictionary<long, ANetChannel>();
+        public ConcurrentDictionary<long, ANetChannel> Channels { get; } = new ConcurrentDictionary<long, ANetChannel>();
 
         /// <summary>
         /// 消息会话
@@ -128,6 +128,7 @@ namespace H6Game.Base
                 var  timeSendSpan = now - this.ClientChannel.LastSendTime;
                 if (timeSendSpan > HeartbeatTime)
                 {
+                    Log.Debug($"发送心跳包->{this.ClientChannel.RemoteEndPoint}.", LoggerBllType.System);
                     this.ClientChannel.LastSendTime = TimeUitls.Now();
                     this.ClientChannel.SendParser.Packet.IsHeartbeat = true;
                     this.ClientChannel.SendParser.Packet.WriteTo(null);
@@ -144,9 +145,9 @@ namespace H6Game.Base
                 foreach (var channel in channels)
                 {
                     var timeSpan = now - channel.LastRecvTime;
-                    if (timeSpan > HeartbeatTime)
+                    if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
                     {
-                        Log.Info($"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
+                        Log.Debug($"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
                         channel.DisConnect();
                     }
                 }
@@ -170,7 +171,7 @@ namespace H6Game.Base
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                Log.Info($"客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                Log.Debug($"客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 OnServerDisconnected?.Invoke(channel);
             }
         }
@@ -183,7 +184,7 @@ namespace H6Game.Base
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                Log.Info($"与服务端{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                Log.Debug($"与服务端{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 OnClientDisconnected?.Invoke(value);
             }
         }

@@ -225,7 +225,7 @@ namespace H6Game.Base
         {
             try
             {
-                Log.Info($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+                Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
                 channel.Connected = true;
                 AddChannel(channel);
                 channel.OnDisConnect = HandleDisConnectOnServer;
@@ -246,7 +246,7 @@ namespace H6Game.Base
         {
             try
             {
-                Log.Info($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
+                Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
                 channel.Connected = true;
                 this.AddChannel(channel);
                 channel.OnDisConnect = HandleDisConnectOnClient;

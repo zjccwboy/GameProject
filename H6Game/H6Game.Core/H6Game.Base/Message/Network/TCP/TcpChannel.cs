@@ -310,6 +310,10 @@ namespace H6Game.Base
                             OnReceive?.Invoke(packet);
                         }
                     }
+                    else
+                    {
+                        Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
+                    }
 
                     packet.BodyStream.SetLength(0);
                     packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
