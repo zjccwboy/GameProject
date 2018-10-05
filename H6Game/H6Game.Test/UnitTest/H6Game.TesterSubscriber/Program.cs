@@ -175,6 +175,7 @@ namespace H6Game.TesterSubscriber
             SubShort();
             SubUShort();
             SubChar();
+            SubClass();
         }
 
         private static async void SubEmpty()
@@ -330,6 +331,21 @@ namespace H6Game.TesterSubscriber
             if ('a' == charResult.Content)
             {
                 Console.WriteLine("SubSByte success.");
+            }
+        }
+
+        private static async void SubClass()
+        {
+            var network = Game.Scene.GetComponent<OuterComponent>().Network;
+            var message = new TesterMessage
+            {
+                Message = "测试消息！",
+                TestId = 1024,
+            };
+            var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, (int)NetCommandTest.SubClass);
+            if (message.Message == charResult.Content.Message && message.TestId == charResult.Content.TestId)
+            {
+                Console.WriteLine("SubClass success.");
             }
         }
     }
