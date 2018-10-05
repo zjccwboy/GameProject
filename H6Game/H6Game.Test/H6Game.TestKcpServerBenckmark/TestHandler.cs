@@ -23,7 +23,7 @@ namespace H6Game.TestKcpServerBenckmark
     }
 
     [ProtoBuf.ProtoContract]
-    [MessageType(MessageType.TestGServerTestMessage)]
+    [NetMessageType(MessageType.TestGServerTestMessage)]
     public class TestMessage : IMessage
     {
         [ProtoBuf.ProtoMember(1)]

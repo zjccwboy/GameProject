@@ -22,7 +22,7 @@ namespace H6Game.TestDistributedNetCore
     }
 
     [ProtoBuf.ProtoContract]
-    [MessageType(MessageType.TestDistributedTestMessage)]
+    [NetMessageType(MessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [BsonElement]

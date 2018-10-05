@@ -31,7 +31,7 @@ namespace H6Game.Base
             var msgTypes = ObjectPool.GetTypes<IMessage>();
             foreach (var type in msgTypes)
             {
-                var attribute = type.GetCustomAttribute<MessageTypeAttribute>();
+                var attribute = type.GetCustomAttribute<NetMessageTypeAttribute>();
 
                 if (attribute == null)
                     throw new Exception($"类型:{type}必须有MessageTypeAttribute特性器指定消息类型.");

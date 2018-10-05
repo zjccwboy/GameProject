@@ -21,7 +21,7 @@ namespace TestDistributed
     }
 
     [ProtoBuf.ProtoContract]
-    [MessageType(MessageType.TestDistributedTestMessage)]
+    [NetMessageType(MessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [BsonElement]
