@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public class KcpService : ANetService
     {
-        private readonly PacketParser ConnectParser = new PacketParser(17);
+        private readonly PacketParser ConnectParser = new PacketParser(PacketParser.HeadSize);
         private readonly IPEndPoint EndPoint;
         private EndPoint ReuseEndPoint = new IPEndPoint(IPAddress.Any, 0);
         private readonly byte[] ReuseRecvBytes = new byte[1400];
