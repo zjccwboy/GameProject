@@ -5,7 +5,7 @@ using ProtoBuf;
 
 namespace H6Game.Hotfix.Messages.OutNet
 {
-    [NetMessageType(MessageType.LoginResponeMessage)]
+    [NetMessageType(NetMessageType.LoginResponeMessage)]
     [ProtoContract]
     public class LoginResponeMessage : LoginMessage
     {
@@ -78,7 +78,7 @@ namespace H6Game.Hotfix.Messages.OutNet
     }
 
 
-    [NetMessageType(MessageType.LoginRequestMessage)]
+    [NetMessageType(NetMessageType.LoginRequestMessage)]
     [ProtoContract]
     public class LoginRequestMessage : LoginMessage
     {
@@ -110,7 +110,7 @@ namespace H6Game.Hotfix.Messages.OutNet
     }
 
 
-    [NetMessageType(MessageType.LogoutRequestMessage)]
+    [NetMessageType(NetMessageType.LogoutRequestMessage)]
     [ProtoContract]
     public class LogoutRequestMessage : IMessage
     {
