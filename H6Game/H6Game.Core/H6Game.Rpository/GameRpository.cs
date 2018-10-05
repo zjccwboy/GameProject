@@ -6,7 +6,7 @@ using H6Game.Hotfix.Entities;
 namespace H6Game.Rpository
 {
     [SingleCase]
-    public class GameRpository : ARpository<TGame>
+    public class GameRpository : DBRpository<TGame>
     {
         public async Task<TGame> GetById(string objectId)
         {

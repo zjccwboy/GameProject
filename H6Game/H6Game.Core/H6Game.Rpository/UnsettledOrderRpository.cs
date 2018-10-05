@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace H6Game.Rpository
 {
     [SingleCase]
-    public class UnsettledOrderRpository : ARpository<TUnsettledOrder>
+    public class UnsettledOrderRpository : DBRpository<TUnsettledOrder>
     {
         public async Task<TUnsettledOrder> GetById(string objectId)
         {

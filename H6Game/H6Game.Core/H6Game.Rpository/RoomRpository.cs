@@ -7,7 +7,7 @@ using H6Game.Hotfix.Entities.Enums;
 namespace H6Game.Rpository
 {
     [SingleCase]
-    public sealed class RoomRpository : ARpository<TRoom>
+    public sealed class RoomRpository : DBRpository<TRoom>
     {
         public async Task<TRoom> GetById(string objectId)
         {

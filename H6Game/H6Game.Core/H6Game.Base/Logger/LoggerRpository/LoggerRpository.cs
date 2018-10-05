@@ -3,7 +3,7 @@
 namespace H6Game.Base
 {
     [SingleCase]
-    public class LoggerRpository : ARpository<TLogger>
+    public class LoggerRpository : DBRpository<TLogger>
     {
         public override DBType DBType => DBType.LoggerDb;
         public async Task WriteLogger(TLogger loggerEntity)
