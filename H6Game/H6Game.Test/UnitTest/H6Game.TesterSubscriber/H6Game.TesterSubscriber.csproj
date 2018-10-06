@@ -41,7 +41,8 @@
     <Reference Include="H6Game.Hotfix">
       <HintPath>..\..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
     </Reference>
-    <Reference Include="H6Game.TesterMember">
+    <Reference Include="H6Game.TesterMember, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\H6Game.TesterMember\bin\Debug\netstandard2.0\H6Game.TesterMember.dll</HintPath>
     </Reference>
     <Reference Include="System" />

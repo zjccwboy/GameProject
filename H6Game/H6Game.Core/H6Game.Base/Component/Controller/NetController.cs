@@ -65,77 +65,72 @@ namespace H6Game.Base
         {
             var packet = network.RecvPacket;
             var messageType = MessageCommandPool.GetMsgType(packet.MsgTypeCode);
-            if (packet.TryRead(messageType, out object message))
-            {                
-                var type = context.ParameterTypes[0];
-                var msgType = message.GetType();
-                var isValue = ValueType.IsAssignableFrom(msgType) & type != msgType;
-                if (isValue)
+            if (!packet.TryRead(messageType, out object message))
+                throw new NetworkException($"反序列化类型:{messageType}失败");
+
+            var type = context.ParameterTypes[0];
+            var msgType = message.GetType();
+            var isValue = ValueType.IsAssignableFrom(msgType) & type != msgType;
+            if (isValue)
+            {
+                if (type == typeof(int))
                 {
-                    if (type == typeof(string))
-                    {
-                        return (string)(MyString)message;
-                    }
-                    else if (type == typeof(int))
-                    {
-                        return (int)(MyInt32)message;
-                    }
-                    else if (type == typeof(uint))
-                    {
-                        return (uint)(MyUInt32)message;
-                    }
-                    else if (type == typeof(long))
-                    {
-                        return (long)(MyLong)message;
-                    }
-                    else if (type == typeof(ulong))
-                    {
-                        return (ulong)(MyULong)message;
-                    }
-                    else if (type == typeof(float))
-                    {
-                        return (float)(MyFloat)message;
-                    }
-                    else if (type == typeof(decimal))
-                    {
-                        return (decimal)(MyDecimal)message;
-                    }
-                    else if (type == typeof(double))
-                    {
-                        return (double)(MyDouble)message;
-                    }
-                    else if (type == typeof(byte))
-                    {
-                        return (byte)(MyByte)message;
-                    }
-                    else if (type == typeof(sbyte))
-                    {
-                        return (sbyte)(MySByte)message;
-                    }
-                    else if (type == typeof(bool))
-                    {
-                        return (bool)(MyBoolean)message;
-                    }
-                    else if (type == typeof(short))
-                    {
-                        return (short)(MyShort)message;
-                    }
-                    else if (type == typeof(ushort))
-                    {
-                        return (ushort)(MyUShort)message;
-                    }
-                    else if (type == typeof(char))
-                    {
-                        return (char)(MyChar)message;
-                    }
-                    return ValueHelper.GetValue(message);
+                    return (int)(MyInt32)message;
                 }
-                else
+                else if (type == typeof(uint))
                 {
-                    return message;
+                    return (uint)(MyUInt32)message;
                 }
+                else if (type == typeof(long))
+                {
+                    return (long)(MyLong)message;
+                }
+                else if (type == typeof(ulong))
+                {
+                    return (ulong)(MyULong)message;
+                }
+                else if (type == typeof(float))
+                {
+                    return (float)(MyFloat)message;
+                }
+                else if (type == typeof(decimal))
+                {
+                    return (decimal)(MyDecimal)message;
+                }
+                else if (type == typeof(double))
+                {
+                    return (double)(MyDouble)message;
+                }
+                else if (type == typeof(byte))
+                {
+                    return (byte)(MyByte)message;
+                }
+                else if (type == typeof(sbyte))
+                {
+                    return (sbyte)(MySByte)message;
+                }
+                else if (type == typeof(bool))
+                {
+                    return (bool)(MyBoolean)message;
+                }
+                else if (type == typeof(short))
+                {
+                    return (short)(MyShort)message;
+                }
+                else if (type == typeof(ushort))
+                {
+                    return (ushort)(MyUShort)message;
+                }
+                else if (type == typeof(char))
+                {
+                    return (char)(MyChar)message;
+                }
+                return ValueHelper.GetValue(message);
             }
-            throw new NetworkException($"反序列化类型:{messageType}失败");
+            else
+            {
+                return message;
+            }
         }
 
         private static void InvokeSync(MetodContext context, Network network, object message)
