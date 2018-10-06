@@ -42,48 +42,28 @@ namespace H6Game.TestControllerClient
         private static async Task Call()
         {
             var network = Game.Scene.GetComponent<OuterComponent>().Network;
-            //var result = await network.CallMessageAsync<int>(8001);
-            //if (!result.Result)
-            //{
-            //    Log.Error($"RPC请求失败。", LoggerBllType.System);
-            //}
 
-            //if (result.Content != 100)
-            //{
-            //    Log.Error($"解包出错。", LoggerBllType.System);
-            //}
-
-            //var result = await network.CallMessageAsync<int>(1000, 8002);
-            //if (!result.Result)
-            //{
-            //    Log.Error($"RPC请求失败。", LoggerBllType.System);
-            //}
-
-            //if (result.Content != 1000)
-            //{
-            //    Log.Error($"解包出错。", LoggerBllType.System);
-            //}
-            //network.Send(8003);
-
-            var result = await network.CallMessageAsync<int>(8004);
-            if (!result.Result)
+            for(var i = 0; i < 10000; i++)
             {
-                Log.Error($"RPC请求失败。", LoggerBllType.System);
-            }
+                var result = await network.CallMessageAsync<int>(i, 8004);
+                if (!result.Result)
+                {
+                    Log.Error($"RPC请求失败。", LoggerBllType.System);
+                }
 
-            if (result.Content != 100)
-            {
-                Log.Error($"解包出错。", LoggerBllType.System);
-            }
+                if (result.Content != i)
+                {
+                    Log.Error($"解包出错。", LoggerBllType.System);
+                }
 
-            Count++;
-            if (Swatch.ElapsedMilliseconds >= 1000)
-            {
-                Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
-                Swatch.Restart();
-                Count = 0;
+                Count++;
+                if (Swatch.ElapsedMilliseconds >= 1000)
+                {
+                    Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                    Swatch.Restart();
+                    Count = 0;
+                }
             }
-
         }
     }
 }

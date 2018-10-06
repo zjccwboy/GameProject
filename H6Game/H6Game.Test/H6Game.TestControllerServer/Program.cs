@@ -29,9 +29,9 @@ namespace H6Game.TestControllerServer
         }
 
         [NetCommand(8004)]
-        public Task<int> TestGetTaskInt()
+        public Task<int> TestGetTaskInt(int data)
         {
-            return Task.FromResult(100);
+            return Task.FromResult(data);
         }
     }
 
