@@ -9,6 +9,7 @@ namespace H6Game.Base
         Ignore,
 
         #region 值类型 1-100
+
         String,
         Int,
         Uint,
@@ -25,6 +26,24 @@ namespace H6Game.Base
         BooLean,
         DateTime,
         Guid,
+
+        MyString,
+        MyInt,
+        MyUint,
+        MyLong,
+        MyULong,
+        MyShort,
+        MyUShort,
+        MyFloat,
+        MyDouble,
+        MyDecimal,
+        MyByte,
+        MySbyte,
+        MyChar,
+        MyBooLean,
+        MyDateTime,
+        MyGuid,
+
         #endregion
     }
 }

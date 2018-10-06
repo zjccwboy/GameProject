@@ -347,8 +347,7 @@ internal static class PacketHelper
         var bytes = packet.BodyStream.GetBuffer();
         if (type == SType)
         {
-            var data = Encoding.UTF8.GetString(bytes, 0, (int)packet.BodyStream.Length);
-            value = Value<string>.Instance.GetValue(data);
+            value = (MyString)Encoding.UTF8.GetString(bytes, 0, (int)packet.BodyStream.Length);
             return true;
         }
 
@@ -357,80 +356,67 @@ internal static class PacketHelper
         {
             case TypeCode.Int32:
                 {
-                    var data = BitConverter.ToInt32(bytes, 0);
-                    value = Value<int>.Instance.GetValue(data);
+                    value = (MyInt32)BitConverter.ToInt32(bytes, 0);
                     return true;
                 }
             case TypeCode.UInt32:
                 {
-                    var data = BitConverter.ToUInt32(bytes, 0);
-                    value = Value<uint>.Instance.GetValue(data);
+                    value = (MyUInt32)BitConverter.ToUInt32(bytes, 0);
                     return true;
                 }
             case TypeCode.Boolean:
                 {
-                    var data = BitConverter.ToBoolean(bytes, 0);
-                    value = Value<bool>.Instance.GetValue(data);
+                    value = (MyBoolean)BitConverter.ToBoolean(bytes, 0);
                     return true;
                 }
             case TypeCode.Int64:
                 {
-                    var data = BitConverter.ToInt64(bytes, 0);
-                    value = Value<long>.Instance.GetValue(data);
+                    value = (MyLong)BitConverter.ToInt64(bytes, 0);
                     return true;
                 }
             case TypeCode.UInt64:
                 {
-                    var data = BitConverter.ToUInt64(bytes, 0);
-                    value = Value<ulong>.Instance.GetValue(data);
+                    value = (MyULong)BitConverter.ToUInt64(bytes, 0);
                     return true;
                 }
             case TypeCode.Single:
                 {
-                    var data = BitConverter.ToSingle(bytes, 0);
-                    value = Value<float>.Instance.GetValue(data);
+                    value = (MyFloat)BitConverter.ToSingle(bytes, 0);
                     return true;
                 }
             case TypeCode.Double:
                 {
-                    var data = BitConverter.ToDouble(bytes, 0);
-                    value = Value<double>.Instance.GetValue(data);
+                    value = (MyDouble)BitConverter.ToDouble(bytes, 0);
                     return true;
                 }
             case TypeCode.Decimal:
                 {
-                    var data = BitConverter.ToDouble(bytes, 0);
-                    value = Value<decimal>.Instance.GetValue((decimal)data);
+                    value = (MyDecimal)(decimal)BitConverter.ToDouble(bytes, 0);
                     return true;
                 }
             case TypeCode.Byte:
                 {
-                    var data = bytes[0];
-                    value = Value<byte>.Instance.GetValue(data);
+                    value = (MyByte)bytes[0];
                     return true;
                 }
             case TypeCode.SByte:
                 {
-                    var data = (sbyte)bytes[0];
-                    value = Value<sbyte>.Instance.GetValue(data);
+                    value = (MySByte)(sbyte)bytes[0];
                     return true;
                 }
             case TypeCode.Char:
                 {
-                    var data = BitConverter.ToChar(bytes, 0);
-                    value = Value<char>.Instance.GetValue(data);
+                    value = (MyChar)BitConverter.ToChar(bytes, 0);
                     return true;
                 }
             case TypeCode.Int16:
                 {
-                    var data = BitConverter.ToInt16(bytes, 0);
-                    value = Value<short>.Instance.GetValue(data);
+                    value = (MyShort)BitConverter.ToInt16(bytes, 0);
                     return true;
                 }
             case TypeCode.UInt16:
                 {
-                    var data = BitConverter.ToUInt16(bytes, 0);
-                    value = Value<ushort>.Instance.GetValue(data);
+                    value = (MyUShort)BitConverter.ToUInt16(bytes, 0);
                     return true;
                 }
         }

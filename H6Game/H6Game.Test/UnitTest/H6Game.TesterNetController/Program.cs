@@ -216,74 +216,74 @@ namespace H6Game.TesterNetController
 
 
             [NetCommand(NetCommandTest.SubIntTaskValue)]
-            public Task<int> SubIntTask(Value<int> data)
+            public Task<int> SubIntTask(MyInt32 data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubUIntTaskValue)]
-            public Task<uint> SubUIntTask(Value<uint> data)
+            public Task<uint> SubUIntTask(MyUInt32 data)
             {
                 return Task.FromResult(data.Data);
             }
 
 
             [NetCommand(NetCommandTest.SubLongTaskValue)]
-            public Task<long> SubLongTask(Value<long> data)
+            public Task<long> SubLongTask(MyLong data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubULongTaskValue)]
-            public Task<ulong> SubULongTask(Value<ulong> data)
+            public Task<ulong> SubULongTask(MyULong data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubFloatTaskValue)]
-            public Task<float> SubFloatTask(Value<float> data)
+            public Task<float> SubFloatTask(MyFloat data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubDoubleTaskValue)]
-            public Task<double> SubDoubleTask(Value<double> data)
+            public Task<double> SubDoubleTask(MyDouble data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubDecimalTaskValue)]
-            public Task<decimal> SubDecimalTask(Value<decimal> data)
+            public Task<decimal> SubDecimalTask(MyDecimal data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubByteTaskValue)]
-            public Task<byte> SubByteTask(Value<byte> data)
+            public Task<byte> SubByteTask(MyByte data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubSByteTaskValue)]
-            public Task<sbyte> SubSByteTask(Value<sbyte> data)
+            public Task<sbyte> SubSByteTask(MySByte data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubShortTaskValue)]
-            public Task<short> SubShortTask(Value<short> data)
+            public Task<short> SubShortTask(MyShort data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubUShortTaskValue)]
-            public Task<ushort> SubUShortTask(Value<ushort> data)
+            public Task<ushort> SubUShortTask(MyUShort data)
             {
                 return Task.FromResult(data.Data);
             }
 
             [NetCommand(NetCommandTest.SubCharTaskValue)]
-            public Task<char> SubCharTask(Value<char> data)
+            public Task<char> SubCharTask(MyChar data)
             {
                 return Task.FromResult(data.Data);
             }
