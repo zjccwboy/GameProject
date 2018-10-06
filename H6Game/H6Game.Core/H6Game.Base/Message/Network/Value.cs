@@ -1,10 +1,7 @@
-﻿
-
-using System;
+﻿using System;
 
 namespace H6Game.Base
 {
-
     public sealed class MyInt32 : Value<int>
     {
         private static MyInt32 Instace { get; } = new MyInt32();
@@ -192,22 +189,6 @@ namespace H6Game.Base
         }
 
         public static explicit operator ushort(MyUShort value)
-        {
-            return value.Data;
-        }
-    }
-
-    public sealed class MyString : Value<string>
-    {
-        private static MyString Instace { get; } = new MyString();
-
-        public static explicit operator MyString(string data)
-        {
-            Instace.Data = data;
-            return Instace;
-        }
-
-        public static explicit operator string(MyString value)
         {
             return value.Data;
         }

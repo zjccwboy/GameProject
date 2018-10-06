@@ -153,6 +153,14 @@ internal static class PacketHelper
         {
             data = (MyChar)Serializer.Deserialize<char>(packet.BodyStream);
         }
+        else if(type == typeof(DateTime))
+        {
+            data = (MyDateTime)Serializer.Deserialize<DateTime>(packet.BodyStream);
+        }
+        else if(type == typeof(Guid))
+        {
+            data = (MyGuid)Serializer.Deserialize<Guid>(packet.BodyStream);
+        }
         else
         {
             data = Serializer.Deserialize(type, packet.BodyStream);

@@ -125,7 +125,15 @@ namespace H6Game.Base
                 {
                     return (char)(MyChar)message;
                 }
-                return ValueHelper.GetValue(message);
+                else if(type == typeof(DateTime))
+                {
+                    return (DateTime)(MyDateTime)message;
+                }
+                else if(type == typeof(Guid))
+                {
+                    return (Guid)(MyGuid)message;
+                }
+                throw new NetworkException($"为定义的值类型:{messageType}");
             }
             else
             {

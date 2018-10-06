@@ -27,23 +27,6 @@ namespace H6Game.Base
         DateTime,
         Guid,
 
-        MyString,
-        MyInt,
-        MyUint,
-        MyLong,
-        MyULong,
-        MyShort,
-        MyUShort,
-        MyFloat,
-        MyDouble,
-        MyDecimal,
-        MyByte,
-        MySbyte,
-        MyChar,
-        MyBooLean,
-        MyDateTime,
-        MyGuid,
-
         #endregion
     }
 }
