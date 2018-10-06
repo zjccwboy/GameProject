@@ -293,16 +293,8 @@ internal static class PacketHelper
             return true;
         }
 
-        try
-        {
-            data = Serializer.Deserialize<T>(packet.BodyStream);
-            return true;
-        }
-        catch
-        {
-            data = default;
-            return false;
-        }
+        data = Serializer.Deserialize<T>(packet.BodyStream);
+        return true;
     }
 
     public static bool TryRead(this Packet packet, Type type, out object data)
@@ -322,16 +314,8 @@ internal static class PacketHelper
         if (TryGetValueType(packet, type, out data))
             return true;
 
-        try
-        {
-            data = Serializer.Deserialize(type, packet.BodyStream);
-            return true;
-        }
-        catch
-        {
-            data = default;
-            return false;
-        }
+        data = Serializer.Deserialize(type, packet.BodyStream);
+        return true;
     }
 
     private static readonly Type SType = typeof(string);
