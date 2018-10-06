@@ -110,14 +110,7 @@ namespace H6Game.Base
             this.NService.Update();
         }
         
-        /// <summary>
-        /// 通知消息
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
-        internal void Send<TRequest>(ANetChannel channel, TRequest data, int netCommand, int rpcId)
+        internal void Send<TSender>(ANetChannel channel, TSender data, int netCommand, int rpcId)
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -125,13 +118,6 @@ namespace H6Game.Base
             packet.WriteTo(data);
         }
 
-        /// <summary>
-        /// 通知消息
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
         internal void Send(ANetChannel channel, object data, int netCommand, int rpcId)
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
@@ -140,13 +126,6 @@ namespace H6Game.Base
             packet.WriteTo(data);
         }
 
-        /// <summary>
-        /// 通知消息
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
         internal void Send(ANetChannel channel, int netCommand, int rpcId)
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
@@ -155,20 +134,6 @@ namespace H6Game.Base
             packet.WriteTo();
         }
 
-        private void SetHead(Packet packet, int netCommand, int rpcId)
-        {
-            packet.NetCommand = netCommand;
-            packet.RpcId = rpcId;
-        }
-
-        /// <summary>
-        /// 订阅消息
-        /// </summary>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <param name="channel"></param>
-        /// <param name="data"></param>
-        /// <param name="notificationAction"></param>
-        /// <param name="netCommand"></param>
         internal void Subscribe<TRequest>(ANetChannel channel, TRequest data, Action<Packet> notificationAction, int netCommand)
         {
             var rpcId = channel.RpcId;
@@ -176,13 +141,6 @@ namespace H6Game.Base
             Send(channel, data, netCommand, rpcId);
         }
 
-        /// <summary>
-        /// 订阅消息
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="notificationAction"></param>
-        /// <param name=""></param>
-        /// <param name="netCommand"></param>
         internal void Subscribe(ANetChannel channel, Action<Packet> notificationAction, int netCommand)
         {
             var rpcId = channel.RpcId;
@@ -190,68 +148,28 @@ namespace H6Game.Base
             Send(channel, netCommand, rpcId);
         }
 
-        /// <summary>
-        /// 给所有客户端广播一条消息
-        /// </summary>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
-        internal void Broadcast<TRequest>(TRequest data, int netCommand, int rpcId)
+        internal void Broadcast<TRequest>(TRequest data, int netCommand)
         {
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)
             {
-                Send(channel, data, netCommand, rpcId);
+                Send(channel, data, netCommand, 0);
             }
         }
 
-        /// <summary>
-        /// 给所有客户端广播一条消息
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
-        internal void Broadcast(int netCommand, int rpcId)
+        internal void Broadcast(int netCommand)
         {
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)
             {
-                Send(channel, netCommand, rpcId);
+                Send(channel, netCommand, 0);
             }
         }
 
-        /// <summary>
-        /// 给一组客户端广播一条消息
-        /// </summary>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <param name="channels"></param>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
-        internal void Broadcast<TRequest>(IEnumerable<ANetChannel> channels ,TRequest data, int netCommand, int rpcId)
-            where TRequest : class
+        private void SetHead(Packet packet, int netCommand, int rpcId)
         {
-            foreach (var channel in channels)
-            {
-                Send(channel, data, netCommand, rpcId);
-            }
-        }
-
-        /// <summary>
-        /// 给一组客户端广播一条消息
-        /// </summary>
-        /// <typeparam name="TRequest"></typeparam>
-        /// <param name="channels"></param>
-        /// <param name="data"></param>
-        /// <param name="netCommand"></param>
-        /// <param name="rpcId"></param>
-        internal void Broadcast(IEnumerable<ANetChannel> channels, int netCommand, int rpcId)
-        {
-            foreach (var channel in channels)
-            {
-                Send(channel, netCommand, rpcId);
-            }
+            packet.NetCommand = netCommand;
+            packet.RpcId = rpcId;
         }
 
         public void Dispose()

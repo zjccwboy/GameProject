@@ -9,10 +9,10 @@ public static class NetworkHelper
     /// <summary>
     /// 回发消息，回发的消息所有的协议与接收到的消息保持一致
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TSender"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void Response<TRequest>(this Network network, TRequest data)
+    public static void Response<TSender>(this Network network, TSender data)
     {
         network.Session.Send(network.Channel, data, network.RecvPacket.NetCommand, network.RecvPacket.RpcId);
     }
@@ -32,11 +32,11 @@ public static class NetworkHelper
     /// <summary>
     /// 发送消息
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TSender"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">表示这条消息指令</param>
-    public static void Send<TRequest>(this Network network, TRequest data, int netCommand)
+    public static void Send<TSender>(this Network network, TSender data, int netCommand)
     {
         network.Session.Send(network.Channel, data, netCommand, 0);
     }
@@ -133,13 +133,13 @@ public static class NetworkHelper
     /// <summary>
     /// 给所有Socket连接广播一条消息
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TSender"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TRequest>(this Network network, TRequest data, int netCommand)
+    public static void Broadcast<TSender>(this Network network, TSender data, int netCommand)
     {
-        network.Session.Broadcast(data, netCommand, 0);
+        network.Session.Broadcast(data, netCommand);
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void Broadcast(this Network network, int netCommand)
     {
-        network.Session.Broadcast(netCommand, 0);
+        network.Session.Broadcast(netCommand);
     }
     #endregion Broadcast
 
@@ -157,11 +157,11 @@ public static class NetworkHelper
     /// <summary>
     /// 给一组Socket连接网络广播一条消息
     /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TSender"></typeparam>
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TRequest>(this IEnumerable<Network> networks, TRequest data, int netCommand)
+    public static void Broadcast<TSender>(this IEnumerable<Network> networks, TSender data, int netCommand)
     {
         foreach (var network in networks)
         {
