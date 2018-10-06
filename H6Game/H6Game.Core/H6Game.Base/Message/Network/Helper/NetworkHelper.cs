@@ -352,198 +352,6 @@ public static class NetworkHelper
     /// 订阅一条RPC消息
     /// </summary>
     /// <typeparam name="Request"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int netCommand) where Request : class
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, string data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, int data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, uint data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, bool data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, long data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, ulong data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, float data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, double data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, decimal data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, byte data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, sbyte data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, char data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, short data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage(this Network network, ushort data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <typeparam name="Request"></typeparam>
     /// <typeparam name="Response"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
@@ -1512,5 +1320,201 @@ public static class NetworkHelper
             network.Send(data, netCommand);
         }
     }
+    #endregion
+
+    #region Private
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <typeparam name="Request"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int netCommand) where Request : class
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, string data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, int data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, uint data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, bool data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, long data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, ulong data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, float data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, double data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, decimal data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, byte data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, sbyte data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, char data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, short data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
+    /// <summary>
+    /// 订阅一条RPC消息
+    /// </summary>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="notificationAction">订阅回调</param>
+    /// <param name="netCommand">消息指令</param>
+    private static void CallMessage(this Network network, ushort data, Action<Packet> notificationAction, int netCommand)
+    {
+        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
+    }
+
     #endregion
 }
