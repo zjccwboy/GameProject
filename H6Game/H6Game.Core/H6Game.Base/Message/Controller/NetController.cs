@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 网络控件组件
+    /// 网络控制器组件
     /// </summary>
     public abstract class NetController : BaseComponent, IController
     {

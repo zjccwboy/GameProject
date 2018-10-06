@@ -39,9 +39,6 @@ public static class PacketHelper
         //写RpcId
         packet.RpcId.WriteTo(packet.HeadBytes, 13);
 
-        //写ActorId
-        packet.ActorId.WriteTo(packet.HeadBytes, 17);
-
         return packet.HeadBytes;
     }
 

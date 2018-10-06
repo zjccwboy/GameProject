@@ -49,11 +49,6 @@ namespace H6Game.Base
         public int RpcId;
 
         /// <summary>
-        /// Actor消息
-        /// </summary>
-        public int ActorId;
-
-        /// <summary>
         /// 包头字节数组
         /// </summary>
         public byte[] HeadBytes { get; } = new byte[PacketParser.HeadSize];
@@ -98,7 +93,6 @@ namespace H6Game.Base
             KcpProtocal = 0;
             NetCommand = 0;
             RpcId = 0;
-            ActorId = 0;
             MsgTypeCode = 0;
 
             this.BodyStream.Seek(0, SeekOrigin.Begin);

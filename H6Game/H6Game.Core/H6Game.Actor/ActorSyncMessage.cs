@@ -5,7 +5,7 @@ namespace H6Game.Actor
 {
     [NetMessageType(SysNetMessageType.ActorMessage)]
     [ProtoContract]
-    public class ActorSyncMessage : IMessage
+    public class ActorSyncMessage : IActorMessage
     {
         [ProtoMember(1)]
         public int ActorId { get; set; }

@@ -30,9 +30,9 @@ namespace H6Game.Actor
             Game.Scene.GetComponent<ActorPoolComponent>().AddLocal(this);
         }
 
-        public override void SetRemote(string objectId, Network network)
+        public override void SetRemote(Network network, string objectId, int actorId)
         {
-            this.ActorEntity.ActorId = network.RecvPacket.ActorId;
+            this.ActorEntity.ActorId = actorId;
             this.ActorEntity.Id = objectId;
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.Network = network;
@@ -47,6 +47,6 @@ namespace H6Game.Actor
         public ActorEntity ActorEntity { get; } = new ActorEntity();
         public bool IsLocalActor { get; protected set; }
         public abstract ActorType ActorType { get;}
-        public abstract void SetRemote(string objectId, Network network);
+        public abstract void SetRemote(Network network, string objectId, int actorId);
     }
 }

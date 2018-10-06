@@ -11,7 +11,6 @@ namespace H6Game.Base
     public static class MessageSubscriberPool
     {
         private static Dictionary<int, HashSet<ISubscriber>> Subscribers { get; } = new Dictionary<int, HashSet<ISubscriber>>();
-        private static Dictionary<int, HashSet<IActorSubscriber>> ActorSubscribers { get; } = new Dictionary<int, HashSet<IActorSubscriber>>();
         private static Dictionary<int, HashSet<Type>> CmdTypes { get; } = new Dictionary<int, HashSet<Type>>();
         private static Dictionary<Type, HashSet<int>> TypeCmds { get; } = new Dictionary<Type, HashSet<int>>();
 
@@ -40,24 +39,12 @@ namespace H6Game.Base
                     //校验订阅的NetCommand是否相同，相同抛出一个异常。
                     Validate(subscriber, cmd);
 
-                    if (subscriber is IActorSubscriber)
+                    if (!Subscribers.TryGetValue(cmd, out HashSet<ISubscriber> subscribers))
                     {
-                        if (!ActorSubscribers.TryGetValue(cmd, out HashSet<IActorSubscriber> subscribers))
-                        {
-                            subscribers = new HashSet<IActorSubscriber>();
-                            ActorSubscribers[cmd] = subscribers;
-                        }
-                        subscribers.Add(subscriber as IActorSubscriber);
+                        subscribers = new HashSet<ISubscriber>();
+                        Subscribers[cmd] = subscribers;
                     }
-                    else
-                    {
-                        if (!Subscribers.TryGetValue(cmd, out HashSet<ISubscriber> subscribers))
-                        {
-                            subscribers = new HashSet<ISubscriber>();
-                            Subscribers[cmd] = subscribers;
-                        }
-                        subscribers.Add(subscriber);
-                    }
+                    subscribers.Add(subscriber);
 
                     if (subscriber.MessageType == null)
                         continue;
@@ -108,15 +95,6 @@ namespace H6Game.Base
                 }
             }
 
-            if (ActorSubscribers.TryGetValue(netCommand, out HashSet<IActorSubscriber> actorSubscribers))
-            {
-                foreach (var subscriber in actorSubscribers)
-                {
-                    if (subscriber.MessageType == type)
-                        result.Add(subscriber);
-                }
-            }
-
             return result;
         }
 
@@ -124,14 +102,6 @@ namespace H6Game.Base
         {
             if (!Subscribers.TryGetValue(netCommand, out HashSet<ISubscriber> value))
                 throw new Exception($"NetCommand:{netCommand} 没有Subscriber订阅该消息.");
-
-            return value;
-        }
-
-        public static IEnumerable<IActorSubscriber> GetActorSubscribers(int netCommand)
-        {
-            if (!ActorSubscribers.TryGetValue(netCommand, out HashSet<IActorSubscriber> value))
-                throw new Exception($"NetCommand:{netCommand} 没有ActorSubscriber订阅该消息.");
 
             return value;
         }

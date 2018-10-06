@@ -30,14 +30,9 @@ namespace H6Game.Base
         public const int Rpc = 4;
 
         /// <summary>
-        /// ActorId消息字段
-        /// </summary>
-        public const int Actor = 5;
-
-        /// <summary>
         /// 消息包体
         /// </summary>
-        public const int Body = 6;
+        public const int Body = 5;
     }
 
     /// <summary>
@@ -98,13 +93,9 @@ namespace H6Game.Base
         /// </summary>
         public static readonly int RpcFlagSize = sizeof(int);
         /// <summary>
-        /// Actor消息Id字节数，4个字节
-        /// </summary>
-        public static readonly int ActorIdFlagSize = sizeof(int);
-        /// <summary>
         /// 包头大小
         /// </summary>
-        public static readonly int HeadSize = LengthFlagSize + BitFlagSize + MessageIdFlagSize + MsgTypeSize + RpcFlagSize + ActorIdFlagSize;
+        public static readonly int HeadSize = LengthFlagSize + BitFlagSize + MessageIdFlagSize + MsgTypeSize + RpcFlagSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -114,7 +105,7 @@ namespace H6Game.Base
             var tryCount = 0;
             while (true)
             {
-                if (tryCount > 6)
+                if (tryCount > 5)
                     throw new PacketParserException("解包错误，数据包非法.");
 
                 tryCount++;
@@ -210,27 +201,6 @@ namespace H6Game.Base
                             }
                             ReadLength += RpcFlagSize;
                             Packet.RpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
-                            State = ParseState.Actor;
-                            break;
-                        }
-                    case ParseState.Actor:
-                        {
-                            var offset = LengthFlagSize + BitFlagSize + MessageIdFlagSize + MsgTypeSize + RpcFlagSize;
-                            if (Buffer.FirstDataSize >= ActorIdFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, ActorIdFlagSize);
-                                Buffer.UpdateRead(ActorIdFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, ActorIdFlagSize - count);
-                                Buffer.UpdateRead(ActorIdFlagSize - count);
-                            }
-                            ReadLength += ActorIdFlagSize;
-                            Packet.ActorId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
                             State = ParseState.Body;
                             break;
                         }

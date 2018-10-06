@@ -19,7 +19,7 @@ namespace H6Game.Actor
 
             var type = Game.Scene.GetComponent<ActorPoolComponent>().GetActorType(message.ActorType);
             var actor = ComponentPool.Fetch(type) as BaseActorEntityComponent;
-            actor.SetRemote(message.ObjectId, network);
+            actor.SetRemote(network, message.ObjectId, message.ActorId);
             Game.Scene.AddComponent(actor);
         }
     }

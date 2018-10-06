@@ -21,16 +21,6 @@ namespace H6Game.Base
                     return;
                 }
 
-                if (packet.ActorId > 0)
-                {
-                    var actorSubscribers = MessageSubscriberPool.GetActorSubscribers(packet.NetCommand);
-                    foreach(var subscriber in actorSubscribers)
-                    {
-                        subscriber.Receive(network);
-                    }
-                    return;
-                }
-
                 var subscribers = MessageSubscriberPool.GetSubscribers(packet.NetCommand);
                 foreach (var subscriber in subscribers)
                 {

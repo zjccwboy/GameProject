@@ -18,8 +18,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -33,8 +32,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -48,8 +46,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -63,8 +60,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -78,8 +74,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -93,8 +88,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -108,8 +102,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -123,8 +116,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -138,8 +130,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -153,8 +144,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -168,8 +158,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -183,8 +172,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -198,8 +186,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -213,8 +200,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -228,8 +214,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
 
     /// <summary>
@@ -243,8 +228,7 @@ public static class NetworkHelper
         var channel = network.Channel;
         var netCommand = network.RecvPacket.NetCommand;
         var rpcId = network.RecvPacket.RpcId;
-        var actorId = network.RecvPacket.ActorId;
-        session.Send(channel, data, netCommand, rpcId, actorId);
+        session.Send(channel, data, netCommand, rpcId);
     }
     #endregion Response
 
@@ -260,7 +244,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -272,7 +256,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, netCommand, 0, 0);
+        session.Send(channel, netCommand, 0);
     }
 
     /// <summary>
@@ -286,7 +270,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -299,7 +283,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -312,7 +296,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -325,7 +309,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -338,7 +322,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -351,7 +335,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -364,7 +348,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -377,7 +361,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -390,7 +374,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -403,7 +387,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -416,7 +400,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -429,7 +413,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -442,7 +426,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
 
     /// <summary>
@@ -455,235 +439,9 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, 0);
+        session.Send(channel, data, netCommand, 0);
     }
     #endregion Send
-
-    #region SendActor
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor<T>(this Network network, T data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, string data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, int data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, uint data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, long data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, ulong data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, float data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, double data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, decimal data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, byte data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, sbyte data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, bool data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, char data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, short data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-
-    /// <summary>
-    /// 发送Actor消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    /// <param name="actorId">Actor消息Id</param>
-    public static void SendActor(this Network network, ushort data, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Send(channel, data, netCommand, 0, actorId);
-    }
-    #endregion
 
     #region  CallMessage
     /// <summary>
@@ -698,7 +456,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -712,7 +470,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, notificationAction, netCommand, 0);
+        session.Subscribe(channel, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -726,7 +484,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -740,7 +498,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -754,7 +512,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -768,7 +526,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -782,7 +540,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -796,7 +554,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -810,7 +568,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -824,7 +582,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -838,7 +596,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -852,7 +610,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -866,7 +624,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -880,7 +638,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -894,7 +652,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -908,7 +666,7 @@ public static class NetworkHelper
     {
         var session = network.Session;
         var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, 0);
+        session.Subscribe(channel, data, notificationAction, netCommand);
     }
 
     /// <summary>
@@ -1492,987 +1250,6 @@ public static class NetworkHelper
     }
     #endregion
 
-    #region CallActor
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Request"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Request>(this Network network, Request data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, Action<Packet> notificationAction, int netCommand, int actorId)
-
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, string data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, int data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, uint data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, bool data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, long data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, ulong data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, float data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, double data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, decimal data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, byte data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, sbyte data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, char data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, short data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor(this Network network, ushort data, Action<Packet> notificationAction, int netCommand, int actorId)
-    {
-        var session = network.Session;
-        var channel = network.Channel;
-        session.Subscribe(channel, data, notificationAction, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Request"></typeparam>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Request, Response>(this Network network, Request data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor((p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, string data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, int data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, uint data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, bool data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, long data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, ulong data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, float data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, double data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, decimal data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, byte data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, sbyte data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, char data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, short data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">消息指令</param>
-    public static void CallActor<Response>(this Network network, ushort data, Action<Response> notificationAction, int netCommand, int actorId)
-    {
-        network.CallActor(data, (p) =>
-        {
-            var response = p.Read<Response>();
-            notificationAction(response);
-        }, netCommand, actorId);
-    }
-    #endregion CallActor
-
-    #region CallActorAsync
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Rquest">发送数据类型</typeparam>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Rquest, Response>(this Network network, Rquest data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, string data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, uint data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, long data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ulong data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, float data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, double data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, decimal data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, short data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, ushort data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, byte data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, sbyte data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, char data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, bool data, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor(data, (p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-
-    /// <summary>
-    /// 订阅一条Actor Rpc消息
-    /// </summary>
-    /// <typeparam name="Response">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <param name="actorId">Actor Id</param>
-    /// <returns>返回消息数据</returns>
-    public static Task<CallResult<Response>> CallActorAsync<Response>(this Network network, int netCommand, int actorId)
-    {
-        var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallActor((p) =>
-        {
-            CallResult<Response> result;
-            if (p.TryRead(out Response response))
-            {
-                result = new CallResult<Response>(response, true);
-            }
-            else
-            {
-                result = new CallResult<Response>(response, false);
-            }
-            tcs.TrySetResult(result);
-        }, netCommand, actorId);
-        return tcs.Task;
-    }
-    #endregion
-
     #region Broadcast all connections
     /// <summary>
     /// 给所有Socket连接广播一条消息
@@ -2484,7 +1261,7 @@ public static class NetworkHelper
     public static void Broadcast<T>(this Network network, T data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2507,7 +1284,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, string data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2519,7 +1296,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, int data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2531,7 +1308,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, uint data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2543,7 +1320,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, bool data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2555,7 +1332,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, float data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2567,7 +1344,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, double data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2579,7 +1356,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, decimal data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2591,7 +1368,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, long data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2603,7 +1380,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, ulong data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2615,7 +1392,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, byte data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2627,7 +1404,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, sbyte data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2639,7 +1416,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, short data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
 
     /// <summary>
@@ -2651,7 +1428,7 @@ public static class NetworkHelper
     public static void Broadcast(this Network network, ushort data, int netCommand)
     {
         var session = network.Session;
-        session.Broadcast(data, netCommand, 0, 0);
+        session.Broadcast(data, netCommand, 0);
     }
     #endregion Broadcast
 

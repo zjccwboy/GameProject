@@ -16,14 +16,4 @@ namespace H6Game.Base
         Type MessageType { get; }
         void Receive(Network network);
     }
-
-    public interface IActorSubscriber<Message> : IActorSubscriber
-    {
-
-    }
-
-    public interface IActorSubscriber : ISubscriber
-    {
-
-    }
 }
