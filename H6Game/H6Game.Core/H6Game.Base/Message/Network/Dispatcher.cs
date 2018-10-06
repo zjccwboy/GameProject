@@ -7,9 +7,9 @@ namespace H6Game.Base
     /// <summary>
     /// 消息分发者类
     /// </summary>
-    public class NetworkDispatcher
+    public static class Dispatcher
     {
-        public static void Dispatch(Network network, Packet packet)
+        public static void Dispatch(this Network network, Packet packet)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                Log.Error(packet.ToJson(), e, LoggerBllType.System);
+                throw new NetworkException($"ExceptionMessage:{e.Message}{Environment.NewLine}Packet:{packet.ToJson()}", e);
             }
         }
     }

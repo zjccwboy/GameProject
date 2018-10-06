@@ -132,7 +132,7 @@ namespace H6Game.Base
                 Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
                 channel.Connected = true;
                 channel.OnDisConnect = HandleDisConnectOnServer;
-                channel.OnReceive = (p) => { NetworkDispatcher.Dispatch(channel.Network, p); };
+                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
                 this.AddChannel(channel);
                 this.OnServerConnected?.Invoke(channel);
             }
@@ -153,7 +153,7 @@ namespace H6Game.Base
                 Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
                 channel.Connected = true;
                 channel.OnDisConnect = HandleDisConnectOnClient;
-                channel.OnReceive = (p) => { NetworkDispatcher.Dispatch(channel.Network, p); };
+                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
                 this.AddChannel(channel);
                 this.OnClientConnected?.Invoke(channel);
             }
