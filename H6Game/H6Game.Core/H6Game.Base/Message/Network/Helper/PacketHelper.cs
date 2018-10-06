@@ -4,7 +4,7 @@ using System;
 using System.Net;
 using System.Text;
 
-public static class PacketHelper
+internal static class PacketHelper
 {
     /// <summary>
     /// 获取包头的字节数组
