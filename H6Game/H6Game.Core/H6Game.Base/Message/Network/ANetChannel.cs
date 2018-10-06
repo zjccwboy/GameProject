@@ -182,6 +182,17 @@ namespace H6Game.Base
             RpcDictionary.TryAdd(rpcId, recvAction);
         }
 
+        /// <summary>
+        /// 发送心跳包
+        /// </summary>
+        public void SendHeartbeat()
+        {
+            Log.Debug($"发送心跳包->{this.RemoteEndPoint}.", LoggerBllType.System);
+            this.LastSendTime = TimeUitls.Now();
+            this.SendParser.Packet.IsHeartbeat = true;
+            this.SendParser.Packet.WriteBuffer();
+        }
+
         public void Dispose()
         {
             DisConnect();

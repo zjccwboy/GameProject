@@ -61,7 +61,8 @@ public static class PacketHelper
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
 
-        packet.MsgTypeCode = GetTypeCode(typeof(T));
+        var type = obj.GetType();
+        packet.MsgTypeCode = GetTypeCode(type);
         packet.WriteBuffer();
     }
 

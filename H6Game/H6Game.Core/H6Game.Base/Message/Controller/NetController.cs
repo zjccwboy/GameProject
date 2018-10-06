@@ -205,7 +205,7 @@ namespace H6Game.Base
             {
                 var tcs = new TaskCompletionSource<IMessage>(context.MethodInfo.Invoke(context.Owner, message));
                 var response = await tcs.Task;
-                network.Response((object)response);
+                network.Response(response);
             }
             else
             {

@@ -109,16 +109,15 @@ namespace H6Game.Base
         {
             this.NService.Update();
         }
-
+        
         /// <summary>
         /// 通知消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="channel"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
         /// <param name="rpcId"></param>
-        internal void Send<T>(ANetChannel channel, T data, int netCommand, int rpcId)
+        internal void Send<TRequest>(ANetChannel channel, TRequest data, int netCommand, int rpcId) where TRequest : class
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -134,6 +133,21 @@ namespace H6Game.Base
         /// <param name="netCommand"></param>
         /// <param name="rpcId"></param>
         internal void Send(ANetChannel channel, object data, int netCommand, int rpcId)
+        {
+            channel.SendParser = channel.SendParser ?? new PacketParser();
+            var packet = channel.SendParser.Packet;
+            SetHead(packet, netCommand, rpcId);
+            packet.WriteTo(data);
+        }
+
+        /// <summary>
+        /// 通知消息
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="data"></param>
+        /// <param name="netCommand"></param>
+        /// <param name="rpcId"></param>
+        internal void Send(ANetChannel channel, int data, int netCommand, int rpcId)
         {
             channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
@@ -361,12 +375,12 @@ namespace H6Game.Base
         /// <summary>
         /// 订阅消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channel"></param>
         /// <param name="data"></param>
         /// <param name="notificationAction"></param>
         /// <param name="netCommand"></param>
-        internal void Subscribe<T>(ANetChannel channel, T data, Action<Packet> notificationAction, int netCommand)
+        internal void Subscribe<TRequest>(ANetChannel channel, TRequest data, Action<Packet> notificationAction, int netCommand) where TRequest : class
         {
             var rpcId = channel.RpcId;
             channel.AddRpcPacket(rpcId, notificationAction);
@@ -589,11 +603,11 @@ namespace H6Game.Base
         /// <summary>
         /// 给所有客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
         /// <param name="rpcId"></param>
-        internal void Broadcast<T>(T data, int netCommand, int rpcId)
+        internal void Broadcast<TRequest>(TRequest data, int netCommand, int rpcId) where TRequest : class
         {
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)
@@ -815,13 +829,13 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
         /// <param name="rpcId"></param>
-        internal void Broadcast<T>(IEnumerable<ANetChannel> channels ,T data, int netCommand, int rpcId)
-            where T : class
+        internal void Broadcast<TRequest>(IEnumerable<ANetChannel> channels ,TRequest data, int netCommand, int rpcId)
+            where TRequest : class
         {
             foreach (var channel in channels)
             {
@@ -832,7 +846,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -848,7 +862,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -864,7 +878,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -880,7 +894,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -896,7 +910,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -912,7 +926,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -928,7 +942,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -944,7 +958,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -960,7 +974,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -976,7 +990,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -992,7 +1006,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -1008,7 +1022,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -1024,7 +1038,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>
@@ -1040,7 +1054,7 @@ namespace H6Game.Base
         /// <summary>
         /// 给一组客户端广播一条消息
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TRequest"></typeparam>
         /// <param name="channels"></param>
         /// <param name="data"></param>
         /// <param name="netCommand"></param>

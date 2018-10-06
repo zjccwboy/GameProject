@@ -127,12 +127,7 @@ namespace H6Game.Base
 
                 var  timeSendSpan = now - this.ClientChannel.LastSendTime;
                 if (timeSendSpan > HeartbeatTime)
-                {
-                    Log.Debug($"发送心跳包->{this.ClientChannel.RemoteEndPoint}.", LoggerBllType.System);
-                    this.ClientChannel.LastSendTime = TimeUitls.Now();
-                    this.ClientChannel.SendParser.Packet.IsHeartbeat = true;
-                    this.ClientChannel.SendParser.Packet.WriteTo(null);
-                }
+                    this.ClientChannel.SendHeartbeat();
             }
             else if (this.ServiceType == NetServiceType.Server)
             {
