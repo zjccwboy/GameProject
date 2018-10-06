@@ -359,7 +359,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Request, Response>(this Network network, Request data, Action<Response> notificationAction, int netCommand) where Request : class
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel,data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -374,7 +374,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage((p) => {
+        network.Session.Subscribe(network.Channel, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -390,7 +390,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, string data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -406,7 +406,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, int data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -422,7 +422,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, uint data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -438,7 +438,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, bool data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -454,7 +454,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, long data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -470,7 +470,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, ulong data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -486,7 +486,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, float data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -502,7 +502,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, double data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -518,7 +518,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, decimal data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -534,7 +534,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, byte data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -550,7 +550,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, sbyte data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -566,7 +566,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, char data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -582,7 +582,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, short data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -598,7 +598,7 @@ public static class NetworkHelper
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<Response>(this Network network, ushort data, Action<Response> notificationAction, int netCommand)
     {
-        network.CallMessage(data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<Response>();
             notificationAction(response);
         }, netCommand);
@@ -619,7 +619,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Rquest, Response>(this Network network, Rquest data, int netCommand) where Rquest : class
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -639,7 +639,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage((p) =>
+        network.Session.Subscribe(network.Channel, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -659,7 +659,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, string data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -679,7 +679,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, int data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -699,7 +699,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, uint data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -719,7 +719,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, long data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -739,7 +739,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ulong data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -759,7 +759,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, float data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -779,7 +779,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, double data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -799,7 +799,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, decimal data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -819,7 +819,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, short data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -839,7 +839,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, ushort data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -859,7 +859,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, byte data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -879,7 +879,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, sbyte data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -899,7 +899,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, char data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -919,7 +919,7 @@ public static class NetworkHelper
     public static Task<CallResult<Response>> CallMessageAsync<Response>(this Network network, bool data, int netCommand)
     {
         var tcs = new TaskCompletionSource<CallResult<Response>>();
-        network.CallMessage(data, (p) =>
+        network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out Response response);
             var result = new CallResult<Response>(response, state);
@@ -1320,201 +1320,5 @@ public static class NetworkHelper
             network.Send(data, netCommand);
         }
     }
-    #endregion
-
-    #region Private
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <typeparam name="Request"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage<Request>(this Network network, Request data, Action<Packet> notificationAction, int netCommand) where Request : class
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, string data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, int data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, uint data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, bool data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, long data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, ulong data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, float data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, double data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, decimal data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, byte data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, sbyte data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, char data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, short data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
-    /// <summary>
-    /// 订阅一条RPC消息
-    /// </summary>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    private static void CallMessage(this Network network, ushort data, Action<Packet> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, notificationAction, netCommand);
-    }
-
     #endregion
 }

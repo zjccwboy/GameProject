@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 消息分发者类
+    /// 消息分发
     /// </summary>
     public static class Dispatcher
     {
