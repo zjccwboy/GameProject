@@ -15,7 +15,7 @@ namespace H6Game.TestDistributedNetCore
         {
             stopWatch.Start();
 
-            if (Game.Scene.GetComponent<DistributionsComponent>().IsCenterServer)
+            if (Game.Scene.GetComponent<NetDistributionsComponent>().IsCenterServer)
                 return;
 
             for (var i = 0; i < 1000; i++)

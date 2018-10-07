@@ -10,7 +10,7 @@ namespace TestDistributed
         {
 
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<DistributionsComponent>().OnInnerClientConnected += c=> { TestBenckmark.Start(c.Network); };
+            Game.Scene.AddComponent<NetDistributionsComponent>().OnInnerClientConnected += c=> { TestBenckmark.Start(c.Network); };
             Game.Scene.AddComponent<ActorPoolComponent>();
 
             while (true)

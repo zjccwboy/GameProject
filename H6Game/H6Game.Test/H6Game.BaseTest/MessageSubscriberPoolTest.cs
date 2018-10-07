@@ -64,7 +64,7 @@ namespace H6Game.BaseTest
         public void TestInsert()
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<DistributionsComponent>();
+            Game.Scene.AddComponent<NetDistributionsComponent>();
             Game.Scene.AddComponent<TestClass5>();
 
         }

@@ -11,7 +11,7 @@ namespace H6Game.TestActorMessage
     {
         public static async void Start()
         {
-            if (Game.Scene.GetComponent<DistributionsComponent>().IsCenterServer)
+            if (Game.Scene.GetComponent<NetDistributionsComponent>().IsCenterServer)
                 return;
 
             AddActor(await Add());

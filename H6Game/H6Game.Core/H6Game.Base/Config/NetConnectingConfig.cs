@@ -5,11 +5,11 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public class OutNetConfig
+    public class NetConnectingConfig
     {
-        public OutNetConfigEntity Config { get; private set; }
+        public NetConnectConfigEntity Config { get; private set; }
 
-        public OutNetConfig()
+        public NetConnectingConfig()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
             if (!ReadConfigFile(fullName))
@@ -29,7 +29,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    Config = BsonSerializer.Deserialize<OutNetConfigEntity>(json);
+                    Config = BsonSerializer.Deserialize<NetConnectConfigEntity>(json);
                 }
             }
 
@@ -41,12 +41,14 @@ namespace H6Game.Base
 
         private async void SaveConfigFile(string fullName)
         {
-            Config = new OutNetConfigEntity
+            Config = new NetConnectConfigEntity
             {
                 OutNetHost = "payapi.test.com",
+                ProtocalType = 1,
                 IsCompress = false,
                 IsEncrypt = false,
                 Port = 50000,
+                Desc = "客户端连接服务端的IP端口配置。",
             };
 
             using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))

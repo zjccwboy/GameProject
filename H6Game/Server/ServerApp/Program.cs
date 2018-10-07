@@ -7,7 +7,7 @@ namespace ServerApp
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<DistributionsComponent>();
+            Game.Scene.AddComponent<NetDistributionsComponent>();
             while (true)
             {
                 Game.Update();

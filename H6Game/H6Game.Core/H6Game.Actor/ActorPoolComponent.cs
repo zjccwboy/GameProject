@@ -78,7 +78,7 @@ namespace H6Game.Actor
                 }
             }
 
-            var innerComponent = Game.Scene.AddComponent<DistributionsComponent>();            
+            var innerComponent = Game.Scene.AddComponent<NetDistributionsComponent>();            
             innerComponent.OnInnerClientDisconnected += c =>
             {
                 if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
@@ -257,12 +257,12 @@ namespace H6Game.Actor
                 ObjectId = entity.Id,
                 ActorType = entity.ActorType,
             };
-            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast(message, (int)NetCommand.AddActorCmd);
+            Game.Scene.GetComponent<NetDistributionsComponent>().InConnNets.Broadcast(message, (int)NetCommand.AddActorCmd);
         }
 
         private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorEntityComponent component)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().InConnNets.Broadcast((int)NetCommand.RemoveActorCmd, component.Id);
+            Game.Scene.GetComponent<NetDistributionsComponent>().InConnNets.Broadcast((int)NetCommand.RemoveActorCmd, component.Id);
         }
     }
 }

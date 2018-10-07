@@ -49,7 +49,7 @@ namespace H6Game.TestControllerServer
             try
             {
                 Game.Scene.AddComponent<MongoConfig>();
-                Game.Scene.AddComponent<DistributionsComponent>();
+                Game.Scene.AddComponent<NetDistributionsComponent>();
                 Game.Scene.AddComponent<TestController>();
 
                 while (true)

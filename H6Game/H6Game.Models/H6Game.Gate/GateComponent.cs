@@ -27,7 +27,7 @@ namespace H6Game.Gate
 
         public override void Awake()
         {
-            var distributionsComponent = Game.Scene.GetComponent<DistributionsComponent>();
+            var distributionsComponent = Game.Scene.GetComponent<NetDistributionsComponent>();
             if (distributionsComponent == null)
                 throw new ComponentException("DistributionsComponent组件没有加载。");
 

@@ -2,6 +2,9 @@
 
 namespace H6Game.Base
 {
+    /// <summary>
+    /// 网络连接信息消息
+    /// </summary>
     [ProtoContract]
     [NetMessageType(SysNetMessageType.NetEndPointMessage)]
     public class NetEndPointMessage : IMessage

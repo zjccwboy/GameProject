@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Collections.Concurrent;
 
 namespace H6Game.Base
@@ -10,7 +9,7 @@ namespace H6Game.Base
     {
         protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().AddServerConnection(network, message);
+            Game.Scene.GetComponent<NetDistributionsComponent>().AddServerConnection(network, message);
         }
     }
 
@@ -19,7 +18,7 @@ namespace H6Game.Base
     {
         protected override void Subscribe(Network network, int netCommand)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().ResponseOutNetEndPointMessage(network);
+            Game.Scene.GetComponent<NetDistributionsComponent>().ResponseOutNetEndPointMessage(network);
         }
     }
 
@@ -28,18 +27,19 @@ namespace H6Game.Base
     {
         protected override void Subscribe(Network network, int netCommand)
         {
-            Game.Scene.GetComponent<DistributionsComponent>().ResponseInnerEndPintMessage(network);
+            Game.Scene.GetComponent<NetDistributionsComponent>().ResponseInnerEndPintMessage(network);
         }
     }
 
     /// <summary>
-    /// 内网分布式连接核心组件
+    /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组件能够提供一个基于去中心化，可靠，高可扩展的
+    /// 分布式模型，只需要对"H6Game.DistributionsConfig.json"文件设置相应的配置，就能使用完整的分布式功能。
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
-    public sealed class DistributionsComponent : BaseComponent
+    public sealed class NetDistributionsComponent : BaseComponent
     {
-        private DistributionsConfigEntity Config { get; set; }
+        private NetConfigEntity Config { get; set; }
         private EndPointConfigEntity DefaultCenterEndPoint { get; set; }
         private NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
         private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
@@ -87,7 +87,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            this.Config = new DistributionsConfig().Config;
+            this.Config = new NetDistributionsConfig().Config;
         }
 
         public override void Start()
@@ -175,7 +175,7 @@ namespace H6Game.Base
 
         private void HandleInAccept(NetEndPointMessage message)
         {
-            this.InAcceptNetwork = Network.CreateAcceptor(GetIPEndPoint(message), ProtocalType.Tcp, c =>
+            this.InAcceptNetwork = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, c =>
             {
                 InAcceptNetworks[c.Id] = c.Network;
             }, c =>
@@ -199,7 +199,7 @@ namespace H6Game.Base
 
         private void HandleOutAccept(NetEndPointMessage message)
         {
-            this.OutAcceptNetwork = Network.CreateAcceptor(GetIPEndPoint(message), ProtocalType.Kcp, c =>
+            this.OutAcceptNetwork = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Kcp, c =>
             {
                 OuAcceptNetworks[c.Id] = c.Network;
             }, c =>
@@ -227,7 +227,7 @@ namespace H6Game.Base
             if (message == this.Config.GetInnerMessage())
                 return;
 
-            var network = Network.CreateConnecting(GetIPEndPoint(message), ProtocalType.Tcp, c =>
+            var network = Network.CreateConnecting(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, c =>
             {
                 OnClientConnect(c, message, hashCode);
             }, c =>
@@ -289,13 +289,6 @@ namespace H6Game.Base
                 this.OutNetMapManager.Remove(outMessage);
 
             this.OnInnerClientDisconnected?.Invoke(channel);
-        }
-
-        private IPEndPoint GetIPEndPoint(NetEndPointMessage message)
-        {
-            var ip = IPAddress.Parse(message.IP);
-            var port = message.Port;
-            return new IPEndPoint(ip, port);
         }
     }
 }

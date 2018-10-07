@@ -14,7 +14,7 @@ namespace H6Game.TestControllerClient
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<OuterComponent>().OnConnected = c => { Start(); };
+            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected = c => { Start(); };
             while (true)
             {
                 Game.Update();
@@ -41,7 +41,7 @@ namespace H6Game.TestControllerClient
 
         private static async Task Call()
         {
-            var network = Game.Scene.GetComponent<OuterComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             for(var i = 0; i < 10000; i++)
             {

@@ -12,7 +12,7 @@ namespace H6Game.TestKcpClientBenckmark
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<OuterComponent>().OnConnected = c=> { Start(); };
+            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected = c=> { Start(); };
             while (true)
             {
                 Game.Update();
@@ -44,7 +44,7 @@ namespace H6Game.TestKcpClientBenckmark
 
         private static async Task Call()
         {
-            var network = Game.Scene.GetComponent<OuterComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
             var result = await network.CallMessageAsync<int, int>(1024, 1024);
             if (!result.Result)
             {

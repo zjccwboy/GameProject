@@ -5,11 +5,11 @@ using System.IO;
 
 namespace H6Game.Base
 {
-    public sealed class DistributionsConfig
+    public sealed class NetDistributionsConfig
     {
-        public DistributionsConfigEntity Config { get; private set; }
+        public NetConfigEntity Config { get; private set; }
 
-        public DistributionsConfig()
+        public NetDistributionsConfig()
         {
             var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
             if (!ReadConfigFile(fullName))
@@ -29,7 +29,7 @@ namespace H6Game.Base
                     if (string.IsNullOrEmpty(json))
                         return false;
 
-                    Config = BsonSerializer.Deserialize<DistributionsConfigEntity>(json);
+                    Config = BsonSerializer.Deserialize<NetConfigEntity>(json);
                 }
             }
 
@@ -46,13 +46,13 @@ namespace H6Game.Base
 
         private async void SaveConfigFile(string fullName)
         {
-            Config = new DistributionsConfigEntity
+            Config = new NetConfigEntity
             {
                 IsCenterServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
 
-                InnerListenConfig = new InnerListenConfigEntity
+                InnerListenConfig = new NetConfigEntity.InnerListenConfigEntity
                 {
                     CenterEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
                     LocalEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
@@ -62,6 +62,8 @@ namespace H6Game.Base
                 {
                     Port = 50000,
                     IP = "127.0.0.1",
+                    ProtocalType =1,
+                    Desc = "监听外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
                 },
             };
 
