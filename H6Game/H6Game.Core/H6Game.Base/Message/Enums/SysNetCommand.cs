@@ -18,5 +18,9 @@ namespace H6Game.Base
         /// 请求获取内网连接信息
         /// </summary>
         GetInServerCmd,
+        /// <summary>
+        /// 获取一个网关连接地址
+        /// </summary>
+        GetGateEndPoint,
     }
 }

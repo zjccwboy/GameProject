@@ -49,6 +49,7 @@ namespace H6Game.Base
             Config = new NetConfigEntity
             {
                 IsCenterServer = false,
+                IsProxyServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
 

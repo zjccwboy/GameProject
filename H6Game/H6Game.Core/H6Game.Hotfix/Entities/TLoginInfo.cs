@@ -2,7 +2,7 @@
 using H6Game.Base;
 using H6Game.Hotfix.Entities.Enums;
 
-namespace H6Game.Rpository
+namespace H6Game.Hotfix.Entities
 {
     public class TLoginInfo : BaseEntity
     {

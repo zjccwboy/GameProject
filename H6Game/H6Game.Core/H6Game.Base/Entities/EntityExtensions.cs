@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace H6Game.Base
 {
-    public static class EntityHelper
+    public static class EntityExtensions
     {
         public static string BsonElementName<TEntity>(this TEntity doc, string propertyName) where TEntity : BaseEntity
         {
@@ -19,7 +19,7 @@ namespace H6Game.Base
         }
 
         private static Dictionary<Type, BaseEntity> Entitys { get; } = new Dictionary<Type, BaseEntity>();
-        public static TEntity Create<TEntity>(this IRpository rpository) where TEntity : BaseEntity, new()
+        public static TEntity CreateEntity<TEntity>(this IRpository rpository) where TEntity : BaseEntity, new()
         {
             var type = typeof(TEntity);
             if (!Entitys.TryGetValue(type, out BaseEntity value))

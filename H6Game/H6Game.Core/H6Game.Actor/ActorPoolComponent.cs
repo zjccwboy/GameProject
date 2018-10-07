@@ -65,6 +65,7 @@ namespace H6Game.Actor
         private Dictionary<ActorType, Type> ActorTypes { get; } = new Dictionary<ActorType, Type>();
         private Dictionary<int, BaseActorEntityComponent> LocalActors { get; } = new Dictionary<int, BaseActorEntityComponent>();
         private Dictionary<int, BaseActorEntityComponent> RemoteActors { get; } = new Dictionary<int, BaseActorEntityComponent>();
+        private NetDistributionsComponent Distributions { get; set; }
         public Action<ANetChannel> OnDisconnected { get; set; }
         public Action<ANetChannel> OnConnected { get; set; }
         public override void Awake()
@@ -78,8 +79,8 @@ namespace H6Game.Actor
                 }
             }
 
-            var innerComponent = Game.Scene.AddComponent<NetDistributionsComponent>();            
-            innerComponent.OnInnerClientDisconnected += c =>
+            this.Distributions = Game.Scene.AddComponent<NetDistributionsComponent>();
+            this.Distributions.OnInnerClientDisconnected += c =>
             {
                 if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorEntityComponent> dicVal))
                     return;
@@ -91,7 +92,7 @@ namespace H6Game.Actor
                     this.RemoveRemote(component);
             };
 
-            innerComponent.OnInnerClientConnected += c => 
+            this.Distributions.OnInnerClientConnected += c => 
             {
                 this.OnConnected?.Invoke(c);
                 c.Network.Send((int)NetCommand.SyncActorInfoCmd);
@@ -257,12 +258,24 @@ namespace H6Game.Actor
                 ObjectId = entity.Id,
                 ActorType = entity.ActorType,
             };
-            Game.Scene.GetComponent<NetDistributionsComponent>().InConnNets.Broadcast(message, (int)NetCommand.AddActorCmd);
+            foreach(var network in this.Distributions.InConnNets)
+            {
+                if (this.Distributions.IsProxyServer)
+                    continue;
+
+                network.Send(message, (int)NetCommand.AddActorCmd);
+            }
         }
 
         private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorEntityComponent component)
         {
-            Game.Scene.GetComponent<NetDistributionsComponent>().InConnNets.Broadcast((int)NetCommand.RemoveActorCmd, component.Id);
+            foreach (var network in this.Distributions.InConnNets)
+            {
+                if (this.Distributions.IsProxyServer)
+                    continue;
+
+                network.Send((int)NetCommand.RemoveActorCmd, component.Id);
+            }
         }
     }
 }

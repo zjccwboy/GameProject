@@ -33,7 +33,8 @@ namespace H6Game.Base
 
     /// <summary>
     /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组件能够提供一个基于去中心化，可靠，高可扩展的
-    /// 分布式模型，只需要对"H6Game.DistributionsConfig.json"文件设置相应的配置，就能使用完整的分布式功能。
+    /// 分布式模型，只需要对"H6Game.DistributionsConfig.json"文件进行相应的配置，就能使用完整的分布式功能。
+    /// 关于分布式中心服务：分布式中心服务只负责内网分布式系统的桥接，告诉每一个服务其他所有服务的IP端口连接信息，分布式服务不参与任何业务逻辑。
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
@@ -66,6 +67,11 @@ namespace H6Game.Base
         public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
 
         /// <summary>
+        /// 是否是代理服务。
+        /// </summary>
+        public bool IsProxyServer { get { return this.Config.IsProxyServer; } }
+
+        /// <summary>
         /// 内网消息映射管理类接口。
         /// </summary>
         public NetMapManager InNetMapManager { get; } = new NetMapManager();
@@ -73,7 +79,7 @@ namespace H6Game.Base
         /// <summary>
         /// 外网消息映射管理类接口。
         /// </summary>
-        public NetMapManager OutNetMapManager { get; } = new NetMapManager();
+        public ProxyNetMapManager OutNetMapManager { get; } = new ProxyNetMapManager();
 
         /// <summary>
         /// 内网网络服务端连接成功回调事件。

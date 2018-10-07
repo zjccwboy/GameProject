@@ -16,7 +16,7 @@ namespace H6Game.TesterNetController
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
-            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected += c => { Start(); };
+            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected += (c, t) => { Start(); };
             Game.Scene.AddComponent<TesterNetController>();
 
             while (true)

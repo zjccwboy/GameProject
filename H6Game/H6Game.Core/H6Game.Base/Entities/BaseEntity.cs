@@ -8,6 +8,20 @@ namespace H6Game.Base
     public abstract class BaseEntity
     {
         /// <summary>
+        /// 获取属性的BsonElement名
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        [BsonIgnore]
+        public string this[string propertyName]
+        {
+            get
+            {
+                return this.BsonElementName(propertyName);
+            }
+        }
+
+        /// <summary>
         /// MongoDB Object _Id
         /// </summary>
         [BsonRepresentation(BsonType.ObjectId)]

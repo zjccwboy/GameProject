@@ -8,21 +8,13 @@ namespace H6Game.Base
     {
         #region 游戏客户端交互消息指令1001开始
         /// <summary>
-        /// 获取一个网关连接地址
-        /// </summary>
-        GetGateEndPoint = 1001,
-        /// <summary>
         /// 客户端登陆
         /// </summary>
-        ClientLogin,
+        ClientLogin = 1001,
         /// <summary>
         /// 客户端登出
         /// </summary>
         ClientLogOut,
-        /// <summary>
-        /// 告诉网关添加一个客户端Actor
-        /// </summary>
-        AddClientActor,
         #endregion
 
         #region Actor CMD,2001开始

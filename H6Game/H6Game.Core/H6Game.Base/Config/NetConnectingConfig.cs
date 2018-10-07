@@ -33,7 +33,7 @@ namespace H6Game.Base
                 }
             }
 
-            if (Config == null || string.IsNullOrWhiteSpace(Config.OutNetHost))
+            if (Config == null || string.IsNullOrWhiteSpace(Config.ProxyHost))
                 return false;
 
             return true;
@@ -43,7 +43,7 @@ namespace H6Game.Base
         {
             Config = new NetConnectConfigEntity
             {
-                OutNetHost = "payapi.test.com",
+                ProxyHost = "payapi.test.com",
                 ProtocalType = 1,
                 IsCompress = false,
                 IsEncrypt = false,

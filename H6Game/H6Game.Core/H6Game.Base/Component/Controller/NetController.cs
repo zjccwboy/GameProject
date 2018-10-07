@@ -10,54 +10,67 @@ namespace H6Game.Base
     {
         private static Type ValueType { get; } = typeof(IValue);
 
+        /// <summary>
+        /// 当前接收数据的网络管道对象，该管道对象的生命周期只在控制器订阅消息方法之内，当订阅消息方法结束时那该对象就会被设置成null。
+        /// </summary>
+        protected ANetChannel CurrentNetChannel { get;private set; }
+
         public void Invoke(MetodContext context, Network network)
         {
-            switch(context.MetodType)
+            try
             {
-                case MetodType.Invoke:
-                    if(context.ParameterTypes.Length == 0)
-                    {
-                        InvokeSync(context, network);
-                    }
-                    else
-                    {
-                        var message = GetMessage(context, network);
-                        InvokeSync(context, network, message);
-                    }
-                    break;
-                case MetodType.ExistReturnInvoke:
-                    if (context.ParameterTypes.Length == 0)
-                    {
-                        ExistReturnInvokeSync(context, network);
-                    }
-                    else
-                    {
-                        var message = GetMessage(context, network);
-                        ExistReturnInvokeSync(context, network, message);
-                    }
-                    break;
-                case MetodType.InvokeAsync:
-                    if (context.ParameterTypes.Length == 0)
-                    {
-                        InvokeAsync(context, network);
-                    }
-                    else
-                    {
-                        var message = GetMessage(context, network);
-                        InvokeAsync(context, network, message);
-                    }
-                    break;
-                case MetodType.ExistReturnInvokeAsync:
-                    if (context.ParameterTypes.Length == 0)
-                    {
-                        ExistReturnInvokeAsync(context, network);
-                    }
-                    else
-                    {
-                        var message = GetMessage(context, network);
-                        ExistReturnInvokeAsync(context, network, message);
-                    }
-                    break;
+                this.CurrentNetChannel = network.Channel;
+                switch (context.MetodType)
+                {
+                    case MetodType.Invoke:
+                        if (context.ParameterTypes.Length == 0)
+                        {
+                            InvokeSync(context, network);
+                        }
+                        else
+                        {
+                            var message = GetMessage(context, network);
+                            InvokeSync(context, network, message);
+                        }
+                        break;
+                    case MetodType.ExistReturnInvoke:
+                        if (context.ParameterTypes.Length == 0)
+                        {
+                            ExistReturnInvokeSync(context, network);
+                        }
+                        else
+                        {
+                            var message = GetMessage(context, network);
+                            ExistReturnInvokeSync(context, network, message);
+                        }
+                        break;
+                    case MetodType.InvokeAsync:
+                        if (context.ParameterTypes.Length == 0)
+                        {
+                            InvokeAsync(context, network);
+                        }
+                        else
+                        {
+                            var message = GetMessage(context, network);
+                            InvokeAsync(context, network, message);
+                        }
+                        break;
+                    case MetodType.ExistReturnInvokeAsync:
+                        if (context.ParameterTypes.Length == 0)
+                        {
+                            ExistReturnInvokeAsync(context, network);
+                        }
+                        else
+                        {
+                            var message = GetMessage(context, network);
+                            ExistReturnInvokeAsync(context, network, message);
+                        }
+                        break;
+                }
+            }
+            finally
+            {
+                this.CurrentNetChannel = null;
             }
         }
 
@@ -259,6 +272,16 @@ namespace H6Game.Base
             else if(type == typeof(char))
             {
                 var response = await (Task<char>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(DateTime))
+            {
+                var response = await (Task<DateTime>)context.MethodInfo.Invoke(context.Owner, message);
+                network.Response(response);
+            }
+            else if (type == typeof(Guid))
+            {
+                var response = await (Task<Guid>)context.MethodInfo.Invoke(context.Owner, message);
                 network.Response(response);
             }
             else if (typeof(IMessage).IsAssignableFrom(type))

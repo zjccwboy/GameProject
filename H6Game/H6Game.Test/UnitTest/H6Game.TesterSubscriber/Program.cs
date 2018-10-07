@@ -150,7 +150,7 @@ namespace H6Game.TesterSubscriber
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
-            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected += c => { Start(); };
+            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected += (c, t) => { Start(); };
 
             while(true)
             {

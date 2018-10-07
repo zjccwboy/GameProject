@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
-namespace H6Game.Rpository
+namespace H6Game.Hotfix.Entities
 {
     public class TUnsettledOrder : BaseEntity
     {
