@@ -156,7 +156,6 @@ namespace H6Game.Base
 
         private static void InvokeSync(MetodContext context, Network network, object message)
         {
-
             context.Parameters[0] = message;
             context.MethodInfo.Invoke(context.Owner, context.Parameters);
         }

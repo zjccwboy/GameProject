@@ -98,12 +98,9 @@ namespace H6Game.Base
             return result;
         }
 
-        public static IEnumerable<ISubscriber> GetSubscribers(int netCommand)
+        public static bool TryGetSubscribers(int netCommand, out HashSet<ISubscriber> subscribers)
         {
-            if (!Subscribers.TryGetValue(netCommand, out HashSet<ISubscriber> value))
-                throw new Exception($"NetCommand:{netCommand} 没有Subscriber订阅该消息.");
-
-            return value;
+            return Subscribers.TryGetValue(netCommand, out subscribers);
         }
 
         private static void Validate(ISubscriber subscriber, int netCommand)

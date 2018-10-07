@@ -94,28 +94,18 @@ namespace H6Game.Base
             ConnectingProxy();
         }
 
-        /// <summary>
-        /// 订阅代理服务发送的网关服务连接IP端口。
-        /// </summary>
-        /// <param name="endPointMessage"></param>
-        [NetCommand(SysNetCommand.GetGateEndPoint)]
-        public void GetGateIPEndPoint(NetEndPointMessage endPointMessage)
-        {
-            //断开代理与代理服务器连接
-            this.Network.Dispose();
-
-            var endPoint = IPEndPointHelper.GetIPEndPoint(endPointMessage);
-
-            //连接网关
-            ConnectingGate(endPoint);
-        }
-
         private void ConnectingProxy()
         {
-            var endPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
-            this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, c =>
+            var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
+            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType, async c =>
             {
                 this.OnConnected?.Invoke(c, ConnectType.Proxy);
+                var result = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
+                if (result.Result)
+                {
+                    var gateEndPoint = IPEndPointHelper.GetIPEndPoint(result.Content);
+                    ConnectingGate(gateEndPoint);
+                }
             }, c =>
             {
                 this.OnDisconnected?.Invoke(c, ConnectType.Proxy);

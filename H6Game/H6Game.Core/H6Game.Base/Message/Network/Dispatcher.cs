@@ -13,19 +13,30 @@ namespace H6Game.Base
         {
             try
             {
-                if( MetodContextPool.TryGetContext(packet.NetCommand, out List<MetodContext> contexts))
+                if (MetodContextPool.TryGetContext(packet.NetCommand, out List<MetodContext> contexts))
                 {
-                    foreach(var context in contexts)
+                    foreach (var context in contexts)
                         context.Owner.Invoke(context, network);
 
                     return;
                 }
 
-                var subscribers = MessageSubscriberPool.GetSubscribers(packet.NetCommand);
-                foreach (var subscriber in subscribers)
+                if (MessageSubscriberPool.TryGetSubscribers(packet.NetCommand, out HashSet<ISubscriber> subscribers))
                 {
-                    subscriber.Receive(network);
+                    foreach (var subscriber in subscribers)
+                        subscriber.Receive(network);
+
+                    return;
                 }
+
+                //非代理服务忽略GetGateEndPoint指令获取网关IP端口信息请求。
+                if (!Game.Scene.GetComponent<NetDistributionsComponent>().IsProxyServer && packet.NetCommand == (int)SysNetCommand.GetGateEndPoint)
+                {
+                    return;
+                }
+                
+                throw new NetworkException($"消息命令:{packet.NetCommand} 类型:{packet.MsgTypeCode}没有被订阅。");
+
             }
             catch (Exception e)
             {

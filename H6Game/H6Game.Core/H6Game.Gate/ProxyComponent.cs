@@ -16,14 +16,16 @@ namespace H6Game.Gate
                 throw new ComponentException("DistributionsComponent组件没有加载。");
 
             this.GateNetwork = this.Distributions.OutAcceptNetwork;
-            this.GateNetwork.Session.OnServerConnected += channel =>
+        }
+
+        [NetCommand(SysNetCommand.GetGateEndPoint)]
+        public NetEndPointMessage GetGateEndPointMessage()
+        {
+            if (this.Distributions.IsProxyServer)
             {
-                if (this.Distributions.IsProxyServer)
-                {
-                    var message = this.Distributions.OutNetMapManager.GetGoodConnectedInfo();
-                    channel.Network.Send(message, (int)SysNetCommand.GetGateEndPoint);
-                }
-            };
+                return this.Distributions.OutNetMapManager.GetGoodConnectedInfo();
+            }
+            return null;
         }
     }
 }
