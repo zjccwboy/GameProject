@@ -40,7 +40,7 @@ namespace H6Game.Base
         }
     }
 
-    /// <summary>
+
     /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组
     /// 件能够提供一个基于去中心化、可靠、高可扩展的分布式模型，只需要对"H6Game.DistributionsConfig.json"
     /// 文件进行相应的配置，就能使用完整的分布式功能。关于分布式中心服务：分布式中心服务只负责内网分布式系
@@ -55,6 +55,9 @@ namespace H6Game.Base
     /// 4、中心服务是不处理任何任务逻辑的，这样可以保证中心服务的健壮性。
     /// 5、去中心化并不能完全做到去中心化，如果是一个新的服务要加入到分布式系统，必须依赖于中心服务，其他服务
     /// 只有在记录下了连接信息，才能在不依赖中心服务的情况下自动重连到挂掉的服务。
+
+    /// <summary>
+    /// 内网分布式连接核心组件。
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
