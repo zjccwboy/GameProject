@@ -60,7 +60,7 @@ namespace H6Game.Base
                 this.OnDisconnected?.Invoke(c);
             }
             );
-            Log.Info($"监听外网端口:{this.Config.Port}成功.", LoggerBllType.System);
+            Log.Info($"监听端口:{this.Config.Port}成功.", LoggerBllType.System);
         }
     }
 }

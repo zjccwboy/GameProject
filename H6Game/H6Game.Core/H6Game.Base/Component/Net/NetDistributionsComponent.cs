@@ -4,6 +4,9 @@ using System.Collections.Concurrent;
 
 namespace H6Game.Base
 {
+    /// <summary>
+    /// 订阅远程服务监听的端口IP信息。
+    /// </summary>
     [NetCommand(SysNetCommand.AddInServerCmd)]
     public class DistributionsSubscriber : NetSubscriber<NetEndPointMessage>
     {
@@ -13,6 +16,9 @@ namespace H6Game.Base
         }
     }
 
+    /// <summary>
+    /// 订阅远程服务外网监听的IP端口信息。
+    /// </summary>
     [NetCommand(SysNetCommand.GetOutServerCmd)]
     public class OutNetMessageSyncSubscriber : NetSubscriber
     {
@@ -22,6 +28,9 @@ namespace H6Game.Base
         }
     }
 
+    /// <summary>
+    /// 订阅远程服务获取本地服务IP端口信息。
+    /// </summary>
     [NetCommand(SysNetCommand.GetInServerCmd)]
     public class InnerMessageSyncSubscriber : NetSubscriber
     {
@@ -32,9 +41,20 @@ namespace H6Game.Base
     }
 
     /// <summary>
-    /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组件能够提供一个基于去中心化，可靠，高可扩展的
-    /// 分布式模型，只需要对"H6Game.DistributionsConfig.json"文件进行相应的配置，就能使用完整的分布式功能。
-    /// 关于分布式中心服务：分布式中心服务只负责内网分布式系统的桥接，告诉每一个服务其他所有服务的IP端口连接信息，分布式服务不参与任何业务逻辑。
+    /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组
+    /// 件能够提供一个基于去中心化、可靠、高可扩展的分布式模型，只需要对"H6Game.DistributionsConfig.json"
+    /// 文件进行相应的配置，就能使用完整的分布式功能。关于分布式中心服务：分布式中心服务只负责内网分布式系
+    /// 统的桥接，告诉每一个服务其他所有服务的IP端口连接信息，分布式服务不参与任何业务逻辑。
+    /// 关于去中心化分布式实现的原理：
+    /// 1、当Socket创建连接成功时，当前服务会给远程服务发送本地服务监听的IP端口信息。
+    /// 2、当远程服务为中心服务时，会给其他的服务广播一条当前服务监听的IP端口信息，拿到当前服务监听IP端口信
+    /// 息会主动与当前服务创建连接。
+    /// 3、当远程服务不为中心服务时，创建连接成功后会把本地监听IP端口告诉对方，并且把所有已经连接到当前服务
+    /// 的所监听的IP端口信息一同发送给远程服务，这样就可以做到去中心化，不依赖中心服务也可以管理进程挂掉或者
+    /// 断网重连，并且这个设计也很容易结合Actor的设计，用于管理迁移内部的对象。
+    /// 4、中心服务是不处理任何任务逻辑的，这样可以保证中心服务的健壮性。
+    /// 5、去中心化并不能完全做到去中心化，如果是一个新的服务要加入到分布式系统，必须依赖于中心服务，其他服务
+    /// 只有在记录下了连接信息，才能在不依赖中心服务的情况下自动重连到挂掉的服务。
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
