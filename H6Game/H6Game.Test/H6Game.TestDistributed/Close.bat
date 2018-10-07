@@ -1,1 +1,0 @@
-taskkill /F /IM H6Game.TestDistributed.exe
