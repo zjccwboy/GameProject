@@ -1,8 +1,4 @@
-﻿using H6Game.Actor;
-using H6Game.Base;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using H6Game.Base;
 
 namespace H6Game.Gate
 {
@@ -24,7 +20,7 @@ namespace H6Game.Gate
             {
                 if (this.Distributions.IsProxyServer)
                 {
-                    var message = this.Distributions.OutNetMapManager.GetEndPointMessage();
+                    var message = this.Distributions.OutNetMapManager.GetGoodConnectedInfo();
                     channel.Network.Send(message, (int)SysNetCommand.GetGateEndPoint);
                 }
             };

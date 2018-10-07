@@ -5,22 +5,45 @@ namespace H6Game.Base
 {
     /// <summary>
     /// 外网连接管理
-    /// 关于外网连接管理：外网连接管理服务只负责分发其他网关服务的IP端口连接信息，代理服务的IP端口是固定的，类似于DNS服务的概念，代理服务不参与
-    /// 任何业务逻辑。
+    /// 关于外网连接管理：代理服务只负责分发其他网关服务的IP端口连接信息，代理服务的IP端口是固定的，可以使用域名
+    /// 来代替固定IP配置代理服务，代理服务也类似于DNS服务，只负责告诉可以段可以与哪台服务器创建连接，代理服务不参
+    /// 与任何业务逻辑。
     /// </summary>
     public class ProxyNetMapManager : NetMapManager
     {
         private Dictionary<int, int> ClientConnectionNumbers { get; set; } = new Dictionary<int, int>();
 
-        public NetEndPointMessage GetEndPointMessage()
+        /// <summary>
+        /// 一个服务承载最大客户端连接负载阀值，根据实际的项目配置该值。
+        /// </summary>
+        private const int OneServerMaxConnect = 10000;
+
+        /// <summary>
+        /// 获取教合适的网关连接信息。
+        /// </summary>
+        /// <returns></returns>
+        public NetEndPointMessage GetGoodConnectedInfo()
         {
             //取当前客户端连接最小的服务
-            var minConnectInfo = ClientConnectionNumbers.OrderBy(a => a.Value).FirstOrDefault();
+            var list = ClientConnectionNumbers.OrderByDescending(a => a.Value);
+
+            var maxConnectInfo = list.First();
+            var key = maxConnectInfo.Key;
+            if (maxConnectInfo.Value >= OneServerMaxConnect)
+            {
+                if(ClientConnectionNumbers.Count == 1)
+                {
+                    key = maxConnectInfo.Key;
+                }
+                else
+                {
+                    key = list.Skip(1).Take(1).First().Key;
+                }
+            }
 
             //与客户端连接的服务的客户端数量+1
-            ClientConnectionNumbers[minConnectInfo.Key]++;
-
-            return ChannelIdMapMsg[minConnectInfo.Key];
+            ClientConnectionNumbers[key]++;
+            return ChannelIdMapMsg[key];
         }
 
         public override void Add(ANetChannel channel, NetEndPointMessage message)
