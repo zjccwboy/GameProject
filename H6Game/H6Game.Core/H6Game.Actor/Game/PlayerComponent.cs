@@ -1,6 +1,4 @@
-﻿
-
-using H6Game.Hotfix.Entities;
+﻿using H6Game.Hotfix.Entities;
 
 namespace H6Game.Actor
 {

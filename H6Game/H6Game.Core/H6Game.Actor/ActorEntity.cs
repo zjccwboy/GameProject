@@ -1,5 +1,4 @@
-﻿
-using H6Game.Base;
+﻿using H6Game.Base;
 
 namespace H6Game.Actor
 {
