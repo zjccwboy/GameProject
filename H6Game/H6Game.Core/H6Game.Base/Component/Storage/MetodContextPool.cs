@@ -19,6 +19,9 @@ namespace H6Game.Base
 
         public static void Remove(IController controller)
         {
+            if (controller == null)
+                return;
+
             var type = controller.GetType();
             if (!ControllerCmds.TryGetValue(type, out HashSet<int> cmds))
                 return;

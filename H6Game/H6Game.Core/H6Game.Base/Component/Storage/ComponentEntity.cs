@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace H6Game.Base
 {
-    public class ComponentManager
+    public abstract class ComponentEntity
     {
         protected internal Dictionary<Type, HashSet<BaseComponent>> TypeComponents { get; } = new Dictionary<Type, HashSet<BaseComponent>>();
         protected internal Dictionary<int, BaseComponent> IdComponents { get; } = new Dictionary<int, BaseComponent>();
@@ -12,7 +12,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="component">组件实体。</param>
@@ -60,7 +62,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <returns>返回一个组件实体。</returns>
@@ -74,7 +78,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <typeparam name="K1">组件构造函数第一个参数类型。</typeparam>
@@ -90,7 +96,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数类型。</param>
@@ -108,7 +116,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数类型。</param>
@@ -127,7 +137,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数类型。</param>
@@ -147,7 +159,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数类型。</param>
@@ -168,7 +182,9 @@ namespace H6Game.Base
         /// <summary>
         /// 添加并返回一个组件。
         /// 单例组件(SingleCase):单例组件直接返回存在的组件，单例组件只能被实例化一次放到池中，并且生命周期与进程生命周期相同。
-        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束。
+        /// 多例组件(ManyCase)：多例组件每次都会从内存重用池中或者重新实例化一个组件对象返回，Dispose接口被调用生命周期结束，实际
+        /// 多例组件放回池中一直不会被GC回收，实际生命周期是与进程生命周期一样的，只是多例组件可以被实例化多个，并且可以多次被
+        /// 放到池中与从池中取出来复用。
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="k1">组件构造函数第一个参数类型。</param>
@@ -259,6 +275,18 @@ namespace H6Game.Base
         }
 
         /// <summary>
+        /// 获取一个组件
+        /// </summary>
+        /// <param name="id">组件Id。</param>
+        /// <returns>返回一个组件。</returns>        
+        public virtual bool GetComponent<T>(int id, out T component) where T : BaseComponent
+        {
+            var result = IdComponents.TryGetValue(id, out BaseComponent value);
+            component = (T)value;
+            return result;
+        }
+
+        /// <summary>
         /// 删除一个组件
         /// </summary>
         /// <param name="component">组件实体</param>
@@ -269,16 +297,26 @@ namespace H6Game.Base
                 return false;
 
             if (TypeComponents.TryGetValue(component.GetType(), out HashSet<BaseComponent> hashVal))
-            {
-                if (hashVal.Remove(component))
-                {
-                    if (typeof(IController).IsAssignableFrom(component.GetType()))
-                    {
-                        MetodContextPool.Remove((IController)component);
-                    }
-                    return Game.Event.Remove(component);
-                }
-            }
+                hashVal.Remove(component);
+
+            return false;
+        }
+
+        /// <summary>
+        /// 删除一个组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component">组件实体</param>
+        /// <returns>删除成功返回true，失败返回false</returns>
+        public virtual bool Remove<T>(T component) where T : BaseComponent
+        {
+            if (!IdComponents.TryGetValue(component.Id, out BaseComponent value))
+                return false;
+
+            var type = typeof(T);
+            if (TypeComponents.TryGetValue(type, out HashSet<BaseComponent> hashVal))
+                hashVal.Remove(component);
+
             return false;
         }
     }

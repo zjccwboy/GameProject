@@ -8,7 +8,7 @@ namespace H6Game.Gate
     [ComponentEvent(EventType.Awake)]
     public class GateComponent : NetController
     {
-        private Dictionary<int, BaseActorEntityComponent> OutNetActors { get; } = new Dictionary<int, BaseActorEntityComponent>();
+        private Dictionary<int, BaseActorComponent> OutNetActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, Network> ActorNetworks { get; } = new Dictionary<int, Network>();
         private ActorPoolComponent ActorPool { get; set; }
         private NetDistributionsComponent Distributions { get; set; }
@@ -38,7 +38,7 @@ namespace H6Game.Gate
                     return;
 
                 var actor = this.OutNetActors[channel.Id];
-                this.ActorPool.RemoveLocal(actor);
+                actor.Dispose();
             };
         }
     }

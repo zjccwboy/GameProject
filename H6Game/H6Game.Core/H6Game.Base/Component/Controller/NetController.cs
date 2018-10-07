@@ -14,6 +14,7 @@ namespace H6Game.Base
         /// 当前接收数据的网络管道对象，该管道对象的生命周期只在控制器订阅消息方法之内，当订阅消息方法结束时那该对象就会被设置成null。
         /// </summary>
         protected ANetChannel CurrentNetChannel { get;private set; }
+        protected int NetMessageCmd { get { return this.CurrentNetChannel.Network.RecvPacket.NetCommand; } }
 
         public void Invoke(MetodContext context, Network network)
         {

@@ -25,6 +25,8 @@ namespace H6Game.Base
         public virtual void Dispose()
         {
             Game.Scene.Remove(this);
+            Game.Event.Remove(this);
+            MetodContextPool.Remove(this as IController);
             this.PutBack();            
         }
 
