@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System;
-using System.Collections.Generic;
 
 namespace H6Game.Base
 {

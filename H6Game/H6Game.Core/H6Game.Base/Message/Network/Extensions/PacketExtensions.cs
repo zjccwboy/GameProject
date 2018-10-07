@@ -3,7 +3,7 @@ using ProtoBuf;
 using System;
 using System.Net;
 
-internal static class PacketHelper
+internal static class PacketExtensions
 {
     /// <summary>
     /// 获取包头的字节数组

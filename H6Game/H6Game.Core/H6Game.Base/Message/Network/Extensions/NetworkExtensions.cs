@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public static class NetworkHelper
+public static class NetworkExtensions
 {
     #region TResponse
     /// <summary>
