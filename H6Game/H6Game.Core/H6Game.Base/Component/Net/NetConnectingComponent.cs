@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 
 namespace H6Game.Base
 {
@@ -94,32 +93,39 @@ namespace H6Game.Base
             ConnectingProxy();
         }
 
+        /// <summary>
+        /// 连接到网关服务，只有服务端开启了代理服务才会连接成功。正确调用该方法的姿势应该是放在OnConnected回调中，
+        /// 判断回调的连接类型为Proxy才调用本方法连接网关。
+        /// </summary>
+        public async void ConnectingGate()
+        {
+            var result = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
+            if (result.Result)
+            {
+                var endPoint = IPEndPointHelper.GetIPEndPoint(result.Content);
+                var proxyNetwork = this.Network;
+                this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, c =>
+                {
+                    this.OnConnected?.Invoke(c, ConnectType.Gate);
+
+                    //连接成功以后断开代理服务。
+                    proxyNetwork.Dispose();
+                }, c =>
+                {
+                    this.OnDisconnected?.Invoke(c, ConnectType.Gate);
+                });
+            }
+        }
+
         private void ConnectingProxy()
         {
             var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
-            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType, async c =>
+            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType,  c =>
             {
                 this.OnConnected?.Invoke(c, ConnectType.Proxy);
-                var result = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
-                if (result.Result)
-                {
-                    var gateEndPoint = IPEndPointHelper.GetIPEndPoint(result.Content);
-                    ConnectingGate(gateEndPoint);
-                }
             }, c =>
             {
                 this.OnDisconnected?.Invoke(c, ConnectType.Proxy);
-            });
-        }
-
-        private void ConnectingGate(IPEndPoint endPoint)
-        {
-            this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, c => 
-            {
-                this.OnConnected?.Invoke(c, ConnectType.Gate);
-            }, c => 
-            {
-                this.OnDisconnected?.Invoke(c, ConnectType.Gate);
             });
         }
     }

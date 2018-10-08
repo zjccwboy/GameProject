@@ -319,5 +319,15 @@ namespace H6Game.Base
 
             return false;
         }
+
+        /// <summary>
+        /// 清空缓冲区
+        /// </summary>
+        public void Clear()
+        {
+            TypeComponents.Clear();
+            IdComponents.Clear();
+            SingleComponents.Clear();
+        }
     }
 }

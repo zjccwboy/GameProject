@@ -18,6 +18,7 @@ namespace H6Game.Actor
             this.ActorEntity.Id = null;
             this.ActorEntity.ActorInfo = null;
             this.ActorEntity.Network = null;
+            this.MemberEntities.Clear();
 
             base.Dispose();
         }
@@ -50,15 +51,10 @@ namespace H6Game.Actor
         /// 该组件拥有的成员，例如用户进入了房间，那么房间组件就拥有了该用户，设计时需要理解清楚需求的
         /// 主从关系，要不会造成逻辑混乱。
         /// </summary>
-        public ComponentEntity MemberEntities { get; } = new ActorMemberEntities();
+        public ActorMemberEntities MemberEntities { get; } = new ActorMemberEntities();
         public ActorEntity ActorEntity { get; } = new ActorEntity();
         public bool IsLocalActor { get { return this.ActorEntity.ActorId == this.Id; } }
         public abstract ActorType ActorType { get;}
         public abstract void SetRemote(Network network, string objectId, int actorId);
-    }
-
-    public class ActorMemberEntities : ComponentEntity
-    {
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace H6Game.Actor
 {
-    public static class ActorHelper
+    public static class ActorExtensions
     {
         /// <summary>
         /// 发送当前Actor到指定的Network连接服务。
