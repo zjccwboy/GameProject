@@ -4,6 +4,7 @@ using H6Game.Base;
 using H6Game.Rpository;
 using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Entities.Enums;
+using System.Linq;
 
 namespace H6Game.BaseTest
 {
@@ -110,32 +111,33 @@ namespace H6Game.BaseTest
         }
 
         [Fact]
-        public async void TestFind()
+        public async void TestWhereEques()
         {
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            var q = await rpository.DBContext.FindAsync(a => a.FAccountName == Account.FAccountName);
-            Assert.NotNull(q);
+            var q = await rpository.DBContext.WhereAsync(a => a.FAccountName.Contains("Sam"));
+            Assert.True(q.Any());
         }
 
         [Fact]
-        public async void TestFindMany()
+        public async void TestWhereContains()
         {
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            var q = await rpository.DBContext.FindAsync(a => a.FAccountName.Contains("SAM"));
-            Assert.NotNull(q);
+            var q = await rpository.DBContext.WhereAsync(a => a.FAccountName.Contains("Sam"));
+            Assert.True(q.Any());
         }
 
         [Fact]
-        public async static void TestFindAs()
+        public async static void TestWhereAs()
         {
             Game.Scene.AddComponent<MongoConfig>();
             var rpository = Game.Scene.GetComponent<AccountRpository>();
-            var account = new TAccount { FAccountName = "SAM" };
-            //var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
-            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)));
-            Assert.NotNull(q);
+            var account = rpository.Entity;
+            var q = await rpository.DBContext.WhereAsync(a => a.FCreator.Contains("Adm")
+                , nameof(account.FAccountName)
+                , nameof(account.FType));
+            Assert.True(q.Any());
         }
 
         [Fact]

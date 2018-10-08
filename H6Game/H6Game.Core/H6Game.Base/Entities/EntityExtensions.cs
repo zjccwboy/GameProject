@@ -30,5 +30,17 @@ namespace H6Game.Base
 
             return (TEntity)value;
         }
+
+        public static TEntity Create<TEntity>() where TEntity : BaseEntity, new()
+        {
+            var type = typeof(TEntity);
+            if (!Entitys.TryGetValue(type, out BaseEntity value))
+            {
+                value = new TEntity();
+                Entitys[type] = value;
+            }
+
+            return (TEntity)value;
+        }
     }
 }

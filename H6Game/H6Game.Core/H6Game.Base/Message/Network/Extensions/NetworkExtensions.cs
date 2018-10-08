@@ -96,14 +96,13 @@ public static class NetworkExtensions
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
     /// <returns>返回消息数据。</returns>
-    public static Task<CallResult<TResponse>> CallMessageAsync<TRquest, TResponse>(this Network network, TRquest data, int netCommand)
+    public static Task<TResponse> CallMessageAsync<TRquest, TResponse>(this Network network, TRquest data, int netCommand)
     {
-        var tcs = new TaskCompletionSource<CallResult<TResponse>>();
+        var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, data, (p) =>
         {
             var state = p.TryRead(out TResponse response);
-            var result = new CallResult<TResponse>(response, state);
-            tcs.TrySetResult(result);
+            tcs.TrySetResult(response);
         }, netCommand);
 
         return tcs.Task;
@@ -116,14 +115,13 @@ public static class NetworkExtensions
     /// <param name="network">网络类</param>
     /// <param name="netCommand">消息指令</param>
     /// <returns>返回消息数据。</returns>
-    public static Task<CallResult<TResponse>> CallMessageAsync<TResponse>(this Network network, int netCommand)
+    public static Task<TResponse> CallMessageAsync<TResponse>(this Network network, int netCommand)
     {
-        var tcs = new TaskCompletionSource<CallResult<TResponse>>();
+        var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, (p) =>
         {
             var state = p.TryRead(out TResponse response);
-            var result = new CallResult<TResponse>(response, state);
-            tcs.TrySetResult(result);
+            tcs.TrySetResult(response);
         }, netCommand);
         return tcs.Task;
     }

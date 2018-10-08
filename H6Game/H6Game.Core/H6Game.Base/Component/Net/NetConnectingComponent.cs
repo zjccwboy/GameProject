@@ -99,22 +99,19 @@ namespace H6Game.Base
         /// </summary>
         public async void ConnectingGate()
         {
-            var result = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
-            if (result.Result)
+            var message = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
+            var endPoint = IPEndPointHelper.GetIPEndPoint(message);
+            var proxyNetwork = this.Network;
+            this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, network =>
             {
-                var endPoint = IPEndPointHelper.GetIPEndPoint(result.Content);
-                var proxyNetwork = this.Network;
-                this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, network =>
-                {
-                    this.OnConnected?.Invoke(network, ConnectType.Gate);
+                this.OnConnected?.Invoke(network, ConnectType.Gate);
 
-                    //连接成功以后断开代理服务。
-                    proxyNetwork.Dispose();
-                }, network =>
-                {
-                    this.OnDisconnected?.Invoke(network, ConnectType.Gate);
-                });
-            }
+                //连接成功以后断开代理服务。
+                proxyNetwork.Dispose();
+            }, network =>
+            {
+                this.OnDisconnected?.Invoke(network, ConnectType.Gate);
+            });
         }
 
         private void ConnectingProxy()

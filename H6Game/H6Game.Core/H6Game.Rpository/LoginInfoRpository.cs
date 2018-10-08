@@ -20,7 +20,7 @@ namespace H6Game.Rpository
 
         public async Task<TLoginInfo> GetByAccountId(string accountId)
         {
-            var q = await this.DBContext.FindAsync(t => t.FAccountId == accountId);
+            var q = await this.DBContext.WhereAsync(t => t.FAccountId == accountId);
 
             if (q.Any())
                 return q.FirstOrDefault();

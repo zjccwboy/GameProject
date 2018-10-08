@@ -304,17 +304,14 @@ namespace H6Game.Base
 
             if (message != this.Config.GetCenterMessage())
             {
-                var callResult = await network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
-                if (callResult.Result)
-                {
-                    this.OutNetMapManager.Add(network, callResult.Content);
-                }
+                var outerMessage = await network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
+                this.OutNetMapManager.Add(network, outerMessage);
 
                 if (this.IsProxyServer)
                     return;
 
-                var callServerType = await network.CallMessageAsync<int>((int)SysNetCommand.GetServerType);
-                if (callServerType.Content != (int)ServerType.Default)
+                var serverType = await network.CallMessageAsync<int>((int)SysNetCommand.GetServerType);
+                if (serverType != (int)ServerType.Default)
                 {
                     //删掉连接中的代理服务
                     this.NotExistProxyNetworks.TryRemove(message, out Network valu);

@@ -183,7 +183,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var emptyResult = await network.CallMessageAsync<int>((int)NetCommandTest.SubEmpty);
-            if(1024 == emptyResult.Content)
+            if(1024 == emptyResult)
             {
                 Console.WriteLine("SubEmpty success.");
             }
@@ -193,7 +193,7 @@ namespace H6Game.TesterSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
             var intResult = await network.CallMessageAsync<int, int>(1024, (int)NetCommandTest.SubInt);
-            if (1024 == intResult.Content)
+            if (1024 == intResult)
             {
                 Console.WriteLine("SubInt success.");
             }
@@ -204,7 +204,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var uintResult = await network.CallMessageAsync<uint, uint>(1024, (int)NetCommandTest.SubUInt);
-            if (1024 == uintResult.Content)
+            if (1024 == uintResult)
             {
                 Console.WriteLine("SubUInt success.");
             }
@@ -215,7 +215,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var stringResult = await network.CallMessageAsync<string, string>("1024", (int)NetCommandTest.SubString);
-            if ("1024" == stringResult.Content)
+            if ("1024" == stringResult)
             {
                 Console.WriteLine("SubString success.");
             }
@@ -226,7 +226,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var longResult = await network.CallMessageAsync<long, long>(102410241024, (int)NetCommandTest.SubLong);
-            if (102410241024 == longResult.Content)
+            if (102410241024 == longResult)
             {
                 Console.WriteLine("SubLong success.");
             }
@@ -237,7 +237,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024, (int)NetCommandTest.SubULong);
-            if (102410241024 == ulongResult.Content)
+            if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULong success.");
             }
@@ -248,7 +248,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, (int)NetCommandTest.SubFloat);
-            if (1024.1024 == floatResult.Content)
+            if (1024.1024 == floatResult)
             {
                 Console.WriteLine("SubFloat success.");
             }
@@ -259,7 +259,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024, (int)NetCommandTest.SubDouble);
-            if (10241024.1024 == doubleResult.Content)
+            if (10241024.1024 == doubleResult)
             {
                 Console.WriteLine("SubDouble success.");
             }       
@@ -270,7 +270,7 @@ namespace H6Game.TesterSubscriber
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
 
             var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, (int)NetCommandTest.SubDecimal);
-            if (10241024.1024m == decimalResult.Content)
+            if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimal success.");
             }            
@@ -282,7 +282,7 @@ namespace H6Game.TesterSubscriber
 
             byte bt = 127;
             var byteResult = await network.CallMessageAsync<byte,byte>(bt, (int)NetCommandTest.SubByte);
-            if (bt == byteResult.Content)
+            if (bt == byteResult)
             {
                 Console.WriteLine("SubByte success.");
             }
@@ -294,7 +294,7 @@ namespace H6Game.TesterSubscriber
 
             sbyte sbt = 127;
             var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByte);
-            if (sbt == sbyteResult.Content)
+            if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubByte success.");
             }
@@ -306,7 +306,7 @@ namespace H6Game.TesterSubscriber
 
             short st = 30000;
             var shortResult = await network.CallMessageAsync<short, short>(st, (int)NetCommandTest.SubShort);
-            if (st == shortResult.Content)
+            if (st == shortResult)
             {
                 Console.WriteLine("SubShort success.");
             }
@@ -318,7 +318,7 @@ namespace H6Game.TesterSubscriber
 
             ushort ust = 65535;
             var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, (int)NetCommandTest.SubUShort);
-            if (ust == ushortResult.Content)
+            if (ust == ushortResult)
             {
                 Console.WriteLine("SubUShort success.");
             }
@@ -328,7 +328,7 @@ namespace H6Game.TesterSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
             var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubSByte);
-            if ('a' == charResult.Content)
+            if ('a' == charResult)
             {
                 Console.WriteLine("SubSByte success.");
             }
@@ -343,7 +343,7 @@ namespace H6Game.TesterSubscriber
                 TestId = 1024,
             };
             var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, (int)NetCommandTest.SubClass);
-            if (message.Message == charResult.Content.Message && message.TestId == charResult.Content.TestId)
+            if (message.Message == charResult.Message && message.TestId == charResult.TestId)
             {
                 Console.WriteLine("SubClass success.");
             }

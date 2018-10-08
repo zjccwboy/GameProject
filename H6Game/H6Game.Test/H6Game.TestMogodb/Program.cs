@@ -57,7 +57,7 @@ namespace TestMogodb
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount { FAccountName = "SAM" };
             
-            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, account[nameof(account.FType)], account[nameof(account.FSex)]);
+            var q = await rpository.DBContext.WhereAsync(a => a.FAccountName == "SAM", nameof(account.FType), nameof(account.FSex));
 
             // var q = chuncks.Find(query).SetFields(fields).FirstOrDefault();
             //var q = gridFS.Find(query).SetFields(fields);
@@ -127,8 +127,8 @@ namespace TestMogodb
             await context.InsertManyAsync(inserts);
             
 
-            var findResult = context.Find(t => t.FAccountName == "InsertMany");
-            findResult = await context.FindAsync(t => t.FAccountName == "InsertManyAsync");
+            var findResult = context.Where(t => t.FAccountName == "InsertMany");
+            findResult = await context.WhereAsync(t => t.FAccountName == "InsertManyAsync");
 
             var pageResult = context.FindByPage<string>(t => t.FAccountName == "InsertMany", t => t.FAccountName, 1, 20, out int pageCount);
             pageResult = await context.FindByPageAsync<string>(t => t.FAccountName == "InsertManyAsync", t => t.FAccountName, 1, 20, out pageCount);

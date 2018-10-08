@@ -15,7 +15,7 @@ namespace H6Game.Base
     /// MongoDB 驱动上下文类。
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class DBContext<TEntity> where TEntity : BaseEntity
+    public class DBContext<TEntity> where TEntity : BaseEntity, new()
     {
         #region 私有变量
         private string DatabaseName { get; set; }
@@ -87,7 +87,7 @@ namespace H6Game.Base
         /// <returns>返回实体集合。</returns>
         public bool Existed(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
-            return Find(filter, options).Any();
+            return Where(filter, options).Any();
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace H6Game.Base
         /// <returns>返回实体集合。</returns>
         public async Task<bool> ExistedAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
-            var result = await FindAsync(filter, options);
+            var result = await WhereAsync(filter, options);
             return result.Any();
         }
 
@@ -108,7 +108,7 @@ namespace H6Game.Base
         /// <param name="filter">过滤表达式。</param>
         /// <param name="options">查找配置项。</param>
         /// <returns>返回实体集合。</returns>
-        public List<TEntity> Find(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
+        public List<TEntity> Where(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
@@ -121,47 +121,47 @@ namespace H6Game.Base
         /// <param name="filter">过滤表达式。</param>
         /// <param name="options">查找配置项。</param>
         /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
+        public Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             return colleciton.Find(filter, options).ToListAsync();
         }
 
+
         /// <summary>
         /// 按需查找，可以指定字段名查找，实现要多少取多少的功能。
         /// </summary>
-        /// <typeparam name="TMember">查找条件数据类型。</typeparam>
         /// <param name="memberExpression">查找成员表达式。</param>
-        /// <param name="value">查找匹配结果值。</param>
         /// <param name="fields">查找结果实体成员字段名。</param>
         /// <returns>返回实体集合。</returns>
-        public List<TEntity> FindAs<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, params string[] fields)
+        public List<TEntity> Where(Expression<Func<TEntity, bool>> memberExpression, params string[] fields)
         {
             var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
-            var fs = Fields.Include(fields);
-            var query = Query<TEntity>.EQ(memberExpression, value);
+            var elements = BuildFindElements(fields);
+            var fs = Fields.Include(elements);
+            var query = Query<TEntity>.Where(memberExpression);
             var q = collection.FindAs<TEntity>(query).SetFields(fs);
 
             if (q == null)
                 return null;
 
-            return q.ToList();
+            var result = q.ToList();
+            return result;
         }
 
         /// <summary>
         /// 按需查找异步，可以指定字段名查找，实现要多少取多少的功能。
         /// </summary>
-        /// <typeparam name="TMember">查找条件数据类型。</typeparam>
         /// <param name="memberExpression">查找成员表达式。</param>
-        /// <param name="value">查找匹配结果值。</param>
         /// <param name="fields">查找结果实体成员字段名。</param>
         /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> FindAsAsync<TMember>(Expression<Func<TEntity, TMember>> memberExpression, TMember value, params string[] fields)
+        public Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> memberExpression, params string[] fields)
         {
             var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
-            var fs = Fields.Include(fields);
-            var query = Query<TEntity>.EQ(memberExpression, value);
+            var elements = BuildFindElements(fields);
+            var fs = Fields.Include(elements);
+            var query = Query<TEntity>.Where(memberExpression);
             var q = collection.FindAs<TEntity>(query).SetFields(fs);
 
             if (q == null)
@@ -179,7 +179,7 @@ namespace H6Game.Base
         /// <returns>返回实体集合。</returns>
         public List<TEntity> FindById(string objectId, FindOptions options = null)
         {
-            return Find(t => t.Id == objectId);
+            return Where(t => t.Id == objectId);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace H6Game.Base
         /// <returns>返回实体集合。</returns>
         public Task<List<TEntity>> FindByIdAsync(string objectId, FindOptions options = null)
         {
-            return FindAsync(t => t.Id == objectId);
+            return WhereAsync(t => t.Id == objectId);
         }
 
         /// <summary>
@@ -548,10 +548,10 @@ namespace H6Game.Base
                 if (elmentName == null)
                     continue;
 
-                string key = parent == null ? property.Name : $"{parent}.{property.Name}";
-
-                if (key == "Id")
+                if (elmentName == "Id")
                     continue;
+
+                string key = parent == null ? property.Name : $"{parent}.{property.Name}";
 
                 //非空的复杂类型
                 if ((property.PropertyType.IsClass || property.PropertyType.IsInterface) && property.PropertyType != typeof(string) && property.GetValue(entity) != null)
@@ -594,6 +594,28 @@ namespace H6Game.Base
             }
 
             return updateList;
+        }
+
+        private string[] BuildFindElements(IEnumerable<string> findFields)
+        {
+            if (findFields == null)
+                return null;
+
+            var list = new List<string>();
+            var entity = EntityExtensions.Create<TEntity>();
+            var properties = entity.GetPropertys();
+            foreach (var property in properties)
+            {
+                if (findFields != null && !findFields.Contains(property.Name))
+                    continue;
+
+                var elmentName = entity.BsonElementName(property.Name);
+                if (elmentName == null)
+                    continue;
+
+                list.Add(elmentName);
+            }
+            return list.ToArray();
         }
 
         private void CreateIndex(IMongoCollection<TEntity> col, string[] indexFields, CreateIndexOptions options = null)

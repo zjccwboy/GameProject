@@ -46,12 +46,7 @@ namespace H6Game.TestControllerClient
             for(var i = 0; i < 10000; i++)
             {
                 var result = await network.CallMessageAsync<int, int>(i, 8004);
-                if (!result.Result)
-                {
-                    Log.Error($"RPC请求失败。", LoggerBllType.System);
-                }
-
-                if (result.Content != i)
+                if (result != i)
                 {
                     Log.Error($"解包出错。", LoggerBllType.System);
                 }

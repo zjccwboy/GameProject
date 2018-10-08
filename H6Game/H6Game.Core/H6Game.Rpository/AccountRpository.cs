@@ -20,7 +20,7 @@ namespace H6Game.Rpository
 
         public async Task<TAccount> GetByOpenId(string openId)
         {
-            var q = await this.DBContext.FindAsync(t => t.FWXOpenId == openId);
+            var q = await this.DBContext.WhereAsync(t => t.FWXOpenId == openId);
 
             if (q.Any())
                 return q.FirstOrDefault();
@@ -30,7 +30,7 @@ namespace H6Game.Rpository
 
         public async Task<TAccount> GetByPhoneNumber(string phoneNumber)
         {
-            var q = await this.DBContext.FindAsync(t => t.FPhoneNumber == phoneNumber);
+            var q = await this.DBContext.WhereAsync(t => t.FPhoneNumber == phoneNumber);
 
             if (q.Any())
                 return q.FirstOrDefault();
@@ -40,7 +40,7 @@ namespace H6Game.Rpository
 
         public async Task<TAccount> GetByName(string name)
         {
-            var q = await this.DBContext.FindAsync(t => t.FAccountName == name);
+            var q = await this.DBContext.WhereAsync(t => t.FAccountName == name);
 
             if (q.Any())
                 return q.FirstOrDefault();
@@ -50,7 +50,7 @@ namespace H6Game.Rpository
 
         public async Task<bool> AddAsync(TAccount account)
         {
-            var q = await this.DBContext.FindAsync(a => a.FAccountName == account.FAccountName);
+            var q = await this.DBContext.WhereAsync(a => a.FAccountName == account.FAccountName, nameof(account.FAccountName));
             if (q.Any())
                 return false;
 

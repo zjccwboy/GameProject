@@ -6,10 +6,9 @@ namespace H6Game.Base
     public abstract class DBRpository<TEntity> : BaseComponent, IRpository<TEntity> where TEntity : BaseEntity, new()
     {
         public DBContext<TEntity> DBContext { get;private set; }
-
-        public IMongoDatabase DataBase { get;private set; }
-
         public virtual DBType DBType => DBType.SysDb;
+        private IMongoDatabase DataBase { get; set; }
+        public TEntity Entity { get; } = new TEntity();
 
         public void SetDBContext(IMongoDatabase database, string databaseName, MongoClient dbClient)
         {
