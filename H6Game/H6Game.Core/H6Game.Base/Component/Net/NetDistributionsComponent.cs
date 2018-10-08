@@ -319,6 +319,7 @@ namespace H6Game.Base
                 {
                     //删掉连接中的代理服务
                     this.NotExistProxyNetworks.TryRemove(hashCode, out Network valu);
+                    return;
                 }
 
                 this.OnInnerClientConnected?.Invoke(network);
