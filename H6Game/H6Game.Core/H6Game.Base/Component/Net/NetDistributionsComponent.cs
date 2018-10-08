@@ -40,9 +40,9 @@ namespace H6Game.Base
         private EndPointConfigEntity DefaultCenterEndPoint { get; set; }
         private NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
         private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
-        private ConcurrentDictionary<int, Network> DisconnectedNetworks { get; } = new ConcurrentDictionary<int, Network>();
-        private ConcurrentDictionary<int, Network> InConnectedNetworks { get; } = new ConcurrentDictionary<int, Network>();
-        private ConcurrentDictionary<int, Network> NotExistProxyNetworks { get; } = new ConcurrentDictionary<int, Network>();
+        private ConcurrentDictionary<NetEndPointMessage, Network> DisconnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
+        private ConcurrentDictionary<NetEndPointMessage, Network> InConnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
+        private ConcurrentDictionary<NetEndPointMessage, Network> NotExistProxyNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
         private Dictionary<int, Network> InAcceptNetworks { get; } = new Dictionary<int, Network>();
         private Dictionary<int, Network> OuAcceptNetworks { get; } = new Dictionary<int, Network>();
         private Network InAcceptNetwork { get; set; }
@@ -249,12 +249,11 @@ namespace H6Game.Base
 
         private void Connecting(NetEndPointMessage message)
         {
-            var hashCode = message.GetHashCode();
-            if (this.InConnectedNetworks.ContainsKey(hashCode))
+            if (this.InConnectedNetworks.ContainsKey(message))
                 return;
 
             //如果存在就不再创建新的Network
-            if (this.DisconnectedNetworks.ContainsKey(hashCode))
+            if (this.DisconnectedNetworks.ContainsKey(message))
                 return;
 
             if (Config.IsCenterServer)
@@ -266,10 +265,10 @@ namespace H6Game.Base
 
             var network = Network.CreateConnecting(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, net =>
             {
-                OnClientConnect(net, message, hashCode);
+                OnClientConnect(net, message);
             }, net =>
             {
-                OnClientDisconnect(net, message, hashCode);
+                OnClientDisconnect(net, message);
             });
 
             if (message == this.Config.GetCenterMessage())
@@ -278,17 +277,17 @@ namespace H6Game.Base
             }
             else
             {
-                this.InConnectedNetworks[hashCode] = network;
-                this.NotExistProxyNetworks[hashCode] = network;
+                this.InConnectedNetworks[message] = network;
+                this.NotExistProxyNetworks[message] = network;
             }
         }
 
-        private async void OnClientConnect(Network network, NetEndPointMessage message, int hashCode)
+        private async void OnClientConnect(Network network, NetEndPointMessage message)
         {
-            if (this.DisconnectedNetworks.TryRemove(hashCode, out Network oldNetwork))
+            if (this.DisconnectedNetworks.TryRemove(message, out Network oldNetwork))
             {
-                this.InConnectedNetworks[hashCode] = oldNetwork;
-                this.NotExistProxyNetworks[hashCode] = oldNetwork;
+                this.InConnectedNetworks[message] = oldNetwork;
+                this.NotExistProxyNetworks[message] = oldNetwork;
             }
 
             var localMessage = this.Config.GetInnerMessage();
@@ -318,7 +317,7 @@ namespace H6Game.Base
                 if (callServerType.Content != (int)ServerType.Default)
                 {
                     //删掉连接中的代理服务
-                    this.NotExistProxyNetworks.TryRemove(hashCode, out Network valu);
+                    this.NotExistProxyNetworks.TryRemove(message, out Network valu);
                     return;
                 }
 
@@ -330,7 +329,7 @@ namespace H6Game.Base
             }
         }
 
-        private void OnClientDisconnect(Network network, NetEndPointMessage message, int hashCode)
+        private void OnClientDisconnect(Network network, NetEndPointMessage message)
         {
             if (message == this.Config.GetCenterMessage())
             {
@@ -338,10 +337,10 @@ namespace H6Game.Base
                 return;
             }
 
-            if (this.InConnectedNetworks.TryRemove(hashCode, out Network oldNetwork))
+            if (this.InConnectedNetworks.TryRemove(message, out Network oldNetwork))
             {
-                this.NotExistProxyNetworks.TryRemove(hashCode, out Network value);
-                this.DisconnectedNetworks[hashCode] = oldNetwork;
+                this.NotExistProxyNetworks.TryRemove(message, out Network value);
+                this.DisconnectedNetworks[message] = oldNetwork;
             }
 
             this.InNetMapManager.Remove(message);
