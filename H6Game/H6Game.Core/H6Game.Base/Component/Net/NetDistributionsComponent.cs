@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using MongoDB.Bson;
+using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
@@ -18,6 +20,14 @@ namespace H6Game.Base
     /// 4、中心服务是不处理任何任务逻辑的，这样可以保证中心服务的健壮性。
     /// 5、去中心化并不能完全做到去中心化，如果是一个新的服务要加入到分布式系统，必须依赖于中心服务，其他服务
     /// 只有在记录下了连接信息，才能在不依赖中心服务的情况下自动重连到挂掉的服务。
+    
+    public enum ServerType
+    {
+        Default,
+        CenterServer,
+        ProxyServer,
+    }
+
 
     /// <summary>
     /// 内网分布式连接核心组件。
@@ -163,13 +173,23 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 订阅代理服务删除
+        /// 订阅远程服务获取本地服务类型
         /// </summary>
-        [NetCommand(SysNetCommand.RemoveProxyServer)]
-        public void OnRemoveProxyServer(NetEndPointMessage message)
+        [NetCommand(SysNetCommand.GetServerType)]
+        public int OnGetServerType()
         {
-            var hashCode = message.GetHashCode();
-            NotExistProxyNetworks.TryRemove(hashCode, out Network value);
+            Log.Info($"订阅远程服务获取本地服务类型:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
+
+            if (this.IsCenterServer)
+            {
+                return (int)ServerType.CenterServer;
+            }
+            else if (this.IsProxyServer)
+            {
+                return (int)ServerType.ProxyServer;
+            }
+
+            return (int)ServerType.Default;
         }
 
         private void AddNetwork(NetEndPointMessage message)
@@ -192,9 +212,6 @@ namespace H6Game.Base
         {
             this.InAcceptNetwork = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, network =>
             {
-                if (this.IsProxyServer)
-                    network.Send(this.Config.GetInnerMessage(), (int)SysNetCommand.RemoveProxyServer);
-
                 InAcceptNetworks[network.Id] = network;
             }, network =>
             {
@@ -293,6 +310,17 @@ namespace H6Game.Base
                 {
                     this.OutNetMapManager.Add(network, callResult.Content);
                 }
+
+                if (this.IsProxyServer)
+                    return;
+
+                var callServerType = await network.CallMessageAsync<int>((int)SysNetCommand.GetServerType);
+                if (callServerType.Content != (int)ServerType.Default)
+                {
+                    //删掉连接中的代理服务
+                    this.NotExistProxyNetworks.TryRemove(hashCode, out Network valu);
+                }
+
                 this.OnInnerClientConnected?.Invoke(network);
             }
             else
