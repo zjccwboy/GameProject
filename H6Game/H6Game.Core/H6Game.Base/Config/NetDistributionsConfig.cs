@@ -11,7 +11,7 @@ namespace H6Game.Base
 
         public NetDistributionsConfig()
         {
-            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DistributionsConfig.json";
+            var fullName = $"{Directory.GetCurrentDirectory()}\\DistributionsConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigFile(fullName);
 

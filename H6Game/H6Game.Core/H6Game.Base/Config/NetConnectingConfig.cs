@@ -11,7 +11,7 @@ namespace H6Game.Base
 
         public NetConnectingConfig()
         {
-            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.OutNetConfig.json";
+            var fullName = $"{Directory.GetCurrentDirectory()}\\NetConnecting.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigFile(fullName);
 

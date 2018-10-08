@@ -10,7 +10,7 @@ namespace H6Game.Base
         public DBConfigEntity Config { get; private set; }
         public DBConfig()
         {
-            var fullName = $"{Directory.GetCurrentDirectory()}\\H6Game.DbConfig.json";
+            var fullName = $"{Directory.GetCurrentDirectory()}\\DbConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigFile(fullName);
         }

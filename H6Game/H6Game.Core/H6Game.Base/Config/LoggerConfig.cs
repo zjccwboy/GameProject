@@ -10,7 +10,7 @@ namespace H6Game.Base
         public LoggerConfigEntity Config { get; private set; }
         public LoggerConfig()
         {
-            var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\H6Game.LoggerConfig.json";
+            var fullName = $"{Path.GetDirectoryName(this.GetType().Assembly.Location)}\\LoggerConfig.json";
             if (!ReadConfigFile(fullName))
                 SaveConfigFile(fullName);
         }
