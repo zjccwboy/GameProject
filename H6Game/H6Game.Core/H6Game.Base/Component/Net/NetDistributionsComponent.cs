@@ -32,6 +32,7 @@ namespace H6Game.Base
         private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
         private ConcurrentDictionary<int, Network> DisconnectedNetworks { get; } = new ConcurrentDictionary<int, Network>();
         private ConcurrentDictionary<int, Network> InConnectedNetworks { get; } = new ConcurrentDictionary<int, Network>();
+        private ConcurrentDictionary<int, Network> NotExistProxyNetworks { get; } = new ConcurrentDictionary<int, Network>();
         private Dictionary<int, Network> InAcceptNetworks { get; } = new Dictionary<int, Network>();
         private Dictionary<int, Network> OuAcceptNetworks { get; } = new Dictionary<int, Network>();
         private Network InAcceptNetwork { get; set; }
@@ -43,9 +44,9 @@ namespace H6Game.Base
         public Network OutAcceptNetwork { get; private set; }
 
         /// <summary>
-        /// 内网所有客户端连接网络对象集合。
+        /// 内网中心服务与代理服务以外的服务Socket连接集合。
         /// </summary>
-        public IEnumerable<Network> InConnNets { get { return InConnectedNetworks.Values; } }
+        public IEnumerable<Network> InConnNets { get { return NotExistProxyNetworks.Values; } }
 
         /// <summary>
         /// 是否是中心服务。
@@ -161,6 +162,16 @@ namespace H6Game.Base
             return InNetMessage;
         }
 
+        /// <summary>
+        /// 订阅代理服务删除
+        /// </summary>
+        [NetCommand(SysNetCommand.RemoveProxyServer)]
+        public void OnRemoveProxyServer(NetEndPointMessage message)
+        {
+            var hashCode = message.GetHashCode();
+            NotExistProxyNetworks.TryRemove(hashCode, out Network value);
+        }
+
         private void AddNetwork(NetEndPointMessage message)
         {
             if (Config.IsCenterServer)
@@ -181,6 +192,9 @@ namespace H6Game.Base
         {
             this.InAcceptNetwork = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, network =>
             {
+                if (this.IsProxyServer)
+                    network.Send(this.Config.GetInnerMessage(), (int)SysNetCommand.RemoveProxyServer);
+
                 InAcceptNetworks[network.Id] = network;
             }, network =>
             {
@@ -242,15 +256,23 @@ namespace H6Game.Base
             });
 
             if (message == this.Config.GetCenterMessage())
+            {
                 this.CenterConnectNetwork = network;
+            }
             else
+            {
                 this.InConnectedNetworks[hashCode] = network;
+                this.NotExistProxyNetworks[hashCode] = network;
+            }
         }
 
         private async void OnClientConnect(Network network, NetEndPointMessage message, int hashCode)
         {
             if (this.DisconnectedNetworks.TryRemove(hashCode, out Network oldNetwork))
+            {
                 this.InConnectedNetworks[hashCode] = oldNetwork;
+                this.NotExistProxyNetworks[hashCode] = oldNetwork;
+            }
 
             var localMessage = this.Config.GetInnerMessage();
             this.InNetMapManager.Add(network, message);
@@ -288,7 +310,10 @@ namespace H6Game.Base
             }
 
             if (this.InConnectedNetworks.TryRemove(hashCode, out Network oldNetwork))
+            {
+                this.NotExistProxyNetworks.TryRemove(hashCode, out Network value);
                 this.DisconnectedNetworks[hashCode] = oldNetwork;
+            }
 
             this.InNetMapManager.Remove(message);
             if (this.OutNetMapManager.TryGetFromChannelId(network, out NetEndPointMessage outMessage))

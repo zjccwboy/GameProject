@@ -18,6 +18,10 @@ namespace H6Game.TestDistributedNetCore
             if (Game.Scene.GetComponent<NetDistributionsComponent>().IsCenterServer)
                 return;
 
+
+            if (Game.Scene.GetComponent<NetDistributionsComponent>().IsProxyServer)
+                return;
+
             for (var i = 0; i < 1000; i++)
                 Benckmark(network);
         }

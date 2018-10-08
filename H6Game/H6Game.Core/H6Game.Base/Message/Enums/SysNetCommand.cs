@@ -22,5 +22,9 @@ namespace H6Game.Base
         /// 获取一个网关连接地址
         /// </summary>
         GetGateEndPoint,
+        /// <summary>
+        /// 告诉远程服务剔除业务服务连接列表中的代理服务
+        /// </summary>
+        RemoveProxyServer,
     }
 }
