@@ -54,7 +54,7 @@ public static class NetworkExtensions
 
     #region  CallMessage
     /// <summary>
-    /// 订阅一条RPC消息
+    /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TRequest"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
@@ -71,7 +71,7 @@ public static class NetworkExtensions
     }
 
     /// <summary>
-    /// 订阅一条RPC消息
+    /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TResponse">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
@@ -88,7 +88,7 @@ public static class NetworkExtensions
 
     #region CallMessageAsync
     /// <summary>
-    /// 订阅一条RPC消息
+    /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TRquest">返回消息类型</typeparam>
     /// <typeparam name="TResponse">返回消息类型</typeparam>
@@ -109,7 +109,7 @@ public static class NetworkExtensions
     }
 
     /// <summary>
-    /// 订阅一条RPC消息
+    /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TResponse">返回消息类型</typeparam>
     /// <param name="network">网络类</param>
