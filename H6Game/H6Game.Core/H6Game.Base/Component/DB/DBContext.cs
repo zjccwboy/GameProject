@@ -35,6 +35,7 @@ namespace H6Game.Base
             this.Database = database;
             this.DatabaseName = databaseName;
             this.DBClient = dbClient;
+            this.DBServer = dbClient.GetServer();
         }
         #endregion
 
@@ -43,7 +44,7 @@ namespace H6Game.Base
         /// <summary>
         /// Mongo server.
         /// </summary>
-        public MongoServer DBServer => DBClient.GetServer();
+        public MongoServer DBServer { get; }
 
         /// <summary>
         /// Mongo database.
@@ -76,6 +77,29 @@ namespace H6Game.Base
             string collectionName = typeof(TEntity).Name;
             this.Database.CreateCollection(collectionName);
             CreateIndex(GetMongoCollection(collectionName), indexFields, options);
+        }
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="options">查找配置项。</param>
+        /// <returns>返回实体集合。</returns>
+        public bool Existed(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
+        {
+            return Find(filter, options).Any();
+        }
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="options">查找配置项。</param>
+        /// <returns>返回实体集合。</returns>
+        public async Task<bool> ExistedAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
+        {
+            var result = await FindAsync(filter, options);
+            return result.Any();
         }
 
         /// <summary>
