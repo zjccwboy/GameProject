@@ -6,7 +6,7 @@ namespace H6Game.Base
     /// <summary>
     /// 外网连接管理
     /// 关于外网连接管理：代理服务只负责分发其他网关服务的IP端口连接信息，代理服务的IP端口是固定的，可以使用域名
-    /// 来代替固定IP配置代理服务，代理服务也类似于DNS服务，只负责告诉可以段可以与哪台服务器创建连接，代理服务不参
+    /// 来代替固定IP配置代理服务，代理服务也类似于DNS服务，只负责告诉客户端可以与哪台服务器创建连接，代理服务不参
     /// 与任何业务逻辑。
     /// </summary>
     public class ProxyNetMapManager : NetMapManager
@@ -24,9 +24,8 @@ namespace H6Game.Base
         /// <returns></returns>
         public NetEndPointMessage GetGoodConnectedInfo()
         {
-            //取当前客户端连接最小的服务
+            //取当前客户端连接最多的服务
             var list = ClientConnectionNumbers.OrderByDescending(a => a.Value);
-
             var maxConnectInfo = list.First();
             var key = maxConnectInfo.Key;
             if (maxConnectInfo.Value >= OneServerMaxConnect)
