@@ -42,15 +42,15 @@ namespace H6Game.Base
 
             //与客户端连接的服务的客户端数量+1
             ClientConnectionNumbers[key]++;
-            return ChannelIdMapMsg[key];
+            return NetworkMapMessages[key];
         }
 
-        public override void Add(ANetChannel channel, NetEndPointMessage message)
+        public override void Add(Network netwrok, NetEndPointMessage message)
         {
-            if (!ClientConnectionNumbers.ContainsKey(channel.Id))
-                ClientConnectionNumbers[channel.Id] = 0;
+            if (!ClientConnectionNumbers.ContainsKey(netwrok.Id))
+                ClientConnectionNumbers[netwrok.Id] = 0;
 
-            base.Add(channel, message);
+            base.Add(netwrok, message);
         }
 
         public override void Remove(NetEndPointMessage message)
@@ -68,7 +68,7 @@ namespace H6Game.Base
     public class NetMapManager
     {
         protected readonly HashSet<NetEndPointMessage> ConnectEntities = new HashSet<NetEndPointMessage>();
-        protected readonly Dictionary<int, NetEndPointMessage> ChannelIdMapMsg = new Dictionary<int, NetEndPointMessage>();
+        protected readonly Dictionary<int, NetEndPointMessage> NetworkMapMessages = new Dictionary<int, NetEndPointMessage>();
         protected readonly Dictionary<int, Network> HCodeMapChannel = new Dictionary<int, Network>();
 
         public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
@@ -95,34 +95,34 @@ namespace H6Game.Base
                     return;
 
                 HCodeMapChannel.Remove(message.GetHashCode());
-                ChannelIdMapMsg.Remove(network.Channel.Id);
+                NetworkMapMessages.Remove(network.Channel.Id);
             }
         }
 
         /// <summary>
         /// 新增一个连接消息，非中心服务需要跟Channel映射。
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="network"></param>
         /// <param name="message"></param>
-        public virtual void Add(ANetChannel channel, NetEndPointMessage message)
+        public virtual void Add(Network network, NetEndPointMessage message)
         {
             if (ConnectEntities.Contains(message))
                 return;
 
             this.ConnectEntities.Add(message);
-            ChannelIdMapMsg[channel.Id] = message;
-            HCodeMapChannel[message.GetHashCode()] = channel.Network;
+            NetworkMapMessages[network.Id] = message;
+            HCodeMapChannel[message.GetHashCode()] = network;
         }
 
         /// <summary>
         /// 用Channel Id获取相应的连接消息。
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="network"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        internal bool TryGetFromChannelId(ANetChannel channel, out NetEndPointMessage message)
+        internal bool TryGetFromChannelId(Network network, out NetEndPointMessage message)
         {
-            return ChannelIdMapMsg.TryGetValue(channel.Id, out message);
+            return NetworkMapMessages.TryGetValue(network.Id, out message);
         }
     }
 }

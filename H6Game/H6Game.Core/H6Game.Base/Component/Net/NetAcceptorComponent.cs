@@ -12,9 +12,9 @@ namespace H6Game.Base
 
         public Network Network { get; private set; }
 
-        public Action<ANetChannel> OnConnected { get; set; }
+        public Action<Network> OnConnected { get; set; }
 
-        public Action<ANetChannel> OnDisconnected { get; set; }
+        public Action<Network> OnDisconnected { get; set; }
 
 
         public override void Awake()
@@ -52,12 +52,12 @@ namespace H6Game.Base
 
         private void Accept()
         {
-            this.Network = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(this.Config), this.ProtocalType, c =>
+            this.Network = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(this.Config), this.ProtocalType, network =>
             {
-                this.OnConnected?.Invoke(c);
-            }, c =>
+                this.OnConnected?.Invoke(network);
+            }, network =>
             {
-                this.OnDisconnected?.Invoke(c);
+                this.OnDisconnected?.Invoke(network);
             }
             );
             Log.Info($"监听端口:{this.Config.Port}成功.", LoggerBllType.System);

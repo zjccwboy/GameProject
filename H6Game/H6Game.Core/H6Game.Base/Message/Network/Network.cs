@@ -34,6 +34,11 @@ namespace H6Game.Base
         public Packet RecvPacket { get { return this.Channel.RecvParser.Packet; } }
 
         /// <summary>
+        /// 网络Id
+        /// </summary>
+        public int Id { get { return this.Channel.Id; } }
+
+        /// <summary>
         /// 构造函数。
         /// </summary>
         /// <param name="session">通讯会话类。</param>
@@ -90,7 +95,7 @@ namespace H6Game.Base
         /// <param name="disconnectedAction">连接断开回调。</param>
         /// <returns></returns>
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType
-            , Action<ANetChannel> connectedAction, Action<ANetChannel> disconnectedAction)
+            , Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
             var session = new Session(endPoint, protocalType);            
             session.OnServerConnected += connectedAction;
@@ -134,7 +139,7 @@ namespace H6Game.Base
         /// <param name="disconnectedAction">连接断开回调。</param>
         /// <returns></returns>
         public static Network CreateConnecting(IPEndPoint endPoint, ProtocalType protocalType
-            , Action<ANetChannel> connectedAction, Action<ANetChannel> disconnectedAction)
+            , Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
             var session = new Session(endPoint, protocalType);
             session.OnClientConnected += connectedAction;

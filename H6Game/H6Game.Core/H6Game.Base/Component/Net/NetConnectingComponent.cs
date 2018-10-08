@@ -39,12 +39,12 @@ namespace H6Game.Base
         /// <summary>
         /// Socket连接成功时回调。
         /// </summary>
-        public Action<ANetChannel, ConnectType> OnConnected { get; set; }
+        public Action<Network, ConnectType> OnConnected { get; set; }
 
         /// <summary>
         /// Socket连接断开时回调。
         /// </summary>
-        public Action<ANetChannel, ConnectType> OnDisconnected { get; set; }
+        public Action<Network, ConnectType> OnDisconnected { get; set; }
 
         public override void Awake()
         {
@@ -104,15 +104,15 @@ namespace H6Game.Base
             {
                 var endPoint = IPEndPointHelper.GetIPEndPoint(result.Content);
                 var proxyNetwork = this.Network;
-                this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, c =>
+                this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, network =>
                 {
-                    this.OnConnected?.Invoke(c, ConnectType.Gate);
+                    this.OnConnected?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
                     proxyNetwork.Dispose();
-                }, c =>
+                }, network =>
                 {
-                    this.OnDisconnected?.Invoke(c, ConnectType.Gate);
+                    this.OnDisconnected?.Invoke(network, ConnectType.Gate);
                 });
             }
         }
@@ -120,12 +120,12 @@ namespace H6Game.Base
         private void ConnectingProxy()
         {
             var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
-            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType,  c =>
+            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType, network =>
             {
-                this.OnConnected?.Invoke(c, ConnectType.Proxy);
-            }, c =>
+                this.OnConnected?.Invoke(network, ConnectType.Proxy);
+            }, network =>
             {
-                this.OnDisconnected?.Invoke(c, ConnectType.Proxy);
+                this.OnDisconnected?.Invoke(network, ConnectType.Proxy);
             });
         }
     }

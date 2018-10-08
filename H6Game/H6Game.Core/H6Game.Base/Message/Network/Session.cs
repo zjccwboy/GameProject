@@ -39,22 +39,22 @@ namespace H6Game.Base
         /// <summary>
         /// 连接断开回调发生在服务端
         /// </summary>
-        public Action<ANetChannel> OnServerDisconnected { get; set; }
+        public Action<Network> OnServerDisconnected { get; set; }
 
         /// <summary>
         /// 连接断开回调发生在服务端
         /// </summary>
-        public Action<ANetChannel> OnServerConnected { get; set; }
+        public Action<Network> OnServerConnected { get; set; }
 
         /// <summary>
         /// 连接断开回调发生在客户端
         /// </summary>
-        public Action<ANetChannel> OnClientDisconnected { get; set; }
+        public Action<Network> OnClientDisconnected { get; set; }
 
         /// <summary>
         /// 连接断开回调发生在客户端
         /// </summary>
-        public Action<ANetChannel> OnClientConnected { get; set; }
+        public Action<Network> OnClientConnected { get; set; }
 
         public Session(IPEndPoint endPoint, ProtocalType protocalType)
         {
@@ -77,8 +77,8 @@ namespace H6Game.Base
                 this.NService = new KcpService(this.EPoint, this, NetServiceType.Server);
             }
 
-            this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c); };
-            this.NService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c); };
+            this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c.Network); };
+            this.NService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c.Network); };
 
             return this.NService.Accept();
         }
@@ -98,8 +98,8 @@ namespace H6Game.Base
             {
                 this.NService = new KcpService(this.EPoint, this, NetServiceType.Client);
             }
-            this.NService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c); };
-            this.NService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c); };
+            this.NService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c.Network); };
+            this.NService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c.Network); };
             this.ConnectChannel = this.NService.Connect();
             return this.ConnectChannel;
         }

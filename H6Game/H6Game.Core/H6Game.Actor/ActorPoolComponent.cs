@@ -18,8 +18,8 @@ namespace H6Game.Actor
         private Dictionary<int, BaseActorComponent> LocalActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, BaseActorComponent> RemoteActors { get; } = new Dictionary<int, BaseActorComponent>();
         private NetDistributionsComponent Distributions { get; set; }
-        public Action<ANetChannel> OnDisconnected { get; set; }
-        public Action<ANetChannel> OnConnected { get; set; }
+        public Action<Network> OnDisconnected { get; set; }
+        public Action<Network> OnConnected { get; set; }
         public override void Awake()
         {
             var types = ObjectPool.GetTypes<BaseActorEntity>();
@@ -32,22 +32,22 @@ namespace H6Game.Actor
             }
 
             this.Distributions = Game.Scene.AddComponent<NetDistributionsComponent>();
-            this.Distributions.OnInnerClientDisconnected += c =>
+            this.Distributions.OnInnerClientDisconnected += network =>
             {
-                if (!NetIdActors.TryGetValue(c.Network.Channel.Id, out Dictionary<int, BaseActorComponent> dicVal))
+                if (!NetIdActors.TryGetValue(network.Id, out Dictionary<int, BaseActorComponent> dicVal))
                     return;
 
-                this.OnDisconnected?.Invoke(c);
+                this.OnDisconnected?.Invoke(network);
 
                 var acotrs = dicVal.Values.ToList();
                 foreach (var acotr in acotrs)
                     acotr.Dispose();
             };
 
-            this.Distributions.OnInnerClientConnected += c => 
+            this.Distributions.OnInnerClientConnected += network => 
             {
-                this.OnConnected?.Invoke(c);
-                c.Network.Send((int)NetCommand.SyncActorInfoCmd);
+                this.OnConnected?.Invoke(network);
+                network.Send((int)NetCommand.SyncActorInfoCmd);
             };
         }
 
@@ -63,7 +63,7 @@ namespace H6Game.Actor
 
             var type = ActorTypes[message.ActorType];
             var actor = ComponentPool.Fetch(type) as BaseActorComponent;
-            actor.SetRemote(this.CurrentNetChannel.Network, message.ObjectId, message.ActorId);
+            actor.SetRemote(this.CurrentNetwrok, message.ObjectId, message.ActorId);
             Game.Scene.AddComponent(actor);
         }
 
@@ -76,7 +76,7 @@ namespace H6Game.Actor
         {
             Log.Info(this.NetMessageCmd, LoggerBllType.System);
 
-            var actor = GetActor(this.CurrentNetChannel.Id, message.ActorId);
+            var actor = GetActor(this.CurrentNetwrok.Id, message.ActorId);
             actor.Dispose();
         }
 
@@ -92,13 +92,13 @@ namespace H6Game.Actor
             var count = 0;
             foreach (var actor in LocalActors.Values)
             {
-                actor.SendMySelf(this.CurrentNetChannel.Network, (int)NetCommand.AddActorCmd);
+                actor.SendMySelf(this.CurrentNetwrok, (int)NetCommand.AddActorCmd);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
                 if (count >= 100)
                 {
-                    this.CurrentNetChannel.Network.Channel.StartSend();
+                    this.CurrentNetwrok.Channel.StartSend();
                     count = 0;
                 }
             }
@@ -135,10 +135,10 @@ namespace H6Game.Actor
             RemoteActors[component.Id] = component;
 
             var entity = component.ActorEntity;
-            if (!NetIdActors.TryGetValue(entity.Network.Channel.Id, out Dictionary<int, BaseActorComponent> dicVal))
+            if (!NetIdActors.TryGetValue(entity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
             {
                 dicVal = new Dictionary<int, BaseActorComponent>();
-                NetIdActors[entity.Network.Channel.Id] = dicVal;
+                NetIdActors[entity.Network.Id] = dicVal;
             }
             dicVal[component.ActorEntity.ActorId] = component;
 
@@ -190,7 +190,7 @@ namespace H6Game.Actor
             if (!dicStrVal.Remove(component.ActorEntity.Id))
                 return;
 
-            if (!NetIdActors.TryGetValue(component.ActorEntity.Network.Channel.Id, out Dictionary<int, BaseActorComponent> dicVal))
+            if (!NetIdActors.TryGetValue(component.ActorEntity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
                 return;
 
             if (!dicVal.Remove(component.ActorEntity.ActorId))

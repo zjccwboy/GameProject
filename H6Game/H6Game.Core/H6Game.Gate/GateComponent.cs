@@ -23,21 +23,21 @@ namespace H6Game.Gate
                 throw new ComponentException("DistributionsComponent组件没有加载。");
 
             this.GateNetwork = this.Distributions.OutAcceptNetwork;
-            this.GateNetwork.Session.OnServerConnected += channel =>
+            this.GateNetwork.Session.OnServerConnected += network =>
             {
                 if (this.Distributions.IsProxyServer)
                     return;
             };
 
-            this.GateNetwork.Session.OnServerDisconnected += channel =>
+            this.GateNetwork.Session.OnServerDisconnected += network =>
             {
                 if (this.Distributions.IsProxyServer)
                     return;
 
-                if (!OutNetActors.ContainsKey(channel.Id))
+                if (!OutNetActors.ContainsKey(network.Channel.Id))
                     return;
 
-                var actor = this.OutNetActors[channel.Id];
+                var actor = this.OutNetActors[network.Channel.Id];
                 actor.Dispose();
             };
         }
