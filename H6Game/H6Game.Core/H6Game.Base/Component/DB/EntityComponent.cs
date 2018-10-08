@@ -59,11 +59,17 @@ namespace H6Game.Base
 
                 foreach (var prop in properties)
                 {
-                    var attribute = prop.GetCustomAttribute<BsonElementAttribute>();
-                    if (attribute == null)
+                    var igonre = prop.GetCustomAttribute<BsonIgnoreAttribute>();
+                    if (igonre != null)
                         continue;
 
-                    propDic[prop.Name] = attribute.ElementName;
+                    var element = prop.GetCustomAttribute<BsonElementAttribute>();
+                    if (element == null)
+                    {
+                        propDic[prop.Name] = prop.Name;
+                        continue;
+                    }
+                    propDic[prop.Name] = element.ElementName;
                 }
             }
         }

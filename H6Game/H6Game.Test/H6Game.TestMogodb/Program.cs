@@ -56,8 +56,8 @@ namespace TestMogodb
 
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount { FAccountName = "SAM" };
-            var fs = new string[] { account.BsonElementName(nameof(account.FType)), account.BsonElementName(nameof(account.FSex)) };
-            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName,fs);
+            
+            var q = await rpository.DBContext.FindAsAsync(a => a.FAccountName, account.FAccountName, account[nameof(account.FType)], account[nameof(account.FSex)]);
 
             // var q = chuncks.Find(query).SetFields(fields).FirstOrDefault();
             //var q = gridFS.Find(query).SetFields(fields);

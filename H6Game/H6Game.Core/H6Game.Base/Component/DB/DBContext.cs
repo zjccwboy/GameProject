@@ -545,12 +545,10 @@ namespace H6Game.Base
                     continue;
 
                 var elmentName = entity.BsonElementName(property.Name);
+                if (elmentName == null)
+                    continue;
 
-                string key;
-                if(elmentName == null)
-                    key = parent == null ? property.Name : $"{parent}.{property.Name}";
-                else
-                    key = parent == null ? property.Name : $"{parent}.{property.Name}";
+                string key = parent == null ? property.Name : $"{parent}.{property.Name}";
 
                 if (key == "Id")
                     continue;
