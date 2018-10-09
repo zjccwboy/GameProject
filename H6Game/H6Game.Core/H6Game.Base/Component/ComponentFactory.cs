@@ -9,8 +9,8 @@ namespace H6Game.Base
 
         static ComponentFactory()
         {
-            CmponentTypes = ObjectPool.GetTypes<BaseComponent>();
-            var rpositoryTypes = ObjectPool.GetTypes<IRpository>();
+            CmponentTypes = ObjectTypeStorage.GetTypes<BaseComponent>();
+            var rpositoryTypes = ObjectTypeStorage.GetTypes<IRpository>();
             foreach(var type in rpositoryTypes)
             {
                 CmponentTypes.Add(type);

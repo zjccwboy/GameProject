@@ -7,7 +7,7 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public static class MetodContextPool
+    public static class MetodContextStorage
     {
         private static Dictionary<int, List<MetodContext>> MetodContexts { get; } = new Dictionary<int, List<MetodContext>>();
         private static Dictionary<Type, HashSet<int>> ControllerCmds { get; } = new Dictionary<Type, HashSet<int>>();
@@ -120,7 +120,7 @@ namespace H6Game.Base
 
                 if(newContext.ParameterTypes.Length == 0)
                 {
-                    var subscribers = MessageSubscriberPool.GetSubscribers(netCommand, null);
+                    var subscribers = MessageSubscriberStorage.GetSubscribers(netCommand, null);
                     if (subscribers.Any())
                     {
                         ThrowRepeatSubscriberError(subscribers, newContext, netCommand);
@@ -128,7 +128,7 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    var subscribers = MessageSubscriberPool.GetSubscribers(netCommand, newContext.ParameterTypes[0]);
+                    var subscribers = MessageSubscriberStorage.GetSubscribers(netCommand, newContext.ParameterTypes[0]);
                     if (subscribers.Any())
                     {
                         ThrowRepeatSubscriberError(subscribers, newContext, netCommand);

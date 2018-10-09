@@ -22,7 +22,7 @@ namespace H6Game.Base
             get
             {
                 if (typeCode <= 0)
-                    typeCode = MessageCommandPool.GetMsgCode(this.MessageType);
+                    typeCode = MessageCommandStorage.GetMsgCode(this.MessageType);
 
                 return typeCode;
             }
@@ -33,7 +33,7 @@ namespace H6Game.Base
             if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
                 return;
 
-            if (!MessageSubscriberPool.ExistSubscriberCmd(network.RecvPacket.NetCommand, this.MessageType))
+            if (!MessageSubscriberStorage.ExistSubscriberCmd(network.RecvPacket.NetCommand, this.MessageType))
                 return;
 
             var message = network.RecvPacket.Read<Message>();

@@ -40,7 +40,7 @@ namespace H6Game.Base
 
         public override void Awake()
         {
-            var types = ObjectPool.GetTypes<BaseEntity>();
+            var types = ObjectTypeStorage.GetTypes<BaseEntity>();
             SetPropertiesName(types);
         }
 

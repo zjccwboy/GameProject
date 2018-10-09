@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace H6Game.Base
 {
-    public static class MessageCommandPool
+    public static class MessageCommandStorage
     {
         private static Dictionary<Type, int> MsgCodes { get; } = new Dictionary<Type, int>();
         private static Dictionary<int, Type> CodeMsgTypes { get; } = new Dictionary<int, Type>();
@@ -28,7 +27,7 @@ namespace H6Game.Base
 
         public static void Load()
         {
-            var msgTypes = ObjectPool.GetTypes<IMessage>();
+            var msgTypes = ObjectTypeStorage.GetTypes<IMessage>();
             foreach (var type in msgTypes)
             {
                 var attribute = type.GetCustomAttribute<NetMessageTypeAttribute>();

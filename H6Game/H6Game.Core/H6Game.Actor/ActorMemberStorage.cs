@@ -2,7 +2,7 @@
 
 namespace H6Game.Actor
 {
-    public class ActorMemberEntities : ComponentEntity
+    public class ActorMemberStorage : ComponentStorage
     {
 
     }

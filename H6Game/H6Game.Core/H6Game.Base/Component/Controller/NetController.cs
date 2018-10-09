@@ -78,7 +78,7 @@ namespace H6Game.Base
         private static object GetMessage(MetodContext context, Network network)
         {
             var packet = network.RecvPacket;
-            var messageType = MessageCommandPool.GetMsgType(packet.MsgTypeCode);
+            var messageType = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
             if (!packet.TryRead(messageType, out object message))
                 throw new NetworkException($"反序列化类型:{messageType}失败");
 

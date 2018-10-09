@@ -24,7 +24,7 @@ namespace H6Game.Base
         public bool Add(BaseComponent component)
         {
             var type = component.GetType();
-            var eventType = ObjectPool.GetEvent(type);
+            var eventType = ObjectTypeStorage.GetEvent(type);
             if (eventType == EventType.None)
                 return false;
 

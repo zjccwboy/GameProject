@@ -18,7 +18,7 @@ namespace H6Game.Account
         public static void Load()
         {
             var baseType = typeof(ALogin);
-            var assemblies = ObjectPool.Assemblies;
+            var assemblies = ObjectTypeStorage.Assemblies;
             foreach (var assembly in assemblies)
             {
                 var types = assembly.GetTypes();

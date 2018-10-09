@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace H6Game.Base
 {
-    public abstract class ComponentEntity
+    public abstract class ComponentStorage
     {
         protected internal Dictionary<Type, HashSet<BaseComponent>> TypeComponents { get; } = new Dictionary<Type, HashSet<BaseComponent>>();
         protected internal Dictionary<int, BaseComponent> IdComponents { get; } = new Dictionary<int, BaseComponent>();
@@ -22,7 +22,7 @@ namespace H6Game.Base
         public virtual bool AddComponent(BaseComponent component)
         {
             var type = component.GetType();
-            var isSingle = ComponentPool.IsSingleType(type);
+            var isSingle = ObjectStorage.IsSingleType(type);
             var isNew = false;
             if (isSingle)
             {
@@ -51,7 +51,7 @@ namespace H6Game.Base
             {
                 if (typeof(IController).IsAssignableFrom(type))
                 {
-                    MetodContextPool.Add((IController)component);
+                    MetodContextStorage.Add((IController)component);
                 }
                 Game.Event.Add(component);
             }
@@ -70,7 +70,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T>() where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T>();
+            var component = ObjectStorage.Fetch<T>();
             this.AddComponent(component);
             return component;
         }
@@ -88,7 +88,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T,K1>(K1 k1) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1>(k1);
+            var component = ObjectStorage.Fetch<T, K1>(k1);
             this.AddComponent(component);
             return component;
         }
@@ -108,7 +108,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2>(K1 k1, K2 k2) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1, K2>(k1, k2);
+            var component = ObjectStorage.Fetch<T, K1, K2>(k1, k2);
             this.AddComponent(component);
             return component;
         }
@@ -129,7 +129,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2,K3>(K1 k1, K2 k2, K3 k3) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1, K2, K3>(k1, k2, k3);
+            var component = ObjectStorage.Fetch<T, K1, K2, K3>(k1, k2, k3);
             this.AddComponent(component);
             return component;
         }
@@ -151,7 +151,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2, K3, K4>(K1 k1, K2 k2, K3 k3, K4 k4) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1, K2, K3, K4>(k1, k2, k3, k4);
+            var component = ObjectStorage.Fetch<T, K1, K2, K3, K4>(k1, k2, k3, k4);
             this.AddComponent(component);
             return component;
         }
@@ -174,7 +174,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2, K3, K4, K5>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
+            var component = ObjectStorage.Fetch<T, K1, K2, K3, K4, K5>(k1, k2, k3, k4, k5);
             this.AddComponent(component);
             return component;
         }
@@ -198,7 +198,7 @@ namespace H6Game.Base
         /// <returns>返回一个组件实体。</returns>
         public virtual T AddComponent<T, K1, K2, K3, K4, K5, K6>(K1 k1, K2 k2, K3 k3, K4 k4, K5 k5, K6 k6) where T : BaseComponent
         {
-            var component = ComponentPool.Fetch<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
+            var component = ObjectStorage.Fetch<T, K1, K2, K3, K4, K5, K6>(k1, k2, k3, k4, k5, k6);
             this.AddComponent(component);
             return component;
         }
@@ -212,7 +212,7 @@ namespace H6Game.Base
         public virtual T GetComponent<T>() where T : BaseComponent
         {
             var type = typeof(T);
-            var isSingle = ComponentPool.IsSingleType(type);
+            var isSingle = ObjectStorage.IsSingleType(type);
             if (!isSingle)
                 throw new ComponentException($"类型:{type}非SingleCase组件不允许获取.");
 
@@ -231,7 +231,7 @@ namespace H6Game.Base
         public virtual HashSet<BaseComponent> GetComponents<T>() where T : BaseComponent
         {
             var type = typeof(T);
-            var isSingle = ComponentPool.IsSingleType(type);
+            var isSingle = ObjectStorage.IsSingleType(type);
             if (isSingle)
                 throw new ComponentException($"类型:{type}是SingleCase组件不允许获取.");
 
@@ -253,7 +253,7 @@ namespace H6Game.Base
         public virtual T GetComponent<T>(int id) where T : BaseComponent
         {
             var type = typeof(T);
-            var isSingle = ComponentPool.IsSingleType(type);
+            var isSingle = ObjectStorage.IsSingleType(type);
             if (isSingle)
                 throw new ComponentException($"类型:{type}是SingleCase组件不允许获取.");
 

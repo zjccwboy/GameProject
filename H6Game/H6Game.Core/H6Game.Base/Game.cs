@@ -4,17 +4,17 @@ namespace H6Game.Base
 {
     public class Game
     {
-        public static Scene Scene { get; }
+        public static SceneStorage Scene { get; }
         public static EventManager Event { get;}
 
         static Game()
         {
-            ObjectPool.Load();
-            ComponentPool.Load();
-            MessageCommandPool.Load();
-            MessageSubscriberPool.Load();
+            ObjectTypeStorage.Load();
+            ObjectStorage.Load();
+            MessageCommandStorage.Load();
+            MessageSubscriberStorage.Load();
 
-            Scene = new Scene();
+            Scene = new SceneStorage();
             Event = new EventManager();
         }
 

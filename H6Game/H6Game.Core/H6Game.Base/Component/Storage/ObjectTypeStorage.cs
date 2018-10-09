@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace H6Game.Base
 {
-    public static class ObjectPool
+    public static class ObjectTypeStorage
     {
         private static Dictionary<Type, HashSet<Type>> Objcets { get; } = new Dictionary<Type, HashSet<Type>>();
         private static Dictionary<Type, EventType> EventTypes { get; } = new Dictionary<Type, EventType>();

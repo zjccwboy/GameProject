@@ -22,10 +22,10 @@ namespace H6Game.Actor
         public Action<Network> OnConnected { get; set; }
         public override void Awake()
         {
-            var types = ObjectPool.GetTypes<BaseActorEntity>();
+            var types = ObjectTypeStorage.GetTypes<BaseActorEntity>();
             foreach(var type in types)
             {
-                using (var component = ComponentPool.Fetch(type) as BaseActorComponent)
+                using (var component = ObjectStorage.Fetch(type) as BaseActorComponent)
                 {
                     ActorTypes[component.ActorType] = type;
                 }
@@ -62,7 +62,7 @@ namespace H6Game.Actor
             Log.Info(logs, LoggerBllType.System);
 
             var type = ActorTypes[message.ActorType];
-            var actor = ComponentPool.Fetch(type) as BaseActorComponent;
+            var actor = ObjectStorage.Fetch(type) as BaseActorComponent;
             actor.SetRemote(this.CurrentNetwrok, message.ObjectId, message.ActorId);
             Game.Scene.AddComponent(actor);
         }

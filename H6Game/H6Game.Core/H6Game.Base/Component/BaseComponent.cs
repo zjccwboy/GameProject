@@ -26,7 +26,7 @@ namespace H6Game.Base
         {
             Game.Scene.Remove(this);
             Game.Event.Remove(this);
-            MetodContextPool.Remove(this as IController);
+            MetodContextStorage.Remove(this as IController);
             this.PutBack();            
         }
 

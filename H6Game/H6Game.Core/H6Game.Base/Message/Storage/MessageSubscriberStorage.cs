@@ -8,7 +8,7 @@ namespace H6Game.Base
     /// <summary>
     /// 订阅者与消息Code池
     /// </summary>
-    public static class MessageSubscriberPool
+    public static class MessageSubscriberStorage
     {
         private static Dictionary<int, HashSet<ISubscriber>> Subscribers { get; } = new Dictionary<int, HashSet<ISubscriber>>();
         private static Dictionary<int, HashSet<Type>> CmdTypes { get; } = new Dictionary<int, HashSet<Type>>();
@@ -21,7 +21,7 @@ namespace H6Game.Base
 
         private static void LoadSubscriber()
         {
-            var handlerTypes = ObjectPool.GetTypes<ISubscriber>();
+            var handlerTypes = ObjectTypeStorage.GetTypes<ISubscriber>();
             foreach (var type in handlerTypes)
             {
                 var attributes = type.GetCustomAttributes<NetCommandAttribute>();

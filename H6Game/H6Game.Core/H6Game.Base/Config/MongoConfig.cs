@@ -25,7 +25,7 @@ namespace H6Game.Base
             var logDbClient = new MongoClient(logConfig.ConnectionString);
             var logDb = logDbClient.GetDatabase(logConfig.DatabaseName);
 
-            var types = ObjectPool.GetTypes<IRpository>();
+            var types = ObjectTypeStorage.GetTypes<IRpository>();
             foreach (var type in types)
             {
                 AddComponent(type, sysConfig, logConfig, sysDbClient, logDbClient, sysDb, logDb);
@@ -37,11 +37,11 @@ namespace H6Game.Base
             if (!typeof(IRpository).IsAssignableFrom(type))
                 return;
 
-            var isSingle = ComponentPool.IsSingleType(type);
+            var isSingle = ObjectStorage.IsSingleType(type);
             if (!isSingle)
                 throw new ComponentException("规定Rpository类型组件只能定义成单例(SingleCase)组件。");
 
-            var component = ComponentPool.Fetch(type);
+            var component = ObjectStorage.Fetch(type);
             var rpository = component as IRpository;
             if(rpository.DBType == DBType.SysDb)
             {

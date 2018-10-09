@@ -67,7 +67,7 @@ internal static class PacketExtensions
 
     private static int GetTypeCode(Type type)
     {
-        return MessageCommandPool.GetMsgCode(type);
+        return MessageCommandStorage.GetMsgCode(type);
     }
 
     public static T Read<T>(this Packet packet)
