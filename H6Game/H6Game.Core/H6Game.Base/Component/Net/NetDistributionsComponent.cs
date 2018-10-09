@@ -133,7 +133,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 订阅远程服务监听的端口IP信息。
+        /// 远程服务监听的端口IP信息。
         /// </summary>
         [NetCommand(SysNetCommand.AddInServerCmd)]
         public void OnAddServerConnection(NetEndPointMessage message)
@@ -155,7 +155,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 订阅远程服务外网监听的IP端口信息。
+        /// 远程服务外网监听的IP端口信息。
         /// </summary>
         [NetCommand(SysNetCommand.GetOutServerCmd)]
         public NetEndPointMessage OnSyncOutNetMessage()
@@ -164,7 +164,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 订阅远程服务获取本地服务IP端口信息。
+        /// 远程服务获取本地服务IP端口信息。
         /// </summary>
         [NetCommand(SysNetCommand.GetInServerCmd)]
         public NetEndPointMessage OnSyncInnerNetMessage()
@@ -173,12 +173,12 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 订阅远程服务获取本地服务类型
+        /// 远程服务获取本地服务类型。
         /// </summary>
         [NetCommand(SysNetCommand.GetServerType)]
         public int OnGetServerType()
         {
-            Log.Info($"订阅远程服务获取本地服务类型:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
+            Log.Debug($"订阅远程服务获取本地服务类型:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
 
             if (this.IsCenterServer)
             {

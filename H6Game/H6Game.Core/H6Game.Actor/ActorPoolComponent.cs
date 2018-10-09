@@ -52,7 +52,7 @@ namespace H6Game.Actor
         }
 
         /// <summary>
-        /// 订阅远程服务端新增Actor事件消息
+        /// 远程服务端新增Actor事件消息
         /// </summary>
         /// <param name="message"></param>
         [NetCommand(NetCommand.AddActorCmd)]
@@ -68,7 +68,7 @@ namespace H6Game.Actor
         }
 
         /// <summary>
-        /// 订阅远程服务端删除Actor事件消息
+        /// 远程服务端删除Actor事件消息
         /// </summary>
         /// <param name="message"></param>
         [NetCommand(NetCommand.RemoveActorCmd)]
@@ -81,7 +81,7 @@ namespace H6Game.Actor
         }
 
         /// <summary>
-        /// 订阅远程服务同步本地服务Actor全量数据消息
+        /// 远程服务同步本地服务Actor全量数据消息
         /// </summary>
         [NetCommand(NetCommand.SyncActorInfoCmd)]
         public void OnRemoteSyncFullActorInfo()
