@@ -163,9 +163,8 @@ namespace H6Game.Base
 
                 this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
                 if (this.NetSocket.ReceiveAsync(this.InArgs))
-                {
                     return;
-                }
+
                 OnRecvComplete(this.InArgs);
             }
             catch (Exception e)
@@ -288,7 +287,7 @@ namespace H6Game.Base
                 try
                 {
                     if (!RecvParser.TryRead())
-                        return;
+                        break;
 
                     HandleReceive(this.RecvParser.Packet);
                     this.RecvParser.Packet.BodyStream.SetLength(0);
@@ -300,8 +299,8 @@ namespace H6Game.Base
                     Log.Error(ex, LoggerBllType.System);
                     return;
                 }
-
             }
+
             this.StartRecv();
         }
 
