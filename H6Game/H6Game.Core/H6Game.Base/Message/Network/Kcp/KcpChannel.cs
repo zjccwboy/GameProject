@@ -33,7 +33,6 @@ namespace H6Game.Base
         private byte[] CacheBytes { get; set; }
         private int MaxPSize { get;} = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
-        private uint TimeNow { get; set; } = TimeUitls.Now();
 
         /// <summary>
         /// 构造函数,Connect
@@ -99,7 +98,6 @@ namespace H6Game.Base
         /// </summary>
         public override void StartRecv()
         {
-            this.TimeNow = TimeUitls.Now();
             while (true)
             {
                 int n = Kcp.PeekSize();
@@ -172,8 +170,6 @@ namespace H6Game.Base
             if (!this.Connected)
                 return;
 
-            this.TimeNow = TimeUitls.Now();
-            this.LastSendTime = this.TimeNow;
             while (this.SendParser.Buffer.DataSize > 0)
             {
                 var offset = this.SendParser.Buffer.FirstReadOffset;
@@ -232,8 +228,10 @@ namespace H6Game.Base
         /// </summary>
         private void SetKcpSendTime()
         {
+            var now = TimeUitls.Now();
+            this.LastSendTime = now;
             Kcp.Update(this.LastCheckTime);
-            this.LastCheckTime = this.Kcp.Check(this.TimeNow);
+            this.LastCheckTime = this.Kcp.Check(now);
         }
     }
 }
