@@ -28,10 +28,11 @@ namespace H6Game.Base
     /// </summary>
     public class KcpChannel : ANetChannel
     {
-        private Kcp Kcp;
-        private byte[] CacheBytes;
-        private readonly int MaxPSize = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
-        private uint LastCheckTime = TimeUitls.Now();
+        private Kcp Kcp { get; set; }
+        private byte[] CacheBytes { get; set; }
+        private int MaxPSize { get;} = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
+        private uint LastCheckTime { get; set; } = TimeUitls.Now();
+        private Socket NetSocket { get; set; }
 
         /// <summary>
         /// 构造函数,Connect

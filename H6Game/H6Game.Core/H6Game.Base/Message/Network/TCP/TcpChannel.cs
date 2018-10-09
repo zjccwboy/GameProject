@@ -9,18 +9,19 @@ namespace H6Game.Base
     /// </summary>
     public class TcpChannel : ANetChannel
     {
-        private SocketAsyncEventArgs InArgs;
-        private SocketAsyncEventArgs OutArgs;
+        private SocketAsyncEventArgs InArgs { get; set; }
+        private SocketAsyncEventArgs OutArgs { get; set; }
+        private Socket NetSocket { get; set; }
 
         /// <summary>
         /// 发送状态机
         /// </summary>
-        private bool IsSending;
+        private bool IsSending { get; set; }
 
         /// <summary>
         /// 接收状态机
         /// </summary>
-        private bool IsReceiving;
+        private bool IsReceiving { get; set; }
 
         /// <summary>
         /// 构造函数,Connect

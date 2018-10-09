@@ -42,11 +42,6 @@ namespace H6Game.Base
         public int Id { get; set; }
 
         /// <summary>
-        /// Socket
-        /// </summary>
-        public Socket NetSocket { get; protected set; }
-
-        /// <summary>
         /// 会话类
         /// </summary>
         public Session Session { get { return this.NetService.Session; } }
