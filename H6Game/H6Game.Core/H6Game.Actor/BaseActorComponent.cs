@@ -45,7 +45,7 @@ namespace H6Game.Actor
         }
     }
 
-    public abstract class BaseActorComponent : BaseActorEntity
+    public abstract class BaseActorComponent : BaseActor
     {
         /// <summary>
         /// 该组件拥有的成员，例如用户进入了房间，那么房间组件就拥有了该用户，设计时需要理解清楚需求的

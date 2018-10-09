@@ -22,7 +22,7 @@ namespace H6Game.Actor
         public Action<Network> OnConnected { get; set; }
         public override void Awake()
         {
-            var types = ObjectTypeStorage.GetTypes<BaseActorEntity>();
+            var types = ObjectTypeStorage.GetTypes<BaseActor>();
             foreach(var type in types)
             {
                 using (var component = ObjectStorage.Fetch(type) as BaseActorComponent)
