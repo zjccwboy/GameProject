@@ -18,11 +18,11 @@ namespace H6Game.Base
                 switch (LogLevel)
                 {
                     case LogLevel.Debug:
-                        return ConsoleColor.White;
+                        return ConsoleColor.DarkBlue;
                     case LogLevel.Info:
                         return ConsoleColor.DarkGreen;
                     case LogLevel.Notice:
-                        return ConsoleColor.DarkBlue;
+                        return ConsoleColor.White;
                     case LogLevel.Warn:
                         return ConsoleColor.DarkYellow;
                     case LogLevel.Error:

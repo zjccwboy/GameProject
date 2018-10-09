@@ -15,7 +15,7 @@ namespace H6Game.Base
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
-    public sealed class NetConnectingComponent : NetController
+    public sealed class NetConnectorComponent : NetController
     {
         private NetConnectConfigEntity Config { get; set; }
         private ProtocalType ProtocalType { get; set; }

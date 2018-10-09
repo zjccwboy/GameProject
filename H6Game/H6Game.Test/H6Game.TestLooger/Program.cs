@@ -9,8 +9,6 @@ namespace H6Game.TestLooger
         {
 
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<NetDistributionsComponent>();
-
             TestWriteLog();
 
             while (true)
@@ -22,15 +20,12 @@ namespace H6Game.TestLooger
 
         static void TestWriteLog()
         {
-            while (true)
-            {
-                Log.Debug("Debug", LoggerBllType.System);
-                Log.Info("Info", LoggerBllType.System);
-                Log.Error("Error", LoggerBllType.System);
-                Log.Warn("Warning", LoggerBllType.System);
-                Log.Fatal("Fatal", LoggerBllType.System);
-                Log.Notice("Notice", LoggerBllType.System);
-            }
+            Log.Debug("Debug", LoggerBllType.System);
+            Log.Info("Info", LoggerBllType.System);
+            Log.Error("Error", LoggerBllType.System);
+            Log.Warn("Warning", LoggerBllType.System);
+            Log.Fatal("Fatal", LoggerBllType.System);
+            Log.Notice("Notice", LoggerBllType.System);
         }
     }
 }

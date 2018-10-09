@@ -76,24 +76,31 @@ namespace H6Game.Base
 
             var componentBaseType = typeof(BaseComponent);
             var componentTypes = new HashSet<Type>();
+            Objcets[componentBaseType] = componentTypes;
 
             var messageBaseType = typeof(IMessage);
             var messageTypes = new HashSet<Type>();
+            Objcets[messageBaseType] = messageTypes;
 
-            var handlerType = typeof(ISubscriber);
-            var handlerTypes = new HashSet<Type>();
+            var subscriberType = typeof(ISubscriber);
+            var subscriberTypes = new HashSet<Type>();
+            Objcets[subscriberType] = subscriberTypes;
 
             var entityBaseType = typeof(BaseEntity);
             var entityTypes = new HashSet<Type>();
+            Objcets[entityBaseType] = entityTypes;
 
             var rpositoryBaseType = typeof(IRpository);
             var rpositoryTypes = new HashSet<Type>();
+            Objcets[rpositoryBaseType] = rpositoryTypes;
 
             var actorBaseType = typeof(BaseActor);
             var actorTypes = new HashSet<Type>();
+            Objcets[actorBaseType] = actorTypes;
 
             var controllerBaseType = typeof(IController);
             var controllerTypes = new HashSet<Type>();
+            Objcets[controllerBaseType] = controllerTypes;
 
             foreach (var assembly in assemblys)
             {
@@ -112,9 +119,9 @@ namespace H6Game.Base
                         {
                             messageTypes.Add(t);
                         }
-                        if (handlerType.IsAssignableFrom(t))
+                        if (subscriberType.IsAssignableFrom(t))
                         {
-                            handlerTypes.Add(t);
+                            subscriberTypes.Add(t);
                         }
                         if (rpositoryBaseType.IsAssignableFrom(t))
                         {
@@ -143,14 +150,6 @@ namespace H6Game.Base
                     Console.WriteLine(e.StackTrace);
                 }
             }
-
-            Objcets[messageBaseType] = messageTypes;
-            Objcets[componentBaseType] = componentTypes;
-            Objcets[handlerType] = handlerTypes;
-            Objcets[entityBaseType] = entityTypes;
-            Objcets[rpositoryBaseType] = rpositoryTypes;
-            Objcets[actorBaseType] = actorTypes;
-            Objcets[controllerBaseType] = controllerTypes;
         }
 
         private static bool CompareBaseType(Type compare, Type baseType)

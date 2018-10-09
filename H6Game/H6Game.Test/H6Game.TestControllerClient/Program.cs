@@ -15,7 +15,7 @@ namespace H6Game.TestControllerClient
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected = (c,t) => { Start(); };
+            Game.Scene.AddComponent<NetConnectorComponent>().OnConnected = (c,t) => { Start(); };
             while (true)
             {
                 Game.Update();
@@ -34,28 +34,28 @@ namespace H6Game.TestControllerClient
 
         private static void  Get()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             network.Send(8001);
             Log.Info($"GetTaskInt send:{1024} cmd:{8001}", LoggerBllType.System);
         }
 
         private static async Task GetInt()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             var result = await network.CallMessageAsync<int, int>(1024, 8002);
             Log.Info($"GetTaskInt send:{1024} recv:{result} cmd:{8002}", LoggerBllType.System);
         }
 
         private static void GetTask()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             network.Send(8003);
             Log.Info($"GetTaskInt send:{1024} cmd:{8003}", LoggerBllType.System);
         }
 
         private static async Task GetTaskInt()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             var result = await network.CallMessageAsync<int, int>(1024, 8004);
             Log.Info($"GetTaskInt send:{1024} recv:{result} cmd:{8004}", LoggerBllType.System);
         }

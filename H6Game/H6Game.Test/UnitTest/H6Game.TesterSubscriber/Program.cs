@@ -15,7 +15,7 @@ namespace H6Game.TesterSubscriber
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
-            Game.Scene.AddComponent<NetConnectingComponent>().OnConnected += (c, t) => { Start(); };
+            Game.Scene.AddComponent<NetConnectorComponent>().OnConnected += (c, t) => { Start(); };
 
             while(true)
             {
@@ -45,7 +45,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubEmpty()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var emptyResult = await network.CallMessageAsync<int>((int)NetCommandTest.SubEmpty);
             if(1024 == emptyResult)
@@ -56,7 +56,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubInt()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             var intResult = await network.CallMessageAsync<int, int>(1024, (int)NetCommandTest.SubInt);
             if (1024 == intResult)
             {
@@ -66,7 +66,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubUInt()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var uintResult = await network.CallMessageAsync<uint, uint>(1024, (int)NetCommandTest.SubUInt);
             if (1024 == uintResult)
@@ -77,7 +77,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubString()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var stringResult = await network.CallMessageAsync<string, string>("1024", (int)NetCommandTest.SubString);
             if ("1024" == stringResult)
@@ -88,7 +88,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubLong()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var longResult = await network.CallMessageAsync<long, long>(102410241024, (int)NetCommandTest.SubLong);
             if (102410241024 == longResult)
@@ -99,7 +99,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubULong()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024, (int)NetCommandTest.SubULong);
             if (102410241024 == ulongResult)
@@ -110,7 +110,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubFloat()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, (int)NetCommandTest.SubFloat);
             if (1024.1024 == floatResult)
@@ -121,7 +121,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubDouble()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024, (int)NetCommandTest.SubDouble);
             if (10241024.1024 == doubleResult)
@@ -132,7 +132,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubDecimal()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, (int)NetCommandTest.SubDecimal);
             if (10241024.1024m == decimalResult)
@@ -143,7 +143,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubByte()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             byte bt = 127;
             var byteResult = await network.CallMessageAsync<byte,byte>(bt, (int)NetCommandTest.SubByte);
@@ -155,7 +155,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubSByte()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             sbyte sbt = 127;
             var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByte);
@@ -167,7 +167,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubShort()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             short st = 30000;
             var shortResult = await network.CallMessageAsync<short, short>(st, (int)NetCommandTest.SubShort);
@@ -179,7 +179,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubUShort()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             ushort ust = 65535;
             var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, (int)NetCommandTest.SubUShort);
@@ -191,7 +191,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubChar()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubSByte);
             if ('a' == charResult)
             {
@@ -201,7 +201,7 @@ namespace H6Game.TesterSubscriber
 
         private static async void SubClass()
         {
-            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
             var message = new TesterMessage
             {
                 Message = "测试消息！",

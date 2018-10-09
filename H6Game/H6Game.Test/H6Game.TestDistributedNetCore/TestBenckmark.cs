@@ -29,7 +29,7 @@ namespace H6Game.TestDistributedNetCore
         private static async void Benckmark(Network network)
         {
             while(true)
-                await StartCall(network);
+                await Call(network);
         }
 
         static TestMessage send = new TestMessage
@@ -43,11 +43,6 @@ namespace H6Game.TestDistributedNetCore
             UIntData = 191919191,
             ListIntData = new List<int> { 1, 2, 3, 4, 5, 6, },
         };
-
-        public static async Task StartCall(Network network)
-        {
-            await Call(network);
-        }
 
         public static async Task Call(Network network)
         {
