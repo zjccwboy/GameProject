@@ -106,16 +106,6 @@ namespace H6Game.Base
         {
             var session = new Session(endPoint, protocalType);
             var channel = session.Connect();
-            if(protocalType == ProtocalType.Kcp)
-            {
-                channel.RecvParser = new PacketParser(1400);
-                channel.SendParser = new PacketParser(1400);
-            }
-            else if( protocalType == ProtocalType.Tcp)
-            {
-                channel.RecvParser = new PacketParser();
-                channel.SendParser = new PacketParser();
-            }
             var network = new Network(session, session.NService, channel);
             return network;
         }
@@ -135,16 +125,6 @@ namespace H6Game.Base
             session.OnClientConnected += connectedAction;
             session.OnClientDisconnected += disconnectedAction;
             var channel = session.Connect();
-            if (protocalType == ProtocalType.Kcp)
-            {
-                channel.RecvParser = new PacketParser(1400);
-                channel.SendParser = new PacketParser(1400);
-            }
-            else if (protocalType == ProtocalType.Tcp)
-            {
-                channel.RecvParser = new PacketParser();
-                channel.SendParser = new PacketParser();
-            }
             var network = new Network(session, session.NService, channel);
             return network;
         }

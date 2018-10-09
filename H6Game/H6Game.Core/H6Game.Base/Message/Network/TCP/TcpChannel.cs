@@ -31,6 +31,8 @@ namespace H6Game.Base
         public TcpChannel(IPEndPoint endPoint, ANetService netService) : base(netService)
         {
             this.RemoteEndPoint = endPoint;
+            this.RecvParser = ParserStorage.GetParser();
+            this.SendParser = ParserStorage.GetParser();
         }
 
         /// <summary>
@@ -42,6 +44,8 @@ namespace H6Game.Base
         public TcpChannel(IPEndPoint endPoint, Socket socket, ANetService netService) : base(netService)
         {
             this.LocalEndPoint = endPoint;
+            this.RecvParser = ParserStorage.GetParser();
+            this.SendParser = ParserStorage.GetParser();
             this.NetSocket = socket;
             this.InArgs = new SocketAsyncEventArgs();
             this.OutArgs = new SocketAsyncEventArgs();
@@ -159,7 +163,6 @@ namespace H6Game.Base
                     return;
                 }
 
-                this.RecvParser = this.RecvParser ?? new PacketParser();
                 this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
                 if (this.NetSocket.ReceiveAsync(this.InArgs))
                     return;
@@ -185,31 +188,25 @@ namespace H6Game.Base
                 if (!this.Connected)
                     return;
 
-                Connected = false;
                 if (NetSocket == null)
                     return;
 
+                Connected = false;
+
                 OnDisConnect?.Invoke(this);
             }
-            catch { }
-
-            try
+            finally
             {
-                SendParser.Clear();
-                RecvParser.Clear();
+                ParserStorage.Push(SendParser);
+                ParserStorage.Push(RecvParser);
 
                 NetSocket.Close();
                 NetSocket.Dispose();
                 NetSocket = null;
-            }
-            catch { }
 
-            try
-            {
                 this.InArgs.Dispose();
                 this.OutArgs.Dispose();
             }
-            catch { }
         }
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)

@@ -191,7 +191,7 @@ namespace H6Game.Base
             while(length > 0)
             {
                 var count = length > LastCapacity ? LastCapacity : length;
-                System.Buffer.BlockCopy(bytes, index, Last, LastWriteOffset, count);
+                Buffer.BlockCopy(bytes, index, Last, LastWriteOffset, count);
                 index += count;
                 length -= count;
                 UpdateWrite(count);
@@ -225,17 +225,20 @@ namespace H6Game.Base
         /// </summary>
         public void Flush()
         {
+            var segments = WorkerBuffer.Count + CacheBuffer.Count;
+            var bytes = segments * BlockSize;
+            while (bytes > DefaultBlockSize * 2)
+            {
+                if(WorkerBuffer.Count > 1)
+                    WorkerBuffer.Dequeue();
+                else
+                    CacheBuffer.Dequeue();
+
+                segments = WorkerBuffer.Count + CacheBuffer.Count;
+                bytes = segments * BlockSize;
+            }
             FirstReadOffset = 0;
             LastWriteOffset = 0;
-            while (WorkerBuffer.Count > 1)
-            {
-                WorkerBuffer.Dequeue();
-            }
-            for(var i = 0; i < First.Length; i++)
-            {
-                First[i] = 0;
-            }
-            CacheBuffer.Clear();
         }
     }
 }

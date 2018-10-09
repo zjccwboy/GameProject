@@ -138,7 +138,6 @@ namespace H6Game.Base
         
         internal void Send<TSender>(ANetChannel channel, TSender data, int netCommand, int rpcId)
         {
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
             packet.WriteTo(data);
@@ -146,7 +145,6 @@ namespace H6Game.Base
 
         internal void Send(ANetChannel channel, object data, int netCommand, int rpcId)
         {
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
             packet.WriteTo(data);
@@ -154,7 +152,6 @@ namespace H6Game.Base
 
         internal void Send(ANetChannel channel, int netCommand, int rpcId)
         {
-            channel.SendParser = channel.SendParser ?? new PacketParser();
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
             packet.WriteTo();

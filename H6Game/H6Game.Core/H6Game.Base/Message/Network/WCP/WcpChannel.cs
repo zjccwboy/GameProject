@@ -13,6 +13,8 @@ namespace H6Game.Base
         public WcpChannel(string httpPrefixed, ANetService netService) : base(netService)
         {
             this.HttpPrefixed = httpPrefixed;
+            this.RecvParser = ParserStorage.GetParser();
+            this.SendParser = ParserStorage.GetParser();
         }
 
 
@@ -20,22 +22,38 @@ namespace H6Game.Base
         {
             this.HttpPrefixed = httpPrefixed;
             this.NetSocket = socket;
+            this.RecvParser = ParserStorage.GetParser();
+            this.SendParser = ParserStorage.GetParser();
         }
 
         public override async void DisConnect()
         {
             try
             {
+                if (!this.Connected)
+                    return;
+
+                if (NetSocket == null)
+                    return;
+
+                Connected = false;
+
+                OnDisConnect(this);
+
                 if (this.NetService.ServiceType == NetServiceType.Client)
                     await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
                 else
                     await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
-                this.NetSocket.Dispose();
-                this.NetSocket = null;
-                OnDisConnect(this);
             }
-            catch { }
+            finally
+            {
+                ParserStorage.Push(SendParser);
+                ParserStorage.Push(RecvParser);
+
+                NetSocket.Dispose();
+                NetSocket = null;
+            }
         }
 
         public override async void StartConnecting()

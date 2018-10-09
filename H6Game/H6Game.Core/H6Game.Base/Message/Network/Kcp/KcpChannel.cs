@@ -45,6 +45,8 @@ namespace H6Game.Base
         {
             this.RemoteEndPoint = endPoint;
             this.NetSocket = socket;
+            this.RecvParser = ParserStorage.GetParser(1400);
+            this.SendParser = ParserStorage.GetParser(1400);
         }
 
         public void InitKcp()
@@ -52,7 +54,6 @@ namespace H6Game.Base
             Kcp = new Kcp((uint)this.Id, this);
             Kcp.SetOutput(this.Output);
             Kcp.NoDelay(1, 10, 2, 1);  //fast
-            //this.SendParser = this.SendParser ?? new PacketParser(1400);
         }
 
         /// <summary>
@@ -72,7 +73,6 @@ namespace H6Game.Base
                 if (Connected)
                     return;
 
-                this.SendParser = this.SendParser ?? new PacketParser(1400);
                 ConnectSender.SendSYN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint);
             }
             catch (Exception e)
@@ -110,7 +110,6 @@ namespace H6Game.Base
                 if (count <= 0)
                     return;
 
-                this.RecvParser = this.RecvParser ?? new PacketParser(1400);
                 RecvParser.WriteBuffer(CacheBytes, 0, count);
 
                 while (true)
@@ -196,14 +195,17 @@ namespace H6Game.Base
                 if (!this.Connected)
                     return;
 
-                this.SendParser.Clear();
-                this.RecvParser.Clear();
-                
                 Connected = false;
-                ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);
+
                 OnDisConnect?.Invoke(this);
+                ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);
             }
             catch { }
+            finally
+            {
+                ParserStorage.Push(SendParser);
+                ParserStorage.Push(RecvParser);
+            }
         }
 
         /// <summary>
