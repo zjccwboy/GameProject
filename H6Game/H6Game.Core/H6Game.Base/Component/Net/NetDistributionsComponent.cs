@@ -263,22 +263,22 @@ namespace H6Game.Base
             if (message == this.Config.GetInnerMessage())
                 return;
 
-            var network = Network.CreateConnecting(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, net =>
+            var connector = Network.CreateConnector(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, network =>
             {
-                OnClientConnect(net, message);
-            }, net =>
+                OnClientConnect(network, message);
+            }, network =>
             {
-                OnClientDisconnect(net, message);
+                OnClientDisconnect(network, message);
             });
 
             if (message == this.Config.GetCenterMessage())
             {
-                this.CenterConnectNetwork = network;
+                this.CenterConnectNetwork = connector;
             }
             else
             {
-                this.InConnectedNetworks[message] = network;
-                this.NotExistProxyNetworks[message] = network;
+                this.InConnectedNetworks[message] = connector;
+                this.NotExistProxyNetworks[message] = connector;
             }
         }
 

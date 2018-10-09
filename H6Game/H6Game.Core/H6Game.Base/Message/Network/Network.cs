@@ -112,7 +112,7 @@ namespace H6Game.Base
         /// <param name="endPoint">服务端IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
         /// <returns></returns>
-        public static Network CreateConnecting(IPEndPoint endPoint, ProtocalType protocalType)
+        public static Network CreateConnector(IPEndPoint endPoint, ProtocalType protocalType)
         {
             var session = new Session(endPoint, protocalType);
             var channel = session.Connect();
@@ -138,7 +138,7 @@ namespace H6Game.Base
         /// <param name="connectedAction">连接成功回调。</param>
         /// <param name="disconnectedAction">连接断开回调。</param>
         /// <returns></returns>
-        public static Network CreateConnecting(IPEndPoint endPoint, ProtocalType protocalType
+        public static Network CreateConnector(IPEndPoint endPoint, ProtocalType protocalType
             , Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
             var session = new Session(endPoint, protocalType);

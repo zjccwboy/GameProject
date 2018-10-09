@@ -102,7 +102,7 @@ namespace H6Game.Base
             var message = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
             var endPoint = IPEndPointHelper.GetIPEndPoint(message);
             var proxyNetwork = this.Network;
-            this.Network = Network.CreateConnecting(endPoint, this.ProtocalType, network =>
+            this.Network = Network.CreateConnector(endPoint, this.ProtocalType, network =>
             {
                 this.OnConnected?.Invoke(network, ConnectType.Gate);
 
@@ -117,7 +117,7 @@ namespace H6Game.Base
         private void ConnectingProxy()
         {
             var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
-            this.Network = Network.CreateConnecting(proxyEndPoint, this.ProtocalType, network =>
+            this.Network = Network.CreateConnector(proxyEndPoint, this.ProtocalType, network =>
             {
                 this.OnConnected?.Invoke(network, ConnectType.Proxy);
             }, network =>
