@@ -75,27 +75,40 @@ namespace H6Game.Base
         /// <summary>
         /// 包头协议中表示数据包大小的第一个协议字节数，4个字节
         /// </summary>
-        public static readonly int LengthFlagSize = sizeof(int);
+        public const int LengthFlagSize = sizeof(int);
         /// <summary>
         /// 包头协议中标志位的字节数，1个字节
         /// </summary>
-        public static readonly int BitFlagSize = sizeof(byte);
+        public const int BitFlagSize = sizeof(byte);
         /// <summary>
         /// 包头协议中Msg消息Id字节数，4个字节
         /// </summary>
-        public static readonly int MessageIdFlagSize = sizeof(int);
+        public const int NetCommandFlagSize = sizeof(int);
         /// <summary>
         /// 消息类型,4个字节
         /// </summary>
-        public static readonly int MsgTypeSize = sizeof(int);
+        public const int MsgTypeSize = sizeof(int);
         /// <summary>
         /// 包头协议中RPC请求Id的字节数，4个字节
         /// </summary>
-        public static readonly int RpcFlagSize = sizeof(int);
+        public const int RpcFlagSize = sizeof(int);
         /// <summary>
         /// 包头大小
         /// </summary>
-        public static readonly int HeadSize = LengthFlagSize + BitFlagSize + MessageIdFlagSize + MsgTypeSize + RpcFlagSize;
+        public const int HeadSize = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeSize + RpcFlagSize;
+
+        /// <summary>
+        /// NetCommand偏移地址
+        /// </summary>
+        private const int NetCommandOffset = LengthFlagSize + BitFlagSize;
+        /// <summary>
+        /// MsgType偏移地址
+        /// </summary>
+        private const int MsgTypeOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize;
+        /// <summary>
+        /// RpcIdO偏移地址
+        /// </summary>
+        private const int RpcIdOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -143,28 +156,28 @@ namespace H6Game.Base
                         }                        
                     case ParseState.Cmd:
                         {
-                            var offset = LengthFlagSize + BitFlagSize;
-                            if (Buffer.FirstDataSize >= MessageIdFlagSize)
+                            var offset = NetCommandOffset;
+                            if (Buffer.FirstDataSize >= NetCommandFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MessageIdFlagSize);
-                                Buffer.UpdateRead(MessageIdFlagSize);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, NetCommandFlagSize);
+                                Buffer.UpdateRead(NetCommandFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                                 Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MessageIdFlagSize - count);
-                                Buffer.UpdateRead(MessageIdFlagSize - count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, NetCommandFlagSize - count);
+                                Buffer.UpdateRead(NetCommandFlagSize - count);
                             }
-                            ReadLength += MessageIdFlagSize;
+                            ReadLength += NetCommandFlagSize;
                             Packet.NetCommand = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
                             State = ParseState.MsgType;
                             break;
                         }
                     case ParseState.MsgType:
                         {
-                            var offset = LengthFlagSize + BitFlagSize + MessageIdFlagSize;
+                            var offset = MsgTypeOffset;
                             if (Buffer.FirstDataSize >= MsgTypeSize)
                             {
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeSize);
@@ -185,7 +198,7 @@ namespace H6Game.Base
                         }
                     case ParseState.Rpc:
                         {
-                            var offset = LengthFlagSize + BitFlagSize + MessageIdFlagSize + MsgTypeSize;
+                            var offset = RpcIdOffset;
                             if (Buffer.FirstDataSize >= RpcFlagSize)
                             {
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
