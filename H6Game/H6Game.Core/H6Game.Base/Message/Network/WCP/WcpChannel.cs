@@ -26,11 +26,10 @@ namespace H6Game.Base
         {
             try
             {
-                var cancellation = new CancellationToken();
                 if (this.NetService.ServiceType == NetServiceType.Client)
-                    await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, cancellation);
+                    await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
                 else
-                    await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, cancellation);
+                    await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
                 this.NetSocket.Dispose();
                 this.NetSocket = null;
@@ -53,12 +52,9 @@ namespace H6Game.Base
                 this.LastConnectTime = now;
 
                 if (this.NetSocket == null)
-                {
                     this.NetSocket = new ClientWebSocket();
-                }
 
-                var cancellation = new CancellationToken();
-                await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), cancellation);
+                await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), CancellationToken.None);
                 this.Connected = true;
                 OnConnect?.Invoke(this);
             }
@@ -74,9 +70,8 @@ namespace H6Game.Base
             {
                 try
                 {
-                    var cancellation = new CancellationToken();
                     var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
-                    var result = await this.NetSocket.ReceiveAsync(segment, cancellation);
+                    var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
                     if (result.Count == 0)
                     {
                         this.DisConnect();
@@ -144,9 +139,8 @@ namespace H6Game.Base
 
             try
             {
-                var cancellation = new CancellationToken();
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                await NetSocket.SendAsync(new ArraySegment<byte>(SendParser.Buffer.First), WebSocketMessageType.Binary, true, cancellation);
+                await NetSocket.SendAsync(new ArraySegment<byte>(SendParser.Buffer.First), WebSocketMessageType.Binary, true, CancellationToken.None);
                 SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstReadOffset);
             }
             catch (Exception e)
