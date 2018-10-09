@@ -18,8 +18,18 @@ namespace H6Game.Base
     /// </summary>
     public enum ProtocalType
     {
+        /// <summary>
+        /// TCP
+        /// </summary>
         Tcp,
+        /// <summary>
+        /// UDP Kcp
+        /// </summary>
         Kcp,
+        /// <summary>
+        /// WebSocket
+        /// </summary>
+        Wcp,
     }
 
     /// <summary>
@@ -30,6 +40,7 @@ namespace H6Game.Base
         public ANetService NService;
         private IPEndPoint EPoint { get; }
         private ProtocalType PType { get; }
+        private string HttpPrefixed { get; set; }
 
         /// <summary>
         /// 客户端连接管道
@@ -62,6 +73,12 @@ namespace H6Game.Base
             this.PType = protocalType;
         }
 
+        public Session(string httpPrefixed, ProtocalType protocalType)
+        {
+            this.HttpPrefixed = httpPrefixed;
+            this.PType = protocalType;
+        }
+
         /// <summary>
         /// 开始监听并接受客户端连接
         /// </summary>
@@ -75,6 +92,10 @@ namespace H6Game.Base
             else if(this.PType == ProtocalType.Kcp)
             {
                 this.NService = new KcpService(this.EPoint, this, NetServiceType.Server);
+            }
+            else if (this.PType == ProtocalType.Wcp)
+            {
+                this.NService = new WcpService(this.HttpPrefixed, this, NetServiceType.Client);
             }
 
             this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c.Network); };
@@ -98,9 +119,15 @@ namespace H6Game.Base
             {
                 this.NService = new KcpService(this.EPoint, this, NetServiceType.Client);
             }
+            else if(this.PType == ProtocalType.Wcp)
+            {
+                this.NService = new WcpService(this.HttpPrefixed, this, NetServiceType.Client);
+            }
+
             this.NService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c.Network); };
             this.NService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c.Network); };
             this.ConnectChannel = this.NService.Connect();
+
             return this.ConnectChannel;
         }
         

@@ -287,37 +287,12 @@ namespace H6Game.Base
             {
                 try
                 {
-                    var packet = this.RecvParser.Packet;
                     if (!RecvParser.TryRead())
-                        break;
+                        return;
 
-                    LastRecvTime = TimeUitls.Now();
-                    if (!packet.IsHeartbeat)
-                    {
-                        if (packet.IsRpc)
-                        {
-                            if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
-                            {
-                                //执行RPC请求回调
-                                action(packet);
-                            }
-                            else
-                            {
-                                OnReceive?.Invoke(packet);
-                            }
-                        }
-                        else
-                        {
-                            OnReceive?.Invoke(packet);
-                        }
-                    }
-                    else
-                    {
-                        Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
-                    }
-
-                    packet.BodyStream.SetLength(0);
-                    packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    HandleReceive(this.RecvParser.Packet);
+                    this.RecvParser.Packet.BodyStream.SetLength(0);
+                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 }
                 catch (Exception ex)
                 {
@@ -328,6 +303,28 @@ namespace H6Game.Base
 
             }
             this.StartRecv();
+        }
+
+        private void HandleReceive(Packet packet)
+        {
+            LastRecvTime = TimeUitls.Now();
+            if (packet.IsHeartbeat)
+            {
+                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
+                return;
+            }
+
+            if (packet.IsRpc)
+            {
+                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
+                else
+                    OnReceive?.Invoke(packet);
+            }
+            else
+            {
+                OnReceive?.Invoke(packet);
+            }
         }
 
         private void OnSendComplete(object o)

@@ -29,10 +29,11 @@ namespace H6Game.Base
     public class KcpChannel : ANetChannel
     {
         private Kcp Kcp { get; set; }
+        private Socket NetSocket { get; set; }
         private byte[] CacheBytes { get; set; }
         private int MaxPSize { get;} = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
-        private Socket NetSocket { get; set; }
+        private uint TimeNow { get; set; } = TimeUitls.Now();
 
         /// <summary>
         /// 构造函数,Connect
@@ -116,31 +117,12 @@ namespace H6Game.Base
                 {
                     try
                     {
-                        var packet = this.RecvParser.Packet;
                         if (!RecvParser.TryRead())
-                            break;
+                            return;
 
-                        if (!packet.IsHeartbeat)
-                        {
-                            if (packet.IsRpc)
-                            {
-                                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
-                                    action(packet);
-                                else
-                                    OnReceive?.Invoke(packet);
-                            }
-                            else
-                            {
-                                OnReceive?.Invoke(packet);
-                            }
-                        }
-                        else
-                        {
-                            Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
-                        }
-
-                        packet.BodyStream.SetLength(0);
-                        packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                        HandleReceive(this.RecvParser.Packet);
+                        this.RecvParser.Packet.BodyStream.SetLength(0);
+                        this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                     }
                     catch (Exception e)
                     {
@@ -150,7 +132,28 @@ namespace H6Game.Base
                     }
                 }
             }
-        }        
+        }
+
+        private void HandleReceive(Packet packet)
+        {
+            if (packet.IsHeartbeat)
+            {
+                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
+                return;
+            }
+
+            if (packet.IsRpc)
+            {
+                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
+                else
+                    OnReceive?.Invoke(packet);
+            }
+            else
+            {
+                OnReceive?.Invoke(packet);
+            }
+        }
 
         /// <summary>
         /// 开始发送KCP数据包
@@ -165,9 +168,9 @@ namespace H6Game.Base
                 return;
 
             this.TimeNow = TimeUitls.Now();
+            this.LastSendTime = this.TimeNow;
             while (this.SendParser.Buffer.DataSize > 0)
             {
-                this.LastSendTime = this.TimeNow;
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
                 length = length > MaxPSize ? MaxPSize : length;

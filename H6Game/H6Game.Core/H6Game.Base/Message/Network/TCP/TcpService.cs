@@ -99,7 +99,7 @@ namespace H6Game.Base
             {
                 RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
             };
-            HandleAccept(channel);
+            OnAccept(channel);
 
             this.Accept();
         }
@@ -114,7 +114,7 @@ namespace H6Game.Base
             {
                 ClientChannel = new TcpChannel(EndPoint, this)
                 {
-                    OnConnect = HandleConnect
+                    OnConnect = OnConnect
                 };
                 ClientChannel.StartConnecting();
             }
@@ -125,7 +125,7 @@ namespace H6Game.Base
         /// 处理接受连接成功回调
         /// </summary>
         /// <param name="channel"></param>
-        private void HandleAccept(ANetChannel channel)
+        private void OnAccept(ANetChannel channel)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace H6Game.Base
         /// 处理连接成功回调
         /// </summary>
         /// <param name="channel"></param>
-        private void HandleConnect(ANetChannel channel)
+        private void OnConnect(ANetChannel channel)
         {
             try
             {

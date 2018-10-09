@@ -55,14 +55,14 @@ namespace H6Game.Base
         protected Socket Acceptor { get; set; }
 
         /// <summary>
-        /// 网络服务类型
-        /// </summary>
-        protected NetServiceType ServiceType { get; set; }
-
-        /// <summary>
         /// 客户端连接ANetChannel
         /// </summary>
         protected ANetChannel ClientChannel { get; set; }
+
+        /// <summary>
+        /// 网络服务类型
+        /// </summary>
+        public NetServiceType ServiceType { get; set; }
 
         /// <summary>
         /// 连接通道池

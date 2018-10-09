@@ -188,14 +188,14 @@ namespace H6Game.Base
                 channel = this.ClientChannel as KcpChannel;
                 channel.RemoteEndPoint = remoteEP as IPEndPoint;
                 channel.Id = packet.NetCommand;
-                channel.OnConnect = HandleConnect;
+                channel.OnConnect = OnConnect;
                 ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.NetCommand);
             }
             else
             {
                 channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.NetCommand)
                 {
-                    OnConnect = HandleAccept
+                    OnConnect = OnAccept
                 };
             }
 
@@ -221,7 +221,7 @@ namespace H6Game.Base
         /// 处理接受连接成功回调
         /// </summary>
         /// <param name="channel"></param>
-        private void HandleAccept(ANetChannel channel)
+        private void OnAccept(ANetChannel channel)
         {
             try
             {
@@ -242,7 +242,7 @@ namespace H6Game.Base
         /// 处理连接成功回调
         /// </summary>
         /// <param name="channel"></param>
-        private void HandleConnect(ANetChannel channel)
+        private void OnConnect(ANetChannel channel)
         {
             try
             {
