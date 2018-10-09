@@ -60,13 +60,8 @@ internal static class PacketExtensions
             Serializer.Serialize(packet.BodyStream, obj);
 
         var type = obj.GetType();
-        packet.MsgTypeCode = GetTypeCode(type);
+        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
-    }
-
-    private static int GetTypeCode(Type type)
-    {
-        return MessageCommandStorage.GetMsgCode(type);
     }
 
     public static T Read<T>(this Packet packet)

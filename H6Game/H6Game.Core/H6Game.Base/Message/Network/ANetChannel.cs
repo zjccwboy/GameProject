@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -64,7 +64,7 @@ namespace H6Game.Base
         /// <summary>
         /// RPC字典
         /// </summary>
-        protected readonly ConcurrentDictionary<int, Action<Packet>> RpcDictionary = new ConcurrentDictionary<int, Action<Packet>>();
+        protected readonly Dictionary<int, Action<Packet>> RpcDictionary = new Dictionary<int, Action<Packet>>();
 
         private int rpcId;
         /// <summary>
@@ -169,7 +169,7 @@ namespace H6Game.Base
         /// <param name="recvAction"></param>
         public void AddRpcPacket(int rpcId, Action<Packet> recvAction)
         {
-            RpcDictionary.TryAdd(rpcId, recvAction);
+            RpcDictionary[rpcId] = recvAction;
         }
 
         /// <summary>

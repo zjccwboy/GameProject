@@ -160,7 +160,6 @@ namespace H6Game.Base
                 }
 
                 this.RecvParser = this.RecvParser ?? new PacketParser();
-
                 this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
                 if (this.NetSocket.ReceiveAsync(this.InArgs))
                     return;
@@ -313,12 +312,17 @@ namespace H6Game.Base
                 return;
             }
 
+            if (this.NetService.ServiceType == NetServiceType.Server)
+            {
+                OnReceive?.Invoke(packet);
+                return;
+            }
+
             if (packet.IsRpc)
             {
-                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
-                    action(packet);
-                else
-                    OnReceive?.Invoke(packet);
+                var action = RpcDictionary[packet.RpcId];
+                RpcDictionary.Remove(packet.RpcId);
+                action(packet);
             }
             else
             {

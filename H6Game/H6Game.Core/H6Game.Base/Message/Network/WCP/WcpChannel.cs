@@ -104,12 +104,17 @@ namespace H6Game.Base
                 return;
             }
 
+            if (this.NetService.ServiceType == NetServiceType.Server)
+            {
+                OnReceive?.Invoke(packet);
+                return;
+            }
+
             if (packet.IsRpc)
             {
-                if (RpcDictionary.TryRemove(packet.RpcId, out Action<Packet> action))
-                    action(packet);
-                else
-                    OnReceive?.Invoke(packet);
+                var action = RpcDictionary[packet.RpcId];
+                RpcDictionary.Remove(packet.RpcId);
+                action(packet);
             }
             else
             {
