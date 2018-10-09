@@ -79,85 +79,86 @@ internal static class PacketExtensions
         return result;
     }
 
-    public static bool TryRead<T>(this Packet packet, out T data)
+    public static object Read(this Packet packet, Type type, out Type valueType)
     {
+        valueType = type;
         if (packet.BodyStream.Length == 0)
-        {
-            data = default;
-            return false;
-        }
+            return null;
 
-        data = Serializer.Deserialize<T>(packet.BodyStream);
-        packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-        return true;
-    }
-
-    public static bool TryRead(this Packet packet, Type type, out object data)
-    {
-        if (packet.BodyStream.Length == 0)
+        object data = null; 
+        if (type == typeof(int))
         {
-            data = default;
-            return false;
-        }
-
-        else if (type == typeof(int))
-        {
+            valueType = typeof(MyInt32);
             data = (MyInt32)Serializer.Deserialize<int>(packet.BodyStream);
         }
         else if (type == typeof(uint))
         {
+            valueType = typeof(MyUInt32);
             data = (MyUInt32)Serializer.Deserialize<uint>(packet.BodyStream);
         }
         else if (type == typeof(long))
         {
+            valueType = typeof(MyLong);
             data = (MyLong)Serializer.Deserialize<long>(packet.BodyStream);
         }
         else if (type == typeof(ulong))
         {
+            valueType = typeof(MyULong);
             data = (MyULong)Serializer.Deserialize<ulong>(packet.BodyStream);
         }
         else if (type == typeof(float))
         {
+            valueType = typeof(MyFloat);
             data = (MyFloat)Serializer.Deserialize<float>(packet.BodyStream);
         }
         else if (type == typeof(decimal))
         {
+            valueType = typeof(MyDecimal);
             data = (MyDecimal)Serializer.Deserialize<decimal>(packet.BodyStream);
         }
         else if (type == typeof(double))
         {
+            valueType = typeof(MyDouble);
             data = (MyDouble)Serializer.Deserialize<double>(packet.BodyStream);
         }
         else if (type == typeof(byte))
         {
+            valueType = typeof(MyByte);
             data = (MyByte)Serializer.Deserialize<byte>(packet.BodyStream);
         }
         else if (type == typeof(sbyte))
         {
+            valueType = typeof(MySByte);
             data = (MySByte)Serializer.Deserialize<sbyte>(packet.BodyStream);
         }
         else if (type == typeof(bool))
         {
+            valueType = typeof(MyBoolean);
             data = (MyBoolean)Serializer.Deserialize<bool>(packet.BodyStream);
         }
         else if (type == typeof(short))
         {
+            valueType = typeof(MyShort);
             data = (MyShort)Serializer.Deserialize<short>(packet.BodyStream);
         }
         else if (type == typeof(ushort))
         {
+            valueType = typeof(MyUShort);
             data = (MyUShort)Serializer.Deserialize<ushort>(packet.BodyStream);
         }
         else if (type == typeof(char))
         {
+            valueType = typeof(MyChar);
             data = (MyChar)Serializer.Deserialize<char>(packet.BodyStream);
         }
-        else if(type == typeof(DateTime))
+        else if (type == typeof(DateTime))
         {
+            valueType = typeof(MyDateTime);
             data = (MyDateTime)Serializer.Deserialize<DateTime>(packet.BodyStream);
         }
-        else if(type == typeof(Guid))
+        else if (type == typeof(Guid))
         {
+            valueType = typeof(MyGuid);
             data = (MyGuid)Serializer.Deserialize<Guid>(packet.BodyStream);
         }
         else
@@ -165,6 +166,6 @@ internal static class PacketExtensions
             data = Serializer.Deserialize(type, packet.BodyStream);
         }
         packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-        return true;
+        return data;
     }
 }

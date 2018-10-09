@@ -101,7 +101,7 @@ public static class NetworkExtensions
         var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, data, (p) =>
         {
-            var state = p.TryRead(out TResponse response);
+            var response = p.Read<TResponse>();
             tcs.TrySetResult(response);
         }, netCommand);
 
@@ -120,7 +120,7 @@ public static class NetworkExtensions
         var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, (p) =>
         {
-            var state = p.TryRead(out TResponse response);
+            var response = p.Read<TResponse>();
             tcs.TrySetResult(response);
         }, netCommand);
         return tcs.Task;

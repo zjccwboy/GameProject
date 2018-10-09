@@ -78,81 +78,83 @@ namespace H6Game.Base
         private static object GetMessage(MetodContext context, Network network)
         {
             var packet = network.RecvPacket;
-            var messageType = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
-            if (!packet.TryRead(messageType, out object message))
-                throw new NetworkException($"反序列化类型:{messageType}失败");
+            //获取消息Code的消息类型
+            var codeType = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
 
+            //反系列化消息并拿到反系列化后的类型
+            var message = packet.Read(codeType, out Type readType);
+
+            //方法参数类型
             var type = context.ParameterTypes[0];
-            var msgType = message.GetType();
-            var isValue = ValueType.IsAssignableFrom(msgType) & type != msgType;
-            if (isValue)
-            {
-                if (type == typeof(int))
-                {
-                    return (int)(MyInt32)message;
-                }
-                else if (type == typeof(uint))
-                {
-                    return (uint)(MyUInt32)message;
-                }
-                else if (type == typeof(long))
-                {
-                    return (long)(MyLong)message;
-                }
-                else if (type == typeof(ulong))
-                {
-                    return (ulong)(MyULong)message;
-                }
-                else if (type == typeof(float))
-                {
-                    return (float)(MyFloat)message;
-                }
-                else if (type == typeof(decimal))
-                {
-                    return (decimal)(MyDecimal)message;
-                }
-                else if (type == typeof(double))
-                {
-                    return (double)(MyDouble)message;
-                }
-                else if (type == typeof(byte))
-                {
-                    return (byte)(MyByte)message;
-                }
-                else if (type == typeof(sbyte))
-                {
-                    return (sbyte)(MySByte)message;
-                }
-                else if (type == typeof(bool))
-                {
-                    return (bool)(MyBoolean)message;
-                }
-                else if (type == typeof(short))
-                {
-                    return (short)(MyShort)message;
-                }
-                else if (type == typeof(ushort))
-                {
-                    return (ushort)(MyUShort)message;
-                }
-                else if (type == typeof(char))
-                {
-                    return (char)(MyChar)message;
-                }
-                else if(type == typeof(DateTime))
-                {
-                    return (DateTime)(MyDateTime)message;
-                }
-                else if(type == typeof(Guid))
-                {
-                    return (Guid)(MyGuid)message;
-                }
-                throw new NetworkException($"为定义的值类型:{messageType}");
-            }
-            else
-            {
+            
+            //判断是否是值类型，如果是值类型并且订阅方法没有使用MyType来避免GC开销，在
+            //Read反系列化的时会使用MyType自定义类型进行一次免拆装箱转换，如果是Int32类型
+            //这里返回的类型就会是MyInt32类型。
+            var isValueType = ValueType.IsAssignableFrom(readType) & type != readType;
+            if (!isValueType)
                 return message;
+
+            if (type == typeof(int))
+            {
+                return (int)(MyInt32)message;
             }
+            else if (type == typeof(uint))
+            {
+                return (uint)(MyUInt32)message;
+            }
+            else if (type == typeof(long))
+            {
+                return (long)(MyLong)message;
+            }
+            else if (type == typeof(ulong))
+            {
+                return (ulong)(MyULong)message;
+            }
+            else if (type == typeof(float))
+            {
+                return (float)(MyFloat)message;
+            }
+            else if (type == typeof(decimal))
+            {
+                return (decimal)(MyDecimal)message;
+            }
+            else if (type == typeof(double))
+            {
+                return (double)(MyDouble)message;
+            }
+            else if (type == typeof(byte))
+            {
+                return (byte)(MyByte)message;
+            }
+            else if (type == typeof(sbyte))
+            {
+                return (sbyte)(MySByte)message;
+            }
+            else if (type == typeof(bool))
+            {
+                return (bool)(MyBoolean)message;
+            }
+            else if (type == typeof(short))
+            {
+                return (short)(MyShort)message;
+            }
+            else if (type == typeof(ushort))
+            {
+                return (ushort)(MyUShort)message;
+            }
+            else if (type == typeof(char))
+            {
+                return (char)(MyChar)message;
+            }
+            else if (type == typeof(DateTime))
+            {
+                return (DateTime)(MyDateTime)message;
+            }
+            else if (type == typeof(Guid))
+            {
+                return (Guid)(MyGuid)message;
+            }
+            throw new NetworkException($"为定义的值类型:{codeType}");
         }
 
         private static void InvokeSync(MetodContext context, Network network, object message)
