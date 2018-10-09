@@ -1,7 +1,6 @@
 ﻿using H6Game.Base;
 using ProtoBuf;
 using System;
-using System.Net;
 
 internal static class PacketExtensions
 {
@@ -43,7 +42,7 @@ internal static class PacketExtensions
 
     internal static void WriteTo(this int value, byte[] bytes, int offset)
     {
-        var netIntVal = IPAddress.HostToNetworkOrder(Convert.ToInt32(value));
+        var netIntVal = Convert.ToInt32(value);
         for (var i = 0; i < 4; i++)
         {
             bytes[i + offset] = (byte)(netIntVal >> i * 8);

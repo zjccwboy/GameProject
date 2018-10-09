@@ -145,7 +145,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(LengthFlagSize - count);
                             }
                             ReadLength += LengthFlagSize;
-                            PacketSize = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, 0));
+                            PacketSize = BitConverter.ToInt32(Packet.HeadBytes, 0);
 
                             System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
                             Buffer.UpdateRead(BitFlagSize);
@@ -171,7 +171,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(NetCommandFlagSize - count);
                             }
                             ReadLength += NetCommandFlagSize;
-                            Packet.NetCommand = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            Packet.NetCommand = BitConverter.ToInt32(Packet.HeadBytes, offset);
                             State = ParseState.MsgType;
                             break;
                         }
@@ -192,7 +192,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(MsgTypeSize - count);
                             }
                             ReadLength += MsgTypeSize;
-                            Packet.MsgTypeCode = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            Packet.MsgTypeCode = BitConverter.ToInt32(Packet.HeadBytes, offset);
                             State = ParseState.Rpc;
                             break;
                         }
@@ -213,7 +213,7 @@ namespace H6Game.Base
                                 Buffer.UpdateRead(RpcFlagSize - count);
                             }
                             ReadLength += RpcFlagSize;
-                            Packet.RpcId = IPAddress.NetworkToHostOrder(BitConverter.ToInt32(Packet.HeadBytes, offset));
+                            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
                             State = ParseState.Body;
                             break;
                         }
