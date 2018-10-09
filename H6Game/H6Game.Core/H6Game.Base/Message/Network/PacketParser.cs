@@ -45,7 +45,7 @@ namespace H6Game.Base
         /// </summary>
         public PacketParser()
         {
-            Buffer = new BufferQueue();
+            Buffer = new BufferSegment();
             Packet = new Packet(this);
         }
 
@@ -56,14 +56,14 @@ namespace H6Game.Base
         public PacketParser(int blockSize)
         {
             this.BlockSize = blockSize;
-            Buffer = new BufferQueue(blockSize);
+            Buffer = new BufferSegment(blockSize);
             Packet = new Packet(this);
         }
 
         /// <summary>
         /// 缓冲区对象
         /// </summary>
-        public BufferQueue Buffer { get; }
+        public BufferSegment Buffer { get; }
         public Packet Packet { get; }
         public int BlockSize { get;} = 8192;
 
@@ -304,7 +304,7 @@ namespace H6Game.Base
         /// 从缓冲区中读数据包
         /// </summary>
         /// <returns></returns>
-        internal bool TryRead()
+        internal virtual bool TryRead()
         {
             if (IsOk)
                 Flush();

@@ -5,9 +5,11 @@ using System.Linq;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 接收发送数据缓冲区
+    /// 字节数组缓冲区，使用两个队列存放字节数组，WorkerBuffer是读写的缓冲区，在读完队列第一个字节数组后把字节数
+    /// 组放到CacheBuffer中，写缓冲区是写到WorkerBuffer最后一条，写完之后再从CacheBuffer中取，这样可以做到循环使
+    /// 用字节数组，可以避免频繁分配字节数组带来的GC开销。
     /// </summary>
-    public class BufferQueue
+    public class BufferSegment
     {
         /// <summary>
         /// 缓冲区块大小
@@ -20,9 +22,9 @@ namespace H6Game.Base
         public const int DefaultBlockSize = 8192;
 
         /// <summary>
-        /// 缓冲区队列队列
+        /// 读写缓冲区队列队列
         /// </summary>
-        private readonly Queue<byte[]> QueueBuffer = new Queue<byte[]>();
+        private readonly Queue<byte[]> WorkerBuffer = new Queue<byte[]>();
 
         /// <summary>
         /// 用于复用的缓冲区队列
@@ -32,21 +34,21 @@ namespace H6Game.Base
         /// <summary>
         /// 构造函数，默认分配缓冲区块大小8192字节
         /// </summary>
-        public BufferQueue()
+        public BufferSegment()
         {
             //默认分配一块缓冲区
-            QueueBuffer.Enqueue(new byte[BlockSize]);
+            WorkerBuffer.Enqueue(new byte[BlockSize]);
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blockSize">指定缓冲区块大小</param>
-        public BufferQueue(int blockSize)
+        public BufferSegment(int blockSize)
         {
             this.BlockSize = blockSize;
             //默认分配一块缓冲区
-            QueueBuffer.Enqueue(new byte[blockSize]);
+            WorkerBuffer.Enqueue(new byte[blockSize]);
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace H6Game.Base
             if (FirstReadOffset == BlockSize)
             {
                 FirstReadOffset = 0;
-                CacheBuffer.Enqueue(QueueBuffer.Dequeue());
+                CacheBuffer.Enqueue(WorkerBuffer.Dequeue());
             }
         }
 
@@ -95,11 +97,11 @@ namespace H6Game.Base
                 LastWriteOffset = 0;
                 if (CacheBuffer.Count > 0)
                 {
-                    QueueBuffer.Enqueue(CacheBuffer.Dequeue());
+                    WorkerBuffer.Enqueue(CacheBuffer.Dequeue());
                 }
                 else
                 {
-                    QueueBuffer.Enqueue(new byte[BlockSize]);
+                    WorkerBuffer.Enqueue(new byte[BlockSize]);
                 }
             }
         }
@@ -112,7 +114,7 @@ namespace H6Game.Base
             get
             {
                 var result = 0;
-                if(QueueBuffer.Count == 1)
+                if(WorkerBuffer.Count == 1)
                 {
                     result = LastWriteOffset - FirstReadOffset;
                 }
@@ -149,17 +151,17 @@ namespace H6Game.Base
             get
             {
                 int size = 0;
-                if (QueueBuffer.Count == 0)
+                if (WorkerBuffer.Count == 0)
                 {
                     return size;
                 }
-                else if(QueueBuffer.Count == 1)
+                else if(WorkerBuffer.Count == 1)
                 {
                     size = LastWriteOffset - FirstReadOffset;
                 }
                 else
                 {
-                    size = QueueBuffer.Count * BlockSize - FirstReadOffset - LastCapacity;
+                    size = WorkerBuffer.Count * BlockSize - FirstReadOffset - LastCapacity;
                 }
                 if (size < 0)
                 {
@@ -203,7 +205,7 @@ namespace H6Game.Base
         {
             get
             {
-                return QueueBuffer.Last();
+                return WorkerBuffer.Last();
             }
         }
 
@@ -214,7 +216,7 @@ namespace H6Game.Base
         {
             get
             {
-                return QueueBuffer.Peek();
+                return WorkerBuffer.Peek();
             }
         }
 
@@ -225,9 +227,9 @@ namespace H6Game.Base
         {
             FirstReadOffset = 0;
             LastWriteOffset = 0;
-            while (QueueBuffer.Count > 1)
+            while (WorkerBuffer.Count > 1)
             {
-                QueueBuffer.Dequeue();
+                WorkerBuffer.Dequeue();
             }
             for(var i = 0; i < First.Length; i++)
             {
