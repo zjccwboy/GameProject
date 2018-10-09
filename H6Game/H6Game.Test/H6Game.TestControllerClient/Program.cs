@@ -11,6 +11,7 @@ namespace H6Game.TestControllerClient
 {
     class Program
     {
+        //这个测试Demo主要演示如何使用框架向服务端NetController控制器订阅者发送消息。
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
@@ -22,43 +23,41 @@ namespace H6Game.TestControllerClient
             }
         }
           
-        static int Count;
-        static Stopwatch Swatch = new Stopwatch();
-
-        static void Start()
+        static async void Start()
         {
-            Swatch.Start();
+            Get();
+            await GetInt();
 
-            for (var i = 0; i < 2000; i++)
-                Test();
+            GetTask();
+            await GetTaskInt();
         }
 
-        static async void Test()
-        {
-            while (true)
-                await Call();
-        }
-
-        private static async Task Call()
+        private static void  Get()
         {
             var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            network.Send(8001);
+            Log.Info($"GetTaskInt send:{1024} cmd:{8001}", LoggerBllType.System);
+        }
 
-            for(var i = 0; i < 10000; i++)
-            {
-                var result = await network.CallMessageAsync<int, int>(i, 8004);
-                if (result != i)
-                {
-                    Log.Error($"解包出错。", LoggerBllType.System);
-                }
+        private static async Task GetInt()
+        {
+            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var result = await network.CallMessageAsync<int, int>(1024, 8002);
+            Log.Info($"GetTaskInt send:{1024} recv:{result} cmd:{8002}", LoggerBllType.System);
+        }
 
-                Count++;
-                if (Swatch.ElapsedMilliseconds >= 1000)
-                {
-                    Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
-                    Swatch.Restart();
-                    Count = 0;
-                }
-            }
+        private static void GetTask()
+        {
+            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            network.Send(8003);
+            Log.Info($"GetTaskInt send:{1024} cmd:{8003}", LoggerBllType.System);
+        }
+
+        private static async Task GetTaskInt()
+        {
+            var network = Game.Scene.GetComponent<NetConnectingComponent>().Network;
+            var result = await network.CallMessageAsync<int, int>(1024, 8004);
+            Log.Info($"GetTaskInt send:{1024} recv:{result} cmd:{8004}", LoggerBllType.System);
         }
     }
 }

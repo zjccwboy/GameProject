@@ -8,29 +8,33 @@ using H6Game.Base;
 
 namespace H6Game.TestControllerServer
 {
+    //控制器订阅消息Demo
     public class TestController : NetController
     {
         [NetCommand(8001)]
-        public int TestGetInt()
+        public void OnGet()
         {
-            return 100;
+            Log.Info($"OnGet cmd:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
         }
 
         [NetCommand(8002)]
-        public int TestGetInt(int data)
+        public int OnGetInt(int data)
         {
+            Log.Info($"OnGetInt recv:{data} cmd:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
             return data;
         }
 
         [NetCommand(8003)]
-        public Task TestGetTask()
+        public Task OnGetTask()
         {
+            Log.Info($"OnGetTask cmd:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
             return Task.CompletedTask;
         }
 
         [NetCommand(8004)]
-        public Task<int> TestGetTaskInt(int data)
+        public Task<int> OnGetTaskInt(int data)
         {
+            Log.Info($"OnGetTaskInt recv:{data} cmd:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
             return Task.FromResult(data);
         }
     }
@@ -40,28 +44,14 @@ namespace H6Game.TestControllerServer
         [STAThread]
         static void Main(string[] args)
         {
+            Game.Scene.AddComponent<MongoConfig>();
+            Game.Scene.AddComponent<NetDistributionsComponent>();
+            Game.Scene.AddComponent<TestController>();
 
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            while (true)
             {
-                Log.Fatal("未处理异常。", e.ExceptionObject as Exception, LoggerBllType.System);
-            };
-
-            try
-            {
-                Game.Scene.AddComponent<MongoConfig>();
-                Game.Scene.AddComponent<NetDistributionsComponent>();
-                Game.Scene.AddComponent<TestController>();
-
-                while (true)
-                {
-                    Game.Update();
-                    Thread.Sleep(1);
-                }
-            }
-            catch(Exception e)
-            {
-                Log.Fatal("未处理异常。", e, LoggerBllType.System);
-                Console.ReadKey();
+                Game.Update();
+                Thread.Sleep(1);
             }
         }
     }
