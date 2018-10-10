@@ -93,6 +93,8 @@ namespace H6Game.Base
             {
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
                 await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+
+                //SendAsync为多线程异步，需要放到主线程中执行
                 ThreadCallbackContext.Instance.Post(OnSendComplete, null);
             }
             catch (Exception e)
@@ -139,6 +141,8 @@ namespace H6Game.Base
                     this.DisConnect();
                     return;
                 }
+
+                //ReceiveAsync为多线程异步，需要放到主线程中执行
                 ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
             }
             catch (Exception e)
@@ -157,12 +161,6 @@ namespace H6Game.Base
 
             var result = o as WebSocketReceiveResult;
             RecvParser.Buffer.UpdateWrite(result.Count);
-
-            if (result.Count == 0)
-            {
-                this.DisConnect();
-                return;
-            }
 
             while (true)
             {
