@@ -201,17 +201,13 @@ namespace H6Game.Base
                 this.RecvParser.Clear();
             }
 
-            try
-            {
-                if (this.NetService.ServiceType == NetServiceType.Client)
-                    await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
-                else
-                    await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+            if (this.NetService.ServiceType == NetServiceType.Client)
+                await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+            else
+                await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
-                this.NetSocket.Dispose();
-                this.NetSocket = null;
-            }
-            catch { }
+            this.NetSocket.Dispose();
+            this.NetSocket = null;
         }
     }
 }

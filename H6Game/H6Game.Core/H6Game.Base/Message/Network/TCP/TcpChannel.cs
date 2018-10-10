@@ -267,39 +267,34 @@ namespace H6Game.Base
 
         public override void DisConnect()
         {
-            try
+            if (!this.Connected)
+                return;
+
+            if (this.NetSocket == null)
+                return;
+
+            this.Connected = false;
+
+            this.OnDisConnect?.Invoke(this);
+
+            //服务端连接断开把缓冲区丢进池
+            if (this.NetService.ServiceType == NetServiceType.Server)
             {
-                if (!this.Connected)
-                    return;
-
-                if (this.NetSocket == null)
-                    return;
-
-                this.Connected = false;
-
-                this.OnDisConnect?.Invoke(this);
+                ParserStorage.Push(this.SendParser);
+                ParserStorage.Push(this.RecvParser);
             }
-            finally
+            else
             {
-                //服务端连接断开把缓冲区丢进池
-                if (this.NetService.ServiceType == NetServiceType.Server)
-                {
-                    ParserStorage.Push(this.SendParser);
-                    ParserStorage.Push(this.RecvParser);
-                }
-                else
-                {
-                    this.SendParser.Clear();
-                    this.RecvParser.Clear();
-                }
-
-                this.NetSocket.Close();
-                this.NetSocket.Dispose();
-                this.NetSocket = null;
-
-                this.InArgs.Dispose();
-                this.OutArgs.Dispose();
+                this.SendParser.Clear();
+                this.RecvParser.Clear();
             }
+
+            this.NetSocket.Close();
+            this.NetSocket.Dispose();
+            this.NetSocket = null;
+
+            this.InArgs.Dispose();
+            this.OutArgs.Dispose();
         }
 
         private void OnDisconnectComplete(object o)
