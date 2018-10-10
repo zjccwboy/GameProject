@@ -179,41 +179,39 @@ namespace H6Game.Base
 
         public override async void DisConnect()
         {
+            if (!this.Connected)
+                return;
+
+            if (NetSocket == null)
+                return;
+
+            this.Connected = false;
+
+            this.OnDisConnect(this);
+
+            //服务端连接断开把缓冲区丢进池
+            if (this.NetService.ServiceType == NetServiceType.Server)
+            {
+                ParserStorage.Push(SendParser);
+                ParserStorage.Push(RecvParser);
+            }
+            else
+            {
+                this.SendParser.Clear();
+                this.RecvParser.Clear();
+            }
+
             try
             {
-                if (!this.Connected)
-                    return;
-
-                if (NetSocket == null)
-                    return;
-
-                this.Connected = false;
-
-                this.OnDisConnect(this);
-
                 if (this.NetService.ServiceType == NetServiceType.Client)
                     await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
                 else
                     await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
-            }
-            finally
-            {
-                //服务端连接断开把缓冲区丢进池
-                if (this.NetService.ServiceType == NetServiceType.Server)
-                {
-                    ParserStorage.Push(SendParser);
-                    ParserStorage.Push(RecvParser);
-                }
-                else
-                {
-                    this.SendParser.Clear();
-                    this.RecvParser.Clear();
-                }
-
                 this.NetSocket.Dispose();
                 this.NetSocket = null;
             }
+            catch { }
         }
     }
 }
