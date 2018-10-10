@@ -1,7 +1,7 @@
 ﻿
 namespace H6Game.Base
 {
-    public interface IController
+    public interface IComponentSubscriber
     {
         void Invoke(MetodContext context, Network network);
     }

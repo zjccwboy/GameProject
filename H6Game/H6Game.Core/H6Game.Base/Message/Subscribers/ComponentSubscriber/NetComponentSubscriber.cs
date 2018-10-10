@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace H6Game.Base
 {
     /// <summary>
-    /// 网络控制器组件
+    /// 网络组件订阅器
     /// </summary>
-    public abstract class NetController : BaseComponent, IController
+    public abstract class NetComponentSubscriber : BaseComponent, IComponentSubscriber
     {
         private static Type ValueType { get; } = typeof(IValue);
 

@@ -4,7 +4,7 @@ namespace H6Game.Gate
 {
     [SingleCase]
     [ComponentEvent(EventType.Awake)]
-    public class ProxyComponent : NetController
+    public class ProxyComponent : NetComponentSubscriber
     {
         private NetDistributionsComponent Distributions { get; set; }
         public Network GateNetwork { get; private set; }

@@ -42,7 +42,7 @@ namespace H6Game.BaseTest
     //    }
     //}
 
-    public class TestClass5 : NetController
+    public class TestClass5 : NetComponentSubscriber
     {
         [NetCommand(2000)]
         public int Test1()

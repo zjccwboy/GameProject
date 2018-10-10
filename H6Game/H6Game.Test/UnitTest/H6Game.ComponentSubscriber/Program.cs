@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using H6Game.Base;
 using H6Game.BaseTest;
 
-namespace H6Game.TesterNetController
+namespace H6Game.ComponentSubscriber
 {
     class Program
     {
@@ -17,7 +17,7 @@ namespace H6Game.TesterNetController
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
             Game.Scene.AddComponent<NetConnectorComponent>().OnConnected += (c, t) => { Start(); };
-            Game.Scene.AddComponent<TesterNetController>();
+            Game.Scene.AddComponent<ComponentSubscriberTester>();
 
             while (true)
             {

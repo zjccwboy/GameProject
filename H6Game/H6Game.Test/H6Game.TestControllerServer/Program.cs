@@ -9,7 +9,7 @@ using H6Game.Base;
 namespace H6Game.TestControllerServer
 {
     //控制器订阅消息Demo
-    public class TestController : NetController
+    public class TestController : NetComponentSubscriber
     {
         [NetCommand(8001)]
         public void OnGet()

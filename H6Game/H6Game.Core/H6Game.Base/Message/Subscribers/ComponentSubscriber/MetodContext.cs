@@ -12,7 +12,7 @@ namespace H6Game.Base
         /// <summary>
         /// 方法所在类对象
         /// </summary>
-        public IController Owner { get; set; }
+        public IComponentSubscriber Owner { get; set; }
 
         /// <summary>
         /// 方法参数类型

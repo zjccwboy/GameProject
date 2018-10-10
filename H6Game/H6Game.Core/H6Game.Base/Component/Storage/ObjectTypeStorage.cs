@@ -98,7 +98,7 @@ namespace H6Game.Base
             var actorTypes = new HashSet<Type>();
             Objcets[actorBaseType] = actorTypes;
 
-            var controllerBaseType = typeof(IController);
+            var controllerBaseType = typeof(IComponentSubscriber);
             var controllerTypes = new HashSet<Type>();
             Objcets[controllerBaseType] = controllerTypes;
 

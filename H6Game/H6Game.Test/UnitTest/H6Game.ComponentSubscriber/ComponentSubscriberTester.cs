@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace H6Game.TesterNetController
+namespace H6Game.ComponentSubscriber
 {
-    public class TesterNetController : NetController
+    public class ComponentSubscriberTester : NetComponentSubscriber
     {
         [NetCommand(NetCommandTest.SubEmpty)]
         public int SubEmpty()

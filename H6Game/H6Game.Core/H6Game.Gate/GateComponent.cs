@@ -6,7 +6,7 @@ namespace H6Game.Gate
 {
     [SingleCase]
     [ComponentEvent(EventType.Awake)]
-    public class GateComponent : NetController
+    public class GateComponent : NetComponentSubscriber
     {
         private Dictionary<int, BaseActorComponent> OutNetActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, Network> ActorNetworks { get; } = new Dictionary<int, Network>();

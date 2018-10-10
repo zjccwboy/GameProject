@@ -49,9 +49,9 @@ namespace H6Game.Base
 
             if (isNew)
             {
-                if (typeof(IController).IsAssignableFrom(type))
+                if (typeof(IComponentSubscriber).IsAssignableFrom(type))
                 {
-                    MetodContextStorage.Add((IController)component);
+                    MetodContextStorage.Add((IComponentSubscriber)component);
                 }
                 Game.Event.Add(component);
             }

@@ -32,7 +32,7 @@ namespace H6Game.Base
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
-    public sealed class NetDistributionsComponent : NetController
+    public sealed class NetDistributionsComponent : NetComponentSubscriber
     {
         private NetConfigEntity Config { get; set; }
         private EndPointConfigEntity DefaultCenterEndPoint { get; set; }
@@ -134,7 +134,7 @@ namespace H6Game.Base
         /// 远程服务监听的端口IP信息。
         /// </summary>
         [NetCommand(SysNetCommand.AddInServerCmd)]
-        public void OnAddServerConnection(NetEndPointMessage message)
+        public void SubscribeOnAddServerConnection(NetEndPointMessage message)
         {
             if (InNetMapManager.Existed(message))
                 return;
@@ -156,7 +156,7 @@ namespace H6Game.Base
         /// 远程服务外网监听的IP端口信息。
         /// </summary>
         [NetCommand(SysNetCommand.GetOutServerCmd)]
-        public NetEndPointMessage OnSyncOutNetMessage()
+        public NetEndPointMessage SubscribeOnSyncOutNetMessage()
         {
             return OutNetMessage;
         }
@@ -165,7 +165,7 @@ namespace H6Game.Base
         /// 远程服务获取本地服务IP端口信息。
         /// </summary>
         [NetCommand(SysNetCommand.GetInServerCmd)]
-        public NetEndPointMessage OnSyncInnerNetMessage()
+        public NetEndPointMessage SubscribeOnSyncInnerNetMessage()
         {
             return InNetMessage;
         }
@@ -174,7 +174,7 @@ namespace H6Game.Base
         /// 远程服务获取本地服务类型。
         /// </summary>
         [NetCommand(SysNetCommand.GetServerType)]
-        public int OnGetServerType()
+        public int SubscribeOnGetServerType()
         {
             Log.Debug($"订阅远程服务获取本地服务类型:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
 

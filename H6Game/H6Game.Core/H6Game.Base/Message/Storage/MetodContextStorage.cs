@@ -17,7 +17,7 @@ namespace H6Game.Base
             return MetodContexts.TryGetValue(netCommand, out contexts);
         }
 
-        public static void Remove(IController controller)
+        public static void Remove(IComponentSubscriber controller)
         {
             if (controller == null)
                 return;
@@ -40,7 +40,7 @@ namespace H6Game.Base
             ControllerCmds.Remove(type);
         }
 
-        public static void Add(IController controller)
+        public static void Add(IComponentSubscriber controller)
         {
             var type = controller.GetType();
 

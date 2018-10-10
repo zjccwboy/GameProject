@@ -9,7 +9,7 @@ namespace H6Game.Actor
 
     [ComponentEvent(EventType.Awake)]
     [SingleCase]
-    public class ActorPoolComponent : NetController
+    public class ActorPoolComponent : NetComponentSubscriber
     {
         private Dictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<int, BaseActorComponent>> TypeComponentIdActors { get; } = new Dictionary<ActorType, Dictionary<int, BaseActorComponent>>();
@@ -56,7 +56,7 @@ namespace H6Game.Actor
         /// </summary>
         /// <param name="message"></param>
         [NetCommand(NetCommand.AddActorCmd)]
-        public void OnRemoteAddActor(ActorSyncMessage message)
+        public void SubscribeOnRemoteAddActor(ActorSyncMessage message)
         {
             var logs = $"CMD:{this.NetMessageCmd} ActorId:{message.ActorId} MSG:{message.ToJson()}";
             Log.Info(logs, LoggerBllType.System);
@@ -72,7 +72,7 @@ namespace H6Game.Actor
         /// </summary>
         /// <param name="message"></param>
         [NetCommand(NetCommand.RemoveActorCmd)]
-        public void OnRemoteActorRemove(ActorSyncMessage message)
+        public void SubscribeOnRemoteActorRemove(ActorSyncMessage message)
         {
             Log.Info(this.NetMessageCmd, LoggerBllType.System);
 
@@ -84,7 +84,7 @@ namespace H6Game.Actor
         /// 远程服务同步本地服务Actor全量数据消息
         /// </summary>
         [NetCommand(NetCommand.SyncActorInfoCmd)]
-        public void OnRemoteSyncFullActorInfo()
+        public void SubscribeOnRemoteSyncFullActorInfo()
         {
             Log.Info(this.NetMessageCmd, LoggerBllType.System);
 
