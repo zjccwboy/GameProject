@@ -286,32 +286,6 @@ namespace H6Game.Base
             this.StartRecv();
         }
 
-        private void HandleReceive(Packet packet)
-        {
-            LastRecvTime = TimeUitls.Now();
-            if (packet.IsHeartbeat)
-            {
-                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
-                return;
-            }
-
-            if (this.NetService.ServiceType == NetServiceType.Server)
-            {
-                OnReceive?.Invoke(packet);
-                return;
-            }
-
-            if (packet.IsRpc)
-            {
-                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
-                    action(packet);
-            }
-            else
-            {
-                OnReceive?.Invoke(packet);
-            }
-        }
-
         public override void DisConnect()
         {
             try

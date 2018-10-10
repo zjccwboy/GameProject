@@ -139,7 +139,7 @@ namespace H6Game.Base
                 var channels = this.Channels.Values;
                 foreach (var channel in channels)
                 {
-                    var timeSpan = now - channel.LastRecvTime;
+                    var timeSpan = now - channel.LastReceivedTime;
                     if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
                     {
                         Log.Debug($"客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
@@ -156,6 +156,34 @@ namespace H6Game.Base
         protected void AddChannel(ANetChannel channel)
         {
             Channels.TryAdd(channel.Id, channel);
+        }
+
+        /// <summary>
+        /// 处理接受连接成功回调
+        /// </summary>
+        /// <param name="channel"></param>
+        protected void OnAccept(ANetChannel channel)
+        {
+            Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+            channel.Connected = true;
+            AddChannel(channel);
+            channel.OnDisConnect = HandleDisConnectOnServer;
+            channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
+            OnServerConnected?.Invoke(channel);
+        }
+
+        /// <summary>
+        /// 处理连接成功回调
+        /// </summary>
+        /// <param name="channel"></param>
+        protected void OnConnect(ANetChannel channel)
+        {
+            Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
+            channel.Connected = true;
+            this.AddChannel(channel);
+            channel.OnDisConnect = HandleDisConnectOnClient;
+            channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
+            this.OnClientConnected?.Invoke(channel);
         }
 
         /// <summary>

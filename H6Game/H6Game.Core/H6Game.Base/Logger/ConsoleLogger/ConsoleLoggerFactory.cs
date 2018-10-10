@@ -9,16 +9,24 @@ namespace H6Game.Base
 
         public void Create()
         {
+#if SERVER
             var levels = FileInfoManager.NameLevels.Values;
             foreach (var level in levels)
             {
                 ConsoleWriters[level] = Create(level);
             }
+#else
+            ConsoleWriters[LogLevel.Debug] = Create(LogLevel.Debug);
+#endif
         }
 
         public void WriteMessage(TLogger entity)
         {
+#if SERVER
             ConsoleWriters[entity.FLogLevel].ShowMessage(entity);
+#else
+            ConsoleWriters[LogLevel.Debug].ShowMessage(entity);
+#endif
         }
 
         public static IConsoleLogger Create(LogLevel logLevel)

@@ -112,7 +112,6 @@ namespace H6Game.Base
         public void HandleRecv(byte[] bytes, int offset, int lenght)
         {
             CacheBytes = bytes;
-            this.LastRecvTime = TimeUitls.Now();
             this.Kcp.Input(bytes, offset, lenght);
         }
 
@@ -152,32 +151,6 @@ namespace H6Game.Base
                     }
                 }
             }
-        }
-
-        private void HandleReceive(Packet packet)
-        {
-            if (packet.IsHeartbeat)
-            {
-                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
-                return;
-            }
-
-            if (this.NetService.ServiceType == NetServiceType.Server)
-            {
-                OnReceive?.Invoke(packet);
-                return;
-            }
-
-            if (packet.IsRpc)
-            {
-                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
-                    action(packet);
-            }
-            else
-            {
-                OnReceive?.Invoke(packet);
-            }
-
         }
 
         /// <summary>

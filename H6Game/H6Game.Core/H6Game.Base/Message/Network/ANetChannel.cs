@@ -109,7 +109,7 @@ namespace H6Game.Base
         /// <summary>
         /// 接收最后一个数据包时间
         /// </summary>
-        public uint LastRecvTime { get; set; } = TimeUitls.Now();
+        public uint LastReceivedTime { get; set; } = TimeUitls.Now();
 
         /// <summary>
         /// 最后发送时间
@@ -182,6 +182,32 @@ namespace H6Game.Base
             this.LastSendTime = TimeUitls.Now();
             this.SendParser.Packet.IsHeartbeat = true;
             this.SendParser.Packet.WriteBuffer();
+        }
+
+        protected void HandleReceive(Packet packet)
+        {
+            LastReceivedTime = TimeUitls.Now();
+            if (packet.IsHeartbeat)
+            {
+                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
+                return;
+            }
+
+            if (this.NetService.ServiceType == NetServiceType.Server)
+            {
+                OnReceive?.Invoke(packet);
+                return;
+            }
+
+            if (packet.IsRpc)
+            {
+                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
+            }
+            else
+            {
+                OnReceive?.Invoke(packet);
+            }
         }
 
         public void Dispose()

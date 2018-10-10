@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
@@ -21,24 +23,26 @@ namespace H6Game.Base
             this.Listener = new HttpListener();
             this.Listener.Prefixes.Add(this.HttpPrefixed);
             this.Listener.Start();
-            var context = await this.Listener.GetContextAsync();
-            HandleAccept(context);
+            while (true)
+            {                
+                var context = await this.Listener.GetContextAsync();
+
+                //GetContextAsync多线程异步，放到主线程中执行回调
+                ThreadCallbackContext.Instance.Post(HandleAccept, context);
+            }
         }
 
-        private async void HandleAccept(HttpListenerContext context)
+        private async void HandleAccept(object obj)
         {
-            while (true)
+            var context = obj as HttpListenerContext;
+            var wsContext = await context.AcceptWebSocketAsync(null);
+            var client = wsContext.WebSocket;
+            var channel = new WcpChannel(this.HttpPrefixed, client, this)
             {
-                var wsContext = await context.AcceptWebSocketAsync(null);
-                var client = wsContext.WebSocket;
-
-                var channel = new WcpChannel(this.HttpPrefixed, client, this)
-                {
-                    LocalEndPoint = context.Request.LocalEndPoint,
-                    RemoteEndPoint = context.Request.RemoteEndPoint,
-                };
-                OnAccept(channel);
-            }
+                LocalEndPoint = context.Request.LocalEndPoint,
+                RemoteEndPoint = context.Request.RemoteEndPoint,
+            };
+            OnAccept(channel);
         }
 
         public override ANetChannel Connect()
@@ -65,48 +69,5 @@ namespace H6Game.Base
             }
             this.CheckHeadbeat();
         }
-
-        /// <summary>
-        /// 处理接受连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
-        private void OnAccept(ANetChannel channel)
-        {
-            try
-            {
-                Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
-                channel.Connected = true;
-                channel.OnDisConnect = HandleDisConnectOnServer;
-                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-                this.AddChannel(channel);
-                this.OnServerConnected?.Invoke(channel);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-            }
-        }
-
-        /// <summary>
-        /// 处理连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
-        private void OnConnect(ANetChannel channel)
-        {
-            try
-            {
-                Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
-                channel.Connected = true;
-                channel.OnDisConnect = HandleDisConnectOnClient;
-                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-                this.AddChannel(channel);
-                this.OnClientConnected?.Invoke(channel);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-            }
-        }
-
     }
 }

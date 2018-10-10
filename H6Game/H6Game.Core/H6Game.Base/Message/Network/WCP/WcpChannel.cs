@@ -43,13 +43,21 @@ namespace H6Game.Base
                     this.NetSocket = new ClientWebSocket();
 
                 await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), CancellationToken.None);
-                this.Connected = true;
-                OnConnect?.Invoke(this);
+
+                //ConnectAsync为多线程异步，需要放到主线程中执行
+                ThreadCallbackContext.Instance.Post(OnConnectComplete, this);
+
             }
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
             }
+        }
+
+        private void OnConnectComplete(object o)
+        {
+            this.Connected = true;
+            OnConnect?.Invoke(o as WcpChannel);
         }
 
         public override async void StartSend()
@@ -118,32 +126,6 @@ namespace H6Game.Base
                     Log.Error(e, LoggerBllType.System);
                     return;
                 }
-            }
-        }
-
-        private void HandleReceive(Packet packet)
-        {
-            LastRecvTime = TimeUitls.Now();
-            if (packet.IsHeartbeat)
-            {
-                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
-                return;
-            }
-
-            if (this.NetService.ServiceType == NetServiceType.Server)
-            {
-                OnReceive?.Invoke(packet);
-                return;
-            }
-
-            if (packet.IsRpc)
-            {
-                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
-                    action(packet);
-            }
-            else
-            {
-                OnReceive?.Invoke(packet);
             }
         }
 

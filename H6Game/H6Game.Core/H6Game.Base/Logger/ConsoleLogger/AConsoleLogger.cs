@@ -18,8 +18,10 @@ namespace H6Game.Base
 
         public void ShowMessage(TLogger entity)
         {
+#if SERVER
             if (entity.FLogLevel != this.LogLevel)
                 return;
+#endif
 
             if (!CanShow(this.LogLevel))
                 return;

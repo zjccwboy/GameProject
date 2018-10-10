@@ -207,48 +207,6 @@ namespace H6Game.Base
                 channel.Connected = false;
                 channel.OnDisConnect?.Invoke(channel);
             }
-        }
-
-        /// <summary>
-        /// 处理接受连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
-        private void OnAccept(ANetChannel channel)
-        {
-            try
-            {
-                Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
-                channel.Connected = true;
-                AddChannel(channel);
-                channel.OnDisConnect = HandleDisConnectOnServer;
-                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-                OnServerConnected?.Invoke(channel);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-            }
-        }
-
-        /// <summary>
-        /// 处理连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
-        private void OnConnect(ANetChannel channel)
-        {
-            try
-            {
-                Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
-                channel.Connected = true;
-                this.AddChannel(channel);
-                channel.OnDisConnect = HandleDisConnectOnClient;
-                channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-                this.OnClientConnected?.Invoke(channel);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-            }
-        }
+        }   
     }
 }
