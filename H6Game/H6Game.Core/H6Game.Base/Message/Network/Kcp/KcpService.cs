@@ -131,7 +131,7 @@ namespace H6Game.Base
                 {
                     HandleFIN(packet, this.ReuseEndPoint as IPEndPoint);
                 }
-                ConnectParser.Clear();
+                this.ConnectParser.Clear();
             }
             else
             {
@@ -145,7 +145,7 @@ namespace H6Game.Base
                 channel.StartRecv();
             }
 
-            StartRecv();
+            this.StartRecv();
         }
 
         /// <summary>

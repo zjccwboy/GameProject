@@ -4,6 +4,9 @@ using System.Threading;
 
 namespace H6Game.Base
 {
+    /// <summary>
+    /// WebSocket通讯管道
+    /// </summary>
     public class WcpChannel : ANetChannel
     {
         private string HttpPrefixed { get; set; }
@@ -40,7 +43,7 @@ namespace H6Game.Base
         {
             try
             {
-                if (Connected)
+                if (this.Connected)
                     return;
 
                 var now = TimeUitls.Now();
@@ -67,7 +70,7 @@ namespace H6Game.Base
         private void OnConnectComplete(object o)
         {
             this.Connected = true;
-            OnConnect?.Invoke(o as WcpChannel);
+            this.OnConnect?.Invoke(o as WcpChannel);
         }
 
         public override async void StartSend()
@@ -121,16 +124,16 @@ namespace H6Game.Base
 
         public override async void StartRecv()
         {
-            if (!Connected)
+            if (!this.Connected)
             {
-                IsReceiving = false;
+                this.IsReceiving = false;
                 return;
             }
 
-            if (IsReceiving)
+            if (this.IsReceiving)
                 return;
 
-            IsReceiving = true;
+            this.IsReceiving = true;
 
             try
             {
@@ -147,27 +150,27 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                IsReceiving = false;
+                this.IsReceiving = false;
                 Log.Error(e, LoggerBllType.System);
-                DisConnect();
+                this.DisConnect();
             }
         }
 
         private void OnRecvComplete(object o)
         {
-            IsReceiving = false;
+            this.IsReceiving = false;
             if (this.NetSocket == null)
                 return;
 
             var result = o as WebSocketReceiveResult;
-            RecvParser.Buffer.UpdateWrite(result.Count);
+            this.RecvParser.Buffer.UpdateWrite(result.Count);
 
             while (true)
             {
-                if (!RecvParser.TryRead())
+                if (!this.RecvParser.TryRead())
                     break;
 
-                HandleReceive(this.RecvParser.Packet);
+                this.HandleReceive(this.RecvParser.Packet);
                 this.RecvParser.Packet.BodyStream.SetLength(0);
                 this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
@@ -185,9 +188,9 @@ namespace H6Game.Base
                 if (NetSocket == null)
                     return;
 
-                Connected = false;
+                this.Connected = false;
 
-                OnDisConnect(this);
+                this.OnDisConnect(this);
 
                 if (this.NetService.ServiceType == NetServiceType.Client)
                     await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
@@ -205,12 +208,12 @@ namespace H6Game.Base
                 }
                 else
                 {
-                    SendParser.Clear();
-                    RecvParser.Clear();
+                    this.SendParser.Clear();
+                    this.RecvParser.Clear();
                 }
 
-                NetSocket.Dispose();
-                NetSocket = null;
+                this.NetSocket.Dispose();
+                this.NetSocket = null;
             }
         }
     }

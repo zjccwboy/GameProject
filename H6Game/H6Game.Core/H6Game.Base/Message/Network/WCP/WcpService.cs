@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace H6Game.Base
 {
@@ -55,7 +52,7 @@ namespace H6Game.Base
                 };
                 ClientChannel.StartConnecting();
             }
-            return ClientChannel;
+            return this.ClientChannel;
         }
 
         public override void Update()

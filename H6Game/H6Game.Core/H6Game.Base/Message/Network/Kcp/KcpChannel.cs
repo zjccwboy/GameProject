@@ -50,9 +50,9 @@ namespace H6Game.Base
 
         public void InitKcp()
         {
-            Kcp = new Kcp((uint)this.Id, this);
-            Kcp.SetOutput(this.Output);
-            Kcp.NoDelay(1, 10, 2, 1);  //fast
+            this.Kcp = new Kcp((uint)this.Id, this);
+            this.Kcp.SetOutput(this.Output);
+            this.Kcp.NoDelay(1, 10, 2, 1);  //fast
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace H6Game.Base
 
                 this.LastConnectTime = now;
 
-                if (Connected)
+                if (this.Connected)
                     return;
 
                 ConnectSender.SendSYN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint);
@@ -94,10 +94,10 @@ namespace H6Game.Base
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
                 length = length > MaxPSize ? MaxPSize : length;
-                Kcp.Send(this.SendParser.Buffer.First, offset, length);
+                this.Kcp.Send(this.SendParser.Buffer.First, offset, length);
                 this.SendParser.Buffer.UpdateRead(length);
             }
-            SetKcpSendTime();
+            this.SetKcpSendTime();
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace H6Game.Base
         /// <param name="lenght"></param>
         public void HandleRecv(byte[] bytes, int offset, int lenght)
         {
-            CacheBytes = bytes;
+            this.CacheBytes = bytes;
             this.Kcp.Input(bytes, offset, lenght);
         }
 
@@ -119,7 +119,7 @@ namespace H6Game.Base
         {
             while (true)
             {
-                int n = Kcp.PeekSize();
+                int n = this.Kcp.PeekSize();
                 if (n == 0)
                     return;
 
@@ -127,14 +127,14 @@ namespace H6Game.Base
                 if (count <= 0)
                     return;
 
-                RecvParser.WriteBuffer(CacheBytes, 0, count);
+                this.RecvParser.WriteBuffer(CacheBytes, 0, count);
 
                 while (true)
                 {
-                    if (!RecvParser.TryRead())
+                    if (!this.RecvParser.TryRead())
                         return;
 
-                    HandleReceive(this.RecvParser.Packet);
+                    this.HandleReceive(this.RecvParser.Packet);
                     this.RecvParser.Packet.BodyStream.SetLength(0);
                     this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 }
@@ -151,9 +151,9 @@ namespace H6Game.Base
                 if (!this.Connected)
                     return;
 
-                Connected = false;
+                this.Connected = false;
 
-                OnDisConnect?.Invoke(this);
+                this.OnDisConnect?.Invoke(this);
                 ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);
             }
             catch { }
@@ -162,13 +162,13 @@ namespace H6Game.Base
                 //服务端连接断开把缓冲区丢进池
                 if (this.NetService.ServiceType == NetServiceType.Server)
                 {
-                    ParserStorage.Push(SendParser);
-                    ParserStorage.Push(RecvParser);
+                    ParserStorage.Push(this.SendParser);
+                    ParserStorage.Push(this.RecvParser);
                 }
                 else
                 {
-                    SendParser.Clear();
-                    RecvParser.Clear();
+                    this.SendParser.Clear();
+                    this.RecvParser.Clear();
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace H6Game.Base
             catch(Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
-                DisConnect();
+                this.DisConnect();
             }
         }
 
@@ -199,7 +199,7 @@ namespace H6Game.Base
         {
             var now = TimeUitls.Now();
             this.LastSendTime = now;
-            Kcp.Update(this.LastCheckTime);
+            this.Kcp.Update(this.LastCheckTime);
             this.LastCheckTime = this.Kcp.Check(now);
         }
     }

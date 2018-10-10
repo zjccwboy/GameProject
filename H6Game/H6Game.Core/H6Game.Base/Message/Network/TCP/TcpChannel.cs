@@ -82,7 +82,7 @@ namespace H6Game.Base
         {
             try
             {
-                if (Connected)
+                if (this.Connected)
                     return;
 
                 var now = TimeUitls.Now();
@@ -204,16 +204,16 @@ namespace H6Game.Base
         /// </summary>
         public override void StartRecv()
         {
-            if (!Connected)
+            if (!this.Connected)
             {
-                IsReceiving = false;
+                this.IsReceiving = false;
                 return;
             }
 
-            if (IsReceiving)
+            if (this.IsReceiving)
                 return;
 
-            IsReceiving = true;
+            this.IsReceiving = true;
 
             try
             {
@@ -221,11 +221,11 @@ namespace H6Game.Base
                 if (this.NetSocket.ReceiveAsync(this.InArgs))
                     return;
 
-                OnRecvComplete(this.InArgs);
+                this.OnRecvComplete(this.InArgs);
             }
             catch (Exception e)
             {
-                IsReceiving = false;
+                this.IsReceiving = false;
                 Log.Error(e, LoggerBllType.System);
                 DisConnect();
             }
@@ -233,7 +233,7 @@ namespace H6Game.Base
 
         private void OnRecvComplete(object o)
         {
-            IsReceiving = false;
+            this.IsReceiving = false;
             if (this.NetSocket == null)
                 return;
 
@@ -241,23 +241,23 @@ namespace H6Game.Base
 
             if (e.SocketError != SocketError.Success)
             {
-                DisConnect();
+                this.DisConnect();
                 return;
             }
 
             if (e.BytesTransferred == 0)
             {
-                DisConnect();
+                this.DisConnect();
                 return;
             }
 
-            RecvParser.Buffer.UpdateWrite(e.BytesTransferred);
+            this.RecvParser.Buffer.UpdateWrite(e.BytesTransferred);
             while (true)
             {
-                if (!RecvParser.TryRead())
+                if (!this.RecvParser.TryRead())
                     break;
 
-                HandleReceive(this.RecvParser.Packet);
+                this.HandleReceive(this.RecvParser.Packet);
                 this.RecvParser.Packet.BodyStream.SetLength(0);
                 this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
@@ -272,30 +272,30 @@ namespace H6Game.Base
                 if (!this.Connected)
                     return;
 
-                if (NetSocket == null)
+                if (this.NetSocket == null)
                     return;
 
-                Connected = false;
+                this.Connected = false;
 
-                OnDisConnect?.Invoke(this);
+                this.OnDisConnect?.Invoke(this);
             }
             finally
             {
                 //服务端连接断开把缓冲区丢进池
                 if (this.NetService.ServiceType == NetServiceType.Server)
                 {
-                    ParserStorage.Push(SendParser);
-                    ParserStorage.Push(RecvParser);
+                    ParserStorage.Push(this.SendParser);
+                    ParserStorage.Push(this.RecvParser);
                 }
                 else
                 {
-                    SendParser.Clear();
-                    RecvParser.Clear();
+                    this.SendParser.Clear();
+                    this.RecvParser.Clear();
                 }
 
-                NetSocket.Close();
-                NetSocket.Dispose();
-                NetSocket = null;
+                this.NetSocket.Close();
+                this.NetSocket.Dispose();
+                this.NetSocket = null;
 
                 this.InArgs.Dispose();
                 this.OutArgs.Dispose();

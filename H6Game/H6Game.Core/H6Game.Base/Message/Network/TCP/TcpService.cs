@@ -44,7 +44,7 @@ namespace H6Game.Base
             if (this.Acceptor.AcceptAsync(this.InnArgs))
                 return;
 
-            OnComplete(this, this.InnArgs);
+            this.OnComplete(this, this.InnArgs);
         }
 
         public override void Update()
@@ -89,7 +89,7 @@ namespace H6Game.Base
             {
                 RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
             };
-            OnAccept(channel);
+            this.OnAccept(channel);
 
             this.Accept();
         }
@@ -108,7 +108,7 @@ namespace H6Game.Base
                 };
                 ClientChannel.StartConnecting();
             }
-            return ClientChannel;
+            return this.ClientChannel;
         }
     }
 }
