@@ -69,8 +69,7 @@ namespace H6Game.Base
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType)
         {
             var session = new Session(endPoint, protocalType);
-            if (!session.Accept())
-                throw new Exception($"服务端口:{endPoint.Port}被占用。");
+            session.Accept();
             var network = new Network(session, session.NService, null);
             return network;
         }
@@ -90,8 +89,7 @@ namespace H6Game.Base
             var session = new Session(endPoint, protocalType);            
             session.OnServerConnected += connectedAction;
             session.OnServerDisconnected += disconnectedAction;
-            if (!session.Accept())
-                throw new Exception($"服务端口:{endPoint.Port}被占用。");
+            session.Accept();
             var network = new Network(session, session.NService, null);
             return network;
         }
@@ -138,8 +136,7 @@ namespace H6Game.Base
         public static Network CreateWebSocketAcceptor(string httpPrefixed)
         {
             var session = new Session(httpPrefixed, ProtocalType.Wcp);
-            if (!session.Accept())
-                throw new Exception($"WebSocket监听:{httpPrefixed}失败。");
+            session.Accept();
             var network = new Network(session, session.NService, null);
             return network;
         }
@@ -157,8 +154,7 @@ namespace H6Game.Base
             var session = new Session(httpPrefixed, ProtocalType.Wcp);
             session.OnServerConnected += connectedAction;
             session.OnServerDisconnected += disconnectedAction;
-            if (!session.Accept())
-                throw new Exception($"WebSocket监听:{httpPrefixed}失败。");
+            session.Accept();
             var network = new Network(session, session.NService, null);
             return network;
         }

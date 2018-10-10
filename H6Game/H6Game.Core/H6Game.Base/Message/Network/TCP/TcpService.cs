@@ -29,32 +29,22 @@ namespace H6Game.Base
         /// 开始监听并接受连接请求
         /// </summary>
         /// <returns></returns>
-        public override bool Accept()
+        public override void Accept()
         {
             if (Acceptor == null)
             {
                 this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.Acceptor.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 this.InnArgs.Completed += this.OnComplete;
-                try
-                {
-                    this.Acceptor.Bind(this.EndPoint);
-                    this.Acceptor.Listen(1000);
-                }
-                catch(Exception e)
-                {
-                    Log.Error(e, LoggerBllType.System);
-                    return false;
-                }
+                this.Acceptor.Bind(this.EndPoint);
+                this.Acceptor.Listen(1000);
             }
 
             this.InnArgs.AcceptSocket = null;
             if (this.Acceptor.AcceptAsync(this.InnArgs))
-                return true;
+                return;
 
             OnComplete(this, this.InnArgs);
-
-            return true;
         }
 
         public override void Update()

@@ -13,25 +13,16 @@ namespace H6Game.Base
             this.HttpPrefixed = httpPrefixed;
         }
 
-        public override bool Accept()
+        public override async void Accept()
         {
             if (this.Listener != null)
-                return false;
+                return;
 
-            try
-            {
-                this.Listener = new HttpListener();
-                this.Listener.Prefixes.Add(this.HttpPrefixed);
-                this.Listener.Start();
-                var context = this.Listener.GetContext();
-                HandleAccept(context);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-                return false;
-            }
+            this.Listener = new HttpListener();
+            this.Listener.Prefixes.Add(this.HttpPrefixed);
+            this.Listener.Start();
+            var context = await this.Listener.GetContextAsync();
+            HandleAccept(context);
         }
 
         private async void HandleAccept(HttpListenerContext context)

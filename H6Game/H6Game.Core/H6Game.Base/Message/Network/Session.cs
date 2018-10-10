@@ -100,8 +100,8 @@ namespace H6Game.Base
 
             this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c.Network); };
             this.NService.OnServerDisconnected = (c) => { this.OnServerDisconnected?.Invoke(c.Network); };
-
-            return this.NService.Accept();
+            this.NService.Accept();
+            return true;
         }
 
         /// <summary>

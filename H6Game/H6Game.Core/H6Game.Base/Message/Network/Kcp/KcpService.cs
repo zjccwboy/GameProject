@@ -30,31 +30,22 @@ namespace H6Game.Base
         /// 开始监听并接受连接请求
         /// </summary>
         /// <returns></returns>
-        public override bool Accept()
+        public override void Accept()
         {
-            if (this.Acceptor == null)
+            if (this.Acceptor != null)
+                return;
+
+            this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            if (this.ServiceType == NetServiceType.Server)
             {
-                this.Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                if (this.ServiceType == NetServiceType.Server)
-                {
 #if WINDOWS
-                    uint IOC_IN = 0x80000000;
-                    uint IOC_VENDOR = 0x18000000;
-                    uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
-                    this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
+                uint IOC_IN = 0x80000000;
+                uint IOC_VENDOR = 0x18000000;
+                uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
+                this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
 #endif
-                }
-                try
-                {
-                    Acceptor.Bind(this.EndPoint);
-                }
-                catch(Exception e)
-                {
-                    Log.Error(e, LoggerBllType.System);
-                    return false;
-                }
             }
-            return true;
+            Acceptor.Bind(this.EndPoint);
         }
 
         /// <summary>
