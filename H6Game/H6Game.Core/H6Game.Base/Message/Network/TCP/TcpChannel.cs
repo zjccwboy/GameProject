@@ -143,33 +143,22 @@ namespace H6Game.Base
         /// <returns></returns>
         public override void StartSend()
         {
-            if (!Connected)
-                return;
-
-            if (IsSending)
-                return;
-
-            if (this.SendParser == null)
-                return;
-
-            SendData();
-        }
-
-        private void SendData()
-        {
-            IsSending = true;
-
-            if (!Connected)
+            if (!this.Connected)
             {
-                IsSending = false;
+                this.IsSending = false;
                 return;
             }
 
-            if (SendParser.Buffer.DataSize <= 0)
+            if (this.SendParser.Buffer.DataSize <= 0)
             {
-                IsSending = false;
+                this.IsSending = false;
                 return;
             }
+
+            if (this.IsSending)
+                return;
+
+            this.IsSending = true;
 
             this.OutArgs.SetBuffer(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
             try
@@ -179,19 +168,18 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                IsSending = false;
+                this.IsSending = false;
                 Log.Error(e, LoggerBllType.System);
-                DisConnect();
+                this.DisConnect();
                 return;
             }
-            OnSendComplete(this.OutArgs);
+            this.OnSendComplete(this.OutArgs);
         }
 
         private void OnSendComplete(object o)
         {
             this.LastSendTime = TimeUitls.Now();
-
-            IsSending = false;
+            this.IsSending = false;
 
             if (this.NetSocket == null)
                 return;
@@ -200,7 +188,7 @@ namespace H6Game.Base
 
             if (e.SocketError != SocketError.Success)
             {
-                DisConnect();
+                this.DisConnect();
                 return;
             }
 
@@ -208,7 +196,7 @@ namespace H6Game.Base
             if (this.SendParser.Buffer.DataSize <= 0)
                 return;
 
-            this.SendData();
+            this.StartSend();
         }
 
         /// <summary>
@@ -216,19 +204,19 @@ namespace H6Game.Base
         /// </summary>
         public override void StartRecv()
         {
+            if (!Connected)
+            {
+                IsReceiving = false;
+                return;
+            }
+
+            if (IsReceiving)
+                return;
+
+            IsReceiving = true;
+
             try
             {
-                if (IsReceiving)
-                    return;
-
-                IsReceiving = true;
-
-                if (!Connected)
-                {
-                    IsReceiving = false;
-                    return;
-                }
-
                 this.InArgs.SetBuffer(RecvParser.Buffer.Last, RecvParser.Buffer.LastWriteOffset, RecvParser.Buffer.LastCapacity);
                 if (this.NetSocket.ReceiveAsync(this.InArgs))
                     return;
@@ -266,21 +254,12 @@ namespace H6Game.Base
             RecvParser.Buffer.UpdateWrite(e.BytesTransferred);
             while (true)
             {
-                try
-                {
-                    if (!RecvParser.TryRead())
-                        break;
+                if (!RecvParser.TryRead())
+                    break;
 
-                    HandleReceive(this.RecvParser.Packet);
-                    this.RecvParser.Packet.BodyStream.SetLength(0);
-                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-                }
-                catch (Exception ex)
-                {
-                    DisConnect();
-                    Log.Error(ex, LoggerBllType.System);
-                    return;
-                }
+                HandleReceive(this.RecvParser.Packet);
+                this.RecvParser.Packet.BodyStream.SetLength(0);
+                this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
 
             this.StartRecv();

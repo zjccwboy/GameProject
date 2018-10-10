@@ -8,7 +8,17 @@ namespace H6Game.Base
     {
         private string HttpPrefixed { get; set; }
         private WebSocket NetSocket { get; set; }
+
+        /// <summary>
+        /// 发送状态机
+        /// </summary>
         private bool IsSending { get; set; }
+
+        /// <summary>
+        /// 接收状态机
+        /// </summary>
+        private bool IsReceiving { get; set; }
+
 
         public WcpChannel(string httpPrefixed, ANetService netService) : base(netService)
         {
@@ -62,71 +72,109 @@ namespace H6Game.Base
 
         public override async void StartSend()
         {
-            if (!Connected)
-                return;
-
-            if (IsSending)
-                return;
-
-            if (this.SendParser == null)
-                return;
-
-            if (SendParser.Buffer.DataSize == 0)
+            if (!this.Connected)
             {
-                IsSending = false;
+                this.IsSending = false;
                 return;
             }
 
+            if (this.SendParser.Buffer.DataSize <= 0)
+            {
+                this.IsSending = false;
+                return;
+            }
+
+            if (this.IsSending)
+                return;
+
             this.IsSending = true;
-            this.LastSendTime = TimeUitls.Now();
 
             try
             {
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                await NetSocket.SendAsync(new ArraySegment<byte>(SendParser.Buffer.First), WebSocketMessageType.Binary, true, CancellationToken.None);
-                SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstReadOffset);
+                await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                ThreadCallbackContext.Instance.Post(OnSendComplete, null);
             }
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
-                DisConnect();
+                this.DisConnect();
                 return;
             }
-            finally
-            {
-                IsSending = false;
-            }
+        }
+
+        private void OnSendComplete(object o)
+        {
+            this.LastSendTime = TimeUitls.Now();
+            this.IsSending = false;
+
+            if (this.NetSocket == null)
+                return;
+
+            this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
+
+            if (this.SendParser.Buffer.DataSize > 0)
+                this.StartSend();
         }
 
         public override async void StartRecv()
         {
-            while (true)
+            if (!Connected)
             {
-                try
-                {
-                    var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
-                    var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-                    if (result.Count == 0)
-                    {
-                        this.DisConnect();
-                        return;
-                    }
-                    this.RecvParser.Buffer.UpdateWrite(result.Count);
+                IsReceiving = false;
+                return;
+            }
 
-                    if (!RecvParser.TryRead())
-                        continue;
+            if (IsReceiving)
+                return;
 
-                    HandleReceive(this.RecvParser.Packet);
-                    this.RecvParser.Packet.BodyStream.SetLength(0);
-                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-                }
-                catch(Exception e)
+            IsReceiving = true;
+
+            try
+            {
+                var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+                var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
+                if (result.Count == 0)
                 {
-                    DisConnect();
-                    Log.Error(e, LoggerBllType.System);
+                    this.DisConnect();
                     return;
                 }
+                ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
             }
+            catch (Exception e)
+            {
+                IsReceiving = false;
+                Log.Error(e, LoggerBllType.System);
+                DisConnect();
+            }
+        }
+
+        private void OnRecvComplete(object o)
+        {
+            IsReceiving = false;
+            if (this.NetSocket == null)
+                return;
+
+            var result = o as WebSocketReceiveResult;
+            RecvParser.Buffer.UpdateWrite(result.Count);
+
+            if (result.Count == 0)
+            {
+                this.DisConnect();
+                return;
+            }
+
+            while (true)
+            {
+                if (!RecvParser.TryRead())
+                    break;
+
+                HandleReceive(this.RecvParser.Packet);
+                this.RecvParser.Packet.BodyStream.SetLength(0);
+                this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+            }
+
+            this.StartRecv();
         }
 
         public override async void DisConnect()

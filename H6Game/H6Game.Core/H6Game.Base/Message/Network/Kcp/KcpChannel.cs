@@ -86,9 +86,6 @@ namespace H6Game.Base
         /// <returns></returns>
         public override void StartSend()
         {
-            if (this.SendParser == null)
-                return;
-
             if (!this.Connected)
                 return;
 
@@ -134,21 +131,12 @@ namespace H6Game.Base
 
                 while (true)
                 {
-                    try
-                    {
-                        if (!RecvParser.TryRead())
-                            return;
-
-                        HandleReceive(this.RecvParser.Packet);
-                        this.RecvParser.Packet.BodyStream.SetLength(0);
-                        this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-                    }
-                    catch (Exception e)
-                    {
-                        DisConnect();
-                        Log.Error(e, LoggerBllType.System);
+                    if (!RecvParser.TryRead())
                         return;
-                    }
+
+                    HandleReceive(this.RecvParser.Packet);
+                    this.RecvParser.Packet.BodyStream.SetLength(0);
+                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 }
             }
         }
@@ -199,8 +187,8 @@ namespace H6Game.Base
             }
             catch(Exception e)
             {
-                DisConnect();
                 Log.Error(e, LoggerBllType.System);
+                DisConnect();
             }
         }
 

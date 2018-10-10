@@ -180,7 +180,7 @@ namespace H6Game.Base
         /// <param name="connectedAction">连接成功回调。</param>
         /// <param name="disconnectedAction">连接断开回调。</param>
         /// <returns>Network 网络类对象</returns>
-        public static Network CreateConnector(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
+        public static Network CreateWebSocketConnector(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
             var session = new Session(httpPrefixed, ProtocalType.Wcp);
             session.OnClientConnected += connectedAction;

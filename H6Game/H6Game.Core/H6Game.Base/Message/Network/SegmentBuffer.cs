@@ -107,7 +107,7 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 缓冲区队列中第一个缓冲区块可写字符数
+        /// 缓冲区队列中第一个缓冲区块未读字节数
         /// </summary>
         public int FirstDataSize
         {

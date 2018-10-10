@@ -66,6 +66,7 @@ namespace H6Game.Base
             foreach (var channel in this.Channels.Values)
             {
                 channel.StartSend();
+                channel.StartRecv();
             }
             this.CheckHeadbeat();
         }
