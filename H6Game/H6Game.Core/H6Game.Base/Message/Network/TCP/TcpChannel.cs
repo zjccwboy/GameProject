@@ -53,6 +53,27 @@ namespace H6Game.Base
             this.OutArgs.Completed += OnComplete;
         }
 
+        private void OnComplete(object sender, SocketAsyncEventArgs e)
+        {
+            switch (e.LastOperation)
+            {
+                case SocketAsyncOperation.Connect:
+                    ThreadCallbackContext.Instance.Post(this.OnConnectComplete, e);
+                    break;
+                case SocketAsyncOperation.Receive:
+                    ThreadCallbackContext.Instance.Post(this.OnRecvComplete, e);
+                    break;
+                case SocketAsyncOperation.Send:
+                    ThreadCallbackContext.Instance.Post(this.OnSendComplete, e);
+                    break;
+                case SocketAsyncOperation.Disconnect:
+                    ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, e);
+                    break;
+                default:
+                    throw new NetworkException($"socket error: {e.LastOperation}");
+            }
+        }
+
         /// <summary>
         /// 开始连接
         /// </summary>
@@ -93,6 +114,27 @@ namespace H6Game.Base
             {
                 Log.Error(e, LoggerBllType.System);
             }
+        }
+
+        private void OnConnectComplete(object o)
+        {
+            if (this.NetSocket == null)
+                return;
+
+            if (!this.NetSocket.Connected)
+                return;
+
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
+            if (e.SocketError != SocketError.Success)
+            {
+                this.OnError?.Invoke(this, SocketError.SocketError);
+                return;
+            }
+
+            this.LastConnectTime = TimeUitls.Now();
+            e.RemoteEndPoint = null;
+            this.Connected = true;
+            OnConnect?.Invoke(this);
         }
 
         /// <summary>
@@ -145,6 +187,30 @@ namespace H6Game.Base
             OnSendComplete(this.OutArgs);
         }
 
+        private void OnSendComplete(object o)
+        {
+            this.LastSendTime = TimeUitls.Now();
+
+            IsSending = false;
+
+            if (this.NetSocket == null)
+                return;
+
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
+
+            if (e.SocketError != SocketError.Success)
+            {
+                DisConnect();
+                return;
+            }
+
+            this.SendParser.Buffer.UpdateRead(e.BytesTransferred);
+            if (this.SendParser.Buffer.DataSize <= 0)
+                return;
+
+            this.SendData();
+        }
+
         /// <summary>
         /// 接收数据
         /// </summary>
@@ -175,86 +241,6 @@ namespace H6Game.Base
                 Log.Error(e, LoggerBllType.System);
                 DisConnect();
             }
-        }
-
-
-        /// <summary>
-        /// 断开连接
-        /// </summary>
-        public override void DisConnect()
-        {
-            try
-            {
-                if (!this.Connected)
-                    return;
-
-                if (NetSocket == null)
-                    return;
-
-                Connected = false;
-
-                OnDisConnect?.Invoke(this);
-            }
-            finally
-            {
-                ParserStorage.Push(SendParser);
-                ParserStorage.Push(RecvParser);
-
-                NetSocket.Close();
-                NetSocket.Dispose();
-                NetSocket = null;
-
-                this.InArgs.Dispose();
-                this.OutArgs.Dispose();
-            }
-        }
-
-        private void OnComplete(object sender, SocketAsyncEventArgs e)
-        {
-            switch (e.LastOperation)
-            {
-                case SocketAsyncOperation.Connect:
-                    ThreadCallbackContext.Instance.Post(this.OnConnectComplete, e);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    ThreadCallbackContext.Instance.Post(this.OnRecvComplete, e);
-                    break;
-                case SocketAsyncOperation.Send:
-                    ThreadCallbackContext.Instance.Post(this.OnSendComplete, e);
-                    break;
-                case SocketAsyncOperation.Disconnect:
-                    ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, e);
-                    break;
-                default:
-                    throw new NetworkException($"socket error: {e.LastOperation}");
-            }
-        }
-
-        private void OnConnectComplete(object o)
-        {
-            if (this.NetSocket == null)
-                return;
-
-            if (!this.NetSocket.Connected)
-                return;
-
-            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-            if (e.SocketError != SocketError.Success)
-            {
-                this.OnError?.Invoke(this, SocketError.SocketError);
-                return;
-            }
-
-            this.LastConnectTime = TimeUitls.Now();
-            e.RemoteEndPoint = null;
-            this.Connected = true;
-            OnConnect?.Invoke(this);
-        }
-
-        private void OnDisconnectComplete(object o)
-        {
-            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-            this.OnDisConnect?.Invoke(this);
         }
 
         private void OnRecvComplete(object o)
@@ -317,9 +303,8 @@ namespace H6Game.Base
 
             if (packet.IsRpc)
             {
-                var action = RpcDictionary[packet.RpcId];
-                RpcDictionary.Remove(packet.RpcId);
-                action(packet);
+                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
             }
             else
             {
@@ -327,28 +312,47 @@ namespace H6Game.Base
             }
         }
 
-        private void OnSendComplete(object o)
+        public override void DisConnect()
         {
-            this.LastSendTime = TimeUitls.Now();
-
-            IsSending = false;
-
-            if (this.NetSocket == null)
-                return;
-
-            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-
-            if (e.SocketError != SocketError.Success)
+            try
             {
-                DisConnect();
-                return;
+                if (!this.Connected)
+                    return;
+
+                if (NetSocket == null)
+                    return;
+
+                Connected = false;
+
+                OnDisConnect?.Invoke(this);
             }
+            finally
+            {
+                //服务端连接断开把缓冲区丢进池
+                if (this.NetService.ServiceType == NetServiceType.Server)
+                {
+                    ParserStorage.Push(SendParser);
+                    ParserStorage.Push(RecvParser);
+                }
+                else
+                {
+                    SendParser.Clear();
+                    RecvParser.Clear();
+                }
 
-            this.SendParser.Buffer.UpdateRead(e.BytesTransferred);
-            if (this.SendParser.Buffer.DataSize <= 0)
-                return;
+                NetSocket.Close();
+                NetSocket.Dispose();
+                NetSocket = null;
 
-            this.SendData();
+                this.InArgs.Dispose();
+                this.OutArgs.Dispose();
+            }
+        }
+
+        private void OnDisconnectComplete(object o)
+        {
+            SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
+            this.OnDisConnect?.Invoke(this);
         }
     }
 }

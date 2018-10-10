@@ -140,6 +140,7 @@ namespace H6Game.Base
                 {
                     HandleFIN(packet, this.ReuseEndPoint as IPEndPoint);
                 }
+                ConnectParser.Clear();
             }
             else
             {

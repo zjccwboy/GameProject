@@ -42,29 +42,20 @@ namespace H6Game.Base
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PacketParser()
-        {
-            Buffer = new BufferSegment();
-            Packet = new Packet(this);
-        }
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         /// <param name="blockSize">指定缓冲区块大小</param>
         public PacketParser(int blockSize)
         {
             this.BlockSize = blockSize;
-            Buffer = new BufferSegment(blockSize);
+            Buffer = new SegmentBuffer(blockSize);
             Packet = new Packet(this);
         }
 
         /// <summary>
         /// 缓冲区对象
         /// </summary>
-        public BufferSegment Buffer { get; }
+        public SegmentBuffer Buffer { get; }
         public Packet Packet { get; }
-        public int BlockSize { get;} = 8192;
+        public int BlockSize { get;}
 
         private int ReadLength = 0;
         private int PacketSize = 0;

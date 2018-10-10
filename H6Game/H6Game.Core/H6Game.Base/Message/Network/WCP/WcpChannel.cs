@@ -26,36 +26,6 @@ namespace H6Game.Base
             this.SendParser = ParserStorage.GetParser();
         }
 
-        public override async void DisConnect()
-        {
-            try
-            {
-                if (!this.Connected)
-                    return;
-
-                if (NetSocket == null)
-                    return;
-
-                Connected = false;
-
-                OnDisConnect(this);
-
-                if (this.NetService.ServiceType == NetServiceType.Client)
-                    await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
-                else
-                    await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
-
-            }
-            finally
-            {
-                ParserStorage.Push(SendParser);
-                ParserStorage.Push(RecvParser);
-
-                NetSocket.Dispose();
-                NetSocket = null;
-            }
-        }
-
         public override async void StartConnecting()
         {
             try
@@ -79,6 +49,44 @@ namespace H6Game.Base
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
+            }
+        }
+
+        public override async void StartSend()
+        {
+            if (!Connected)
+                return;
+
+            if (IsSending)
+                return;
+
+            if (this.SendParser == null)
+                return;
+
+            if (SendParser.Buffer.DataSize == 0)
+            {
+                IsSending = false;
+                return;
+            }
+
+            this.IsSending = true;
+            this.LastSendTime = TimeUitls.Now();
+
+            try
+            {
+                var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+                await NetSocket.SendAsync(new ArraySegment<byte>(SendParser.Buffer.First), WebSocketMessageType.Binary, true, CancellationToken.None);
+                SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstReadOffset);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, LoggerBllType.System);
+                DisConnect();
+                return;
+            }
+            finally
+            {
+                IsSending = false;
             }
         }
 
@@ -130,9 +138,8 @@ namespace H6Game.Base
 
             if (packet.IsRpc)
             {
-                var action = RpcDictionary[packet.RpcId];
-                RpcDictionary.Remove(packet.RpcId);
-                action(packet);
+                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
             }
             else
             {
@@ -140,41 +147,42 @@ namespace H6Game.Base
             }
         }
 
-        public override async void StartSend()
+        public override async void DisConnect()
         {
-            if (!Connected)
-                return;
-
-            if (IsSending)
-                return;
-
-            if (this.SendParser == null)
-                return;
-
-            if (SendParser.Buffer.DataSize == 0)
-            {
-                IsSending = false;
-                return;
-            }
-
-            this.IsSending = true;
-            this.LastSendTime = TimeUitls.Now();
-
             try
             {
-                var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                await NetSocket.SendAsync(new ArraySegment<byte>(SendParser.Buffer.First), WebSocketMessageType.Binary, true, CancellationToken.None);
-                SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstReadOffset);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, LoggerBllType.System);
-                DisConnect();
-                return;
+                if (!this.Connected)
+                    return;
+
+                if (NetSocket == null)
+                    return;
+
+                Connected = false;
+
+                OnDisConnect(this);
+
+                if (this.NetService.ServiceType == NetServiceType.Client)
+                    await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+                else
+                    await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+
             }
             finally
             {
-                IsSending = false;
+                //服务端连接断开把缓冲区丢进池
+                if (this.NetService.ServiceType == NetServiceType.Server)
+                {
+                    ParserStorage.Push(SendParser);
+                    ParserStorage.Push(RecvParser);
+                }
+                else
+                {
+                    SendParser.Clear();
+                    RecvParser.Clear();
+                }
+
+                NetSocket.Dispose();
+                NetSocket = null;
             }
         }
     }

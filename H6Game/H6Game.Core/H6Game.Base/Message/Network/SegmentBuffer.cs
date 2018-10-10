@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// 组放到CacheBuffer中，写缓冲区是写到WorkerBuffer最后一条，写完之后再从CacheBuffer中取，这样可以做到循环使
     /// 用字节数组，可以避免频繁分配字节数组带来的GC开销。
     /// </summary>
-    public class BufferSegment
+    public class SegmentBuffer
     {
         /// <summary>
         /// 缓冲区块大小
@@ -34,21 +34,21 @@ namespace H6Game.Base
         /// <summary>
         /// 构造函数，默认分配缓冲区块大小8192字节
         /// </summary>
-        public BufferSegment()
+        public SegmentBuffer()
         {
             //默认分配一块缓冲区
-            WorkerBuffer.Enqueue(new byte[BlockSize]);
+            //WorkerBuffer.Enqueue(new byte[BlockSize]);
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="blockSize">指定缓冲区块大小</param>
-        public BufferSegment(int blockSize)
+        public SegmentBuffer(int blockSize)
         {
             this.BlockSize = blockSize;
             //默认分配一块缓冲区
-            WorkerBuffer.Enqueue(new byte[blockSize]);
+            //WorkerBuffer.Enqueue(new byte[blockSize]);
         }
 
         /// <summary>
@@ -205,6 +205,13 @@ namespace H6Game.Base
         {
             get
             {
+                if(WorkerBuffer.Count == 0)
+                {
+                    if(CacheBuffer.Count == 0)
+                        WorkerBuffer.Enqueue(new byte[this.BlockSize]);
+                    else
+                        WorkerBuffer.Enqueue(CacheBuffer.Dequeue());
+                }
                 return WorkerBuffer.Last();
             }
         }
@@ -216,6 +223,13 @@ namespace H6Game.Base
         {
             get
             {
+                if (WorkerBuffer.Count == 0)
+                {
+                    if (CacheBuffer.Count == 0)
+                        WorkerBuffer.Enqueue(new byte[this.BlockSize]);
+                    else
+                        WorkerBuffer.Enqueue(CacheBuffer.Dequeue());
+                }
                 return WorkerBuffer.Peek();
             }
         }
@@ -225,6 +239,8 @@ namespace H6Game.Base
         /// </summary>
         public void Flush()
         {
+            FirstReadOffset = 0;
+            LastWriteOffset = 0;
             var segments = WorkerBuffer.Count + CacheBuffer.Count;
             var bytes = segments * BlockSize;
             while (bytes > DefaultBlockSize * 2)
@@ -237,8 +253,11 @@ namespace H6Game.Base
                 segments = WorkerBuffer.Count + CacheBuffer.Count;
                 bytes = segments * BlockSize;
             }
-            FirstReadOffset = 0;
-            LastWriteOffset = 0;
+
+            while(WorkerBuffer.Count > 1)
+            {
+                CacheBuffer.Enqueue(WorkerBuffer.Dequeue());
+            }
         }
     }
 }

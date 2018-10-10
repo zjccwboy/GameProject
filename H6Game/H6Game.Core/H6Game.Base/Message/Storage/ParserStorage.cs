@@ -8,7 +8,7 @@ namespace H6Game.Base
 
         public static PacketParser GetParser()
         {
-            return GetParser(BufferSegment.DefaultBlockSize);
+            return GetParser(SegmentBuffer.DefaultBlockSize);
         }
 
         public static PacketParser GetParser(int bufferBlockSize)

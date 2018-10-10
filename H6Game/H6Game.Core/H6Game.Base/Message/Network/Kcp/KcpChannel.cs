@@ -81,6 +81,29 @@ namespace H6Game.Base
         }
 
         /// <summary>
+        /// 开始发送KCP数据包
+        /// </summary>
+        /// <returns></returns>
+        public override void StartSend()
+        {
+            if (this.SendParser == null)
+                return;
+
+            if (!this.Connected)
+                return;
+
+            while (this.SendParser.Buffer.DataSize > 0)
+            {
+                var offset = this.SendParser.Buffer.FirstReadOffset;
+                var length = this.SendParser.Buffer.FirstDataSize;
+                length = length > MaxPSize ? MaxPSize : length;
+                Kcp.Send(this.SendParser.Buffer.First, offset, length);
+                this.SendParser.Buffer.UpdateRead(length);
+            }
+            SetKcpSendTime();
+        }
+
+        /// <summary>
         /// 处理KCP接收数据
         /// </summary>
         /// <param name="bytes"></param>
@@ -147,38 +170,14 @@ namespace H6Game.Base
 
             if (packet.IsRpc)
             {
-                var action = RpcDictionary[packet.RpcId];
-                RpcDictionary.Remove(packet.RpcId);
-                action(packet);
+                if (RpcActions.TryRemove(packet.RpcId, out Action<Packet> action))
+                    action(packet);
             }
             else
             {
                 OnReceive?.Invoke(packet);
             }
 
-        }
-
-        /// <summary>
-        /// 开始发送KCP数据包
-        /// </summary>
-        /// <returns></returns>
-        public override void StartSend()
-        {
-            if (this.SendParser == null)
-                return;
-
-            if (!this.Connected)
-                return;
-
-            while (this.SendParser.Buffer.DataSize > 0)
-            {
-                var offset = this.SendParser.Buffer.FirstReadOffset;
-                var length = this.SendParser.Buffer.FirstDataSize;
-                length = length > MaxPSize ? MaxPSize : length;
-                Kcp.Send(this.SendParser.Buffer.First, offset, length);
-                this.SendParser.Buffer.UpdateRead(length);
-            }
-            SetKcpSendTime();
         }
 
         /// <summary>
@@ -199,8 +198,17 @@ namespace H6Game.Base
             catch { }
             finally
             {
-                ParserStorage.Push(SendParser);
-                ParserStorage.Push(RecvParser);
+                //服务端连接断开把缓冲区丢进池
+                if (this.NetService.ServiceType == NetServiceType.Server)
+                {
+                    ParserStorage.Push(SendParser);
+                    ParserStorage.Push(RecvParser);
+                }
+                else
+                {
+                    SendParser.Clear();
+                    RecvParser.Clear();
+                }
             }
         }
 

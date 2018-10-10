@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace H6Game.Base
 {
     /// <summary>
     /// 数据包
     /// </summary>
-    public class Packet : IDisposable
+    public class Packet
     {
         /// <summary>
         /// Rpc请求标志
@@ -51,23 +50,23 @@ namespace H6Game.Base
         /// <summary>
         /// 包头字节数组
         /// </summary>
-        public byte[] HeadBytes { get; } = new byte[PacketParser.HeadSize];
+        internal byte[] HeadBytes { get; } = new byte[PacketParser.HeadSize];
 
         /// <summary>
         /// BodyStream
         /// </summary>
-        public MemoryStream BodyStream { get; }
+        internal MemoryStream BodyStream { get; }
 
         /// <summary>
         /// 解包缓冲区
         /// </summary>
-        private PacketParser Parser { get; }
+        internal PacketParser Parser { get; }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="parser"></param>
-        public Packet(PacketParser parser)
+        internal Packet(PacketParser parser)
         {
             this.BodyStream = new MemoryStream(parser.BlockSize);
             this.Parser = parser;
@@ -76,7 +75,7 @@ namespace H6Game.Base
             this.IsEncrypt = PacketConfig.IsEncrypt;
         }
 
-        public void WriteBuffer()
+        internal void WriteBuffer()
         {
             this.Parser.WriteBuffer(this);
             this.Flush();
@@ -97,12 +96,6 @@ namespace H6Game.Base
 
             this.BodyStream.Seek(0, SeekOrigin.Begin);
             this.BodyStream.SetLength(0);
-        }
-
-        public void Dispose()
-        {
-            this.BodyStream.Close();
-            this.BodyStream.Dispose();
         }
     }
 
