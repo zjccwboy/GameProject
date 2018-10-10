@@ -40,7 +40,8 @@ namespace H6Game.Base
         public ANetService NService;
         private IPEndPoint EPoint { get; }
         private ProtocalType PType { get; }
-        private string HttpPrefixed { get; set; }
+        private string HttpPrefixed { get; }
+        private Network Network { get; }
 
         /// <summary>
         /// 客户端连接管道
@@ -67,16 +68,18 @@ namespace H6Game.Base
         /// </summary>
         public Action<Network> OnClientConnected { get; set; }
 
-        public Session(IPEndPoint endPoint, ProtocalType protocalType)
+        public Session(IPEndPoint endPoint, Network network, ProtocalType protocalType)
         {
             this.EPoint = endPoint;
             this.PType = protocalType;
+            this.Network = network;
         }
 
-        public Session(string httpPrefixed, ProtocalType protocalType)
+        public Session(string httpPrefixed, Network network, ProtocalType protocalType)
         {
             this.HttpPrefixed = httpPrefixed;
             this.PType = protocalType;
+            this.Network = network;
         }
 
         /// <summary>
@@ -87,15 +90,15 @@ namespace H6Game.Base
         {
             if(this.PType == ProtocalType.Tcp)
             {
-                this.NService = new TcpService(this.EPoint, this, NetServiceType.Server);
+                this.NService = new TcpService(this.EPoint, this, this.Network, NetServiceType.Server);
             }
             else if(this.PType == ProtocalType.Kcp)
             {
-                this.NService = new KcpService(this.EPoint, this, NetServiceType.Server);
+                this.NService = new KcpService(this.EPoint, this, this.Network, NetServiceType.Server);
             }
             else if (this.PType == ProtocalType.Wcp)
             {
-                this.NService = new WcpService(this.HttpPrefixed, this, NetServiceType.Client);
+                this.NService = new WcpService(this.HttpPrefixed, this, this.Network, NetServiceType.Client);
             }
 
             this.NService.OnServerConnected = (c) => { this.OnServerConnected?.Invoke(c.Network); };
@@ -109,26 +112,24 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="endPoint"></param>
         /// <returns></returns>
-        public ANetChannel Connect()
+        public void Connect()
         {
             if (this.PType == ProtocalType.Tcp)
             {
-                this.NService = new TcpService(this.EPoint, this, NetServiceType.Client);
+                this.NService = new TcpService(this.EPoint, this, this.Network, NetServiceType.Client);
             }
             else if (this.PType == ProtocalType.Kcp)
             {
-                this.NService = new KcpService(this.EPoint, this, NetServiceType.Client);
+                this.NService = new KcpService(this.EPoint, this, this.Network, NetServiceType.Client);
             }
             else if(this.PType == ProtocalType.Wcp)
             {
-                this.NService = new WcpService(this.HttpPrefixed, this, NetServiceType.Client);
+                this.NService = new WcpService(this.HttpPrefixed, this, this.Network, NetServiceType.Client);
             }
 
             this.NService.OnClientDisconnected = (c) => { this.OnClientDisconnected?.Invoke(c.Network); };
             this.NService.OnClientConnected = (c) => { OnClientConnected?.Invoke(c.Network); };
             this.ConnectChannel = this.NService.Connect();
-
-            return this.ConnectChannel;
         }
         
         public void Update()

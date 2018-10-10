@@ -28,7 +28,8 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="endPoint">Ip/端口</param>
         /// <param name="netService">通讯网络服务对象</param>
-        public TcpChannel(IPEndPoint endPoint, ANetService netService) : base(netService)
+        /// <param name="network">网络类</param>
+        public TcpChannel(IPEndPoint endPoint, ANetService netService, Network network) : base(netService, network)
         {
             this.RemoteEndPoint = endPoint;
             this.RecvParser = ParserStorage.GetParser();
@@ -41,7 +42,8 @@ namespace H6Game.Base
         /// <param name="endPoint">IP/端口</param>
         /// <param name="socket">TCP socket类</param>
         /// <param name="netService">通讯网络服务对象</param>
-        public TcpChannel(IPEndPoint endPoint, Socket socket, ANetService netService) : base(netService)
+        /// <param name="network">网络类</param>
+        public TcpChannel(IPEndPoint endPoint, Socket socket, ANetService netService, Network network) : base(netService, network)
         {
             this.LocalEndPoint = endPoint;
             this.RecvParser = ParserStorage.GetParser();

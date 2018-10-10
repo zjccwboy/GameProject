@@ -15,11 +15,13 @@ namespace H6Game.Base
         private readonly byte[] ReuseRecvBytes = new byte[1400];
 
         /// <summary>
-        /// 构造函数 
+        /// 构造函数
         /// </summary>
-        /// <param name="endPoint"></param>
-        /// <param name="session"></param>
-        public KcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
+        /// <param name="endPoint">Ip/端口</param>
+        /// <param name="session">会话类</param>
+        /// <param name="network">网络类</param>
+        /// <param name="serviceType">通讯服务类型</param>
+        public KcpService(IPEndPoint endPoint, Session session, Network network, NetServiceType serviceType) : base(session, network)
         {
             this.ServiceType = serviceType;
             this.EndPoint = endPoint;
@@ -63,7 +65,7 @@ namespace H6Game.Base
                 uint SIO_UDP_CONNRESET = IOC_IN | IOC_VENDOR | 12;
                 this.Acceptor.IOControl((int)SIO_UDP_CONNRESET, new[] { Convert.ToByte(false) }, null);
 #endif
-                this.ClientChannel = new KcpChannel(this.Acceptor, this.EndPoint, this, 1000);
+                this.ClientChannel = new KcpChannel(this.Acceptor, this.EndPoint, this, this.Network, 1000);
                 this.ClientChannel.StartConnecting();
             }
             return this.ClientChannel;
@@ -185,7 +187,7 @@ namespace H6Game.Base
             }
             else
             {
-                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.NetCommand)
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, this.Network, packet.NetCommand)
                 {
                     OnConnect = OnAccept
                 };

@@ -35,12 +35,14 @@ namespace H6Game.Base
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
 
         /// <summary>
-        /// 构造函数,Connect
+        /// 构造函数
         /// </summary>
         /// <param name="socket">Socket</param>
         /// <param name="netService">网络服务</param>
+        /// <param name="network">网络类</param>
         /// <param name="connectConv">网络连接Conv</param>
-        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, int connectConv) : base(netService, connectConv)
+        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, Network network, int connectConv) 
+            : base(netService, network, connectConv)
         {
             this.RemoteEndPoint = endPoint;
             this.NetSocket = socket;

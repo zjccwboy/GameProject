@@ -9,20 +9,23 @@ namespace H6Game.Base
     /// </summary>
     public abstract class ANetService : IDisposable
     {
+        protected Network Network { get; }
+
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="session"></param>
-        public ANetService(Session session)
+        /// <param name="session">会话类</param>
+        /// <param name="network">网络类</param>
+        public ANetService(Session session, Network network)
         {
-            Session = session;
+            this.Session = session;
+            this.Network = network;
         }
 
         /// <summary>
         /// 最后一次检测心跳的时间
         /// </summary>
         private uint LastCheckHeadbeatTime = TimeUitls.Now();
-
         private const uint KcpHeartbeatTime = 20 * 1000;
         private const uint TcpHeartbeatTime = 4 * 1000;
         /// <summary>

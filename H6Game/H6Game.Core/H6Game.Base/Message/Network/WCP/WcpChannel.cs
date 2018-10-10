@@ -23,7 +23,7 @@ namespace H6Game.Base
         private bool IsReceiving { get; set; }
 
 
-        public WcpChannel(string httpPrefixed, ANetService netService) : base(netService)
+        public WcpChannel(string httpPrefixed, ANetService netService, Network network) : base(netService, network)
         {
             this.HttpPrefixed = httpPrefixed;
             this.RecvParser = ParserStorage.GetParser();
@@ -31,7 +31,7 @@ namespace H6Game.Base
         }
 
 
-        public WcpChannel(string httpPrefixed, WebSocket socket, ANetService netService) : base(netService)
+        public WcpChannel(string httpPrefixed, WebSocket socket, ANetService netService, Network network) : base(netService, network)
         {
             this.HttpPrefixed = httpPrefixed;
             this.NetSocket = socket;

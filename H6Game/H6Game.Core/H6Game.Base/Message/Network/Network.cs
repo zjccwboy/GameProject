@@ -11,17 +11,17 @@ namespace H6Game.Base
         /// <summary>
         /// 通讯管道类。
         /// </summary>
-        public ANetChannel Channel { get;}
-
-        /// <summary>
-        /// 通讯服务类。
-        /// </summary>
-        public ANetService NetService { get;}
+        public ANetChannel Channel { get; set; }
 
         /// <summary>
         /// 通讯会话类。
         /// </summary>
-        public Session Session { get;}
+        public Session Session { get; private set; }
+
+        /// <summary>
+        /// 通讯服务类。
+        /// </summary>
+        public ANetService NetService { get { return this.Channel.Session.NService; } }
 
         /// <summary>
         /// 发送数据包缓冲区。
@@ -38,18 +38,7 @@ namespace H6Game.Base
         /// </summary>
         public int Id { get { return this.Channel.Id; } }
 
-        /// <summary>
-        /// 构造函数。
-        /// </summary>
-        /// <param name="session">通讯会话类。</param>
-        /// <param name="netService">通讯服务类。</param>
-        /// <param name="channel">通讯管道类。</param>
-        public Network(Session session, ANetService netService, ANetChannel channel)
-        {
-            this.Session = session;
-            this.NetService = netService;
-            this.Channel = channel;
-        }
+        private Network(){}
 
         /// <summary>
         /// 通讯状态更新入口。
@@ -68,9 +57,10 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType)
         {
-            var session = new Session(endPoint, protocalType);
+            var network = new Network();
+            var session = new Session(endPoint, network, protocalType);
+            network.Session = session;
             session.Accept();
-            var network = new Network(session, session.NService, null);
             return network;
         }
 
@@ -86,11 +76,12 @@ namespace H6Game.Base
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType
             , Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
-            var session = new Session(endPoint, protocalType);            
+            var network = new Network();
+            var session = new Session(endPoint, network, protocalType);
+            network.Session = session;
             session.OnServerConnected += connectedAction;
             session.OnServerDisconnected += disconnectedAction;
             session.Accept();
-            var network = new Network(session, session.NService, null);
             return network;
         }
 
@@ -102,9 +93,10 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateConnector(IPEndPoint endPoint, ProtocalType protocalType)
         {
-            var session = new Session(endPoint, protocalType);
-            var channel = session.Connect();
-            var network = new Network(session, session.NService, channel);
+            var network = new Network();
+            var session = new Session(endPoint, network, protocalType);
+            network.Session = session;
+            session.Connect();
             return network;
         }
 
@@ -119,11 +111,12 @@ namespace H6Game.Base
         public static Network CreateConnector(IPEndPoint endPoint, ProtocalType protocalType
             , Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
-            var session = new Session(endPoint, protocalType);
+            var network = new Network();
+            var session = new Session(endPoint, network, protocalType);
+            network.Session = session;
             session.OnClientConnected += connectedAction;
             session.OnClientDisconnected += disconnectedAction;
-            var channel = session.Connect();
-            var network = new Network(session, session.NService, channel);
+            session.Connect();
             return network;
         }
 
@@ -135,9 +128,10 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateWebSocketAcceptor(string httpPrefixed)
         {
-            var session = new Session(httpPrefixed, ProtocalType.Wcp);
+            var network = new Network();
+            var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
+            network.Session = session;
             session.Accept();
-            var network = new Network(session, session.NService, null);
             return network;
         }
 
@@ -151,11 +145,12 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateWebSocketAcceptor(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
-            var session = new Session(httpPrefixed, ProtocalType.Wcp);
+            var network = new Network();
+            var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
+            network.Session = session;
             session.OnServerConnected += connectedAction;
             session.OnServerDisconnected += disconnectedAction;
             session.Accept();
-            var network = new Network(session, session.NService, null);
             return network;
         }
 
@@ -167,9 +162,10 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateWebSocketConnector(string httpPrefixed)
         {
-            var session = new Session(httpPrefixed, ProtocalType.Wcp);
-            var channel = session.Connect();
-            var network = new Network(session, session.NService, channel);
+            var network = new Network();
+            var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
+            network.Session = session;
+            session.Connect();
             return network;
         }
 
@@ -182,11 +178,12 @@ namespace H6Game.Base
         /// <returns>Network 网络类对象</returns>
         public static Network CreateWebSocketConnector(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
         {
-            var session = new Session(httpPrefixed, ProtocalType.Wcp);
+            var network = new Network();
+            var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
+            network.Session = session;
             session.OnClientConnected += connectedAction;
             session.OnClientDisconnected += disconnectedAction;
-            var channel = session.Connect();
-            var network = new Network(session, session.NService, channel);
+            session.Connect();
             return network;
         }
 

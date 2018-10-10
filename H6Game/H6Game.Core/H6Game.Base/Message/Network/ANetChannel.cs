@@ -16,12 +16,12 @@ namespace H6Game.Base
         /// 构造函数
         /// </summary>
         /// <param name="netService">网络通讯服务对象</param>
-        public ANetChannel(ANetService netService)
+        public ANetChannel(ANetService netService, Network network)
         {
             this.NetService = netService;
             Id = ChannelIdCreator.CreateId();
-
-            this.Network = new Network(this.Session, this.NetService, this);
+            this.Network = network;
+            this.Network.Channel = this;
         }
 
         /// <summary>
@@ -29,12 +29,12 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="netService">网络通讯服务对象</param>
         /// <param name="conv">KCP连接确认号Conv</param>
-        public ANetChannel(ANetService netService, int conv)
+        public ANetChannel(ANetService netService, Network network, int conv)
         {
             this.NetService = netService;
             Id = conv;
-
-            this.Network = new Network(this.Session, this.NetService, this);
+            this.Network = network;
+            this.Network.Channel = this;
         }
 
         /// <summary>

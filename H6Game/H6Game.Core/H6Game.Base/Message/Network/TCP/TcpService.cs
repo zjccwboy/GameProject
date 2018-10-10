@@ -16,8 +16,10 @@ namespace H6Game.Base
         /// 构造函数
         /// </summary>
         /// <param name="endPoint">Ip/端口</param>
-        /// <param name="session"></param>
-        public TcpService(IPEndPoint endPoint, Session session, NetServiceType serviceType) : base(session)
+        /// <param name="session">会话类</param>
+        /// <param name="network">网络类</param>
+        /// <param name="serviceType">通讯服务类型</param>
+        public TcpService(IPEndPoint endPoint, Session session, Network network, NetServiceType serviceType) : base(session, network)
         {
             this.ServiceType = serviceType;
             this.EndPoint = endPoint;
@@ -85,7 +87,7 @@ namespace H6Game.Base
                 Log.Fatal($"接受连接发生错误.", LoggerBllType.System);
                 return;
             }
-            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
+            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this, this.Network)
             {
                 RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
             };
@@ -102,7 +104,7 @@ namespace H6Game.Base
         {
             if(this.ClientChannel == null)
             {
-                ClientChannel = new TcpChannel(EndPoint, this)
+                ClientChannel = new TcpChannel(EndPoint, this, this.Network)
                 {
                     OnConnect = OnConnect
                 };

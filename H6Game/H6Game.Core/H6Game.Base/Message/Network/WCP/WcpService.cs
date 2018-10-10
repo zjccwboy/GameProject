@@ -7,7 +7,7 @@ namespace H6Game.Base
         private HttpListener Listener { get; set; }
         private string HttpPrefixed { get; set; }
 
-        public WcpService (string httpPrefixed, Session session, NetServiceType serviceType) : base(session)
+        public WcpService (string httpPrefixed, Session session, Network network, NetServiceType serviceType) : base(session, network)
         {
             this.HttpPrefixed = httpPrefixed;
         }
@@ -34,7 +34,7 @@ namespace H6Game.Base
             var context = obj as HttpListenerContext;
             var wsContext = await context.AcceptWebSocketAsync(null);
             var client = wsContext.WebSocket;
-            var channel = new WcpChannel(this.HttpPrefixed, client, this)
+            var channel = new WcpChannel(this.HttpPrefixed, client, this, this.Network)
             {
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
@@ -46,7 +46,7 @@ namespace H6Game.Base
         {
             if (this.ClientChannel == null)
             {
-                ClientChannel = new WcpChannel(this.HttpPrefixed, this)
+                ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
                 {
                     OnConnect = OnConnect
                 };
