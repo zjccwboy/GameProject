@@ -42,8 +42,7 @@ namespace H6Game.Base
         /// <param name="endPoint">IP/端口</param>
         /// <param name="socket">TCP socket类</param>
         /// <param name="netService">通讯网络服务对象</param>
-        /// <param name="network">网络类</param>
-        public TcpChannel(IPEndPoint endPoint, Socket socket, ANetService netService, Network network) : base(netService, network)
+        public TcpChannel(IPEndPoint endPoint, Socket socket, ANetService netService) : base(netService)
         {
             this.LocalEndPoint = endPoint;
             this.RecvParser = ParserStorage.GetParser();
@@ -263,8 +262,6 @@ namespace H6Game.Base
                 this.RecvParser.Packet.BodyStream.SetLength(0);
                 this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
-
-            this.StartRecv();
         }
 
         public override void DisConnect()

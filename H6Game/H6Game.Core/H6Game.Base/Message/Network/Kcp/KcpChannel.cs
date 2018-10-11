@@ -50,6 +50,21 @@ namespace H6Game.Base
             this.SendParser = ParserStorage.GetParser(1400);
         }
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="socket">Socket</param>
+        /// <param name="netService">网络服务</param>
+        /// <param name="connectConv">网络连接Conv</param>
+        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, int connectConv)
+            : base(netService, connectConv)
+        {
+            this.RemoteEndPoint = endPoint;
+            this.NetSocket = socket;
+            this.RecvParser = ParserStorage.GetParser(1400);
+            this.SendParser = ParserStorage.GetParser(1400);
+        }
+
         public void InitKcp()
         {
             this.Kcp = new Kcp((uint)this.Id, this);

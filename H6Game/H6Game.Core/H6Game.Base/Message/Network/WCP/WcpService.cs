@@ -34,7 +34,7 @@ namespace H6Game.Base
             var context = obj as HttpListenerContext;
             var wsContext = await context.AcceptWebSocketAsync(null);
             var client = wsContext.WebSocket;
-            var channel = new WcpChannel(this.HttpPrefixed, client, this, this.Network)
+            var channel = new WcpChannel(this.HttpPrefixed, client, this)
             {
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,

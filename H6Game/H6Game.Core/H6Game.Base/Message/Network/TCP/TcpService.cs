@@ -25,8 +25,7 @@ namespace H6Game.Base
             this.EndPoint = endPoint;
             this.ProtocalType = ProtocalType.Tcp;
         }
-
-
+        
         /// <summary>
         /// 开始监听并接受连接请求
         /// </summary>
@@ -87,7 +86,7 @@ namespace H6Game.Base
                 Log.Fatal($"接受连接发生错误.", LoggerBllType.System);
                 return;
             }
-            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this, this.Network)
+            var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
             {
                 RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
             };

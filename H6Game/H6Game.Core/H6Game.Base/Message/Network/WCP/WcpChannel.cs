@@ -31,7 +31,7 @@ namespace H6Game.Base
         }
 
 
-        public WcpChannel(string httpPrefixed, WebSocket socket, ANetService netService, Network network) : base(netService, network)
+        public WcpChannel(string httpPrefixed, WebSocket socket, ANetService netService) : base(netService)
         {
             this.HttpPrefixed = httpPrefixed;
             this.NetSocket = socket;
@@ -173,8 +173,6 @@ namespace H6Game.Base
                 this.RecvParser.Packet.BodyStream.SetLength(0);
                 this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
-
-            this.StartRecv();
         }
 
         public override async void DisConnect()

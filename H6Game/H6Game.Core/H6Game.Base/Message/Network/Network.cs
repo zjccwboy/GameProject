@@ -40,6 +40,12 @@ namespace H6Game.Base
 
         private Network(){}
 
+        public Network(ANetChannel channel)
+        {
+            this.Channel = channel;
+            this.Session = channel.Session;
+        }
+
         /// <summary>
         /// 通讯状态更新入口。
         /// </summary>
@@ -47,7 +53,6 @@ namespace H6Game.Base
         {
             Session.Update();
         }
-
 
         /// <summary>
         /// 创建一个监听连接的Network。
@@ -63,7 +68,6 @@ namespace H6Game.Base
             session.Accept();
             return network;
         }
-
 
         /// <summary>
         /// 创建一个监听连接的Network。

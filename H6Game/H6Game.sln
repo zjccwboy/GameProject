@@ -171,6 +171,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.TestWebSocket", "H6Game.Test\H6Game.TestWebSocket\H6Game.TestWebSocket.csproj", "{718E6729-7E6E-4FE0-875A-18032866FE63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.ComponentSubscriber", "H6Game.Test\UnitTest\H6Game.ComponentSubscriber\H6Game.ComponentSubscriber.csproj", "{7B0F3226-6B41-421E-873A-EFB75FBC492C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08B68702-8132-4617-BEB5-286420E74944} = {08B68702-8132-4617-BEB5-286420E74944}
+		{AE9A6DE4-D93A-4EEF-BECF-16E242E111D8} = {AE9A6DE4-D93A-4EEF-BECF-16E242E111D8}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

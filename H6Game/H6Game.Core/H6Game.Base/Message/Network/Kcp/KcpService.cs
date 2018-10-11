@@ -187,7 +187,7 @@ namespace H6Game.Base
             }
             else
             {
-                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, this.Network, packet.NetCommand)
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.NetCommand)
                 {
                     OnConnect = OnAccept
                 };

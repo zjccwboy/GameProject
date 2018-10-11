@@ -13,7 +13,7 @@ namespace H6Game.Base
     public abstract class ANetChannel : IDisposable
     {
         /// <summary>
-        /// 构造函数
+        /// 构造函数,TCP Connect
         /// </summary>
         /// <param name="netService">网络通讯服务对象</param>
         public ANetChannel(ANetService netService, Network network)
@@ -25,7 +25,19 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 构造函数
+        /// 构造函数,TCP Accept
+        /// </summary>
+        /// <param name="netService">网络通讯服务对象</param>
+        public ANetChannel(ANetService netService)
+        {
+            this.NetService = netService;
+            Id = ChannelIdCreator.CreateId();
+            this.Network = new Network(this);
+            this.Network.Channel = this;
+        }
+
+        /// <summary>
+        /// 构造函数,KCP Connect
         /// </summary>
         /// <param name="netService">网络通讯服务对象</param>
         /// <param name="conv">KCP连接确认号Conv</param>
@@ -34,6 +46,19 @@ namespace H6Game.Base
             this.NetService = netService;
             Id = conv;
             this.Network = network;
+            this.Network.Channel = this;
+        }
+
+        /// <summary>
+        /// 构造函数,KCP Accept
+        /// </summary>
+        /// <param name="netService">网络通讯服务对象</param>
+        /// <param name="conv">KCP连接确认号Conv</param>
+        public ANetChannel(ANetService netService, int conv)
+        {
+            this.NetService = netService;
+            Id = conv;
+            this.Network = new Network(this);
             this.Network.Channel = this;
         }
 
