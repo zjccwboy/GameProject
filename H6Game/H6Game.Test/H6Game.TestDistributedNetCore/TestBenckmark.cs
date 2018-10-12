@@ -49,10 +49,9 @@ namespace H6Game.TestDistributedNetCore
             await network.CallMessageAsync<TestMessage, TestMessage>(send, (int)TestCMD.TestCmd);
 
             Count++;
-            size += 35;
             if (stopWatch.ElapsedMilliseconds > 1000)
             {
-                Log.Debug($"RPC响应次数:{Count}/条 大小:{size / 1024 / 1024}/MB", LoggerBllType.System);
+                Log.Debug($"每{stopWatch.ElapsedMilliseconds}/毫秒 RPS:{Count}/条", LoggerBllType.System);
                 stopWatch.Restart();
                 Count = 0;
                 size = 0;

@@ -28,40 +28,42 @@ namespace H6Game.Base
         public OuterEndPointMessage GetGoodConnectedInfo()
         {
             //取当前客户端连接最多的服务
-            var list = ClientConnectionNumbers.OrderByDescending(a => a.Value);
+            var list =this. ClientConnectionNumbers.OrderByDescending(a => a.Value);
             var maxConnectInfo = list.First();
             var key = maxConnectInfo.Key;
             if (maxConnectInfo.Value >= OneServerMaxConnect)
             {
-                if(ClientConnectionNumbers.Count == 1)
+                if(this.ClientConnectionNumbers.Count == 1)
                     key = maxConnectInfo.Key;
                 else
                     key = list.Skip(1).Take(1).First().Key;
             }
 
             //与客户端连接的服务的客户端数量+1
-            ClientConnectionNumbers[key]++;
-            return NetworkMapMessages[key];
+            this.ClientConnectionNumbers[key]++;
+            return this.NetworkMapMessages[key];
 
         }
 
         internal void Add(Network network, OuterEndPointMessage message)
         {
-            if (!ClientConnectionNumbers.ContainsKey(network.Id))
-                ClientConnectionNumbers[network.Id] = 0;
+            if (ClientConnectionNumbers.ContainsKey(network.Id))
+                return;
 
+            this.ClientConnectionNumbers[network.Id] = 0;
             this.ConnectEntities.Add(message);
-            NetworkMapMessages[network.Id] = message;
-            HCodeMapChannel[message.GetHashCode()] = network;
+            this.NetworkMapMessages[network.Id] = message;
+            this.HCodeMapChannel[message.GetHashCode()] = network;
         }
 
         internal void Remove(OuterEndPointMessage message)
         {
-            if(HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
-                ClientConnectionNumbers.Remove(network.Channel.Id);
+            if (!this.HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
+                return;
 
-            HCodeMapChannel.Remove(message.GetHashCode());
-            NetworkMapMessages.Remove(network.Channel.Id);
+            this.ClientConnectionNumbers.Remove(network.Channel.Id);
+            this.HCodeMapChannel.Remove(message.GetHashCode());
+            this.NetworkMapMessages.Remove(network.Channel.Id);
         }
 
         /// <summary>
@@ -72,7 +74,7 @@ namespace H6Game.Base
         /// <returns></returns>
         internal bool TryGetFromChannelId(Network network, out OuterEndPointMessage message)
         {
-            return NetworkMapMessages.TryGetValue(network.Id, out message);
+            return this.NetworkMapMessages.TryGetValue(network.Id, out message);
         }
     }
 
@@ -94,7 +96,7 @@ namespace H6Game.Base
         /// <returns></returns>
         internal bool Existed(NetEndPointMessage message)
         {
-            return ConnectEntities.Contains(message);
+            return this.ConnectEntities.Contains(message);
         }
 
         /// <summary>
@@ -103,13 +105,13 @@ namespace H6Game.Base
         /// <param name="message"></param>
         internal virtual void Remove(NetEndPointMessage message)
         {
-            if (ConnectEntities.Remove(message))
+            if (this.ConnectEntities.Remove(message))
             {
-                if (!HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
+                if (!this.HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
                     return;
 
-                HCodeMapChannel.Remove(message.GetHashCode());
-                NetworkMapMessages.Remove(network.Channel.Id);
+                this.HCodeMapChannel.Remove(message.GetHashCode());
+                this.NetworkMapMessages.Remove(network.Channel.Id);
             }
         }
 
@@ -120,12 +122,12 @@ namespace H6Game.Base
         /// <param name="message"></param>
         internal virtual void Add(Network network, NetEndPointMessage message)
         {
-            if (ConnectEntities.Contains(message))
+            if (this.ConnectEntities.Contains(message))
                 return;
 
             this.ConnectEntities.Add(message);
-            NetworkMapMessages[network.Id] = message;
-            HCodeMapChannel[message.GetHashCode()] = network;
+            this.NetworkMapMessages[network.Id] = message;
+            this.HCodeMapChannel[message.GetHashCode()] = network;
         }
 
         /// <summary>
@@ -136,7 +138,7 @@ namespace H6Game.Base
         /// <returns></returns>
         internal bool TryGetFromChannelId(Network network, out NetEndPointMessage message)
         {
-            return NetworkMapMessages.TryGetValue(network.Id, out message);
+            return this.NetworkMapMessages.TryGetValue(network.Id, out message);
         }
     }
 }

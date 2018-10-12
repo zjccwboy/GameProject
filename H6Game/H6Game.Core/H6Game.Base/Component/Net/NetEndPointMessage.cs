@@ -42,17 +42,12 @@ namespace H6Game.Base
             return this.GetHashCode() == obj.GetHashCode();
         }
 
-        private int HashCode;
         public override int GetHashCode()
         {
-            if (this.HashCode != 0)
-                return this.HashCode;
-
             var kcpHashCode = this.KcpEndPointMessage == null ? 0: this.KcpEndPointMessage.GetHashCode();
             var tcpHashCode = this.TcpEndPointMessage == null ? 0 : this.TcpEndPointMessage.GetHashCode();
             var wcpHashCode = this.WcpEndPointMessage == null ? 0 : this.WcpEndPointMessage.GetHashCode();
-            this.HashCode = $"{kcpHashCode}:{tcpHashCode}:{wcpHashCode}".GetHashCode();
-            return this.HashCode;
+            return $"{kcpHashCode}:{tcpHashCode}:{wcpHashCode}".GetHashCode();
         }
     }
 
@@ -96,14 +91,9 @@ namespace H6Game.Base
             return this.GetHashCode() == obj.GetHashCode();
         }
 
-        private int HashCode;
         public override int GetHashCode()
         {
-            if (this.HashCode != 0)
-                return this.HashCode;
-
-            this.HashCode = $"{this.IP}:{this.Port}:{this.WsPrefixed}".GetHashCode();
-            return this.HashCode;
+            return $"{this.IP}:{this.Port}:{this.WsPrefixed}".GetHashCode();
         }
     }
 }
