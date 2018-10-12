@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 
 namespace H6Game.Base
 {
@@ -92,31 +93,77 @@ namespace H6Game.Base
         /// </summary>
         public async void ConnectingGate()
         {
-            var message = await this.Network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetGateEndPoint);
-            var endPoint = IPEndPointHelper.GetIPEndPoint(message);
-            var proxyNetwork = this.Network;
-            this.Network = Network.CreateConnector(endPoint, this.ProtocalType, network =>
+            var message = await this.Network.CallMessageAsync<int,NetEndPointMessage>((int)this.ProtocalType, (int)SysNetCommand.GetGateEndPoint);
+            if(message == null)
             {
-                this.OnConnect?.Invoke(network, ConnectType.Gate);
+                Log.Error("服务未启动", LoggerBllType.System);
+                return;
+            }
+            else
+            {
+                Log.Error(message.ToJson(), LoggerBllType.System);
+            }
+            if (this.Config.ProtocalType == ProtocalType.Kcp || this.ProtocalType == ProtocalType.Tcp)
+            {
+                var endPoint = IPEndPointHelper.GetIPEndPoint(message);
+                var proxyNetwork = this.Network;
+                this.Network = Network.CreateConnector(endPoint, this.ProtocalType, network =>
+                {
+                    this.OnConnect?.Invoke(network, ConnectType.Gate);
 
-                //连接成功以后断开代理服务。
-                proxyNetwork.Dispose();
-            }, network =>
+                    //连接成功以后断开代理服务。
+                    proxyNetwork.Dispose();
+                }, network =>
+                {
+                    this.OnDisconnect?.Invoke(network, ConnectType.Gate);
+                });
+            }
+            else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
-                this.OnDisconnect?.Invoke(network, ConnectType.Gate);
-            });
+                var prefixed = message.WsPrefixed;
+                var proxyNetwork = this.Network;
+                this.Network = Network.CreateWebSocketConnector(prefixed, network =>
+                {
+                    //连接成功以后断开代理服务。
+                    proxyNetwork.Dispose();
+
+                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                },
+                network =>
+                {
+                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                });
+            }
         }
 
         private void ConnectingProxy()
         {
-            var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
-            this.Network = Network.CreateConnector(proxyEndPoint, this.ProtocalType, network =>
+            if(this.Config.ProtocalType == ProtocalType.Kcp || this.ProtocalType == ProtocalType.Tcp)
             {
-                this.OnConnect?.Invoke(network, ConnectType.Proxy);
-            }, network =>
+                var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
+                this.Network = Network.CreateConnector(proxyEndPoint, this.ProtocalType, network =>
+                {
+                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                }, network =>
+                {
+                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                });
+                return;
+            }
+            else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
-                this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
-            });
+                var prefixed = this.Config.ProxyHost;
+                this.Network = Network.CreateWebSocketConnector(prefixed, network =>
+                {
+                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                },
+                network =>
+                {
+                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                });
+                return;
+            }
+            throw new ComponentException($"协议类型{this.Config.ProtocalType}不支持.");
         }
     }
 }

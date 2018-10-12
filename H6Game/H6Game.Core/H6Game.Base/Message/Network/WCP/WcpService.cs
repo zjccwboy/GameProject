@@ -10,6 +10,7 @@ namespace H6Game.Base
         public WcpService (string httpPrefixed, Session session, Network network, NetServiceType serviceType) : base(session, network)
         {
             this.HttpPrefixed = httpPrefixed;
+            this.ServiceType = serviceType;
         }
 
         public override async void Accept()
@@ -39,6 +40,7 @@ namespace H6Game.Base
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
+            channel.StartRecv();
             OnAccept(channel);
         }
 
@@ -50,7 +52,6 @@ namespace H6Game.Base
             foreach (var channel in this.Channels.Values)
             {
                 channel.StartSend();
-                channel.StartRecv();
             }
             this.CheckHeadbeat();
         }
@@ -61,7 +62,7 @@ namespace H6Game.Base
             {
                 ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
                 {
-                    OnConnect = OnConnect
+                    OnConnect = c=> { c.StartRecv(); OnConnect(c); } 
                 };
                 ClientChannel.StartConnecting();
             }

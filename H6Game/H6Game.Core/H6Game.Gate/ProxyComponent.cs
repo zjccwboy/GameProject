@@ -20,11 +20,20 @@ namespace H6Game.Gate
         }
 
         [NetCommand(SysNetCommand.GetGateEndPoint)]
-        public OuterEndPointMessage SubscribeOnGetGateEndPointMessage()
+        public NetEndPointMessage SubscribeOnGetGateEndPointMessage(int protocalType)
         {
             if (this.Distributions.IsProxyServer)
             {
-                return this.Distributions.OuterNetMapManager.GetGoodConnectedInfo();
+                var outer = this.Distributions.OuterNetMapManager.GetGoodConnectedInfo();
+                if (outer == null)
+                    return null;
+
+                if ((ProtocalType)protocalType == ProtocalType.Kcp)
+                    return outer.KcpEndPointMessage;
+                else if ((ProtocalType)protocalType == ProtocalType.Tcp)
+                    return outer.TcpEndPointMessage;
+                else if ((ProtocalType)protocalType == ProtocalType.Wcp)
+                    return outer.WcpEndPointMessage;
             }
             return null;
         }

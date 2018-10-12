@@ -21,9 +21,9 @@ public static class NetworkExtensions
     /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="data">回发数据</param>
-    public static void Response(this Network network, object data)
+    public static void Response(this Network network, object data, Type type)
     {
-        network.Session.Send(network.Channel, data, network.RecvPacket.NetCommand, network.RecvPacket.RpcId);
+        network.Session.Send(network.Channel, data, network.RecvPacket.NetCommand, network.RecvPacket.RpcId, type);
     }
 
     /// <summary>

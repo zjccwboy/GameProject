@@ -37,12 +37,12 @@ namespace H6Game.Base
                     case MetodType.ExistReturnInvoke:
                         if (context.ParameterTypes.Length == 0)
                         {
-                            ExistReturnInvokeSync(context, network);
+                            ExistReturnInvokeSync(context, network, context.ReturnType);
                         }
                         else
                         {
                             var message = GetMessage(context, network);
-                            ExistReturnInvokeSync(context, network, message);
+                            ExistReturnInvokeSync(context, network, message, context.ReturnType);
                         }
                         break;
                     case MetodType.InvokeAsync:
@@ -168,17 +168,17 @@ namespace H6Game.Base
             context.MethodInfo.Invoke(context.Owner, null);
         }
 
-        private static void ExistReturnInvokeSync(MetodContext context, Network network, object message)
+        private static void ExistReturnInvokeSync(MetodContext context, Network network, object message, Type type)
         {
             context.Parameters[0] = message;
             var response = context.MethodInfo.Invoke(context.Owner, context.Parameters);
-            network.Response(response);
+            network.Response(response, type);
         }
 
-        private static void ExistReturnInvokeSync(MetodContext context, Network network)
+        private static void ExistReturnInvokeSync(MetodContext context, Network network, Type type)
         {
             var response = context.MethodInfo.Invoke(context.Owner, null);
-            network.Response(response);
+            network.Response(response, type);
         }
 
         private static async void InvokeAsync(MetodContext context, Network network, object message)
@@ -290,7 +290,7 @@ namespace H6Game.Base
             {
                 var tcs = new TaskCompletionSource<IMessage>(context.MethodInfo.Invoke(context.Owner, message));
                 var response = await tcs.Task;
-                network.Response(response);
+                network.Response(response, type);
             }
             else
             {

@@ -29,6 +29,9 @@ namespace H6Game.Base
         {
             //取当前客户端连接最多的服务
             var list =this. ClientConnectionNumbers.OrderByDescending(a => a.Value);
+            if (!list.Any())
+                return null;
+
             var maxConnectInfo = list.First();
             var key = maxConnectInfo.Key;
             if (maxConnectInfo.Value >= OneServerMaxConnect)

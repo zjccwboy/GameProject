@@ -1,13 +1,14 @@
 ﻿using H6Game.Base;
 using System.Threading;
 
-namespace H6Game.TestDistributedNetCore
+namespace H6Game.ClientTester
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Game.Scene.AddComponent<NetDistributionsComponent>().OnConnect += network => { TestBenckmark.Start(network); };
+            var connector = Game.Scene.AddComponent<NetConnectorComponent>();
+            connector.OnConnect += (n, t) => { if (t == ConnectType.Proxy) connector.ConnectingGate(); };
 
             while (true)
             {

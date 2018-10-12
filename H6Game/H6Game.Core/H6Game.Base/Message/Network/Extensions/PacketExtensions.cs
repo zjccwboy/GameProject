@@ -59,7 +59,15 @@ internal static class PacketExtensions
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
 
-        var type = obj.GetType();
+        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(obj.GetType());
+        packet.WriteBuffer();
+    }
+
+    internal static void WriteTo(this Packet packet, object obj, Type type)
+    {
+        if (obj != default)
+            Serializer.Serialize(packet.BodyStream, obj);
+
         packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
     }

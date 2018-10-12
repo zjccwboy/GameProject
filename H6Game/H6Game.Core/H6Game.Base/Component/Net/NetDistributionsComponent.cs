@@ -237,17 +237,20 @@ namespace H6Game.Base
             if (config.OuterKcpAcceptConfig.Enable)
             {
                 var endPoint = IPEndPointHelper.GetIPEndPoint(config.OuterKcpAcceptConfig.GetMessage());
-                Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Kcp);
+                var acceptor = Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Kcp);
+                this.OuterAccepts.Add(acceptor);
             }
             if (config.OuterTcpAcceptConfig.Enable)
             {
                 var endPoint = IPEndPointHelper.GetIPEndPoint(config.OuterTcpAcceptConfig.GetMessage());
-                Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Tcp);
+                var acceptor = Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Tcp);
+                this.OuterAccepts.Add(acceptor);
             }
             if (config.OuterWebSocketConfig.Enable)
             {
                 var prefixed = config.OuterWebSocketConfig.HttpPrefixed;
-                Game.Scene.AddComponent<NetAcceptorComponent, string, ProtocalType>(prefixed, ProtocalType.Wcp);
+                var acceptor = Game.Scene.AddComponent<NetAcceptorComponent, string, ProtocalType>(prefixed, ProtocalType.Wcp);
+                this.OuterAccepts.Add(acceptor);
             }
         }
 

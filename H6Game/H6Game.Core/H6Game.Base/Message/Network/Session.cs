@@ -98,7 +98,7 @@ namespace H6Game.Base
             }
             else if (this.PType == ProtocalType.Wcp)
             {
-                this.NService = new WcpService(this.HttpPrefixed, this, this.Network, NetServiceType.Client);
+                this.NService = new WcpService(this.HttpPrefixed, this, this.Network, NetServiceType.Server);
             }
 
             this.NService.OnServerConnect = (c) => { this.OnServerConnect?.Invoke(c.Network); };
@@ -144,11 +144,11 @@ namespace H6Game.Base
             packet.WriteTo(data);
         }
 
-        internal void Send(ANetChannel channel, object data, int netCommand, int rpcId)
+        internal void Send(ANetChannel channel, object data, int netCommand, int rpcId, Type type)
         {
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
-            packet.WriteTo(data);
+            packet.WriteTo(data, type);
         }
 
         internal void Send(ANetChannel channel, int netCommand, int rpcId)

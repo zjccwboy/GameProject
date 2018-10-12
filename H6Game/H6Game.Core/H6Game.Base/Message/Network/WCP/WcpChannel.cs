@@ -17,12 +17,6 @@ namespace H6Game.Base
         /// </summary>
         private bool IsSending { get; set; }
 
-        /// <summary>
-        /// 接收状态机
-        /// </summary>
-        private bool IsReceiving { get; set; }
-
-
         public WcpChannel(string httpPrefixed, ANetService netService, Network network) : base(netService, network)
         {
             this.HttpPrefixed = httpPrefixed;
@@ -121,58 +115,55 @@ namespace H6Game.Base
                 this.StartSend();
         }
 
+
+       private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
         public override async void StartRecv()
         {
-            if (!this.Connected)
+            while (true)
             {
-                this.IsReceiving = false;
-                return;
-            }
-
-            if (this.IsReceiving)
-                return;
-
-            this.IsReceiving = true;
-
-            try
-            {
-                var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
-                var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-                if (result.Count == 0)
+                try
                 {
+                    var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+                    var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
+                    if (result.Count == 0)
+                    {
+                        this.DisConnect();
+                        return;
+                    }
+                    //ReceiveAsync为多线程异步，需要放到主线程中执行
+                    ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
+                    AutoReset.WaitOne();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e, LoggerBllType.System);
                     this.DisConnect();
                     return;
                 }
-
-                //ReceiveAsync为多线程异步，需要放到主线程中执行
-                ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
-            }
-            catch (Exception e)
-            {
-                this.IsReceiving = false;
-                Log.Error(e, LoggerBllType.System);
-                this.DisConnect();
             }
         }
 
         private void OnRecvComplete(object o)
         {
-            this.IsReceiving = false;
-            if (this.NetSocket == null)
-                return;
-
             var result = o as WebSocketReceiveResult;
             this.RecvParser.Buffer.UpdateWrite(result.Count);
-
-            while (true)
+            try
             {
-                if (!this.RecvParser.TryRead())
-                    break;
+                while (true)
+                {
+                    if (!this.RecvParser.TryRead())
+                        break;
 
-                this.HandleReceive(this.RecvParser.Packet);
-                this.RecvParser.Packet.BodyStream.SetLength(0);
-                this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    this.HandleReceive(this.RecvParser.Packet);
+                    this.RecvParser.Packet.BodyStream.SetLength(0);
+                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                }
             }
+            finally
+            {
+                AutoReset.Set();
+            }
+
         }
 
         public override async void DisConnect()
