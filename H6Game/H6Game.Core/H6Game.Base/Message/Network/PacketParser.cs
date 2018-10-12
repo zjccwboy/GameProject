@@ -3,34 +3,12 @@ using System.IO;
 
 namespace H6Game.Base
 {   
-    /// <summary>
-    /// 包状态
-    /// </summary>
     public class ParseState
     {
-        /// <summary>
-        /// 开始数据包大小标志，包头32位
-        /// </summary>
         public const int PacketSize = 1;
-
-        /// <summary>
-        /// 消息Msg字段
-        /// </summary>
         public const int Command = 2;
-
-        /// <summary>
-        /// 消息类型
-        /// </summary>
         public const int MsgType = 3;
-
-        /// <summary>
-        /// RPC消息字段
-        /// </summary>
         public const int RpcId = 4;
-
-        /// <summary>
-        /// 消息包体
-        /// </summary>
         public const int Body = 5;
     }
 
@@ -39,10 +17,6 @@ namespace H6Game.Base
     /// </summary>
     public class PacketParser
     {
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="blockSize">指定缓冲区块大小</param>
         public PacketParser(int blockSize)
         {
             this.BlockSize = blockSize;
@@ -50,9 +24,6 @@ namespace H6Game.Base
             Packet = new Packet(this);
         }
 
-        /// <summary>
-        /// 缓冲区对象
-        /// </summary>
         public SegmentBuffer Buffer { get; }
         public Packet Packet { get; }
         public int BlockSize { get;}
@@ -96,13 +67,10 @@ namespace H6Game.Base
         /// </summary>
         private const int MsgTypeOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize;
         /// <summary>
-        /// RpcIdO偏移地址
+        /// RpcId偏移地址
         /// </summary>
         private const int RpcIdOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeFlagSize;
 
-        /// <summary>
-        /// 解析数据包核心函数
-        /// </summary>
         private void Parse()
         {
             var tryCount = 0;
@@ -117,125 +85,35 @@ namespace H6Game.Base
                     case ParseState.PacketSize:
                         {
                             if (ReadLength == 0 && Buffer.DataSize < HeadSize)
-                            {
                                 return;
-                            }
 
-                            if (Buffer.FirstDataSize >= LengthFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, LengthFlagSize);
-                                Buffer.UpdateRead(LengthFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, LengthFlagSize - count);
-                                Buffer.UpdateRead(LengthFlagSize - count);
-                            }
-                            ReadLength += LengthFlagSize;
-                            PacketSize = BitConverter.ToInt32(Packet.HeadBytes, 0);
-
-                            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
-                            Buffer.UpdateRead(BitFlagSize);
-                            ReadLength += BitFlagSize;
-                            SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
+                            ReadPacketSize();
                             State = ParseState.Command;
-                            break;
                         }
+                        break;
                     case ParseState.Command:
                         {
-                            var offset = NetCommandOffset;
-                            if (Buffer.FirstDataSize >= NetCommandFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, NetCommandFlagSize);
-                                Buffer.UpdateRead(NetCommandFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, NetCommandFlagSize - count);
-                                Buffer.UpdateRead(NetCommandFlagSize - count);
-                            }
-                            ReadLength += NetCommandFlagSize;
-                            Packet.NetCommand = BitConverter.ToInt32(Packet.HeadBytes, offset);
+                            ReadCommand();
                             State = ParseState.MsgType;
-                            break;
                         }
+                        break;
                     case ParseState.MsgType:
                         {
-                            var offset = MsgTypeOffset;
-                            if (Buffer.FirstDataSize >= MsgTypeFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeFlagSize);
-                                Buffer.UpdateRead(MsgTypeFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeFlagSize - count);
-                                Buffer.UpdateRead(MsgTypeFlagSize - count);
-                            }
-                            ReadLength += MsgTypeFlagSize;
-                            Packet.MsgTypeCode = BitConverter.ToInt32(Packet.HeadBytes, offset);
+                            ReadMsgType();
                             State = ParseState.RpcId;
-                            break;
                         }
+                        break;
                     case ParseState.RpcId:
                         {
-                            var offset = RpcIdOffset;
-                            if (Buffer.FirstDataSize >= RpcFlagSize)
-                            {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
-                                Buffer.UpdateRead(RpcFlagSize);
-                            }
-                            else
-                            {
-                                var count = Buffer.FirstDataSize;
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                                Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
-                                Buffer.UpdateRead(RpcFlagSize - count);
-                            }
-                            ReadLength += RpcFlagSize;
-                            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
+                            ReadRpcId();
                             State = ParseState.Body;
-                            break;
                         }
+                        break;
                     case ParseState.Body:
                         {
-                            var needSize = PacketSize - ReadLength;
-                            if (Buffer.DataSize >= needSize)
-                            {
-                                if (Buffer.FirstDataSize >= needSize)
-                                {
-                                    Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, needSize);
-                                    Buffer.UpdateRead(needSize);
-                                    ReadLength += needSize;
-                                }
-                                else
-                                {
-                                    while (ReadLength < PacketSize)
-                                    {
-                                        var count = Buffer.FirstDataSize;
-                                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
-                                        Buffer.UpdateRead(count);
-                                        ReadLength += count;
-                                        needSize -= count;
-                                        count = needSize > Buffer.FirstDataSize ? Buffer.FirstDataSize : needSize;
-                                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
-                                        Buffer.UpdateRead(count);
-                                        ReadLength += count;
-                                    }
-                                }
-                            }
-                            break;
-                        }                        
+                            ReadBody();
+                        }
+                        break;
                 }
 
                 if (ReadLength == PacketSize)
@@ -247,20 +125,125 @@ namespace H6Game.Base
                     return;
                 }
                 else if (Buffer.DataSize == 0)
-                {
                     return;
-                }
                 else if (Buffer.DataSize < PacketSize - ReadLength)
-                {
                     return;
+            }
+        }
+
+        private void ReadPacketSize()
+        {
+            if (Buffer.FirstDataSize >= LengthFlagSize)
+            {
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, LengthFlagSize);
+                Buffer.UpdateRead(LengthFlagSize);
+            }
+            else
+            {
+                var count = Buffer.FirstDataSize;
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, count);
+                Buffer.UpdateRead(count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, LengthFlagSize - count);
+                Buffer.UpdateRead(LengthFlagSize - count);
+            }
+            ReadLength += LengthFlagSize;
+            PacketSize = BitConverter.ToInt32(Packet.HeadBytes, 0);
+
+            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
+            Buffer.UpdateRead(BitFlagSize);
+            ReadLength += BitFlagSize;
+            SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
+        }
+
+        private void ReadCommand()
+        {
+            var offset = NetCommandOffset;
+            if (Buffer.FirstDataSize >= NetCommandFlagSize)
+            {
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, NetCommandFlagSize);
+                Buffer.UpdateRead(NetCommandFlagSize);
+            }
+            else
+            {
+                var count = Buffer.FirstDataSize;
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                Buffer.UpdateRead(count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, NetCommandFlagSize - count);
+                Buffer.UpdateRead(NetCommandFlagSize - count);
+            }
+            ReadLength += NetCommandFlagSize;
+            Packet.NetCommand = BitConverter.ToInt32(Packet.HeadBytes, offset);
+        }
+
+        private void ReadMsgType()
+        {
+            var offset = MsgTypeOffset;
+            if (Buffer.FirstDataSize >= MsgTypeFlagSize)
+            {
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeFlagSize);
+                Buffer.UpdateRead(MsgTypeFlagSize);
+            }
+            else
+            {
+                var count = Buffer.FirstDataSize;
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                Buffer.UpdateRead(count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeFlagSize - count);
+                Buffer.UpdateRead(MsgTypeFlagSize - count);
+            }
+            ReadLength += MsgTypeFlagSize;
+            Packet.MsgTypeCode = BitConverter.ToInt32(Packet.HeadBytes, offset);
+        }
+
+        private void ReadRpcId()
+        {
+            var offset = RpcIdOffset;
+            if (Buffer.FirstDataSize >= RpcFlagSize)
+            {
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
+                Buffer.UpdateRead(RpcFlagSize);
+            }
+            else
+            {
+                var count = Buffer.FirstDataSize;
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                Buffer.UpdateRead(count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
+                Buffer.UpdateRead(RpcFlagSize - count);
+            }
+            ReadLength += RpcFlagSize;
+            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
+        }
+
+        private void ReadBody()
+        {
+            var needSize = PacketSize - ReadLength;
+            if (Buffer.DataSize >= needSize)
+            {
+                if (Buffer.FirstDataSize >= needSize)
+                {
+                    Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, needSize);
+                    Buffer.UpdateRead(needSize);
+                    ReadLength += needSize;
+                }
+                else
+                {
+                    while (ReadLength < PacketSize)
+                    {
+                        var count = Buffer.FirstDataSize;
+                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
+                        Buffer.UpdateRead(count);
+                        ReadLength += count;
+                        needSize -= count;
+                        count = needSize > Buffer.FirstDataSize ? Buffer.FirstDataSize : needSize;
+                        Packet.BodyStream.Write(Buffer.First, Buffer.FirstReadOffset, count);
+                        Buffer.UpdateRead(count);
+                        ReadLength += count;
+                    }
                 }
             }
         }
 
-        /// <summary>
-        /// 设置解析标志位结果
-        /// </summary>
-        /// <param name="flagByte"></param>
         private void SetBitFlag(byte flagByte)
         {
             Packet.IsHeartbeat = Convert.ToBoolean(flagByte & 1);
@@ -269,19 +252,6 @@ namespace H6Game.Base
             Packet.KcpProtocal = (byte)(flagByte >> 4 & 3);
         }
 
-        /// <summary>
-        /// 重置当前解析器所有状态
-        /// </summary>
-        internal void Clear()
-        {
-            State = ParseState.PacketSize;
-            Flush();
-            Buffer.Flush();
-        }
-
-        /// <summary>
-        /// 重置解析器
-        /// </summary>
         private void Flush()
         {
             Packet.Flush();
@@ -290,10 +260,13 @@ namespace H6Game.Base
             IsOk = false;
         }
 
-        /// <summary>
-        /// 从缓冲区中读数据包
-        /// </summary>
-        /// <returns></returns>
+        internal void Clear()
+        {
+            State = ParseState.PacketSize;
+            Flush();
+            Buffer.Flush();
+        }
+
         internal virtual bool TryRead()
         {
             if (IsOk)
@@ -303,22 +276,12 @@ namespace H6Game.Base
             return IsOk;
         }
 
-        /// <summary>
-        /// 写一个字节数组到缓冲区中
-        /// </summary>
-        /// <param name="bytes"></param>
-        /// <param name="offset"></param>
-        /// <param name="length"></param>
-        public void WriteBuffer(byte[] bytes, int offset, int length)
+        internal void WriteBuffer(byte[] bytes, int offset, int length)
         {
             Buffer.Write(bytes, offset, length);
         }
 
-        /// <summary>
-        /// 写一个包到缓冲区中
-        /// </summary>
-        /// <param name="packet"></param>
-        public void WriteBuffer(Packet packet)
+        internal void WriteBuffer(Packet packet)
         {
             var bodySize = (int)packet.BodyStream.Length;
             Buffer.Write(Packet.GetHeadBytes(bodySize));

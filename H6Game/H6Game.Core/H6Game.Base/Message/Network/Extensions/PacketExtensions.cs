@@ -64,7 +64,7 @@ internal static class PacketExtensions
         packet.WriteBuffer();
     }
 
-    public static T Read<T>(this Packet packet)
+    internal static T Read<T>(this Packet packet)
     {
         if (packet.BodyStream.Length == 0)
             return default;
@@ -74,7 +74,7 @@ internal static class PacketExtensions
         return result;
     }
 
-    public static object Read(this Packet packet, Type type, out Type valueType)
+    internal static object Read(this Packet packet, Type type, out Type valueType)
     {
         valueType = type;
         if (packet.BodyStream.Length == 0)
