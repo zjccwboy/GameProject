@@ -42,19 +42,6 @@ namespace H6Game.Base
             OnAccept(channel);
         }
 
-        public override ANetChannel Connect()
-        {
-            if (this.ClientChannel == null)
-            {
-                ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
-                {
-                    OnConnect = OnConnect
-                };
-                ClientChannel.StartConnecting();
-            }
-            return this.ClientChannel;
-        }
-
         public override void Update()
         {
             if (this.ServiceType == NetServiceType.Client && ClientChannel != null)
@@ -66,6 +53,19 @@ namespace H6Game.Base
                 channel.StartRecv();
             }
             this.CheckHeadbeat();
+        }
+
+        public override ANetChannel Connect()
+        {
+            if (this.ClientChannel == null)
+            {
+                ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
+                {
+                    OnConnect = OnConnect
+                };
+                ClientChannel.StartConnecting();
+            }
+            return this.ClientChannel;
         }
     }
 }

@@ -56,6 +56,12 @@ namespace H6Game.Base
             this.HCodeMapChannel[message.GetHashCode()] = network;
         }
 
+        internal virtual void Remove(Network network)
+        {
+            if (this.TryGetFromChannelId(network, out OuterEndPointMessage message))
+                this.Remove(message);
+        }
+
         internal void Remove(OuterEndPointMessage message)
         {
             if (!this.HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
@@ -66,13 +72,8 @@ namespace H6Game.Base
             this.NetworkMapMessages.Remove(network.Channel.Id);
         }
 
-        /// <summary>
-        /// 用Channel Id获取相应的连接消息。
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="message"></param>
         /// <returns></returns>
-        internal bool TryGetFromChannelId(Network network, out OuterEndPointMessage message)
+        private bool TryGetFromChannelId(Network network, out OuterEndPointMessage message)
         {
             return this.NetworkMapMessages.TryGetValue(network.Id, out message);
         }
@@ -89,20 +90,17 @@ namespace H6Game.Base
 
         public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
 
-        /// <summary>
-        /// 判断是否存在。
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
         internal bool Existed(NetEndPointMessage message)
         {
             return this.ConnectEntities.Contains(message);
         }
 
-        /// <summary>
-        /// 删除一条连接消息。
-        /// </summary>
-        /// <param name="message"></param>
+        internal virtual void Remove(Network network)
+        {
+            if (this.TryGetFromChannelId(network, out NetEndPointMessage inMessage))
+                this.Remove(inMessage);
+        }
+
         internal virtual void Remove(NetEndPointMessage message)
         {
             if (this.ConnectEntities.Remove(message))
@@ -115,11 +113,6 @@ namespace H6Game.Base
             }
         }
 
-        /// <summary>
-        /// 新增一个连接消息，非中心服务需要跟Channel映射。
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="message"></param>
         internal virtual void Add(Network network, NetEndPointMessage message)
         {
             if (this.ConnectEntities.Contains(message))
@@ -130,13 +123,7 @@ namespace H6Game.Base
             this.HCodeMapChannel[message.GetHashCode()] = network;
         }
 
-        /// <summary>
-        /// 用Channel Id获取相应的连接消息。
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        internal bool TryGetFromChannelId(Network network, out NetEndPointMessage message)
+        private bool TryGetFromChannelId(Network network, out NetEndPointMessage message)
         {
             return this.NetworkMapMessages.TryGetValue(network.Id, out message);
         }
