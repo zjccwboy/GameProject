@@ -11,12 +11,12 @@ namespace H6Game.Base
         /// <summary>
         /// 开始数据包大小标志，包头32位
         /// </summary>
-        public const int Size = 1;
+        public const int PacketSize = 1;
 
         /// <summary>
         /// 消息Msg字段
         /// </summary>
-        public const int Cmd = 2;
+        public const int Command = 2;
 
         /// <summary>
         /// 消息类型
@@ -26,7 +26,7 @@ namespace H6Game.Base
         /// <summary>
         /// RPC消息字段
         /// </summary>
-        public const int Rpc = 4;
+        public const int RpcId = 4;
 
         /// <summary>
         /// 消息包体
@@ -59,7 +59,7 @@ namespace H6Game.Base
 
         private int ReadLength = 0;
         private int PacketSize = 0;
-        private int State = ParseState.Size;
+        private int State = ParseState.PacketSize;
         private bool IsOk;
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace H6Game.Base
         /// <summary>
         /// 消息类型,4个字节
         /// </summary>
-        public const int MsgTypeSize = sizeof(int);
+        public const int MsgTypeFlagSize = sizeof(int);
         /// <summary>
         /// 包头协议中RPC请求Id的字节数，4个字节
         /// </summary>
@@ -85,7 +85,7 @@ namespace H6Game.Base
         /// <summary>
         /// 包头大小
         /// </summary>
-        public const int HeadSize = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeSize + RpcFlagSize;
+        public const int HeadSize = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeFlagSize + RpcFlagSize;
 
         /// <summary>
         /// NetCommand偏移地址
@@ -98,7 +98,7 @@ namespace H6Game.Base
         /// <summary>
         /// RpcIdO偏移地址
         /// </summary>
-        private const int RpcIdOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeSize;
+        private const int RpcIdOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeFlagSize;
 
         /// <summary>
         /// 解析数据包核心函数
@@ -114,7 +114,7 @@ namespace H6Game.Base
                 tryCount++;
                 switch (State)
                 {
-                    case ParseState.Size:
+                    case ParseState.PacketSize:
                         {
                             if (ReadLength == 0 && Buffer.DataSize < HeadSize)
                             {
@@ -141,10 +141,10 @@ namespace H6Game.Base
                             Buffer.UpdateRead(BitFlagSize);
                             ReadLength += BitFlagSize;
                             SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
-                            State = ParseState.Cmd;
+                            State = ParseState.Command;
                             break;
-                        }                        
-                    case ParseState.Cmd:
+                        }
+                    case ParseState.Command:
                         {
                             var offset = NetCommandOffset;
                             if (Buffer.FirstDataSize >= NetCommandFlagSize)
@@ -168,25 +168,25 @@ namespace H6Game.Base
                     case ParseState.MsgType:
                         {
                             var offset = MsgTypeOffset;
-                            if (Buffer.FirstDataSize >= MsgTypeSize)
+                            if (Buffer.FirstDataSize >= MsgTypeFlagSize)
                             {
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeSize);
-                                Buffer.UpdateRead(MsgTypeSize);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeFlagSize);
+                                Buffer.UpdateRead(MsgTypeFlagSize);
                             }
                             else
                             {
                                 var count = Buffer.FirstDataSize;
                                 System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                                 Buffer.UpdateRead(count);
-                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeSize - count);
-                                Buffer.UpdateRead(MsgTypeSize - count);
+                                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeFlagSize - count);
+                                Buffer.UpdateRead(MsgTypeFlagSize - count);
                             }
-                            ReadLength += MsgTypeSize;
+                            ReadLength += MsgTypeFlagSize;
                             Packet.MsgTypeCode = BitConverter.ToInt32(Packet.HeadBytes, offset);
-                            State = ParseState.Rpc;
+                            State = ParseState.RpcId;
                             break;
                         }
-                    case ParseState.Rpc:
+                    case ParseState.RpcId:
                         {
                             var offset = RpcIdOffset;
                             if (Buffer.FirstDataSize >= RpcFlagSize)
@@ -242,7 +242,7 @@ namespace H6Game.Base
                 {
                     Packet.BodyStream.Seek(0, SeekOrigin.Begin);
                     Packet.BodyStream.SetLength(PacketSize - HeadSize);
-                    State = ParseState.Size;
+                    State = ParseState.PacketSize;
                     IsOk = true;
                     return;
                 }
@@ -274,7 +274,7 @@ namespace H6Game.Base
         /// </summary>
         internal void Clear()
         {
-            State = ParseState.Size;
+            State = ParseState.PacketSize;
             Flush();
             Buffer.Flush();
         }
