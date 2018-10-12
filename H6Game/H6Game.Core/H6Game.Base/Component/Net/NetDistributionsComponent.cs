@@ -183,8 +183,6 @@ namespace H6Game.Base
         [NetCommand(SysNetCommand.GetServerType)]
         public int SubscribeOnGetServerType()
         {
-            Log.Debug($"订阅远程服务获取本地服务类型:{this.CurrentNetwrok.RecvPacket.NetCommand}", LoggerBllType.System);
-
             if (this.IsCenterServer)
             {
                 return (int)ServerType.CenterServer;
