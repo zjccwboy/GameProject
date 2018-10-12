@@ -28,11 +28,11 @@ namespace H6Game.Gate
                 if (outer == null)
                     return null;
 
-                if ((ProtocalType)protocalType == ProtocalType.Kcp)
+                if (protocalType == (int)ProtocalType.Kcp)
                     return outer.KcpEndPointMessage;
-                else if ((ProtocalType)protocalType == ProtocalType.Tcp)
+                else if (protocalType == (int)ProtocalType.Tcp)
                     return outer.TcpEndPointMessage;
-                else if ((ProtocalType)protocalType == ProtocalType.Wcp)
+                else if (protocalType == (int)ProtocalType.Wcp)
                     return outer.WcpEndPointMessage;
             }
             return null;

@@ -20,16 +20,22 @@ namespace H6Game.Base
 
         public static bool operator ==(OuterEndPointMessage left, OuterEndPointMessage right)
         {
-            if ((right as object) == null)
+            if ((left as object) == null)
                 return ((right as object) == null);
+
+            if ((right as object) == null)
+                return ((left as object) == null);
 
             return left.GetHashCode() == right.GetHashCode();
         }
 
         public static bool operator !=(OuterEndPointMessage left, OuterEndPointMessage right)
         {
-            if ((right as object) == null)
+            if ((left as object) == null)
                 return ((right as object) != null);
+
+            if ((right as object) == null)
+                return ((left as object) != null);
 
             return !(left.GetHashCode() == right.GetHashCode());
         }
@@ -69,16 +75,22 @@ namespace H6Game.Base
 
         public static bool operator ==(NetEndPointMessage left, NetEndPointMessage right)
         {
-            if ((right as object) == null)
+            if ((left as object) == null)
                 return ((right as object) == null);
+
+            if ((right as object) == null)
+                return ((left as object) == null);
 
             return left.GetHashCode() == right.GetHashCode();
         }
 
         public static bool operator !=(NetEndPointMessage left, NetEndPointMessage right)
         {
-            if ((right as object) == null)
+            if ((left as object) == null)
                 return ((right as object) != null);
+
+            if ((right as object) == null)
+                return ((left as object) != null);
 
             return !(left.GetHashCode() == right.GetHashCode());
         }
