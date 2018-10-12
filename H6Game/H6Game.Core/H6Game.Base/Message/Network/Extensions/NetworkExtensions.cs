@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 public static class NetworkExtensions
 {
-    #region TResponse
     /// <summary>
     /// 回发消息，回发的消息所有的协议与接收到的消息保持一致
     /// </summary>
@@ -26,9 +25,7 @@ public static class NetworkExtensions
     {
         network.Session.Send(network.Channel, data, network.RecvPacket.NetCommand, network.RecvPacket.RpcId);
     }
-    #endregion TResponse
 
-    #region Send
     /// <summary>
     /// 发送消息
     /// </summary>
@@ -50,9 +47,7 @@ public static class NetworkExtensions
     {
         network.Session.Send(network.Channel, netCommand, 0);
     }
-    #endregion Send
 
-    #region  CallMessage
     /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
@@ -64,7 +59,7 @@ public static class NetworkExtensions
     /// <param name="netCommand">消息指令</param>
     public static void CallMessage<TRequest, TResponse>(this Network network, TRequest data, Action<TResponse> notificationAction, int netCommand)
     {
-        network.Session.Subscribe(network.Channel,data, (p) => {
+        network.Session.Subscribe(network.Channel, data, (p) => {
             var response = p.Read<TResponse>();
             notificationAction(response);
         }, netCommand);
@@ -84,9 +79,7 @@ public static class NetworkExtensions
             notificationAction(response);
         }, netCommand);
     }
-    #endregion CallMessage
 
-    #region CallMessageAsync
     /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
@@ -125,9 +118,7 @@ public static class NetworkExtensions
         }, netCommand);
         return tcs.Task;
     }
-    #endregion
 
-    #region Broadcast all connections
     /// <summary>
     /// 给所有Socket连接广播一条消息
     /// </summary>
@@ -149,9 +140,7 @@ public static class NetworkExtensions
     {
         network.Session.Broadcast(netCommand);
     }
-    #endregion Broadcast
 
-    #region Broadcast list connections
     /// <summary>
     /// 给一组Socket连接网络广播一条消息
     /// </summary>
@@ -179,5 +168,4 @@ public static class NetworkExtensions
             network.Send(netCommand);
         }
     }
-    #endregion
 }
