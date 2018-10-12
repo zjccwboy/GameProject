@@ -1,39 +1,46 @@
 ﻿using System;
+using System.Net;
 
 namespace H6Game.Base
 {
-    [ComponentEvent(EventType.Awake | EventType.Start)]
-    [SingleCase]
+    [ComponentEvent(EventType.Awake)]
     public class NetAcceptorComponent : BaseComponent
     {
-        private NetConnectConfigEntity Config { get; set; }
-
         private ProtocalType ProtocalType { get; set; }
+        private IPEndPoint EndPoint { get; }
+        private string HttpPrefixed { get; }
 
         public Network Network { get; private set; }
+        public Action<Network> OnConnect { get; set; }
+        public Action<Network> OnDisconnect { get; set; }
+        
+        public NetAcceptorComponent(IPEndPoint endPoint, ProtocalType protocalType)
+        {
+            this.EndPoint = endPoint;
+            this.ProtocalType = protocalType;
+        }
 
-        public Action<Network> OnConnected { get; set; }
-
-        public Action<Network> OnDisconnected { get; set; }
-
+        public NetAcceptorComponent(string httpPrefixed, ProtocalType protocalType)
+        {
+            this.HttpPrefixed = httpPrefixed;
+            this.ProtocalType = protocalType;
+        }
 
         public override void Awake()
         {
-            this.Config = new NetConnectingConfig().Config;
-
-            if (this.Config.ProtocalType == 0)
+            switch (this.ProtocalType)
             {
-                ProtocalType = ProtocalType.Tcp;
+                case ProtocalType.Tcp:
+                    Accept(this.EndPoint);
+                    break;
+                case ProtocalType.Kcp:
+                    Accept(this.EndPoint);
+                    break;
+                case ProtocalType.Wcp:
+                    Accept(this.HttpPrefixed);
+                    break;
             }
-            else if (this.Config.ProtocalType == 1)
-            {
-                ProtocalType = ProtocalType.Kcp;
-            }
-        }
 
-        public override void Start()
-        {
-            Accept();
         }
 
         public override void Update()
@@ -50,17 +57,30 @@ namespace H6Game.Base
             base.Dispose();
         }
 
-        private void Accept()
+        private void Accept(IPEndPoint endPoint)
         {
-            this.Network = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(this.Config), this.ProtocalType, network =>
+            this.Network = Network.CreateAcceptor(endPoint, this.ProtocalType, network =>
             {
-                this.OnConnected?.Invoke(network);
+                this.OnConnect?.Invoke(network);
             }, network =>
             {
-                this.OnDisconnected?.Invoke(network);
+                this.OnDisconnect?.Invoke(network);
             }
             );
-            Log.Info($"监听端口:{this.Config.Port}成功.", LoggerBllType.System);
+            Log.Info($"监听外网{this.ProtocalType.ToString()}端口:{endPoint.Port}成功.", LoggerBllType.System);
+        }
+
+        private void Accept(string httpPrefixed)
+        {
+            this.Network = Network.CreateWebSocketAcceptor(httpPrefixed, network =>
+            {
+                this.OnConnect?.Invoke(network);
+            }, network =>
+            {
+                this.OnDisconnect?.Invoke(network);
+            }
+            );
+            Log.Info($"监听外网{this.ProtocalType.ToString()} Prefixed:{this.HttpPrefixed}成功.", LoggerBllType.System);
         }
     }
 }

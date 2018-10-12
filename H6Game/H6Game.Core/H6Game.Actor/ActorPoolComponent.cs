@@ -32,7 +32,7 @@ namespace H6Game.Actor
             }
 
             this.Distributions = Game.Scene.AddComponent<NetDistributionsComponent>();
-            this.Distributions.OnInnerClientDisconnected += network =>
+            this.Distributions.OnDisconnect += network =>
             {
                 if (!NetIdActors.TryGetValue(network.Id, out Dictionary<int, BaseActorComponent> dicVal))
                     return;
@@ -44,7 +44,7 @@ namespace H6Game.Actor
                     acotr.Dispose();
             };
 
-            this.Distributions.OnInnerClientConnected += network => 
+            this.Distributions.OnConnect += network => 
             {
                 this.OnConnected?.Invoke(network);
                 network.Send((int)NetCommand.SyncActorInfoCmd);
@@ -237,7 +237,7 @@ namespace H6Game.Actor
                 ObjectId = entity.Id,
                 ActorType = entity.ActorType,
             };
-            foreach(var network in this.Distributions.InConnNets)
+            foreach(var network in this.Distributions.InnerNetworks)
             {
                 if (this.Distributions.IsProxyServer)
                     continue;
@@ -248,7 +248,7 @@ namespace H6Game.Actor
 
         private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorComponent component)
         {
-            foreach (var network in this.Distributions.InConnNets)
+            foreach (var network in this.Distributions.InnerNetworks)
             {
                 if (this.Distributions.IsProxyServer)
                     continue;

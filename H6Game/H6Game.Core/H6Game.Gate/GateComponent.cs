@@ -12,7 +12,7 @@ namespace H6Game.Gate
         private Dictionary<int, Network> ActorNetworks { get; } = new Dictionary<int, Network>();
         private ActorPoolComponent ActorPool { get; set; }
         private NetDistributionsComponent Distributions { get; set; }
-        public Network GateNetwork { get; private set; }
+        public List<NetAcceptorComponent> OuterAccepts { get; private set; }
 
         public override void Awake()
         {
@@ -22,24 +22,26 @@ namespace H6Game.Gate
             if (this.Distributions == null)
                 throw new ComponentException("DistributionsComponent组件没有加载。");
 
-            this.GateNetwork = this.Distributions.OutAcceptNetwork;
-            this.GateNetwork.Session.OnServerConnected += network =>
+            this.OuterAccepts = this.Distributions.OuterAccepts;
+            foreach(var acceptor in this.OuterAccepts)
             {
-                if (this.Distributions.IsProxyServer)
-                    return;
-            };
+                acceptor.OnConnect += network =>
+                {
 
-            this.GateNetwork.Session.OnServerDisconnected += network =>
-            {
-                if (this.Distributions.IsProxyServer)
-                    return;
+                };
 
-                if (!OutNetActors.ContainsKey(network.Channel.Id))
-                    return;
+                acceptor.OnDisconnect += network =>
+                {
+                    if (this.Distributions.IsProxyServer)
+                        return;
 
-                var actor = this.OutNetActors[network.Channel.Id];
-                actor.Dispose();
-            };
+                    if (!OutNetActors.ContainsKey(network.Channel.Id))
+                        return;
+
+                    var actor = this.OutNetActors[network.Channel.Id];
+                    actor.Dispose();
+                };
+            }
         }
     }
 }

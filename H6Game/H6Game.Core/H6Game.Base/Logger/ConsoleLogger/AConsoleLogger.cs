@@ -27,7 +27,11 @@ namespace H6Game.Base
                 return;
 
             MessageBuilder.Clear();
-            MessageBuilder.Append($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ")}{Enum.GetName(typeof(LogLevel), this.LogLevel)}");
+            var last = entity.FStackInfo.LastIndexOf('\\');
+            string lastString = null;
+            if(!string.IsNullOrEmpty(entity.FStackInfo) && last < entity.FStackInfo.Length)
+                lastString = entity.FStackInfo.Substring(entity.FStackInfo.LastIndexOf('\\') + 1);
+            MessageBuilder.Append($"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss ")}{Enum.GetName(typeof(LogLevel), this.LogLevel)} {lastString}");
             if (!string.IsNullOrEmpty(entity.FMessage))
             {
                 MessageBuilder.Append($" {entity.FMessage}");

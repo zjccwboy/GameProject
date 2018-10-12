@@ -203,7 +203,7 @@ namespace H6Game.Base
         /// </summary>
         public void SendHeartbeat()
         {
-            Log.Debug($"发送心跳包->{this.RemoteEndPoint}.", LoggerBllType.System);
+            //Log.Debug($"发送心跳包->{this.RemoteEndPoint}.", LoggerBllType.System);
             this.LastSendTime = TimeUitls.Now();
             this.SendParser.Packet.IsHeartbeat = true;
             this.SendParser.Packet.WriteBuffer();
@@ -214,7 +214,7 @@ namespace H6Game.Base
             LastReceivedTime = TimeUitls.Now();
             if (packet.IsHeartbeat)
             {
-                Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
+                //Log.Debug($"接收到客户端:{this.RemoteEndPoint}心跳包.", LoggerBllType.System);
                 return;
             }
 

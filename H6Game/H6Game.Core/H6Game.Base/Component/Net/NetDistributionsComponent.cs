@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Net;
 
 namespace H6Game.Base
 {
@@ -41,9 +42,8 @@ namespace H6Game.Base
     public sealed class NetDistributionsComponent : NetComponentSubscriber
     {
         private NetConfigEntity Config { get; set; }
-        private EndPointConfigEntity DefaultCenterEndPoint { get; set; }
-        private NetEndPointMessage InNetMessage { get { return this.Config.GetInnerMessage(); } }
-        private NetEndPointMessage OutNetMessage { get { return this.Config.GetOutMessage(); } }
+        private NetEndPointMessage InNetMessage { get { return this.Config.GetLocalMessage(); } }
+        private OuterEndPointMessage OutNetMessage { get { return this.Config.GetOuterMessage(); } }
         private ConcurrentDictionary<NetEndPointMessage, Network> DisconnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
         private ConcurrentDictionary<NetEndPointMessage, Network> InConnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
         private ConcurrentDictionary<NetEndPointMessage, Network> NotExistProxyNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
@@ -55,17 +55,17 @@ namespace H6Game.Base
         /// <summary>
         /// 监听外网连接网络类。
         /// </summary>
-        public Network OutAcceptNetwork { get; private set; }
+        public List<NetAcceptorComponent> OuterAccepts { get;} = new List<NetAcceptorComponent>();
 
         /// <summary>
         /// 内网中心服务与代理服务以外的服务Socket连接集合。
         /// </summary>
-        public IEnumerable<Network> InConnNets { get { return NotExistProxyNetworks.Values; } }
+        public IEnumerable<Network> InnerNetworks { get { return NotExistProxyNetworks.Values; } }
 
         /// <summary>
         /// 是否是中心服务。
         /// </summary>
-        public bool IsCenterServer { get { return this.Config.IsCenterServer; } }
+        public bool IsCenterServer { get { return this.Config.CenterAcceptConfig.Enable; } }
 
         /// <summary>
         /// 是否是代理服务。
@@ -75,22 +75,22 @@ namespace H6Game.Base
         /// <summary>
         /// 内网消息映射管理类接口。
         /// </summary>
-        public NetMapManager InNetMapManager { get; } = new NetMapManager();
+        public NetMapManager InnerNetMapManager { get; } = new NetMapManager();
 
         /// <summary>
         /// 外网消息映射管理类接口。
         /// </summary>
-        public ProxyNetMapManager OutNetMapManager { get; } = new ProxyNetMapManager();
+        public ProxyNetMapManager OuterNetMapManager { get; } = new ProxyNetMapManager();
 
         /// <summary>
         /// 内网网络服务端连接成功回调事件。
         /// </summary>
-        public Action<Network> OnInnerClientConnected { get; set; }
+        public Action<Network> OnConnect { get; set; }
 
         /// <summary>
         /// 内网客户端网络连接断开回调事件。
         /// </summary>
-        public Action<Network> OnInnerClientDisconnected { get; set; }
+        public Action<Network> OnDisconnect { get; set; }
 
         public override void Awake()
         {
@@ -99,16 +99,15 @@ namespace H6Game.Base
 
         public override void Start()
         {
-            this.DefaultCenterEndPoint = Config.InnerListenConfig.CenterEndPoint;
             var center = this.Config.GetCenterMessage();
-            if (this.Config.IsCenterServer)
+            if (this.IsCenterServer)
             {
                 HandleInAccept(center);
                 return;
             }
-            HandleInAccept(this.Config.GetInnerMessage());
+            HandleInAccept(this.Config.GetLocalMessage());
             this.Connecting(center);
-            HandleOutAccept(this.Config.GetOutMessage());
+            HandleOutAccept();
         }
 
         /// <summary>
@@ -116,8 +115,10 @@ namespace H6Game.Base
         /// </summary>
         public override void Update()
         {
-            if (OutAcceptNetwork != null)
-                OutAcceptNetwork.Update();
+            foreach(var acceptor in OuterAccepts)
+            {
+                acceptor.Update();
+            }
 
             if (InAcceptNetwork != null)
                 InAcceptNetwork.Update();
@@ -142,16 +143,16 @@ namespace H6Game.Base
         [NetCommand(SysNetCommand.AddInServerCmd)]
         public void SubscribeOnAddServerConnection(NetEndPointMessage message)
         {
-            if (InNetMapManager.Existed(message))
+            if (InnerNetMapManager.Existed(message))
                 return;
 
             AddNetwork(message);
             if (IsCenterServer)
             {
-                InNetMapManager.Add(this.CurrentNetwrok, message);
+                InnerNetMapManager.Add(this.CurrentNetwrok, message);
 
                 this.CurrentNetwrok.Broadcast(message, (int)SysNetCommand.AddInServerCmd);
-                foreach (var entity in InNetMapManager.Entities)
+                foreach (var entity in InnerNetMapManager.Entities)
                 {
                     this.CurrentNetwrok.Response(entity);
                 }
@@ -162,9 +163,9 @@ namespace H6Game.Base
         /// 远程服务外网监听的IP端口信息。
         /// </summary>
         [NetCommand(SysNetCommand.GetOutServerCmd)]
-        public NetEndPointMessage SubscribeOnSyncOutNetMessage()
+        public OuterEndPointMessage SubscribeOnSyncOutNetMessage()
         {
-            return OutNetMessage;
+            return this.OutNetMessage;
         }
 
         /// <summary>
@@ -198,11 +199,11 @@ namespace H6Game.Base
 
         private void AddNetwork(NetEndPointMessage message)
         {
-            if (Config.IsCenterServer)
+            if (this.IsCenterServer)
                 return;
 
             //排除掉本地服务
-            if (message == this.Config.GetInnerMessage())
+            if (message == this.Config.GetLocalMessage())
                 return;
 
             //排除中心服务
@@ -221,12 +222,12 @@ namespace H6Game.Base
             {
                 InAcceptNetworks.Remove(network.Id);
 
-                if (this.InNetMapManager.TryGetFromChannelId(network, out NetEndPointMessage inMessage))
+                if (this.InnerNetMapManager.TryGetFromChannelId(network, out NetEndPointMessage inMessage))
                 {
-                    this.InNetMapManager.Remove(inMessage);
+                    this.InnerNetMapManager.Remove(inMessage);
                 }
 
-                if (this.Config.IsCenterServer)
+                if (this.IsCenterServer)
                     return;
             });
 
@@ -238,17 +239,24 @@ namespace H6Game.Base
                 Log.Info($"代理服务启动成功.", LoggerBllType.System);
         }
 
-        private void HandleOutAccept(NetEndPointMessage message)
+        private void HandleOutAccept()
         {
-            this.OutAcceptNetwork = Network.CreateAcceptor(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Kcp, network =>
+            var config = this.Config.OuterAcceptConfig;
+            if (config.OuterKcpAcceptConfig.Enable)
             {
-                OuAcceptNetworks[network.Id] = network;
-            }, network =>
-            {
-                OuAcceptNetworks.Remove(network.Id);
+                var endPoint = IPEndPointHelper.GetIPEndPoint(config.OuterKcpAcceptConfig.GetMessage());
+                Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Kcp);
             }
-            );
-            Log.Info($"监听外网端口:{message.Port}成功.", LoggerBllType.System);
+            if (config.OuterTcpAcceptConfig.Enable)
+            {
+                var endPoint = IPEndPointHelper.GetIPEndPoint(config.OuterTcpAcceptConfig.GetMessage());
+                Game.Scene.AddComponent<NetAcceptorComponent, IPEndPoint, ProtocalType>(endPoint, ProtocalType.Tcp);
+            }
+            if (config.OuterWebSocketConfig.Enable)
+            {
+                var prefixed = config.OuterWebSocketConfig.HttpPrefixed;
+                Game.Scene.AddComponent<NetAcceptorComponent, string, ProtocalType>(prefixed, ProtocalType.Wcp);
+            }
         }
 
         private void Connecting(NetEndPointMessage message)
@@ -260,11 +268,11 @@ namespace H6Game.Base
             if (this.DisconnectedNetworks.ContainsKey(message))
                 return;
 
-            if (Config.IsCenterServer)
+            if (this.IsCenterServer)
                 return;
 
             //不连接进程内的监听端口
-            if (message == this.Config.GetInnerMessage())
+            if (message == this.Config.GetLocalMessage())
                 return;
 
             var connector = Network.CreateConnector(IPEndPointHelper.GetIPEndPoint(message), ProtocalType.Tcp, network =>
@@ -294,22 +302,22 @@ namespace H6Game.Base
                 this.NotExistProxyNetworks[message] = oldNetwork;
             }
 
-            var localMessage = this.Config.GetInnerMessage();
-            this.InNetMapManager.Add(network, message);
+            var localMessage = this.Config.GetLocalMessage();
+            this.InnerNetMapManager.Add(network, message);
 
             //连接成功后把本地监听端口发送给远程进程
             network.Send(localMessage, (int)SysNetCommand.AddInServerCmd);
 
             //把当前所有连接的内网监听服务发送给远程进程
-            foreach (var entity in this.InNetMapManager.Entities)
+            foreach (var entity in this.InnerNetMapManager.Entities)
             {
                 network.Send(entity, (int)SysNetCommand.AddInServerCmd);
             }
 
             if (message != this.Config.GetCenterMessage())
             {
-                var outerMessage = await network.CallMessageAsync<NetEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
-                this.OutNetMapManager.Add(network, outerMessage);
+                var outerMessage = await network.CallMessageAsync<OuterEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
+                this.OuterNetMapManager.Add(network, outerMessage);
 
                 if (this.IsProxyServer)
                     return;
@@ -322,7 +330,7 @@ namespace H6Game.Base
                     return;
                 }
 
-                this.OnInnerClientConnected?.Invoke(network);
+                this.OnConnect?.Invoke(network);
             }
             else
             {
@@ -344,11 +352,11 @@ namespace H6Game.Base
                 this.DisconnectedNetworks[message] = oldNetwork;
             }
 
-            this.InNetMapManager.Remove(message);
-            if (this.OutNetMapManager.TryGetFromChannelId(network, out NetEndPointMessage outMessage))
-                this.OutNetMapManager.Remove(outMessage);
+            this.InnerNetMapManager.Remove(message);
+            if (this.OuterNetMapManager.TryGetFromChannelId(network, out OuterEndPointMessage outMessage))
+                this.OuterNetMapManager.Remove(outMessage);
 
-            this.OnInnerClientDisconnected?.Invoke(network);
+            this.OnDisconnect?.Invoke(network);
         }
     }
 }

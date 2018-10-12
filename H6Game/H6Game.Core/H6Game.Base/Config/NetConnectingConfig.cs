@@ -44,7 +44,7 @@ namespace H6Game.Base
             Config = new NetConnectConfigEntity
             {
                 ProxyHost = "payapi.test.com",
-                ProtocalType = 1,
+                ProtocalType = ProtocalType.Kcp,
                 IsCompress = false,
                 IsEncrypt = false,
                 Port = 50000,

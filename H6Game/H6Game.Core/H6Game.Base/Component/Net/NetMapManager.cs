@@ -9,9 +9,12 @@ namespace H6Game.Base
     /// 来代替固定IP配置代理服务，代理服务也类似于DNS服务，只负责告诉客户端可以与哪台服务器创建连接，代理服务不参
     /// 与任何业务逻辑。
     /// </summary>
-    public class ProxyNetMapManager : NetMapManager
+    public class ProxyNetMapManager
     {
-        private Dictionary<int, int> ClientConnectionNumbers { get; set; } = new Dictionary<int, int>();
+        private Dictionary<int, int> ClientConnectionNumbers { get;} = new Dictionary<int, int>();
+        private HashSet<OuterEndPointMessage> ConnectEntities { get; } = new HashSet<OuterEndPointMessage>();
+        private Dictionary<int, OuterEndPointMessage> NetworkMapMessages { get; } = new Dictionary<int, OuterEndPointMessage>();
+        private Dictionary<int, Network> HCodeMapChannel { get; } = new Dictionary<int, Network>();
 
         /// <summary>
         /// 一个服务承载最大客户端连接负载阀值，根据实际的项目配置该值。
@@ -22,7 +25,7 @@ namespace H6Game.Base
         /// 获取教合适的网关连接信息。
         /// </summary>
         /// <returns></returns>
-        public NetEndPointMessage GetGoodConnectedInfo()
+        public OuterEndPointMessage GetGoodConnectedInfo()
         {
             //取当前客户端连接最多的服务
             var list = ClientConnectionNumbers.OrderByDescending(a => a.Value);
@@ -31,34 +34,45 @@ namespace H6Game.Base
             if (maxConnectInfo.Value >= OneServerMaxConnect)
             {
                 if(ClientConnectionNumbers.Count == 1)
-                {
                     key = maxConnectInfo.Key;
-                }
                 else
-                {
                     key = list.Skip(1).Take(1).First().Key;
-                }
             }
 
             //与客户端连接的服务的客户端数量+1
             ClientConnectionNumbers[key]++;
             return NetworkMapMessages[key];
+
         }
 
-        public override void Add(Network netwrok, NetEndPointMessage message)
+        internal void Add(Network network, OuterEndPointMessage message)
         {
-            if (!ClientConnectionNumbers.ContainsKey(netwrok.Id))
-                ClientConnectionNumbers[netwrok.Id] = 0;
+            if (!ClientConnectionNumbers.ContainsKey(network.Id))
+                ClientConnectionNumbers[network.Id] = 0;
 
-            base.Add(netwrok, message);
+            this.ConnectEntities.Add(message);
+            NetworkMapMessages[network.Id] = message;
+            HCodeMapChannel[message.GetHashCode()] = network;
         }
 
-        public override void Remove(NetEndPointMessage message)
+        internal void Remove(OuterEndPointMessage message)
         {
             if(HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
                 ClientConnectionNumbers.Remove(network.Channel.Id);
 
-            base.Remove(message);
+            HCodeMapChannel.Remove(message.GetHashCode());
+            NetworkMapMessages.Remove(network.Channel.Id);
+        }
+
+        /// <summary>
+        /// 用Channel Id获取相应的连接消息。
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        internal bool TryGetFromChannelId(Network network, out OuterEndPointMessage message)
+        {
+            return NetworkMapMessages.TryGetValue(network.Id, out message);
         }
     }
 
@@ -67,9 +81,9 @@ namespace H6Game.Base
     /// </summary>
     public class NetMapManager
     {
-        protected readonly HashSet<NetEndPointMessage> ConnectEntities = new HashSet<NetEndPointMessage>();
-        protected readonly Dictionary<int, NetEndPointMessage> NetworkMapMessages = new Dictionary<int, NetEndPointMessage>();
-        protected readonly Dictionary<int, Network> HCodeMapChannel = new Dictionary<int, Network>();
+        private HashSet<NetEndPointMessage> ConnectEntities { get; } = new HashSet<NetEndPointMessage>();
+        private Dictionary<int, NetEndPointMessage> NetworkMapMessages { get; } = new Dictionary<int, NetEndPointMessage>();
+        private Dictionary<int, Network> HCodeMapChannel { get; } = new Dictionary<int, Network>();
 
         public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
 
@@ -87,7 +101,7 @@ namespace H6Game.Base
         /// 删除一条连接消息。
         /// </summary>
         /// <param name="message"></param>
-        public virtual void Remove(NetEndPointMessage message)
+        internal virtual void Remove(NetEndPointMessage message)
         {
             if (ConnectEntities.Remove(message))
             {
@@ -104,7 +118,7 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="network"></param>
         /// <param name="message"></param>
-        public virtual void Add(Network network, NetEndPointMessage message)
+        internal virtual void Add(Network network, NetEndPointMessage message)
         {
             if (ConnectEntities.Contains(message))
                 return;

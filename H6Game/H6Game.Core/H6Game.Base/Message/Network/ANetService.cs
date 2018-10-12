@@ -92,22 +92,22 @@ namespace H6Game.Base
         /// <summary>
         /// 连接断开回调在服务端发生
         /// </summary>
-        public Action<ANetChannel> OnServerDisconnected { get; set; }
+        public Action<ANetChannel> OnServerDisconnect { get; set; }
 
         /// <summary>
         /// 连接成功回调在服务端发生
         /// </summary>
-        public Action<ANetChannel> OnServerConnected { get; set; }
+        public Action<ANetChannel> OnServerConnect { get; set; }
 
         /// <summary>
         /// 连接断开回调在客户端发生
         /// </summary>
-        public Action<ANetChannel> OnClientDisconnected { get; set; }
+        public Action<ANetChannel> OnClientDisconnect { get; set; }
 
         /// <summary>
         /// 连接成功回调在客户端发生
         /// </summary>
-        public Action<ANetChannel> OnClientConnected { get; set; }
+        public Action<ANetChannel> OnClientConnect { get; set; }
 
         /// <summary>
         /// 更新发送接收队列
@@ -172,7 +172,7 @@ namespace H6Game.Base
             AddChannel(channel);
             channel.OnDisConnect = HandleDisConnectOnServer;
             channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-            OnServerConnected?.Invoke(channel);
+            OnServerConnect?.Invoke(channel);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace H6Game.Base
             this.AddChannel(channel);
             channel.OnDisConnect = HandleDisConnectOnClient;
             channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
-            this.OnClientConnected?.Invoke(channel);
+            this.OnClientConnect?.Invoke(channel);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace H6Game.Base
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
                 Log.Debug($"客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
-                OnServerDisconnected?.Invoke(channel);
+                OnServerDisconnect?.Invoke(channel);
             }
         }
 
@@ -211,7 +211,7 @@ namespace H6Game.Base
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
                 Log.Debug($"与服务端{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
-                OnClientDisconnected?.Invoke(value);
+                OnClientDisconnect?.Invoke(value);
             }
         }
 

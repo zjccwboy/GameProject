@@ -74,17 +74,17 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="endPoint">服务端监听IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
-        /// <param name="connectedAction">连接成功回调。</param>
-        /// <param name="disconnectedAction">连接断开回调。</param>
+        /// <param name="connectAction">连接成功回调。</param>
+        /// <param name="disconnectAction">连接断开回调。</param>
         /// <returns>Network 网络类对象</returns>
         public static Network CreateAcceptor(IPEndPoint endPoint, ProtocalType protocalType
-            , Action<Network> connectedAction, Action<Network> disconnectedAction)
+            , Action<Network> connectAction, Action<Network> disconnectAction)
         {
             var network = new Network();
             var session = new Session(endPoint, network, protocalType);
             network.Session = session;
-            session.OnServerConnected += connectedAction;
-            session.OnServerDisconnected += disconnectedAction;
+            session.OnServerConnect += connectAction;
+            session.OnServerDisconnect += disconnectAction;
             session.Accept();
             return network;
         }
@@ -109,17 +109,17 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="endPoint">连接服务端IP端口。</param>
         /// <param name="protocalType">通讯协议类型。</param>
-        /// <param name="connectedAction">连接成功回调。</param>
-        /// <param name="disconnectedAction">连接断开回调。</param>
+        /// <param name="connectAction">连接成功回调。</param>
+        /// <param name="disconnectAction">连接断开回调。</param>
         /// <returns>Network 网络类对象</returns>
         public static Network CreateConnector(IPEndPoint endPoint, ProtocalType protocalType
-            , Action<Network> connectedAction, Action<Network> disconnectedAction)
+            , Action<Network> connectAction, Action<Network> disconnectAction)
         {
             var network = new Network();
             var session = new Session(endPoint, network, protocalType);
             network.Session = session;
-            session.OnClientConnected += connectedAction;
-            session.OnClientDisconnected += disconnectedAction;
+            session.OnClientConnect += connectAction;
+            session.OnClientDisconnect += disconnectAction;
             session.Connect();
             return network;
         }
@@ -144,16 +144,16 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="httpPrefixed">WebSocket监听前缀。</param>
         /// <param name="protocalType">通讯协议类型。</param>
-        /// <param name="connectedAction">连接成功回调。</param>
-        /// <param name="disconnectedAction">连接断开回调。</param>
+        /// <param name="connectAction">连接成功回调。</param>
+        /// <param name="disconnectAction">连接断开回调。</param>
         /// <returns>Network 网络类对象</returns>
-        public static Network CreateWebSocketAcceptor(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
+        public static Network CreateWebSocketAcceptor(string httpPrefixed, Action<Network> connectAction, Action<Network> disconnectAction)
         {
             var network = new Network();
             var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
             network.Session = session;
-            session.OnServerConnected += connectedAction;
-            session.OnServerDisconnected += disconnectedAction;
+            session.OnServerConnect += connectAction;
+            session.OnServerDisconnect += disconnectAction;
             session.Accept();
             return network;
         }
@@ -177,16 +177,16 @@ namespace H6Game.Base
         /// 创建一个WebSocket连接的Network。
         /// </summary>
         /// <param name="httpPrefixed">连接服务端IP端口。</param>
-        /// <param name="connectedAction">连接成功回调。</param>
-        /// <param name="disconnectedAction">连接断开回调。</param>
+        /// <param name="connectAction">连接成功回调。</param>
+        /// <param name="disconnectAction">连接断开回调。</param>
         /// <returns>Network 网络类对象</returns>
-        public static Network CreateWebSocketConnector(string httpPrefixed, Action<Network> connectedAction, Action<Network> disconnectedAction)
+        public static Network CreateWebSocketConnector(string httpPrefixed, Action<Network> connectAction, Action<Network> disconnectAction)
         {
             var network = new Network();
             var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
             network.Session = session;
-            session.OnClientConnected += connectedAction;
-            session.OnClientDisconnected += disconnectedAction;
+            session.OnClientConnect += connectAction;
+            session.OnClientDisconnect += disconnectAction;
             session.Connect();
             return network;
         }

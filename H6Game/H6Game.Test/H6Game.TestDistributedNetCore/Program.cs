@@ -9,7 +9,7 @@ namespace H6Game.TestDistributedNetCore
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<NetDistributionsComponent>().OnInnerClientConnected += network => { TestBenckmark.Start(network); };
+            Game.Scene.AddComponent<NetDistributionsComponent>().OnConnect += network => { TestBenckmark.Start(network); };
             Game.Scene.AddComponent<ActorPoolComponent>();
 
             while (true)

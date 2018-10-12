@@ -33,12 +33,12 @@ namespace H6Game.Base
                 }
             }
 
-            if(Config.InnerListenConfig == null || Config.OutListenConfig == null)
+            if(this.Config.CenterAcceptConfig == null || this.Config.LocalAcceptConfig == null || this.Config.OuterAcceptConfig == null)
                 return false;
 
-            if (Config.InnerListenConfig.CenterEndPoint != null
-                && !string.IsNullOrEmpty(Config.InnerListenConfig.CenterEndPoint.IP)
-                && !string.IsNullOrEmpty(Config.InnerListenConfig.LocalEndPoint.IP))
+            if (Config.OuterAcceptConfig.OuterKcpAcceptConfig != null
+                && this.Config.OuterAcceptConfig.OuterTcpAcceptConfig != null
+                && this.Config.OuterAcceptConfig.OuterWebSocketConfig != null)
                 return true;
 
             return false;
@@ -48,23 +48,36 @@ namespace H6Game.Base
         {
             Config = new NetConfigEntity
             {
-                IsCenterServer = false,
                 IsProxyServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
-
-                InnerListenConfig = new NetConfigEntity.InnerListenConfigEntity
+                CenterAcceptConfig = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
+                LocalAcceptConfig = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
+                OuterAcceptConfig = new OuterAcceptConfigEntity
                 {
-                    CenterEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
-                    LocalEndPoint = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
-                },
-
-                OutListenConfig = new EndPointConfigEntity
-                {
-                    Port = 50000,
-                    IP = "127.0.0.1",
-                    ProtocalType =1,
-                    Desc = "监听外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                    OuterKcpAcceptConfig = new EndPointConfigEntity
+                    {
+                        Enable = true,
+                        Port = 50000,
+                        IP = "127.0.0.1",
+                        ProtocalType =  ProtocalType.Kcp,
+                        Desc = "监听KCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                    },
+                    OuterTcpAcceptConfig = new EndPointConfigEntity
+                    {
+                        Enable = true,
+                        Port = 50000,
+                        IP = "127.0.0.1",
+                        ProtocalType = ProtocalType.Tcp,
+                        Desc = "监听TCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                    },
+                    OuterWebSocketConfig = new EndPointWebSocketConfigEntity
+                    {
+                        Enable = true,
+                        ProtocalType = ProtocalType.Wcp,
+                        HttpPrefixed = "http://127.0.0.1:9000/",
+                        Desc = "监听WebSocket外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                    },
                 },
             };
 

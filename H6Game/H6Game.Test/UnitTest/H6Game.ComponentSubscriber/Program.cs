@@ -16,7 +16,7 @@ namespace H6Game.ComponentSubscriber
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
-            Game.Scene.AddComponent<NetConnectorComponent>().OnConnected += (c, t) => { Start(); };
+            Game.Scene.AddComponent<NetConnectorComponent>().OnConnect += (c, t) => { Start(); };
             Game.Scene.AddComponent<ComponentSubscriberTester>();
 
             while (true)
