@@ -11,6 +11,7 @@ namespace H6Game.Base
         {
             this.HttpPrefixed = httpPrefixed;
             this.ServiceType = serviceType;
+            this.ProtocalType = ProtocalType.Wcp;
         }
 
         public override async void Accept()

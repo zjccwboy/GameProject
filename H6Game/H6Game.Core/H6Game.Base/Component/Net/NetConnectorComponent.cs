@@ -119,14 +119,14 @@ namespace H6Game.Base
                 var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateWebSocketConnector(prefixed, network =>
                 {
-                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnConnect?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
                     proxyNetwork.DisConnect();
                 },
                 network =>
                 {
-                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnDisconnect?.Invoke(network, ConnectType.Gate);
                 });
             }
         }

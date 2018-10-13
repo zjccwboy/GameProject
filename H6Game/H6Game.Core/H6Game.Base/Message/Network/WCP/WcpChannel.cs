@@ -181,7 +181,7 @@ namespace H6Game.Base
                 this.RecvParser.Clear();
             }
 
-            if(this.NetSocket.State != WebSocketState.Closed || this.NetSocket.State != WebSocketState.Aborted)
+            if(this.NetSocket.State == WebSocketState.Open)
                 await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
             this.NetSocket.Dispose();

@@ -9,8 +9,6 @@ namespace H6Game.Base
     /// </summary>
     public abstract class ANetService : IDisposable
     {
-        protected Network Network { get; }
-
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -49,9 +47,11 @@ namespace H6Game.Base
             }
         }
 
+        protected Network Network { get; }
         protected ProtocalType ProtocalType { get; set; }
         protected Socket Acceptor { get; set; }
         protected ANetChannel ClientChannel { get; set; }
+
         public NetServiceType ServiceType { get; set; }
         public ConcurrentDictionary<long, ANetChannel> Channels { get; } = new ConcurrentDictionary<long, ANetChannel>();
         public Session Session { get;private set; }

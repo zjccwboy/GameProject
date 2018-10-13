@@ -19,6 +19,10 @@ namespace H6Game.Base
     public enum ProtocalType
     {
         /// <summary>
+        /// None
+        /// </summary>
+        None,
+        /// <summary>
         /// TCP
         /// </summary>
         Tcp,

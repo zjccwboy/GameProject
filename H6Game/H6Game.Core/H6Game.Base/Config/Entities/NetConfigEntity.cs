@@ -142,7 +142,7 @@ namespace H6Game.Base
         public string IP { get; set; }
 
         /// <summary>
-        /// 协议类型，0 TCP, 1 KCP
+        /// 协议类型，1 TCP, 2 KCP 3 WCP
         /// </summary>
         public ProtocalType ProtocalType { get; set; }
 
@@ -173,7 +173,7 @@ namespace H6Game.Base
         public int Port { get; set; }
 
         /// <summary>
-        /// 协议类型，0 TCP, 1 KCP
+        /// 协议类型，1 TCP, 2 KCP 3 WCP
         /// </summary>
         public ProtocalType ProtocalType { get; set; }
 
