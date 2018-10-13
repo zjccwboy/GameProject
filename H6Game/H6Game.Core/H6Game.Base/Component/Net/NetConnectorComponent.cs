@@ -32,8 +32,7 @@ namespace H6Game.Base
         public bool IsConnected { get { return this.Network.Channel.Connected; } }
 
         /// <summary>
-        /// 最后连接时间，该事件可以用于判断客户端掉线的时间，根据实际的情况，调用ReConnecting重连，这样做可以避免与当前客户端连接的
-        /// 节点的服务挂调了，客户端一直没有重连不上的问题。
+        /// 最后连接时间。
         /// </summary>
         public DateTime LastConnectTime { get; private set; } = DateTime.Now;
 
@@ -88,31 +87,27 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 连接到网关服务，只有服务端开启了代理服务才会连接成功。正确调用该方法的姿势应该是放在OnConnected回调中，
-        /// 判断回调的连接类型为Proxy才调用本方法连接网关。
+        /// 连接到网关服务，连接成功后会断开与代理服务连接。 
         /// </summary>
         public async void ConnectingGate()
         {
             var message = await this.Network.CallMessageAsync<int,NetEndPointMessage>((int)this.ProtocalType, (int)SysNetCommand.GetGateEndPoint);
             if(message == null)
             {
-                Log.Error("服务未启动", LoggerBllType.System);
+                Log.Error("服务端未启动", LoggerBllType.System);
                 return;
             }
-            else
-            {
-                Log.Error(message.ToJson(), LoggerBllType.System);
-            }
+
             if (this.Config.ProtocalType == ProtocalType.Kcp || this.ProtocalType == ProtocalType.Tcp)
             {
                 var endPoint = IPEndPointHelper.GetIPEndPoint(message);
-                var proxyNetwork = this.Network;
+                var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateConnector(endPoint, this.ProtocalType, network =>
                 {
                     this.OnConnect?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
-                    proxyNetwork.Dispose();
+                    proxyNetwork.DisConnect();
                 }, network =>
                 {
                     this.OnDisconnect?.Invoke(network, ConnectType.Gate);
@@ -121,13 +116,13 @@ namespace H6Game.Base
             else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
                 var prefixed = message.WsPrefixed;
-                var proxyNetwork = this.Network;
+                var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateWebSocketConnector(prefixed, network =>
                 {
-                    //连接成功以后断开代理服务。
-                    proxyNetwork.Dispose();
-
                     this.OnConnect?.Invoke(network, ConnectType.Proxy);
+
+                    //连接成功以后断开代理服务。
+                    proxyNetwork.DisConnect();
                 },
                 network =>
                 {

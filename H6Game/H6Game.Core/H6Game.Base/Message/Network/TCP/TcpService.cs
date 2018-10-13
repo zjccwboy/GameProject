@@ -88,6 +88,7 @@ namespace H6Game.Base
             }
             var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
             {
+                LocalEndPoint = e.AcceptSocket.LocalEndPoint as IPEndPoint,
                 RemoteEndPoint = e.AcceptSocket.RemoteEndPoint as IPEndPoint
             };
             this.OnAccept(channel);

@@ -132,8 +132,9 @@ namespace H6Game.Base
                 return;
             }
 
-            this.LastConnectTime = TimeUitls.Now();
+            this.LocalEndPoint = this.NetSocket.LocalEndPoint as IPEndPoint;
             e.RemoteEndPoint = null;
+            this.LastConnectTime = TimeUitls.Now();
             this.Connected = true;
             OnConnect?.Invoke(this);
         }

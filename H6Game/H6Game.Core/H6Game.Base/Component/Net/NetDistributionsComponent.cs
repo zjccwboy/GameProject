@@ -223,12 +223,12 @@ namespace H6Game.Base
                     return;
             });
 
-            Log.Info($"监听内网端口:{message.Port}成功.", LoggerBllType.System);
-
             if (this.IsCenterServer)
                 Log.Info($"中心服务启动成功.", LoggerBllType.System);
             else if(this.IsProxyServer)
                 Log.Info($"代理服务启动成功.", LoggerBllType.System);
+            else
+                Log.Info($"监听内网端口:{message.Port}成功.", LoggerBllType.System);
         }
 
         private void HandleOutAccept()

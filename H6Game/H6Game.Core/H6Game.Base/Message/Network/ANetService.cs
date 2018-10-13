@@ -22,97 +22,47 @@ namespace H6Game.Base
             this.Network = network;
         }
 
-        /// <summary>
-        /// 最后一次检测心跳的时间
-        /// </summary>
         private uint LastCheckHeadbeatTime = TimeUitls.Now();
         private const uint KcpHeartbeatTime = 20 * 1000;
         private const uint TcpHeartbeatTime = 4 * 1000;
+        private const uint WcpHeartbeatTime = 10 * 1000;
         /// <summary>
-        /// 心跳超时时长，TCP 4秒,KCP 20秒
+        /// 心跳超时时长，TCP 4秒,KCP 20秒,WebSocket 10秒
         /// </summary>
         public uint HeartbeatTime
         {
             get
             {
-                if (ProtocalType == ProtocalType.Kcp)
+                if (this.ProtocalType == ProtocalType.Kcp)
                 {
                     return KcpHeartbeatTime;
                 }
-                else if(ProtocalType == ProtocalType.Tcp)
+                else if(this.ProtocalType == ProtocalType.Tcp)
                 {
                     return TcpHeartbeatTime;
+                }
+                else if(this.ProtocalType == ProtocalType.Wcp)
+                {
+                    return WcpHeartbeatTime;
                 }
                 throw new NetworkException("协议类型不存在。");
             }
         }
 
-        /// <summary>
-        /// 通讯协议类型
-        /// </summary>
         protected ProtocalType ProtocalType { get; set; }
-
-        /// <summary>
-        /// 接受连接请求Socket
-        /// </summary>
         protected Socket Acceptor { get; set; }
-
-        /// <summary>
-        /// 客户端连接ANetChannel
-        /// </summary>
         protected ANetChannel ClientChannel { get; set; }
-
-        /// <summary>
-        /// 网络服务类型
-        /// </summary>
         public NetServiceType ServiceType { get; set; }
-
-        /// <summary>
-        /// 连接通道池
-        /// </summary>
         public ConcurrentDictionary<long, ANetChannel> Channels { get; } = new ConcurrentDictionary<long, ANetChannel>();
-
-        /// <summary>
-        /// 消息会话
-        /// </summary>
         public Session Session { get;private set; }
-
-        /// <summary>
-        /// 监听并接受Socket连接
-        /// </summary>
-        /// <returns></returns>
-        public abstract void Accept();
-
-        /// <summary>
-        /// 发送连接请求与创建连接
-        /// </summary>
-        /// <returns></returns>
-        public abstract ANetChannel Connect();
-
-        /// <summary>
-        /// 连接断开回调在服务端发生
-        /// </summary>
         public Action<ANetChannel> OnServerDisconnect { get; set; }
-
-        /// <summary>
-        /// 连接成功回调在服务端发生
-        /// </summary>
         public Action<ANetChannel> OnServerConnect { get; set; }
-
-        /// <summary>
-        /// 连接断开回调在客户端发生
-        /// </summary>
         public Action<ANetChannel> OnClientDisconnect { get; set; }
-
-        /// <summary>
-        /// 连接成功回调在客户端发生
-        /// </summary>
         public Action<ANetChannel> OnClientConnect { get; set; }
 
-        /// <summary>
-        /// 更新发送接收队列
-        /// </summary>
         public abstract void Update();
+        public abstract void Accept();
+        public abstract ANetChannel Connect();
 
         /// <summary>
         /// 心跳检测
@@ -152,65 +102,49 @@ namespace H6Game.Base
             }
         }
 
-        /// <summary>
-        /// 添加一个通讯管道到连接对象池中
-        /// </summary>
-        /// <param name="channel"></param>
         protected void AddChannel(ANetChannel channel)
         {
             Channels.TryAdd(channel.Id, channel);
         }
 
-        /// <summary>
-        /// 处理接受连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
         protected void OnAccept(ANetChannel channel)
         {
-            Log.Debug($"接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+            var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
+            Log.Debug($"{this.ProtocalType.ToString()}监听端口:{loacalPort}接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
             channel.Connected = true;
             AddChannel(channel);
-            channel.OnDisConnect = HandleDisConnectOnServer;
+            channel.OnDisConnect = OnServerDisConnect;
             channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
             OnServerConnect?.Invoke(channel);
         }
 
-        /// <summary>
-        /// 处理连接成功回调
-        /// </summary>
-        /// <param name="channel"></param>
         protected void OnConnect(ANetChannel channel)
         {
-            Log.Debug($"连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
+            var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
+            Log.Debug($"{this.ProtocalType.ToString()}端口:{loacalPort}连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
             channel.Connected = true;
             this.AddChannel(channel);
-            channel.OnDisConnect = HandleDisConnectOnClient;
+            channel.OnDisConnect = OnClientDisConnect;
             channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
             this.OnClientConnect?.Invoke(channel);
         }
 
-        /// <summary>
-        /// 处理连接断开(服务端)
-        /// </summary>
-        /// <param name="channel"></param>
-        protected void HandleDisConnectOnServer(ANetChannel channel)
+        protected void OnServerDisConnect(ANetChannel channel)
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                Log.Debug($"客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
+                Log.Debug($"{this.ProtocalType.ToString()}监听端口:{loacalPort}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 OnServerDisconnect?.Invoke(channel);
             }
         }
 
-        /// <summary>
-        /// 处理连接断开(客户端)
-        /// </summary>
-        /// <param name="channel"></param>
-        protected void HandleDisConnectOnClient(ANetChannel channel)
+        protected void OnClientDisConnect(ANetChannel channel)
         {
             if (Channels.TryRemove(channel.Id, out ANetChannel value))
             {
-                Log.Debug($"与服务端{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
+                Log.Debug($"{this.ProtocalType.ToString()}端口:{loacalPort}与服务端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 OnClientDisconnect?.Invoke(value);
             }
         }
