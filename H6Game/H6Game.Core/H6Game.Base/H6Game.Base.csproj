@@ -8,7 +8,7 @@
     <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;WINDOWS;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
     <LangVersion>7.3</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\Bin\</OutputPath>
   </PropertyGroup>

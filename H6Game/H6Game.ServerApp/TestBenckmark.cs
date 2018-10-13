@@ -9,7 +9,6 @@ namespace H6Game.ServerApp
     {
         private static Stopwatch stopWatch = new Stopwatch();
         private static int Count = 0;
-        private static long size = 0;
 
         public static void Start(Network network)
         {
@@ -54,7 +53,6 @@ namespace H6Game.ServerApp
                 Log.Debug($"每{stopWatch.ElapsedMilliseconds}/毫秒 RPS:{Count}/条", LoggerBllType.System);
                 stopWatch.Restart();
                 Count = 0;
-                size = 0;
             }
         }
     }

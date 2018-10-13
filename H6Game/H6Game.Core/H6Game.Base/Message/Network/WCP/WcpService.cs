@@ -22,7 +22,7 @@ namespace H6Game.Base
             this.Listener.Prefixes.Add(this.HttpPrefixed);
             this.Listener.Start();
             while (true)
-            {                
+            {
                 var context = await this.Listener.GetContextAsync();
 
                 //GetContextAsync多线程异步，放到主线程中执行回调

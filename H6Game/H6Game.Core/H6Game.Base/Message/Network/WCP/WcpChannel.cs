@@ -108,8 +108,7 @@ namespace H6Game.Base
             this.IsSending = false;
         }
 
-
-       private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
+        private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
         public override async void StartRecv()
         {
             while (true)
@@ -156,7 +155,6 @@ namespace H6Game.Base
             {
                 AutoReset.Set();
             }
-
         }
 
         public override async void DisConnect()
@@ -183,9 +181,7 @@ namespace H6Game.Base
                 this.RecvParser.Clear();
             }
 
-            if (this.NetService.ServiceType == NetServiceType.Client)
-                await this.NetSocket.CloseAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
-            else
+            if(this.NetSocket.State != WebSocketState.Closed || this.NetSocket.State != WebSocketState.Aborted)
                 await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
 
             this.NetSocket.Dispose();
