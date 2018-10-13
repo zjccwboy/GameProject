@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public class WcpChannel : ANetChannel
     {
-        private string HttpPrefixed { get; set; }
+        public string HttpPrefixed { get;}
         private WebSocket NetSocket { get; set; }
 
         /// <summary>
@@ -97,7 +97,6 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                Log.Error(e, LoggerBllType.System);
                 this.DisConnect();
             }
         }
@@ -111,7 +110,7 @@ namespace H6Game.Base
         private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
         public override async void StartRecv()
         {
-            while (true)
+            while (!CancellationToken.None.IsCancellationRequested)
             {
                 try
                 {
@@ -128,7 +127,6 @@ namespace H6Game.Base
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e, LoggerBllType.System);
                     this.DisConnect();
                     return;
                 }
