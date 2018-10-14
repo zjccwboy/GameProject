@@ -290,6 +290,13 @@ namespace H6Game.Base
                 var response = await (Task<Guid>)context.MethodInfo.Invoke(context.Owner, message);
                 network.Response(response);
             }
+            else if(type.BaseType == typeof(Enum)) //支持枚举类型
+            {
+                var task = (Task)context.MethodInfo.Invoke(context.Owner, message);
+                await task;
+                var response = (int)task.GetType().GetProperty("Result").GetValue(task);
+                network.Response(response, type);
+            }
             else if (typeof(IMessage).IsAssignableFrom(type))
             {
                 var task = (Task)context.MethodInfo.Invoke(context.Owner, message);

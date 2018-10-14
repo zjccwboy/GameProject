@@ -100,7 +100,15 @@ namespace H6Game.ComponentSubscriber
             return data;
         }
 
+        [NetCommand(NetCommandTest.SubEnum)]
+        public EnumType SubClass(EnumType data)
+        {
+            return data;
+        }
 
+        
+
+        //-----------------------------------------------------------------------------------------
 
 
 
@@ -194,6 +202,16 @@ namespace H6Game.ComponentSubscriber
             return Task.FromResult(data);
         }
 
+        [NetCommand(NetCommandTest.SubEnumTask)]
+        public Task<EnumType> SubEnumTask(EnumType data)
+        {
+            return Task.FromResult(data);
+        }
+
+
+
+        //-----------------------------------------------------------------------------------------
+
 
 
 
@@ -269,6 +287,13 @@ namespace H6Game.ComponentSubscriber
         {
             return Task.FromResult(data.Data);
         }
+    }
+
+    public enum EnumType
+    {
+        None,
+        Test1,
+        Test2,
     }
 
 }

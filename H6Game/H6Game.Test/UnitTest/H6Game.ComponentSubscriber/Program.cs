@@ -43,6 +43,8 @@ namespace H6Game.ComponentSubscriber
             SubUShort();
             SubChar();
             SubClass();
+            SubEnum();
+
 
             SubEmptyTask();
             SubIntTask();
@@ -59,6 +61,7 @@ namespace H6Game.ComponentSubscriber
             SubUShortTask();
             SubCharTask();
             SubClassTask();
+            SubEnumTask();
 
 
             SubIntTaskValue();
@@ -193,7 +196,7 @@ namespace H6Game.ComponentSubscriber
             var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByte);
             if (sbt == sbyteResult)
             {
-                Console.WriteLine("SubByte success.");
+                Console.WriteLine("SubSByte success.");
             }
         }
 
@@ -227,7 +230,7 @@ namespace H6Game.ComponentSubscriber
             var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubChar);
             if ('a' == charResult)
             {
-                Console.WriteLine("SubSByte success.");
+                Console.WriteLine("SubChar success.");
             }
         }
 
@@ -245,6 +248,27 @@ namespace H6Game.ComponentSubscriber
                 Console.WriteLine("SubClass success.");
             }
         }
+
+        private static async void SubEnum()
+        {
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
+            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test1, (int)NetCommandTest.SubEnum);
+            if (EnumType.Test1 == enumResult)
+            {
+                Console.WriteLine("SubEnum success.");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------------------------------------------------------------");
+            Console.WriteLine();
+        }
+
+
+
+
+
+
+
 
         private static async void SubEmptyTask()
         {
@@ -416,7 +440,26 @@ namespace H6Game.ComponentSubscriber
                 Console.WriteLine("SubClassTask success.");
             }
         }
-        
+
+        private static async void SubEnumTask()
+        {
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
+            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test2, (int)NetCommandTest.SubEnumTask);
+            if (EnumType.Test2 == enumResult)
+            {
+                Console.WriteLine("SubEnumTask success.");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------------------------------------------------------------");
+            Console.WriteLine();
+        }
+
+
+
+        //___________________________________________________________________________________________________________________________________
+
+
         private static async void SubIntTaskValue()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;

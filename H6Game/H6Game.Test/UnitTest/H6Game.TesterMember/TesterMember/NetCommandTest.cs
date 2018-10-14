@@ -21,6 +21,7 @@ namespace H6Game.BaseTest
         SubUShort,
         SubChar,
         SubClass,
+        SubEnum,
 
         SubEmptyTask,
         SubStringTask,
@@ -37,7 +38,7 @@ namespace H6Game.BaseTest
         SubUShortTask,
         SubCharTask,
         SubClassTask,
-
+        SubEnumTask,
 
         SubEmptyTaskValue,
         SubIntTaskValue,
@@ -52,5 +53,6 @@ namespace H6Game.BaseTest
         SubShortTaskValue,
         SubUShortTaskValue,
         SubCharTaskValue,
+
     }
 }

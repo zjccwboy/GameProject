@@ -58,8 +58,10 @@ internal static class PacketExtensions
     {
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
-
-        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(obj.GetType());
+        var type = obj.GetType();
+        if (type.BaseType == typeof(Enum))
+            type = typeof(int);
+        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
     }
 
@@ -68,6 +70,8 @@ internal static class PacketExtensions
         if (obj != default)
             Serializer.Serialize(packet.BodyStream, obj);
 
+        if (type.BaseType == typeof(Enum))
+            type = typeof(int);
         packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
     }
