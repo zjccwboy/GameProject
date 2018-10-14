@@ -82,7 +82,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var emptyResult = await network.CallMessageAsync<int>((int)NetCommandTest.SubEmpty);
+            var emptyResult = await network.CallMessageAsync<int>(NetCommandTest.SubEmpty);
             if (1024 == emptyResult)
             {
                 Console.WriteLine("SubEmpty success.");
@@ -92,7 +92,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubInt()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var intResult = await network.CallMessageAsync<int, int>(1024, (int)NetCommandTest.SubInt);
+            var intResult = await network.CallMessageAsync<int, int>(1024, NetCommandTest.SubInt);
             if (1024 == intResult)
             {
                 Console.WriteLine("SubInt success.");
@@ -103,7 +103,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, (int)NetCommandTest.SubUInt);
+            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, NetCommandTest.SubUInt);
             if (1024 == uintResult)
             {
                 Console.WriteLine("SubUInt success.");
@@ -114,7 +114,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var stringResult = await network.CallMessageAsync<string, string>("1024", (int)NetCommandTest.SubString);
+            var stringResult = await network.CallMessageAsync<string, string>("1024", NetCommandTest.SubString);
             if ("1024" == stringResult)
             {
                 Console.WriteLine("SubString success.");
@@ -125,7 +125,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var longResult = await network.CallMessageAsync<long, long>(102410241024, (int)NetCommandTest.SubLong);
+            var longResult = await network.CallMessageAsync<long, long>(102410241024, NetCommandTest.SubLong);
             if (102410241024 == longResult)
             {
                 Console.WriteLine("SubLong success.");
@@ -136,7 +136,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, (int)NetCommandTest.SubULong);
+            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, NetCommandTest.SubULong);
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULong success.");
@@ -147,7 +147,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, (int)NetCommandTest.SubFloat);
+            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, NetCommandTest.SubFloat);
             if (1024.1024 == floatResult)
             {
                 Console.WriteLine("SubFloat success.");
@@ -158,7 +158,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024d, (int)NetCommandTest.SubDouble);
+            var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024d, NetCommandTest.SubDouble);
             if (10241024.1024 == doubleResult)
             {
                 Console.WriteLine("SubDouble success.");
@@ -169,7 +169,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, (int)NetCommandTest.SubDecimal);
+            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, NetCommandTest.SubDecimal);
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimal success.");
@@ -181,7 +181,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             byte bt = 127;
-            var byteResult = await network.CallMessageAsync<byte, byte>(bt, (int)NetCommandTest.SubByte);
+            var byteResult = await network.CallMessageAsync<byte, byte>(bt, NetCommandTest.SubByte);
             if (bt == byteResult)
             {
                 Console.WriteLine("SubByte success.");
@@ -193,7 +193,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             sbyte sbt = 127;
-            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByte);
+            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, NetCommandTest.SubSByte);
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByte success.");
@@ -205,7 +205,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             short st = 30000;
-            var shortResult = await network.CallMessageAsync<short, short>(st, (int)NetCommandTest.SubShort);
+            var shortResult = await network.CallMessageAsync<short, short>(st, NetCommandTest.SubShort);
             if (st == shortResult)
             {
                 Console.WriteLine("SubShort success.");
@@ -217,7 +217,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             ushort ust = 65535;
-            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, (int)NetCommandTest.SubUShort);
+            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, NetCommandTest.SubUShort);
             if (ust == ushortResult)
             {
                 Console.WriteLine("SubUShort success.");
@@ -227,7 +227,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubChar()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubChar);
+            var charResult = await network.CallMessageAsync<char, char>('a', NetCommandTest.SubChar);
             if ('a' == charResult)
             {
                 Console.WriteLine("SubChar success.");
@@ -242,7 +242,7 @@ namespace H6Game.ComponentSubscriber
                 Message = "测试消息！",
                 TestId = 1024,
             };
-            var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, (int)NetCommandTest.SubClass);
+            var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, NetCommandTest.SubClass);
             if (message.Message == charResult.Message && message.TestId == charResult.TestId)
             {
                 Console.WriteLine("SubClass success.");
@@ -252,7 +252,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubEnum()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test1, (int)NetCommandTest.SubEnum);
+            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test1, NetCommandTest.SubEnum);
             if (EnumType.Test1 == enumResult)
             {
                 Console.WriteLine("SubEnum success.");
@@ -274,7 +274,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var emptyResult = await network.CallMessageAsync<int>((int)NetCommandTest.SubEmptyTask);
+            var emptyResult = await network.CallMessageAsync<int>(NetCommandTest.SubEmptyTask);
             if (1024 == emptyResult)
             {
                 Console.WriteLine("SubEmptyTask success.");
@@ -284,7 +284,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubIntTask()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var intResult = await network.CallMessageAsync<int, int>(1024, (int)NetCommandTest.SubIntTask);
+            var intResult = await network.CallMessageAsync<int, int>(1024, NetCommandTest.SubIntTask);
             if (1024 == intResult)
             {
                 Console.WriteLine("SubIntTask success.");
@@ -295,7 +295,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, (int)NetCommandTest.SubUIntTask);
+            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, NetCommandTest.SubUIntTask);
             if (1024 == uintResult)
             {
                 Console.WriteLine("SubUIntTask success.");
@@ -306,7 +306,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var stringResult = await network.CallMessageAsync<string, string>("1024", (int)NetCommandTest.SubStringTask);
+            var stringResult = await network.CallMessageAsync<string, string>("1024", NetCommandTest.SubStringTask);
             if ("1024" == stringResult)
             {
                 Console.WriteLine("SubStringTask success.");
@@ -317,7 +317,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var longResult = await network.CallMessageAsync<long, long>(102410241024, (int)NetCommandTest.SubLongTask);
+            var longResult = await network.CallMessageAsync<long, long>(102410241024, NetCommandTest.SubLongTask);
             if (102410241024 == longResult)
             {
                 Console.WriteLine("SubLongTask success.");
@@ -328,7 +328,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, (int)NetCommandTest.SubULongTask);
+            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, NetCommandTest.SubULongTask);
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULongTask success.");
@@ -339,7 +339,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, (int)NetCommandTest.SubFloatTask);
+            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, NetCommandTest.SubFloatTask);
             if (1024.1024 == floatResult)
             {
                 Console.WriteLine("SubFloatTask success.");
@@ -350,7 +350,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024d, (int)NetCommandTest.SubDoubleTask);
+            var doubleResult = await network.CallMessageAsync<double, double>(10241024.1024d, NetCommandTest.SubDoubleTask);
             if (10241024.1024 == doubleResult)
             {
                 Console.WriteLine("SubDoubleTask success.");
@@ -361,7 +361,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, (int)NetCommandTest.SubDecimalTask);
+            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, NetCommandTest.SubDecimalTask);
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimalTask success.");
@@ -373,7 +373,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             byte bt = 127;
-            var byteResult = await network.CallMessageAsync<byte, byte>(bt, (int)NetCommandTest.SubByteTask);
+            var byteResult = await network.CallMessageAsync<byte, byte>(bt, NetCommandTest.SubByteTask);
             if (bt == byteResult)
             {
                 Console.WriteLine("SubByteTask success.");
@@ -385,7 +385,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             sbyte sbt = 127;
-            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByteTask);
+            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, NetCommandTest.SubSByteTask);
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByteTask success.");
@@ -397,7 +397,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             short st = 30000;
-            var shortResult = await network.CallMessageAsync<short, short>(st, (int)NetCommandTest.SubShortTask);
+            var shortResult = await network.CallMessageAsync<short, short>(st, NetCommandTest.SubShortTask);
             if (st == shortResult)
             {
                 Console.WriteLine("SubShortTask success.");
@@ -409,7 +409,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             ushort ust = 65535;
-            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, (int)NetCommandTest.SubUShortTask);
+            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, NetCommandTest.SubUShortTask);
             if (ust == ushortResult)
             {
                 Console.WriteLine("SubUShortTask success.");
@@ -419,7 +419,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubCharTask()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubCharTask);
+            var charResult = await network.CallMessageAsync<char, char>('a', NetCommandTest.SubCharTask);
             if ('a' == charResult)
             {
                 Console.WriteLine("SubCharTask success.");
@@ -434,7 +434,7 @@ namespace H6Game.ComponentSubscriber
                 Message = "测试消息！",
                 TestId = 1024,
             };
-            var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, (int)NetCommandTest.SubClassTask);
+            var charResult = await network.CallMessageAsync<TesterMessage, TesterMessage>(message, NetCommandTest.SubClassTask);
             if (message.Message == charResult.Message && message.TestId == charResult.TestId)
             {
                 Console.WriteLine("SubClassTask success.");
@@ -444,7 +444,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubEnumTask()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test2, (int)NetCommandTest.SubEnumTask);
+            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test2, NetCommandTest.SubEnumTask);
             if (EnumType.Test2 == enumResult)
             {
                 Console.WriteLine("SubEnumTask success.");
@@ -463,7 +463,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubIntTaskValue()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var intResult = await network.CallMessageAsync<int, int>(1024, (int)NetCommandTest.SubIntTaskValue);
+            var intResult = await network.CallMessageAsync<int, int>(1024, NetCommandTest.SubIntTaskValue);
             if (1024 == intResult)
             {
                 Console.WriteLine("SubIntTaskValue success.");
@@ -474,7 +474,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, (int)NetCommandTest.SubUIntTaskValue);
+            var uintResult = await network.CallMessageAsync<uint, uint>(1024u, NetCommandTest.SubUIntTaskValue);
             if (1024 == uintResult)
             {
                 Console.WriteLine("SubUIntTaskValue success.");
@@ -485,7 +485,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var longResult = await network.CallMessageAsync<long, long>(102410241024, (int)NetCommandTest.SubLongTaskValue);
+            var longResult = await network.CallMessageAsync<long, long>(102410241024, NetCommandTest.SubLongTaskValue);
             if (102410241024 == longResult)
             {
                 Console.WriteLine("SubLongTaskValue success.");
@@ -496,7 +496,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, (int)NetCommandTest.SubULongTaskValue);
+            var ulongResult = await network.CallMessageAsync<ulong, ulong>(102410241024u, NetCommandTest.SubULongTaskValue);
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULongTaskValue success.");
@@ -507,7 +507,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, (int)NetCommandTest.SubFloatTaskValue);
+            var floatResult = await network.CallMessageAsync<float, float>(1024.1024f, NetCommandTest.SubFloatTaskValue);
             if (1024.1024 == floatResult)
             {
                 Console.WriteLine("SubFloatTaskValue success.");
@@ -518,7 +518,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var doubleResult = await network.CallMessageAsync<double,double>(10241024.1024d, (int)NetCommandTest.SubDoubleTaskValue);
+            var doubleResult = await network.CallMessageAsync<double,double>(10241024.1024d, NetCommandTest.SubDoubleTaskValue);
             if (10241024.1024 == doubleResult)
             {
                 Console.WriteLine("SubDoubleTaskValue success.");
@@ -529,7 +529,7 @@ namespace H6Game.ComponentSubscriber
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
-            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, (int)NetCommandTest.SubDecimalTaskValue);
+            var decimalResult = await network.CallMessageAsync<decimal, decimal>(10241024.1024m, NetCommandTest.SubDecimalTaskValue);
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimalTaskValue success.");
@@ -541,7 +541,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             byte bt = 127;
-            var byteResult = await network.CallMessageAsync<byte, byte>(bt, (int)NetCommandTest.SubByteTaskValue);
+            var byteResult = await network.CallMessageAsync<byte, byte>(bt, NetCommandTest.SubByteTaskValue);
             if (bt == byteResult)
             {
                 Console.WriteLine("SubByteTaskValue success.");
@@ -553,7 +553,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             sbyte sbt = 127;
-            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, (int)NetCommandTest.SubSByteTaskValue);
+            var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, NetCommandTest.SubSByteTaskValue);
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByteTaskValue success.");
@@ -565,7 +565,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             short st = 30000;
-            var shortResult = await network.CallMessageAsync<short, short>(st, (int)NetCommandTest.SubShortTaskValue);
+            var shortResult = await network.CallMessageAsync<short, short>(st, NetCommandTest.SubShortTaskValue);
             if (st == shortResult)
             {
                 Console.WriteLine("SubShortTaskValue success.");
@@ -577,7 +577,7 @@ namespace H6Game.ComponentSubscriber
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
             ushort ust = 65535;
-            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, (int)NetCommandTest.SubUShortTaskValue);
+            var ushortResult = await network.CallMessageAsync<ushort, ushort>(ust, NetCommandTest.SubUShortTaskValue);
             if (ust == ushortResult)
             {
                 Console.WriteLine("SubUShortTaskValue success.");
@@ -587,7 +587,7 @@ namespace H6Game.ComponentSubscriber
         private static async void SubCharTaskValue()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var charResult = await network.CallMessageAsync<char, char>('a', (int)NetCommandTest.SubCharTaskValue);
+            var charResult = await network.CallMessageAsync<char, char>('a', NetCommandTest.SubCharTaskValue);
             if ('a' == charResult)
             {
                 Console.WriteLine("SubCharTaskValue success.");

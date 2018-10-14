@@ -38,7 +38,7 @@ namespace H6Game.ClientTester
 
         public static async Task Call(Network network)
         {
-            await network.CallMessageAsync<TestMessage, TestMessage>(send, (int)TestCMD.TestCmd);
+            await network.CallMessageAsync<TestMessage, TestMessage>(send, TestCMD.TestCmd);
 
             Count++;
             if (stopWatch.ElapsedMilliseconds > 1000)

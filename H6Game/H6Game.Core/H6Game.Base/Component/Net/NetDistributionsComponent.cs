@@ -150,7 +150,7 @@ namespace H6Game.Base
                 return;
 
             InnerNetMapManager.Add(this.CurrentNetwrok, message);
-            this.CurrentNetwrok.Broadcast(message, (int)SysNetCommand.AddInServerCmd);
+            this.CurrentNetwrok.Broadcast(message, SysNetCommand.AddInServerCmd);
             foreach (var entity in InnerNetMapManager.Entities)
             {
                 this.CurrentNetwrok.Send(entity, SysNetCommand.AddInServerCmd);
@@ -308,13 +308,13 @@ namespace H6Game.Base
                 return;
             }
 
-            var outerMessage = await network.CallMessageAsync<OuterEndPointMessage>((int)SysNetCommand.GetOutServerCmd);
+            var outerMessage = await network.CallMessageAsync<OuterEndPointMessage>(SysNetCommand.GetOutServerCmd);
             this.OuterNetMapManager.Add(network, outerMessage);
 
             if (this.IsProxyServer)
                 return;
 
-            var serverType = await network.CallMessageAsync<int>((int)SysNetCommand.GetServerType);
+            var serverType = await network.CallMessageAsync<int>(SysNetCommand.GetServerType);
             if (serverType != (int)ServerType.Default)
             {
                 //删掉连接中的代理服务

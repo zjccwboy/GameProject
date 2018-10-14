@@ -52,7 +52,7 @@ namespace H6Game.Base
             {
                 var attribute = method.GetCustomAttribute(typeof(NetCommandAttribute)) as NetCommandAttribute;
                 if (attribute == null)
-                    return;
+                    continue;
 
                 var parameters = method.GetParameters();
                 var parameterTypes = parameters == null ? new Type[0] : parameters.Select(a => a.ParameterType).ToArray();

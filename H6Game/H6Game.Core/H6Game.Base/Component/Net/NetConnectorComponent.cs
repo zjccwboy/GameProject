@@ -91,7 +91,7 @@ namespace H6Game.Base
         /// </summary>
         public async void ConnectingGate()
         {
-            var message = await this.Network.CallMessageAsync<int,NetEndPointMessage>((int)this.ProtocalType, (int)SysNetCommand.GetGateEndPoint);
+            var message = await this.Network.CallMessageAsync<int,NetEndPointMessage>((int)this.ProtocalType, SysNetCommand.GetGateEndPoint);
             if(message == null)
             {
                 Log.Error("服务端未启动", LoggerBllType.System);

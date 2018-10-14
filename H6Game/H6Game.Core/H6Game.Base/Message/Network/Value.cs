@@ -242,22 +242,6 @@ namespace H6Game.Base
         }
     }
 
-    public sealed class MyEnum : Value<Enum>
-    {
-        private static MyEnum Instace { get; } = new MyEnum();
-
-        public static explicit operator MyEnum(Enum data)
-        {
-            Instace.Data = data;
-            return Instace;
-        }
-
-        public static explicit operator Enum(MyEnum value)
-        {
-            return value.Data;
-        }
-    }
-
     public abstract class Value<T> : IValue
     {
         public T Data { get; set; }

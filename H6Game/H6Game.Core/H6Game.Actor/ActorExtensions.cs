@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using System;
 
 namespace H6Game.Actor
 {
@@ -10,7 +11,7 @@ namespace H6Game.Actor
         /// <param name="actor">Actor类</param>
         /// <param name="network">网络类</param>
         /// <param name="messageCmd">消息指令</param>
-        public static void SendMySelf(this BaseActorComponent actor, Network network, int messageCmd)
+        public static void SendMySelf<TEnum>(this BaseActorComponent actor, Network network, TEnum messageCmd) where TEnum : Enum
         {
             if (!actor.IsLocalActor)
                 throw new ComponentException("非LocalActor不能发送ActorMySelf消息。");

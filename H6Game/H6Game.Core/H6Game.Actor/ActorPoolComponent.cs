@@ -47,7 +47,7 @@ namespace H6Game.Actor
             this.Distributions.OnConnect += network => 
             {
                 this.OnConnected?.Invoke(network);
-                network.Send((int)NetCommand.SyncActorInfoCmd);
+                network.Send(NetCommand.SyncActorInfoCmd);
             };
         }
 
@@ -92,7 +92,7 @@ namespace H6Game.Actor
             var count = 0;
             foreach (var actor in LocalActors.Values)
             {
-                actor.SendMySelf(this.CurrentNetwrok, (int)NetCommand.AddActorCmd);
+                actor.SendMySelf(this.CurrentNetwrok, NetCommand.AddActorCmd);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
@@ -124,7 +124,13 @@ namespace H6Game.Actor
             }
             dicStrVal[component.ActorEntity.Id] = component;
 
-            NotifyAllServerWithAdd(component.ActorEntity, component);
+            var message = new ActorSyncMessage
+            {
+                ActorId = component.Id,
+                ObjectId = component.ActorEntity.Id,
+                ActorType = component.ActorEntity.ActorType,
+            };
+            this.Distributions.InnerNetworks.Broadcast(message, NetCommand.AddActorCmd);
         }
 
         public void AddRemote(BaseActorComponent component)
@@ -226,35 +232,7 @@ namespace H6Game.Actor
             if (!typeVal.Remove(component.Id))
                 return;
 
-            NotifyAllServerWithRemove(component.ActorEntity, component);
-        }
-
-        private void NotifyAllServerWithAdd(ActorEntity entity, BaseActorComponent component)
-        {
-            var message = new ActorSyncMessage
-            {
-                ActorId = component.Id,
-                ObjectId = entity.Id,
-                ActorType = entity.ActorType,
-            };
-            foreach(var network in this.Distributions.InnerNetworks)
-            {
-                if (this.Distributions.IsProxyServer)
-                    continue;
-
-                network.Send(message, NetCommand.AddActorCmd);
-            }
-        }
-
-        private void NotifyAllServerWithRemove(ActorEntity entity, BaseActorComponent component)
-        {
-            foreach (var network in this.Distributions.InnerNetworks)
-            {
-                if (this.Distributions.IsProxyServer)
-                    continue;
-
-                network.Send(component.Id, NetCommand.RemoveActorCmd);
-            }
+            this.Distributions.InnerNetworks.Broadcast(component.Id, NetCommand.RemoveActorCmd);
         }
     }
 }
