@@ -87,6 +87,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubEmpty success.");
             }
+            else
+            {
+                Console.WriteLine("SubEmpty error.");
+            }
         }
 
         private static async void SubInt()
@@ -96,6 +100,10 @@ namespace H6Game.ComponentSubscriber
             if (1024 == intResult)
             {
                 Console.WriteLine("SubInt success.");
+            }
+            else
+            {
+                Console.WriteLine("SubInt error.");
             }
         }
 
@@ -108,6 +116,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubUInt success.");
             }
+            else
+            {
+                Console.WriteLine("SubUInt error.");
+            }
         }
 
         private static async void SubString()
@@ -118,6 +130,10 @@ namespace H6Game.ComponentSubscriber
             if ("1024" == stringResult)
             {
                 Console.WriteLine("SubString success.");
+            }
+            else
+            {
+                Console.WriteLine("SubString error.");
             }
         }
 
@@ -130,6 +146,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubLong success.");
             }
+            else
+            {
+                Console.WriteLine("SubLong error.");
+            }
         }
 
         private static async void SubULong()
@@ -140,6 +160,10 @@ namespace H6Game.ComponentSubscriber
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULong success.");
+            }
+            else
+            {
+                Console.WriteLine("SubULong error.");
             }
         }
 
@@ -152,6 +176,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubFloat success.");
             }
+            else
+            {
+                Console.WriteLine("SubFloat error.");
+            }
         }
 
         private static async void SubDouble()
@@ -163,6 +191,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubDouble success.");
             }
+            else
+            {
+                Console.WriteLine("SubDouble error.");
+            }
         }
 
         private static async void SubDecimal()
@@ -173,6 +205,10 @@ namespace H6Game.ComponentSubscriber
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimal success.");
+            }
+            else
+            {
+                Console.WriteLine("SubDecimal error.");
             }
         }
 
@@ -186,6 +222,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubByte success.");
             }
+            else
+            {
+                Console.WriteLine("SubByte error.");
+            }
         }
 
         private static async void SubSByte()
@@ -197,6 +237,10 @@ namespace H6Game.ComponentSubscriber
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByte success.");
+            }
+            else
+            {
+                Console.WriteLine("SubSByte error.");
             }
         }
 
@@ -210,6 +254,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubShort success.");
             }
+            else
+            {
+                Console.WriteLine("SubShort error.");
+            }
         }
 
         private static async void SubUShort()
@@ -222,6 +270,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubUShort success.");
             }
+            else
+            {
+                Console.WriteLine("SubUShort error.");
+            }
         }
 
         private static async void SubChar()
@@ -231,6 +283,10 @@ namespace H6Game.ComponentSubscriber
             if ('a' == charResult)
             {
                 Console.WriteLine("SubChar success.");
+            }
+            else
+            {
+                Console.WriteLine("SubChar error.");
             }
         }
 
@@ -247,6 +303,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubClass success.");
             }
+            else
+            {
+                Console.WriteLine("SubClass error.");
+            }
         }
 
         private static async void SubEnum()
@@ -256,6 +316,10 @@ namespace H6Game.ComponentSubscriber
             if (EnumType.Test1 == enumResult)
             {
                 Console.WriteLine("SubEnum success.");
+            }
+            else
+            {
+                Console.WriteLine("SubEnum error.");
             }
 
             Console.WriteLine();
@@ -279,6 +343,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubEmptyTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubEmptyTask error.");
+            }
         }
 
         private static async void SubIntTask()
@@ -288,6 +356,10 @@ namespace H6Game.ComponentSubscriber
             if (1024 == intResult)
             {
                 Console.WriteLine("SubIntTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubIntTask error.");
             }
         }
 
@@ -300,6 +372,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubUIntTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubUIntTask error.");
+            }
         }
 
         private static async void SubStringTask()
@@ -310,6 +386,10 @@ namespace H6Game.ComponentSubscriber
             if ("1024" == stringResult)
             {
                 Console.WriteLine("SubStringTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubStringTask error.");
             }
         }
 
@@ -322,6 +402,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubLongTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubLongTask error.");
+            }
         }
 
         private static async void SubULongTask()
@@ -332,6 +416,10 @@ namespace H6Game.ComponentSubscriber
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULongTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubULongTask error.");
             }
         }
 
@@ -344,6 +432,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubFloatTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubFloatTask error.");
+            }
         }
 
         private static async void SubDoubleTask()
@@ -355,6 +447,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubDoubleTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubDoubleTask error.");
+            }
         }
 
         private static async void SubDecimalTask()
@@ -365,6 +461,10 @@ namespace H6Game.ComponentSubscriber
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimalTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubDecimalTask error.");
             }
         }
 
@@ -378,6 +478,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubByteTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubByteTask error.");
+            }
         }
 
         private static async void SubSByteTask()
@@ -389,6 +493,10 @@ namespace H6Game.ComponentSubscriber
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByteTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubSByteTask error.");
             }
         }
 
@@ -402,6 +510,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubShortTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubShortTask error.");
+            }
         }
 
         private static async void SubUShortTask()
@@ -414,6 +526,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubUShortTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubUShortTask error.");
+            }
         }
 
         private static async void SubCharTask()
@@ -423,6 +539,10 @@ namespace H6Game.ComponentSubscriber
             if ('a' == charResult)
             {
                 Console.WriteLine("SubCharTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubCharTask error.");
             }
         }
 
@@ -439,6 +559,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubClassTask success.");
             }
+            else
+            {
+                Console.WriteLine("SubClassTask error.");
+            }
         }
 
         private static async void SubEnumTask()
@@ -448,6 +572,10 @@ namespace H6Game.ComponentSubscriber
             if (EnumType.Test2 == enumResult)
             {
                 Console.WriteLine("SubEnumTask success.");
+            }
+            else
+            {
+                Console.WriteLine("SubEnumTask error.");
             }
 
             Console.WriteLine();
@@ -468,6 +596,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubIntTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubIntTaskValue error.");
+            }
         }
 
         private static async void SubUIntTaskValue()
@@ -478,6 +610,10 @@ namespace H6Game.ComponentSubscriber
             if (1024 == uintResult)
             {
                 Console.WriteLine("SubUIntTaskValue success.");
+            }
+            else
+            {
+                Console.WriteLine("SubUIntTaskValue error.");
             }
         }
 
@@ -490,6 +626,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubLongTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubLongTaskValue error.");
+            }
         }
 
         private static async void SubULongTaskValue()
@@ -500,6 +640,10 @@ namespace H6Game.ComponentSubscriber
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULongTaskValue success.");
+            }
+            else
+            {
+                Console.WriteLine("SubULongTaskValue error.");
             }
         }
 
@@ -512,6 +656,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubFloatTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubFloatTaskValue error.");
+            }
         }
 
         private static async void SubDoubleTaskValue()
@@ -523,6 +671,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubDoubleTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubDoubleTaskValue error.");
+            }
         }
 
         private static async void SubDecimalTaskValue()
@@ -533,6 +685,10 @@ namespace H6Game.ComponentSubscriber
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimalTaskValue success.");
+            }
+            else
+            {
+                Console.WriteLine("SubDecimalTaskValue error.");
             }
         }
 
@@ -546,6 +702,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubByteTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubByteTaskValue error.");
+            }
         }
 
         private static async void SubSByteTaskValue()
@@ -557,6 +717,10 @@ namespace H6Game.ComponentSubscriber
             if (sbt == sbyteResult)
             {
                 Console.WriteLine("SubSByteTaskValue success.");
+            }
+            else
+            {
+                Console.WriteLine("SubSByteTaskValue error.");
             }
         }
 
@@ -570,6 +734,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubShortTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubShortTaskValue error.");
+            }
         }
 
         private static async void SubUShortTaskValue()
@@ -582,6 +750,10 @@ namespace H6Game.ComponentSubscriber
             {
                 Console.WriteLine("SubUShortTaskValue success.");
             }
+            else
+            {
+                Console.WriteLine("SubUShortTaskValue error.");
+            }
         }
 
         private static async void SubCharTaskValue()
@@ -591,6 +763,10 @@ namespace H6Game.ComponentSubscriber
             if ('a' == charResult)
             {
                 Console.WriteLine("SubCharTaskValue success.");
+            }
+            else
+            {
+                Console.WriteLine("SubCharTaskValue error.");
             }
         }
     }

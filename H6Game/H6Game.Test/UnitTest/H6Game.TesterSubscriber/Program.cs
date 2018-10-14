@@ -52,6 +52,10 @@ namespace H6Game.TesterSubscriber
             {
                 Console.WriteLine("SubEmpty success.");
             }
+            else
+            {
+                Console.WriteLine("SubInt error.");
+            }
         }
 
         private static async void SubInt()
@@ -61,6 +65,10 @@ namespace H6Game.TesterSubscriber
             if (1024 == intResult)
             {
                 Console.WriteLine("SubInt success.");
+            }
+            else
+            {
+                Console.WriteLine("SubInt error.");
             }
         }
 
@@ -73,6 +81,10 @@ namespace H6Game.TesterSubscriber
             {
                 Console.WriteLine("SubUInt success.");
             }
+            else
+            {
+                Console.WriteLine("SubUInt error.");
+            }
         }
 
         private static async void SubString()
@@ -83,6 +95,10 @@ namespace H6Game.TesterSubscriber
             if ("1024" == stringResult)
             {
                 Console.WriteLine("SubString success.");
+            }
+            else
+            {
+                Console.WriteLine("SubString error.");
             }
         }
 
@@ -95,6 +111,10 @@ namespace H6Game.TesterSubscriber
             {
                 Console.WriteLine("SubLong success.");
             }
+            else
+            {
+                Console.WriteLine("SubLong error.");
+            }
         }
 
         private static async void SubULong()
@@ -105,6 +125,10 @@ namespace H6Game.TesterSubscriber
             if (102410241024 == ulongResult)
             {
                 Console.WriteLine("SubULong success.");
+            }
+            else
+            {
+                Console.WriteLine("SubULong error.");
             }
         }
 
@@ -117,6 +141,10 @@ namespace H6Game.TesterSubscriber
             {
                 Console.WriteLine("SubFloat success.");
             }
+            else
+            {
+                Console.WriteLine("SubFloat error.");
+            }
         }
 
         private static async void SubDouble()
@@ -127,7 +155,11 @@ namespace H6Game.TesterSubscriber
             if (10241024.1024 == doubleResult)
             {
                 Console.WriteLine("SubDouble success.");
-            }       
+            }
+            else
+            {
+                Console.WriteLine("SubDouble error.");
+            }
         }
 
         private static async void SubDecimal()
@@ -138,7 +170,11 @@ namespace H6Game.TesterSubscriber
             if (10241024.1024m == decimalResult)
             {
                 Console.WriteLine("SubDecimal success.");
-            }            
+            }
+            else
+            {
+                Console.WriteLine("SubDecimal error.");
+            }
         }
 
         private static async void SubByte()
@@ -151,6 +187,10 @@ namespace H6Game.TesterSubscriber
             {
                 Console.WriteLine("SubByte success.");
             }
+            else
+            {
+                Console.WriteLine("SubByte error.");
+            }
         }
 
         private static async void SubSByte()
@@ -161,7 +201,11 @@ namespace H6Game.TesterSubscriber
             var sbyteResult = await network.CallMessageAsync<sbyte, sbyte>(sbt, NetCommandTest.SubSByte);
             if (sbt == sbyteResult)
             {
-                Console.WriteLine("SubByte success.");
+                Console.WriteLine("SubSByte success.");
+            }
+            else
+            {
+                Console.WriteLine("SubSByte error.");
             }
         }
 
@@ -174,6 +218,10 @@ namespace H6Game.TesterSubscriber
             if (st == shortResult)
             {
                 Console.WriteLine("SubShort success.");
+            }
+            else
+            {
+                Console.WriteLine("SubShort error.");
             }
         }
 
@@ -195,7 +243,11 @@ namespace H6Game.TesterSubscriber
             var charResult = await network.CallMessageAsync<char, char>('a', NetCommandTest.SubSByte);
             if ('a' == charResult)
             {
-                Console.WriteLine("SubSByte success.");
+                Console.WriteLine("SubChar success.");
+            }
+            else
+            {
+                Console.WriteLine("SubChar error.");
             }
         }
 
@@ -211,6 +263,10 @@ namespace H6Game.TesterSubscriber
             if (message.Message == charResult.Message && message.TestId == charResult.TestId)
             {
                 Console.WriteLine("SubClass success.");
+            }
+            else
+            {
+                Console.WriteLine("SubClass error.");
             }
         }
     }
