@@ -122,7 +122,7 @@ namespace H6Game.Base
             channel.Connected = true;
             AddChannel(channel);
             channel.OnDisConnect = OnServerDisConnect;
-            channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
+            channel.OnReceive = (p) => { channel.Network.Dispatching(p); };
             OnServerConnect?.Invoke(channel);
         }
 
@@ -142,7 +142,7 @@ namespace H6Game.Base
             channel.Connected = true;
             this.AddChannel(channel);
             channel.OnDisConnect = OnClientDisConnect;
-            channel.OnReceive = (p) => { channel.Network.Dispatch(p); };
+            channel.OnReceive = (p) => { channel.Network.Dispatching(p); };
             this.OnClientConnect?.Invoke(channel);
         }
 

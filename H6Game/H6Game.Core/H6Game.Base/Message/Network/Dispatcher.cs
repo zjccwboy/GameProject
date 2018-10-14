@@ -9,7 +9,7 @@ namespace H6Game.Base
     /// </summary>
     public static class Dispatcher
     {
-        public static void Dispatch(this Network network, Packet packet)
+        public static void Dispatching(this Network network, Packet packet)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
-                throw new NetworkException($"ExceptionMessage:{e.Message}{Environment.NewLine}Packet:{packet.ToJson()}", e);
+                Log.Error(e, LoggerBllType.System, packet.ToJson());
             }
         }
     }
