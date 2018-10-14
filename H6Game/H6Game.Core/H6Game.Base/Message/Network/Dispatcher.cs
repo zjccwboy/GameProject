@@ -13,7 +13,7 @@ namespace H6Game.Base
         {
             try
             {
-                if (MetodContextStorage.TryGetContext(packet.NetCommand, out List<MetodContext> contexts))
+                if (MethodContextStorage.TryGetContext(packet.NetCommand, out List<MethodContext> contexts))
                 {
                     foreach (var context in contexts)
                         context.Owner.Invoke(context, network);

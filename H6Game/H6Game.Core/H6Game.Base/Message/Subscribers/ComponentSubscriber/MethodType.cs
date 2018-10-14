@@ -1,7 +1,7 @@
 ﻿
 namespace H6Game.Base
 {
-    public enum MetodType
+    public enum MethodType
     {
         /// <summary>
         /// 无返回参数同步方法

@@ -47,7 +47,7 @@ namespace H6Game.Base
             {
                 if (typeof(IComponentSubscriber).IsAssignableFrom(type))
                 {
-                    MetodContextStorage.Add((IComponentSubscriber)component);
+                    MethodContextStorage.Add((IComponentSubscriber)component);
                 }
                 Game.Event.Add(component);
             }

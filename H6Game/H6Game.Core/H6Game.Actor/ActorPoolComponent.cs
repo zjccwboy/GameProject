@@ -242,7 +242,7 @@ namespace H6Game.Actor
                 if (this.Distributions.IsProxyServer)
                     continue;
 
-                network.Send(message, (int)NetCommand.AddActorCmd);
+                network.Send(message, NetCommand.AddActorCmd);
             }
         }
 
@@ -253,7 +253,7 @@ namespace H6Game.Actor
                 if (this.Distributions.IsProxyServer)
                     continue;
 
-                network.Send((int)NetCommand.RemoveActorCmd, component.Id);
+                network.Send(component.Id, NetCommand.RemoveActorCmd);
             }
         }
     }

@@ -41,11 +41,39 @@ public static class NetworkExtensions
     /// <summary>
     /// 发送消息
     /// </summary>
+    /// <typeparam name="TSender"></typeparam>
+    /// <typeparam name="TEnum"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="netCommand">表示这条消息指令</param>
+    public static void Send<TSender,TEnum>(this Network network, TSender data, TEnum netCommand) where TEnum : Enum
+    {
+        var enumObj = netCommand as Enum;
+        var command = Convert.ToInt32(enumObj);
+        network.Session.Send(network.Channel, data, command, 0);
+    }
+
+    /// <summary>
+    /// 发送消息
+    /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="netCommand">表示这条消息指令</param>
     public static void Send(this Network network, int netCommand)
     {
         network.Session.Send(network.Channel, netCommand, 0);
+    }
+
+    /// <summary>
+    /// 发送消息
+    /// </summary>
+    /// <typeparam name="TEnum"></typeparam>
+    /// <param name="network">网络类</param>
+    /// <param name="netCommand">表示这条消息指令</param>
+    public static void Send<TEnum>(this Network network, TEnum netCommand) where TEnum : Enum
+    {
+        var enumObj = netCommand as Enum;
+        var command = Convert.ToInt32(enumObj);
+        network.Session.Send(network.Channel, command, 0);
     }
 
     /// <summary>

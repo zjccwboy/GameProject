@@ -416,9 +416,6 @@ namespace H6Game.ComponentSubscriber
                 Console.WriteLine("SubClassTask success.");
             }
         }
-
-
-
         
         private static async void SubIntTaskValue()
         {

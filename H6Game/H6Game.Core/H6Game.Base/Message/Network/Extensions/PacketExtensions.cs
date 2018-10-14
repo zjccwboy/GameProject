@@ -89,7 +89,12 @@ internal static class PacketExtensions
             return null;
 
         object data = null; 
-        if (type == typeof(int))
+        if(type.BaseType == typeof(Enum))
+        {
+            valueType = typeof(MyInt32);
+            data = (MyInt32)Serializer.Deserialize<int>(packet.BodyStream);
+        }
+        else if(type == typeof(int))
         {
             valueType = typeof(MyInt32);
             data = (MyInt32)Serializer.Deserialize<int>(packet.BodyStream);

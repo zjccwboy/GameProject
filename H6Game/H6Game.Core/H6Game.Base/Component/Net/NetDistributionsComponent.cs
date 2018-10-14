@@ -153,7 +153,7 @@ namespace H6Game.Base
             this.CurrentNetwrok.Broadcast(message, (int)SysNetCommand.AddInServerCmd);
             foreach (var entity in InnerNetMapManager.Entities)
             {
-                this.CurrentNetwrok.Send(entity, (int)SysNetCommand.AddInServerCmd);
+                this.CurrentNetwrok.Send(entity, SysNetCommand.AddInServerCmd);
             }
         }
 
@@ -329,12 +329,12 @@ namespace H6Game.Base
         {
             var localMessage = this.Config.GetLocalMessage();
             //连接成功后把本地监听端口发送给远程进程
-            network.Send(localMessage, (int)SysNetCommand.AddInServerCmd);
+            network.Send(localMessage, SysNetCommand.AddInServerCmd);
 
             //把当前所有连接的内网监听服务发送给远程进程
             foreach (var entity in this.InnerNetMapManager.Entities)
             {
-                network.Send(entity, (int)SysNetCommand.AddInServerCmd);
+                network.Send(entity, SysNetCommand.AddInServerCmd);
             }
         }
 

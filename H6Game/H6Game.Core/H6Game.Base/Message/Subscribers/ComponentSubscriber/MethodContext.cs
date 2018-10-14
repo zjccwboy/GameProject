@@ -7,7 +7,7 @@ namespace H6Game.Base
     /// <summary>
     /// 方法上下文
     /// </summary>
-    public class MetodContext
+    public class MethodContext
     {
         /// <summary>
         /// 方法所在类对象
@@ -42,7 +42,7 @@ namespace H6Game.Base
         /// <summary>
         /// 方法类型
         /// </summary>
-        public MetodType MetodType { get; set; }
+        public MethodType MetodType { get; set; }
 
 
         private static Type VoidType = typeof(void);

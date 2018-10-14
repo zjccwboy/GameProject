@@ -16,14 +16,14 @@ namespace H6Game.Base
         protected Network CurrentNetwrok { get;private set; }
         protected int NetMessageCmd { get { return this.CurrentNetwrok.RecvPacket.NetCommand; } }
 
-        public void Invoke(MetodContext context, Network network)
+        public void Invoke(MethodContext context, Network network)
         {
             try
             {
                 this.CurrentNetwrok = network;
                 switch (context.MetodType)
                 {
-                    case MetodType.Invoke:
+                    case MethodType.Invoke:
                         if (context.ParameterTypes.Length == 0)
                         {
                             InvokeSync(context, network);
@@ -34,7 +34,7 @@ namespace H6Game.Base
                             InvokeSync(context, network, message);
                         }
                         break;
-                    case MetodType.ExistReturnInvoke:
+                    case MethodType.ExistReturnInvoke:
                         if (context.ParameterTypes.Length == 0)
                         {
                             ExistReturnInvokeSync(context, network, context.ReturnType);
@@ -45,7 +45,7 @@ namespace H6Game.Base
                             ExistReturnInvokeSync(context, network, message, context.ReturnType);
                         }
                         break;
-                    case MetodType.InvokeAsync:
+                    case MethodType.InvokeAsync:
                         if (context.ParameterTypes.Length == 0)
                         {
                             InvokeAsync(context, network);
@@ -56,7 +56,7 @@ namespace H6Game.Base
                             InvokeAsync(context, network, message);
                         }
                         break;
-                    case MetodType.ExistReturnInvokeAsync:
+                    case MethodType.ExistReturnInvokeAsync:
                         if (context.ParameterTypes.Length == 0)
                         {
                             ExistReturnInvokeAsync(context, network);
@@ -75,7 +75,7 @@ namespace H6Game.Base
             }
         }
 
-        private static object GetMessage(MetodContext context, Network network)
+        private static object GetMessage(MethodContext context, Network network)
         {
             var packet = network.RecvPacket;
             //获取消息Code的消息类型
@@ -94,7 +94,11 @@ namespace H6Game.Base
             if (!isValueType)
                 return message;
 
-            if (type == typeof(int))
+            if(type.BaseType == typeof(Enum))
+            {
+                return (int)(MyInt32)message;
+            }
+            else if (type == typeof(int))
             {
                 return (int)(MyInt32)message;
             }
@@ -157,53 +161,53 @@ namespace H6Game.Base
             throw new NetworkException($"为定义的值类型:{codeType}");
         }
 
-        private static void InvokeSync(MetodContext context, Network network, object message)
+        private static void InvokeSync(MethodContext context, Network network, object message)
         {
             context.Parameters[0] = message;
             context.MethodInfo.Invoke(context.Owner, context.Parameters);
         }
 
-        private static void InvokeSync(MetodContext context, Network network)
+        private static void InvokeSync(MethodContext context, Network network)
         {
             context.MethodInfo.Invoke(context.Owner, null);
         }
 
-        private static void ExistReturnInvokeSync(MetodContext context, Network network, object message, Type type)
+        private static void ExistReturnInvokeSync(MethodContext context, Network network, object message, Type type)
         {
             context.Parameters[0] = message;
             var response = context.MethodInfo.Invoke(context.Owner, context.Parameters);
             network.Response(response, type);
         }
 
-        private static void ExistReturnInvokeSync(MetodContext context, Network network, Type type)
+        private static void ExistReturnInvokeSync(MethodContext context, Network network, Type type)
         {
             var response = context.MethodInfo.Invoke(context.Owner, null);
             network.Response(response, type);
         }
 
-        private static async void InvokeAsync(MetodContext context, Network network, object message)
+        private static async void InvokeAsync(MethodContext context, Network network, object message)
         {
             context.Parameters[0] = message;
             await (Task)context.MethodInfo.Invoke(context.Owner, context.Parameters);
         }
 
-        private static async void InvokeAsync(MetodContext context, Network network)
+        private static async void InvokeAsync(MethodContext context, Network network)
         {
             await (Task)context.MethodInfo.Invoke(context.Owner, null);
         }
 
-        private static async void ExistReturnInvokeAsync(MetodContext context, Network network, object message)
+        private static async void ExistReturnInvokeAsync(MethodContext context, Network network, object message)
         {
             context.Parameters[0] = message;
             await Response(context, network, context.Parameters);
         }
 
-        private static async void ExistReturnInvokeAsync(MetodContext context, Network network)
+        private static async void ExistReturnInvokeAsync(MethodContext context, Network network)
         {
             await Response(context, network, null);
         }
 
-        private static async Task Response(MetodContext context, Network network, object[] message)
+        private static async Task Response(MethodContext context, Network network, object[] message)
         {
             var type = context.ReturnType.GenericTypeArguments[0];
             if (type == typeof(string))
@@ -288,8 +292,9 @@ namespace H6Game.Base
             }
             else if (typeof(IMessage).IsAssignableFrom(type))
             {
-                var tcs = new TaskCompletionSource<IMessage>(context.MethodInfo.Invoke(context.Owner, message));
-                var response = await tcs.Task;
+                var task = (Task)context.MethodInfo.Invoke(context.Owner, message);
+                await task;
+                var response = task.GetType().GetProperty("Result").GetValue(task);
                 network.Response(response, type);
             }
             else

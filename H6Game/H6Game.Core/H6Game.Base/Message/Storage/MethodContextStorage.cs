@@ -7,12 +7,12 @@ using System.Text;
 
 namespace H6Game.Base
 {
-    public static class MetodContextStorage
+    public static class MethodContextStorage
     {
-        private static Dictionary<int, List<MetodContext>> MetodContexts { get; } = new Dictionary<int, List<MetodContext>>();
+        private static Dictionary<int, List<MethodContext>> MetodContexts { get; } = new Dictionary<int, List<MethodContext>>();
         private static Dictionary<Type, HashSet<int>> ControllerCmds { get; } = new Dictionary<Type, HashSet<int>>();
 
-        public static bool TryGetContext(int netCommand, out List<MetodContext> contexts)
+        public static bool TryGetContext(int netCommand, out List<MethodContext> contexts)
         {
             return MetodContexts.TryGetValue(netCommand, out contexts);
         }
@@ -28,7 +28,7 @@ namespace H6Game.Base
 
             foreach (var cmd in cmds)
             {
-                if (MetodContexts.TryGetValue(cmd, out List<MetodContext> contexts))
+                if (MetodContexts.TryGetValue(cmd, out List<MethodContext> contexts))
                 {
                     var deletes = contexts.Where(a => a.Owner.GetType() == type);
                     foreach (var context in deletes)
@@ -50,13 +50,13 @@ namespace H6Game.Base
             var methodInfos = type.GetMethods();
             foreach (var method in methodInfos)
             {
-                var attribute = method.GetCustomAttribute(typeof(NetCommandAttribute));
+                var attribute = method.GetCustomAttribute(typeof(NetCommandAttribute)) as NetCommandAttribute;
                 if (attribute == null)
-                    continue;
+                    return;
 
                 var parameters = method.GetParameters();
                 var parameterTypes = parameters == null ? new Type[0] : parameters.Select(a => a.ParameterType).ToArray();
-                var context = new MetodContext
+                var context = new MethodContext
                 {
                     Owner = controller,
                     ParameterTypes = parameterTypes,
@@ -65,38 +65,46 @@ namespace H6Game.Base
                     IsAsyncMetod = method.ReturnType.BaseType == typeof(Task) || method.ReturnType == typeof(Task),
                     MethodInfo = method,
                 };
+                SetMothodType(context);
+                SetCmdMethodContexts(context, method, hsCmds, attribute);
+            }
+        }
 
-                if (context.IsAsyncMetod && context.ExistReturn())
+        private static void SetMothodType(MethodContext context)
+        {
+            if (context.IsAsyncMetod && context.ExistReturn())
+            {
+                context.MetodType = MethodType.ExistReturnInvokeAsync;
+            }
+            else if (context.IsAsyncMetod && !context.ExistReturn())
+            {
+                context.MetodType = MethodType.InvokeAsync;
+            }
+            else if (!context.IsAsyncMetod && context.ExistReturn())
+            {
+                context.MetodType = MethodType.ExistReturnInvoke;
+            }
+            else if (!context.IsAsyncMetod && !context.ExistReturn())
+            {
+                context.MetodType = MethodType.Invoke;
+            }
+        }
+
+        private static void SetCmdMethodContexts(MethodContext context, MethodInfo method, HashSet<int> hsCmds, NetCommandAttribute attribute)
+        {
+            var cmds = attribute.MessageCmds;
+            foreach (var cmd in cmds)
+            {
+                if (!MetodContexts.TryGetValue(cmd, out List<MethodContext> contexts))
                 {
-                    context.MetodType = MetodType.ExistReturnInvokeAsync;
-                }
-                else if (context.IsAsyncMetod && !context.ExistReturn())
-                {
-                    context.MetodType = MetodType.InvokeAsync;
-                }
-                else if (!context.IsAsyncMetod && context.ExistReturn())
-                {
-                    context.MetodType = MetodType.ExistReturnInvoke;
-                }
-                else if (!context.IsAsyncMetod && !context.ExistReturn())
-                {
-                    context.MetodType = MetodType.Invoke;
+                    contexts = new List<MethodContext>();
+                    MetodContexts[cmd] = contexts;
                 }
 
-                var cmds = (attribute as NetCommandAttribute).MessageCmds;
-                foreach (var cmd in cmds)
-                {
-                    if (!MetodContexts.TryGetValue(cmd, out List<MetodContext> contexts))
-                    {
-                        contexts = new List<MetodContext>();
-                        MetodContexts[cmd] = contexts;
-                    }
+                ValidateContext(contexts, context, cmd);
 
-                    ValidateContext(contexts, context, cmd);
-
-                    contexts.Add(context);
-                    hsCmds.Add(cmd);
-                }
+                contexts.Add(context);
+                hsCmds.Add(cmd);
             }
         }
 
@@ -105,7 +113,7 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="contexts"></param>
         /// <returns></returns>
-        private static void ValidateContext(List<MetodContext> contexts, MetodContext newContext, int netCommand)
+        private static void ValidateContext(List<MethodContext> contexts, MethodContext newContext, int netCommand)
         {
             foreach (var context in contexts)
             {
@@ -137,14 +145,14 @@ namespace H6Game.Base
             }
         }
 
-        private static void ThrowRepeatError(MetodContext context, MetodContext newContext, int netCommand)
+        private static void ThrowRepeatError(MethodContext context, MethodContext newContext, int netCommand)
         {
             throw new ControllerException($"方法:{context.MethodInfo.ReflectedType}/{context.MethodInfo}" +
                 $"与方法:{newContext.MethodInfo.ReflectedType}/{newContext.MethodInfo}参数相同，" +
                 $"消息类型相同时不能订阅一样的NetCommand:{netCommand}");
         }
 
-        private static void ThrowRepeatSubscriberError(IEnumerable<ISubscriber> subscribers, MetodContext newContext, int netCommand)
+        private static void ThrowRepeatSubscriberError(IEnumerable<ISubscriber> subscribers, MethodContext newContext, int netCommand)
         {
             var builder = new StringBuilder();
             foreach (var subscriber in subscribers)

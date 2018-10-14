@@ -3,6 +3,6 @@ namespace H6Game.Base
 {
     public interface IComponentSubscriber
     {
-        void Invoke(MetodContext context, Network network);
+        void Invoke(MethodContext context, Network network);
     }
 }
