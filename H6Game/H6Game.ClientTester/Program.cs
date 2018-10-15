@@ -8,14 +8,7 @@ namespace H6Game.ClientTester
         static void Main(string[] args)
         {
             var connector = Game.Scene.AddComponent<NetConnectorComponent>();
-            connector.OnConnect += (n, t) => 
-            {
-                if (t == ConnectType.Proxy)
-                    connector.ConnectingGate();
-                else if(t == ConnectType.Gate)
-                    TestBenckmark.Start(n);
-            };
-
+            connector.OnConnect += (n, t) => { TestBenckmark.Start(n);};
             while (true)
             {
                 Game.Update();

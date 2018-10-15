@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using System;
+﻿using System;
 
 namespace H6Game.Base
 {
@@ -89,7 +88,7 @@ namespace H6Game.Base
         /// <summary>
         /// 连接到网关服务，连接成功后会断开与代理服务连接。 
         /// </summary>
-        public async void ConnectingGate()
+        private async void ConnectingGate()
         {
             var message = await this.Network.CallMessageAsync<int,NetEndPointMessage>((int)this.ProtocalType, SysNetCommand.GetGateEndPoint);
             if(message == null)
@@ -138,6 +137,11 @@ namespace H6Game.Base
                 var proxyEndPoint = IPEndPointHelper.GetIPEndPoint(this.Config);
                 this.Network = Network.CreateConnector(proxyEndPoint, this.ProtocalType, network =>
                 {
+                    if (this.Config.ProxyEnable)
+                    {
+                        ConnectingGate();
+                        return;
+                    }
                     this.OnConnect?.Invoke(network, ConnectType.Proxy);
                 }, network =>
                 {
@@ -147,9 +151,14 @@ namespace H6Game.Base
             }
             else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
-                var prefixed = this.Config.ProxyHost;
+                var prefixed = this.Config.Host;
                 this.Network = Network.CreateWebSocketConnector(prefixed, network =>
                 {
+                    if (this.Config.ProxyEnable)
+                    {
+                        ConnectingGate();
+                        return;
+                    }
                     this.OnConnect?.Invoke(network, ConnectType.Proxy);
                 },
                 network =>

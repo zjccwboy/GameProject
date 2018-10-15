@@ -33,7 +33,7 @@ namespace H6Game.Base
                 }
             }
 
-            if (Config == null || string.IsNullOrWhiteSpace(Config.ProxyHost))
+            if (Config == null || string.IsNullOrWhiteSpace(Config.Host))
                 return false;
 
             return true;
@@ -43,8 +43,8 @@ namespace H6Game.Base
         {
             Config = new NetConnectConfigEntity
             {
-                ProxyHost = "payapi.test.com",
-                ProtocalType = ProtocalType.Kcp,
+                Host = "ws://127.0.0.1:9000/",
+                ProtocalType = ProtocalType.Wcp,
                 IsCompress = false,
                 IsEncrypt = false,
                 Port = 50000,

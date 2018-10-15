@@ -163,9 +163,9 @@ namespace H6Game.Base
     public class NetConnectConfigEntity
     {
         /// <summary>
-        /// 如果服务端使用分布式部署ProxyHost是代理服务的IP或者域名。
+        /// 如果服务端使用分布式部署Host是代理服务的IP或者域名。
         /// </summary>
-        public string ProxyHost { get; set; }
+        public string Host { get; set; }
 
         /// <summary>
         /// 如果服务端使用分布式部署，Port需要设置成代理服务端口。
@@ -176,6 +176,11 @@ namespace H6Game.Base
         /// 协议类型，1 TCP, 2 KCP 3 WCP
         /// </summary>
         public ProtocalType ProtocalType { get; set; }
+
+        /// <summary>
+        /// 是否启用代理连接
+        /// </summary>
+        public bool ProxyEnable { get; set; }
 
         /// <summary>
         /// 数据传输是否启用压缩传输。

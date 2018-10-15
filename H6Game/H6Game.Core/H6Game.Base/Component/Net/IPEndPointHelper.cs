@@ -19,20 +19,20 @@ namespace H6Game.Base
             const string ipRegex = @"((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)";
 
             var regex = new Regex(ipOrDomainRegex);
-            var isMatch = regex.IsMatch(config.ProxyHost);
+            var isMatch = regex.IsMatch(config.Host);
             if (!isMatch)
                 throw new ComponentException("连接服务端主机IP地址或者域名配置错误，请检查OutNetConfig.json文件配置。");
 
             regex = new Regex(ipRegex);
-            var isIpadress = regex.IsMatch(config.ProxyHost);
+            var isIpadress = regex.IsMatch(config.Host);
             IPAddress ipAddress = null;
             if (isIpadress)
             {
-                ipAddress = IPAddress.Parse(config.ProxyHost);
+                ipAddress = IPAddress.Parse(config.Host);
             }
             else
             {
-                var hostInfo = Dns.GetHostEntry(config.ProxyHost);
+                var hostInfo = Dns.GetHostEntry(config.Host);
                 ipAddress = hostInfo.AddressList[0];
             }
             var endPoint = new IPEndPoint(ipAddress, config.Port);
