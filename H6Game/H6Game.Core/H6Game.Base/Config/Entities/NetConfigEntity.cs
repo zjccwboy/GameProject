@@ -58,22 +58,10 @@ namespace H6Game.Base
 
     public class OuterAcceptConfigEntity
     {
-        /// <summary>
-        /// 监听外网KCP(UDP)连接IP端口配置信息，该配置只有在IsCenterServer=false时即非中心服务时才会被使用。
-        /// 当IsProxyServer=true也即该服务为代理服务时客户端的连接配置ProxyHost Port必须指向此服务。
-        /// </summary>
         public EndPointConfigEntity OuterKcpAcceptConfig { get; set; }
 
-        /// <summary>
-        /// 监听外网TCP连接IP端口配置信息，该配置只有在IsCenterServer=false时即非中心服务时才会被使用。
-        /// 当IsProxyServer=true也即该服务为代理服务时客户端的连接配置ProxyHost Port必须指向此服务。
-        /// </summary>
         public EndPointConfigEntity OuterTcpAcceptConfig { get; set; }
 
-        /// <summary>
-        /// 监听外网WebSocket连接IP端口配置信息，该配置只有在IsCenterServer=false时即非中心服务时才会被使用。
-        /// 当IsProxyServer=true也即该服务为代理服务时客户端的连接配置ProxyHost Port必须指向此服务。
-        /// </summary>
         public EndPointWebSocketConfigEntity OuterWebSocketConfig { get; set; }
 
         public OuterEndPointMessage GetMessage()
