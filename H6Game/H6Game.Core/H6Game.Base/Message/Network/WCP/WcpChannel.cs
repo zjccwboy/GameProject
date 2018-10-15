@@ -41,15 +41,14 @@ namespace H6Game.Base
                     return;
 
                 var now = TimeUitls.Now();
-                if (now - this.LastConnectTime < ANetChannel.ReConnectInterval)
+                if (now - this.LastConnectTime < ReConnectInterval)
                     return;
 
                 this.LastConnectTime = now;
 
-                if (this.NetSocket == null)
-                    this.NetSocket = new ClientWebSocket();
-
-                await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), CancellationToken.None);
+                this.NetSocket = new ClientWebSocket();
+                var ctk = new CancellationTokenSource();
+                await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), ctk.Token);
 
                 //ConnectAsync为多线程异步，需要放到主线程中执行
                 ThreadCallbackContext.Instance.Post(OnConnectComplete, this);
@@ -125,7 +124,7 @@ namespace H6Game.Base
                     ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
                     AutoReset.WaitOne();
                 }
-                catch (Exception e)
+                catch
                 {
                     this.DisConnect();
                     return;
@@ -155,7 +154,7 @@ namespace H6Game.Base
             }
         }
 
-        public override async void DisConnect()
+        public override void DisConnect()
         {
             if (!this.Connected)
                 return;
@@ -179,11 +178,26 @@ namespace H6Game.Base
                 this.RecvParser.Clear();
             }
 
-            if(this.NetSocket.State == WebSocketState.Open)
-                await this.NetSocket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, CancellationToken.None);
+            SendClose(this.NetSocket);
+        }
 
-            this.NetSocket.Dispose();
-            this.NetSocket = null;
+        private async void SendClose(WebSocket netSocket)
+        {
+            var socket = netSocket;
+            try
+            {
+                if (this.NetSocket.State == WebSocketState.Open)
+                {
+                    var ctk = new CancellationTokenSource();
+                    await socket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, ctk.Token);
+                }
+            }
+            catch { }
+            finally
+            {
+                socket.Dispose();
+                socket = null;
+            }
         }
     }
 }
