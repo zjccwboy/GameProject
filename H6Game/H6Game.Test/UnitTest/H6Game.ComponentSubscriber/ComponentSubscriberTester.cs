@@ -289,11 +289,4 @@ namespace H6Game.ComponentSubscriber
         }
     }
 
-    public enum EnumType
-    {
-        None,
-        Test1,
-        Test2,
-    }
-
 }

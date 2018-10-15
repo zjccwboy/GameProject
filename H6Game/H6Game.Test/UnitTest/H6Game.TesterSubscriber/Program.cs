@@ -41,6 +41,7 @@ namespace H6Game.TesterSubscriber
             SubUShort();
             SubChar();
             SubClass();
+            SubEnum();
         }
 
         private static async void SubEmpty()
@@ -267,6 +268,20 @@ namespace H6Game.TesterSubscriber
             else
             {
                 Console.WriteLine("SubClass error.");
+            }
+        }
+
+        private static async void SubEnum()
+        {
+            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
+            var enumResult = await network.CallMessageAsync<EnumType, EnumType>(EnumType.Test1, NetCommandTest.SubEnum);
+            if (EnumType.Test1 == enumResult)
+            {
+                Console.WriteLine("SubEnum success.");
+            }
+            else
+            {
+                Console.WriteLine("SubEnum error.");
             }
         }
     }

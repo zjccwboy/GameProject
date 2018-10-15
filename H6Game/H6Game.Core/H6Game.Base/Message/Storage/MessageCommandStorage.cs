@@ -12,7 +12,12 @@ namespace H6Game.Base
         public static int GetMsgCode(Type type)
         {
             if (!MsgCodes.TryGetValue(type, out int result))
-                throw new Exception($"MessageType:{type} 不存在.");
+            {
+                if (type.BaseType == typeof(Enum))
+                    return MsgCodes[typeof(int)];
+                else
+                    throw new Exception($"MessageType:{type} 不存在.");
+            }
 
             return result;
         }

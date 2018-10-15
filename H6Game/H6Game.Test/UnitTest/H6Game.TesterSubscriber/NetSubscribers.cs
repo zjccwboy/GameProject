@@ -142,4 +142,13 @@ namespace H6Game.TesterSubscriber
             network.Response(message);
         }
     }
+
+    [NetCommand(NetCommandTest.SubEnum)]
+    public class SubEnum : NetSubscriber<EnumType>
+    {
+        protected override void Subscribe(Network network, EnumType message, int netCommand)
+        {
+            network.Response(message);
+        }
+    }
 }

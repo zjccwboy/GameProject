@@ -4,6 +4,13 @@ using System.Text;
 
 namespace H6Game.BaseTest
 {
+    public enum EnumType
+    {
+        None,
+        Test1,
+        Test2,
+    }
+
     public enum NetCommandTest
     {
         SubEmpty = 999999,
