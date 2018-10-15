@@ -96,6 +96,7 @@ namespace H6Game.Base
             }
             catch (Exception e)
             {
+                Log.Error(e, LoggerBllType.System);
                 this.DisConnect();
             }
         }
@@ -124,8 +125,9 @@ namespace H6Game.Base
                     ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
                     AutoReset.WaitOne();
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(e, LoggerBllType.System);
                     this.DisConnect();
                     return;
                 }
