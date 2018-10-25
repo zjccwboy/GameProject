@@ -10,14 +10,14 @@ namespace H6Game.Gate
     {
         private Dictionary<int, BaseActorComponent> OutNetActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, Network> ActorNetworks { get; } = new Dictionary<int, Network>();
-        private ActorPoolComponent ActorPool { get; set; }
+        private ActorComponentStorage ActorPool { get; set; }
         private NetDistributionsComponent Distributions { get; set; }
         public List<NetAcceptorComponent> OuterAccepts { get; private set; }
 
         public override void Awake()
         {
             this.Distributions = Game.Scene.GetComponent<NetDistributionsComponent>();
-            this.ActorPool = Game.Scene.GetComponent<ActorPoolComponent>();
+            this.ActorPool = Game.Scene.GetComponent<ActorComponentStorage>();
 
             if (this.Distributions == null)
                 throw new ComponentException("DistributionsComponent组件没有加载。");

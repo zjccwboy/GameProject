@@ -12,7 +12,7 @@ namespace H6Game.Account
         public abstract LoginResponeMessage VerifyLogin(LoginRequestMessage request, TAccount account);
         public void SetRespose(LoginResponeMessage response, TAccount account)
         {
-            response.AccountId = Game.Scene.GetComponent<ActorPoolComponent>().GetActor(account.Id, ActorType.Player).Id;
+            response.AccountId = Game.Scene.GetComponent<ActorComponentStorage>().GetActor(account.Id, ActorType.Player).Id;
             response.FType = account.FType;
             response.FAccountName = account.FAccountName;
             response.FVIPLevel = account.FVIPLevel;

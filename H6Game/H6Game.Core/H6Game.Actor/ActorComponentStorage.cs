@@ -9,7 +9,7 @@ namespace H6Game.Actor
 
     [ComponentEvent(EventType.Awake)]
     [SingleCase]
-    public class ActorPoolComponent : NetComponentSubscriber
+    public class ActorComponentStorage : NetComponentSubscriber
     {
         private Dictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<int, BaseActorComponent>> TypeComponentIdActors { get; } = new Dictionary<ActorType, Dictionary<int, BaseActorComponent>>();

@@ -5,7 +5,7 @@ namespace H6Game.Actor
     public abstract class BaseActorComponent<TEntity> : BaseActorComponent where TEntity : BaseEntity
     {
         public TEntity EntityInfo { get; protected set; }
-        public ActorPoolComponent ActorPool { get; } = Game.Scene.GetComponent<ActorPoolComponent>();
+        public ActorComponentStorage ActorPool { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
 
         public override void Dispose()
         {

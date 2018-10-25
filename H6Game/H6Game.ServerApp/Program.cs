@@ -15,7 +15,7 @@ namespace H6Game.ServerApp
                 case ApplicationType.Default:
                     Game.Scene.AddComponent<MongoConfig>();
                     Game.Scene.AddComponent<NetDistributionsComponent>();
-                    Game.Scene.AddComponent<ActorPoolComponent>();
+                    Game.Scene.AddComponent<ActorComponentStorage>();
                     break;
                 case ApplicationType.CenterServer:
                     Game.Scene.AddComponent<MongoConfig>();
@@ -24,7 +24,7 @@ namespace H6Game.ServerApp
                 case ApplicationType.GateProxyServer:
                     Game.Scene.AddComponent<MongoConfig>();
                     Game.Scene.AddComponent<NetDistributionsComponent>();
-                    Game.Scene.AddComponent<ActorPoolComponent>();
+                    Game.Scene.AddComponent<ActorComponentStorage>();
                     Game.Scene.AddComponent<ProxyComponent>();
                     Game.Scene.AddComponent<GateComponent>();
                     break;
