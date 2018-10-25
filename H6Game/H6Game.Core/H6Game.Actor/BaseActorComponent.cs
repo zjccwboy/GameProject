@@ -1,4 +1,6 @@
 ﻿using H6Game.Base;
+using System;
+using System.Collections.Generic;
 
 namespace H6Game.Actor
 {
@@ -56,5 +58,74 @@ namespace H6Game.Actor
         public bool IsLocalActor { get { return this.ActorEntity.ActorId == this.Id; } }
         public abstract ActorType ActorType { get;}
         public abstract void SetRemote(Network network, string objectId, int actorId);
+    }
+
+    public static class BaseActorExtensions
+    {
+        /// <summary>
+        /// 添加一个成员
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="member"></param>
+        public static void AddMember(this BaseActorComponent current, BaseActorComponent member)
+        {
+            current.Members.AddComponent(member);
+        }
+
+
+        /// <summary>
+        /// 获取一个类型成员集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="current"></param>
+        /// <returns></returns>
+        public static HashSet<BaseActorComponent> GetMembers<T>(this BaseActorComponent current) where T : BaseActorComponent
+        {
+            return current.Members.GetComponents<T>();
+        }
+
+        /// <summary>
+        /// 获取一个组件集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static HashSet<BaseActorComponent> GetMembers(this BaseActorComponent current, Type type)
+        {
+            return current.Members.GetComponents(type);
+        }
+
+        /// <summary>
+        /// 获取一个成员
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="current"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static T GetMember<T>(this BaseActorComponent current, int id) where T : BaseActorComponent
+        {
+            return current.Members.GetComponent<T>(id);
+        }
+
+        /// <summary>
+        /// 删除一个组件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        /// <returns></returns>
+        public static bool Remove<T>(this BaseActorComponent current, T component) where T : BaseActorComponent
+        {
+            return current.Members.Remove(component);
+        }
+
+        /// <summary>
+        /// 删除一个组件
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool Remove(this BaseActorComponent current, int id)
+        {
+            return current.Members.Remove(id);
+        }
     }
 }
