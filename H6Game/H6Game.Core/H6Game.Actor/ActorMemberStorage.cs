@@ -104,5 +104,16 @@ namespace H6Game.Actor
 
             return false;
         }
+
+        /// <summary>
+        /// 清空缓冲区
+        /// </summary>
+        public void Clear()
+        {
+            ActorTypeComponents.Clear();
+            TypeComponents.Clear();
+            IdComponents.Clear();
+            SingleComponents.Clear();
+        }
     }
 }
