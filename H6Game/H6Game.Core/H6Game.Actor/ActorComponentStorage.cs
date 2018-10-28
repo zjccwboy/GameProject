@@ -237,17 +237,19 @@ namespace H6Game.Actor
     public static class ActorComponentStorageExtensions
     {
         /// <summary>
-        /// 添加远程Actor
+        /// 添加Actor
         /// </summary>
         /// <typeparam name="TActor"></typeparam>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="current"></param>
-        /// <param name="actor"></param>
         /// <param name="entity"></param>
-        public static void AddActor<TActor,TEntity>(this ActorComponentStorage current, TActor actor, TEntity entity) 
+        /// <returns></returns>
+        public static TActor AddActor<TActor, TEntity>(this ActorComponentStorage current, TEntity entity)
             where TEntity : BaseEntity where TActor : BaseActorComponent<TEntity>
         {
+            var actor = Game.Scene.AddComponent<TActor>();
             actor.SetLocal(entity);
+            return actor;
         }
     }
 }

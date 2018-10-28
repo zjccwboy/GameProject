@@ -25,7 +25,7 @@ namespace H6Game.Actor
             base.Dispose();
         }
 
-        public void SetLocal(TEntity entityInfo)
+        internal void SetLocal(TEntity entityInfo)
         {
             this.ActorEntity.ActorId = this.Id;
             this.EntityInfo = entityInfo;
@@ -36,7 +36,7 @@ namespace H6Game.Actor
             this.ActorPool.AddLocal(this);
         }
 
-        public override void SetRemote(Network network, string objectId, int actorId)
+        internal override void SetRemote(Network network, string objectId, int actorId)
         {
             this.ActorEntity.ActorId = actorId;
             this.ActorEntity.Id = objectId;
@@ -57,7 +57,7 @@ namespace H6Game.Actor
         public ActorEntity ActorEntity { get; } = new ActorEntity();
         public bool IsLocalActor { get { return this.ActorEntity.ActorId == this.Id; } }
         public abstract ActorType ActorType { get;}
-        public abstract void SetRemote(Network network, string objectId, int actorId);
+        internal abstract void SetRemote(Network network, string objectId, int actorId);
     }
 
     public static class BaseActorExtensions

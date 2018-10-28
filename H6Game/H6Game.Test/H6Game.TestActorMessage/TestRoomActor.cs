@@ -28,8 +28,7 @@ namespace H6Game.TestActorMessage
 
         public static void AddActor(TRoom room)
         {
-            var actor = Game.Scene.AddComponent<RoomComponent>();
-            actor.SetLocal(room);
+            Game.Scene.GetComponent<ActorComponentStorage>().AddActor<RoomComponent, TRoom>(room);
         }
     }
 }

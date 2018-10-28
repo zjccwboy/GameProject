@@ -37,8 +37,7 @@ namespace H6Game.Account
                         response = login.VerifyLogin(message, account);
                         if (response.LoginResult == LoginResutlCode.Success)
                         {
-                            var actor = Game.Scene.AddComponent<PlayerComponent>();
-                            Game.Scene.GetComponent<ActorComponentStorage>().AddActor(actor, account);
+                            Game.Scene.GetComponent<ActorComponentStorage>().AddActor<PlayerComponent, TAccount>(account);
                         }
                     }
                     break;
