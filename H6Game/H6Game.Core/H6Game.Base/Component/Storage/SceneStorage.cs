@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace H6Game.Base
@@ -59,6 +60,17 @@ namespace H6Game.Base
         public T AddComponent<T>() where T : BaseComponent
         {
             var component = ObjectStorage.Fetch<T>();
+            this.AddComponent(component);
+            return component;
+        }
+
+        /// <summary>
+        /// 添加并返回一个组件。
+        /// </summary>
+        /// <returns>返回一个组件实体。</returns>
+        public BaseComponent AddComponent(Type type)
+        {
+            var component = ObjectStorage.Fetch(type);
             this.AddComponent(component);
             return component;
         }

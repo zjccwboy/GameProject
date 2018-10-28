@@ -1,5 +1,6 @@
 ﻿using H6Game.Actor;
 using H6Game.Base;
+using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Entities.Enums;
 using H6Game.Hotfix.Messages.OutNet;
 using H6Game.Rpository;
@@ -37,9 +38,8 @@ namespace H6Game.Account
                         if (response.LoginResult == LoginResutlCode.Success)
                         {
                             var actor = Game.Scene.AddComponent<PlayerComponent>();
-                            actor.SetLocal(account);
+                            Game.Scene.GetComponent<ActorComponentStorage>().AddActor(actor, account);
                         }
-
                     }
                     break;
                 case LoginType.AliPayLogin:

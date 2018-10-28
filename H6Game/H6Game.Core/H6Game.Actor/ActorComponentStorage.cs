@@ -11,10 +11,10 @@ namespace H6Game.Actor
     [SingleCase]
     public class ActorComponentStorage : NetComponentSubscriber
     {
+        private Dictionary<ActorType, Type> ActorTypes { get; } = new Dictionary<ActorType, Type>();
         private Dictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<int, BaseActorComponent>> TypeComponentIdActors { get; } = new Dictionary<ActorType, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<string, BaseActorComponent>> TypeObjectIdActors { get; } = new Dictionary<ActorType, Dictionary<string, BaseActorComponent>>();
-        private Dictionary<ActorType, Type> ActorTypes { get; } = new Dictionary<ActorType, Type>();
         private Dictionary<int, BaseActorComponent> LocalActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, BaseActorComponent> RemoteActors { get; } = new Dictionary<int, BaseActorComponent>();
         private NetDistributionsComponent Distributions { get; set; }
@@ -60,11 +60,9 @@ namespace H6Game.Actor
         {
             var logs = $"CMD:{this.NetMessageCmd} ActorId:{message.ActorId} MSG:{message.ToJson()}";
             Log.Info(logs, LoggerBllType.System);
-
-            var type = ActorTypes[message.ActorType];
-            var actor = ObjectStorage.Fetch(type) as BaseActorComponent;
+            var type = this.ActorTypes[message.ActorType];
+            var actor = Game.Scene.AddComponent(type) as BaseActorComponent;
             actor.SetRemote(this.CurrentNetwrok, message.ObjectId, message.ActorId);
-            Game.Scene.AddComponent(actor);
         }
 
         /// <summary>
@@ -104,7 +102,7 @@ namespace H6Game.Actor
             }
         }
 
-        public void AddLocal(BaseActorComponent component)
+        internal void AddLocal(BaseActorComponent component)
         {
             if (LocalActors.ContainsKey(component.Id))
                 return;
@@ -133,7 +131,7 @@ namespace H6Game.Actor
             this.Distributions.InnerNetworks.Broadcast(message, NetCommand.AddActorCmd);
         }
 
-        public void AddRemote(BaseActorComponent component)
+        internal void AddRemote(BaseActorComponent component)
         {
             if (RemoteActors.ContainsKey(component.Id))
                 return;
@@ -185,7 +183,7 @@ namespace H6Game.Actor
             return component;
         }
 
-        public void RemoveRemote(BaseActorComponent component)
+        internal void RemoveRemote(BaseActorComponent component)
         {
             if (component == null)
                 return;
@@ -212,7 +210,7 @@ namespace H6Game.Actor
                 return;
         }
 
-        public void RemoveLocal(BaseActorComponent component)
+        internal void RemoveLocal(BaseActorComponent component)
         {
             if (component == null)
                 return;
@@ -233,6 +231,34 @@ namespace H6Game.Actor
                 return;
 
             this.Distributions.InnerNetworks.Broadcast(component.Id, NetCommand.RemoveActorCmd);
+        }
+    }
+
+    public static class ActorComponentStorageExtensions
+    {
+        /// <summary>
+        /// 添加远程Actor
+        /// </summary>
+        /// <typeparam name="TActor"></typeparam>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="current"></param>
+        /// <param name="actor"></param>
+        /// <param name="entity"></param>
+        public static void AddActor<TActor,TEntity>(this ActorComponentStorage current, TActor actor, TEntity entity) 
+            where TEntity : BaseEntity where TActor : BaseActorComponent<TEntity>
+        {
+            actor.SetLocal(entity);
+        }
+
+        public int GetEntityId(this ActorComponentStorage current, string objectId, ActorType actorType)
+        {
+            if (!TypeObjectIdActors.TryGetValue(actorType, out Dictionary<string, BaseActorComponent> dicStrVal))
+                return null;
+
+            if (!dicStrVal.TryGetValue(objectId, out BaseActorComponent component))
+                return null;
+
+            return component;
         }
     }
 }
