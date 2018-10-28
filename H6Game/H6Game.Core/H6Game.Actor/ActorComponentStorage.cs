@@ -249,16 +249,5 @@ namespace H6Game.Actor
         {
             actor.SetLocal(entity);
         }
-
-        public int GetEntityId(this ActorComponentStorage current, string objectId, ActorType actorType)
-        {
-            if (!TypeObjectIdActors.TryGetValue(actorType, out Dictionary<string, BaseActorComponent> dicStrVal))
-                return null;
-
-            if (!dicStrVal.TryGetValue(objectId, out BaseActorComponent component))
-                return null;
-
-            return component;
-        }
     }
 }
