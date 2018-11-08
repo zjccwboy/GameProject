@@ -41,21 +41,7 @@ namespace H6Game.BaseTest
     //        throw new NotImplementedException();
     //    }
     //}
-
-    public class TestClass5 : NetComponentSubscriber
-    {
-        [NetCommand(2000)]
-        public int Test1()
-        {
-            return 100;
-        }
-
-        [NetCommand(2000)]
-        public int Test2(int data)
-        {
-            return data;
-        }
-    }
+    
 
 
     public class MessageSubscriberPoolTest
@@ -65,8 +51,6 @@ namespace H6Game.BaseTest
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
-            Game.Scene.AddComponent<TestClass5>();
-
         }
     }
 }

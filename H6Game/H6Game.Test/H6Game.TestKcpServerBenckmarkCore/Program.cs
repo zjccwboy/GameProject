@@ -10,6 +10,8 @@ namespace H6Game.TestKcpServerBenckmarkCore
         {
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
+            Game.Start();
+
             while (true)
             {
                 Game.Update();

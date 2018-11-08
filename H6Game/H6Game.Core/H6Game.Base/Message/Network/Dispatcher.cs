@@ -13,14 +13,6 @@ namespace H6Game.Base
         {
             try
             {
-                if (MethodContextStorage.TryGetContext(packet.NetCommand, out List<MethodContext> contexts))
-                {
-                    foreach (var context in contexts)
-                        context.Owner.Invoke(context, network);
-
-                    return;
-                }
-
                 if (MessageSubscriberStorage.TryGetSubscribers(packet.NetCommand, out HashSet<ISubscriber> subscribers))
                 {
                     foreach (var subscriber in subscribers)

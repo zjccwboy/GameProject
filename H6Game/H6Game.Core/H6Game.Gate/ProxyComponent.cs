@@ -5,7 +5,7 @@ namespace H6Game.Gate
 {
     [SingleCase]
     [ComponentEvent(EventType.Awake)]
-    public class ProxyComponent : NetComponentSubscriber
+    public class ProxyComponent : BaseComponent
     {
         private NetDistributionsComponent Distributions { get; set; }
         public List<NetAcceptorComponent> OuterAccepts { get; private set; }
@@ -19,8 +19,7 @@ namespace H6Game.Gate
             this.OuterAccepts = this.Distributions.OuterAccepts;
         }
 
-        [NetCommand(SysNetCommand.GetGateEndPoint)]
-        public NetEndPointMessage SubscribeOnGetGateEndPointMessage(int protocalType)
+        public NetEndPointMessage GetGetGoodConnectedInfo(int protocalType)
         {
             if (this.Distributions.IsProxyServer)
             {
@@ -36,6 +35,17 @@ namespace H6Game.Gate
                     return outer.WcpEndPointMessage;
             }
             return null;
+        }
+    }
+
+    [NetCommand(SysNetCommand.GetGateEndPoint)]
+    public class SubscribeOnGetGateEndPointMessage : NetSubscriber<int>
+    {
+        private ProxyComponent proxy { get; } = Game.Scene.GetComponent<ProxyComponent>();
+        protected override void Subscribe(Network network, int message, int netCommand)
+        {
+            var connectInfo = proxy.GetGetGoodConnectedInfo(message);
+            network.Response(connectInfo);
         }
     }
 }

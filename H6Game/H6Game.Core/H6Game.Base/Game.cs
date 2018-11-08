@@ -11,11 +11,15 @@ namespace H6Game.Base
         {
             ObjectTypeStorage.Load();
             ObjectStorage.Load();
-            MessageCommandStorage.Load();
-            MessageSubscriberStorage.Load();
 
             Scene = new SceneStorage();
             Event = new EventManager();
+        }
+
+        public static void Start()
+        {
+            MessageCommandStorage.Load();
+            MessageSubscriberStorage.Load();
         }
 
         public static void Update()

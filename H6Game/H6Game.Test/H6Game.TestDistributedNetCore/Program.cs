@@ -13,6 +13,7 @@ namespace H6Game.TestDistributedNetCore
             Game.Scene.AddComponent<ActorComponentStorage>();
             Game.Scene.AddComponent<GateComponent>();
             Game.Scene.AddComponent<ProxyComponent>();
+            Game.Start();
 
             while (true)
             {

@@ -98,10 +98,6 @@ namespace H6Game.Base
             var actorTypes = new HashSet<Type>();
             Objcets[actorBaseType] = actorTypes;
 
-            var controllerBaseType = typeof(IComponentSubscriber);
-            var controllerTypes = new HashSet<Type>();
-            Objcets[controllerBaseType] = controllerTypes;
-
             foreach (var assembly in assemblys)
             {
                 try
@@ -126,10 +122,6 @@ namespace H6Game.Base
                         if (rpositoryBaseType.IsAssignableFrom(t))
                         {
                             rpositoryTypes.Add(t);
-                        }
-                        if (controllerBaseType.IsAssignableFrom(t))
-                        {
-                            controllerTypes.Add(t);
                         }
                         if (CompareBaseType(t, componentBaseType))
                         {

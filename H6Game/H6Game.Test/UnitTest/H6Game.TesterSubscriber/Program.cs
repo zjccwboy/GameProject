@@ -16,8 +16,9 @@ namespace H6Game.TesterSubscriber
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
             Game.Scene.AddComponent<NetConnectorComponent>().OnConnect += (c, t) => { Start(); };
+            Game.Start();
 
-            while(true)
+            while (true)
             {
                 Game.Update();
                 Thread.Sleep(1);

@@ -9,17 +9,19 @@ namespace H6Game.Actor
 
     [ComponentEvent(EventType.Awake)]
     [SingleCase]
-    public class ActorComponentStorage : NetComponentSubscriber
+    public class ActorComponentStorage : BaseComponent
     {
         private Dictionary<ActorType, Type> ActorTypes { get; } = new Dictionary<ActorType, Type>();
         private Dictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<int, BaseActorComponent>> TypeComponentIdActors { get; } = new Dictionary<ActorType, Dictionary<int, BaseActorComponent>>();
         private Dictionary<ActorType, Dictionary<string, BaseActorComponent>> TypeObjectIdActors { get; } = new Dictionary<ActorType, Dictionary<string, BaseActorComponent>>();
-        private Dictionary<int, BaseActorComponent> LocalActors { get; } = new Dictionary<int, BaseActorComponent>();
         private Dictionary<int, BaseActorComponent> RemoteActors { get; } = new Dictionary<int, BaseActorComponent>();
+        private Dictionary<int, BaseActorComponent> LocalActors { get; } = new Dictionary<int, BaseActorComponent>();
         private NetDistributionsComponent Distributions { get; set; }
+
         public Action<Network> OnDisconnected { get; set; }
         public Action<Network> OnConnected { get; set; }
+
         public override void Awake()
         {
             var types = ObjectTypeStorage.GetTypes<BaseActor>();
@@ -51,55 +53,26 @@ namespace H6Game.Actor
             };
         }
 
-        /// <summary>
-        /// 远程服务端新增Actor事件消息
-        /// </summary>
-        /// <param name="message"></param>
-        [NetCommand(NetCommand.AddActorCmd)]
-        public void SubscribeOnRemoteAddActor(ActorSyncMessage message)
+        internal void SendLocalActors(Network network)
         {
-            var logs = $"CMD:{this.NetMessageCmd} ActorId:{message.ActorId} MSG:{message.ToJson()}";
-            Log.Info(logs, LoggerBllType.System);
-            var type = this.ActorTypes[message.ActorType];
-            var actor = Game.Scene.AddComponent(type) as BaseActorComponent;
-            actor.SetRemote(this.CurrentNetwrok, message.ObjectId, message.ActorId);
-        }
-
-        /// <summary>
-        /// 远程服务端删除Actor事件消息
-        /// </summary>
-        /// <param name="message"></param>
-        [NetCommand(NetCommand.RemoveActorCmd)]
-        public void SubscribeOnRemoteActorRemove(ActorSyncMessage message)
-        {
-            Log.Info(this.NetMessageCmd, LoggerBllType.System);
-
-            var actor = GetActor(this.CurrentNetwrok.Id, message.ActorId);
-            actor.Dispose();
-        }
-
-        /// <summary>
-        /// 远程服务同步本地服务Actor全量数据消息
-        /// </summary>
-        [NetCommand(NetCommand.SyncActorInfoCmd)]
-        public void SubscribeOnRemoteSyncFullActorInfo()
-        {
-            Log.Info(this.NetMessageCmd, LoggerBllType.System);
-
-            //回发AMessageCMD.AddActorCmd消息告诉远程订阅服务新增RemoteActor
             var count = 0;
             foreach (var actor in LocalActors.Values)
             {
-                actor.SendMySelf(this.CurrentNetwrok, NetCommand.AddActorCmd);
+                actor.SendMySelf(network, NetCommand.AddActorCmd);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
                 if (count >= 100)
                 {
-                    this.CurrentNetwrok.Channel.StartSend();
+                    network.Channel.StartSend();
                     count = 0;
                 }
             }
+        }
+
+        internal Type GetActorType(ActorType actorType)
+        {
+            return this.ActorTypes[actorType];
         }
 
         internal void AddLocal(BaseActorComponent component)
@@ -234,6 +207,42 @@ namespace H6Game.Actor
         }
     }
 
+    [NetCommand(NetCommand.AddActorCmd)]
+    public class SubscribeOnRemoteAddActor : NetSubscriber<ActorSyncMessage>
+    {
+        private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
+        protected override void Subscribe(Network network, ActorSyncMessage message, int netCommand)
+        {
+            var logs = $"CMD:{netCommand} ActorId:{message.ActorId} MSG:{message.ToJson()}";
+            Log.Info(logs, LoggerBllType.System);
+            ActorStorage.AddActor(network, message.ActorId, message.ActorType, message.ObjectId);
+        }
+    }
+
+    [NetCommand(NetCommand.RemoveActorCmd)]
+    public class SubscribeOnRemoteActorRemove : NetSubscriber<ActorSyncMessage>
+    {
+        private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
+        protected override void Subscribe(Network network, ActorSyncMessage message, int netCommand)
+        {
+            Log.Info(netCommand, LoggerBllType.System);
+            var actor = ActorStorage.GetActor(network.Id, message.ActorId);
+            actor.Dispose();
+        }
+    }
+
+    [NetCommand(NetCommand.SyncActorInfoCmd)]
+    public class SubscribeOnRemoteSyncFullActorInfo : NetSubscriber
+    {
+        private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
+        protected override void Subscribe(Network network, int netCommand)
+        {
+            Log.Info(netCommand, LoggerBllType.System);
+            this.ActorStorage.SendLocalActors(network);
+        }
+    }
+
+
     public static class ActorComponentStorageExtensions
     {
         /// <summary>
@@ -249,6 +258,24 @@ namespace H6Game.Actor
         {
             var actor = Game.Scene.AddComponent<TActor>();
             actor.SetLocal(entity);
+            return actor;
+        }
+
+        /// <summary>
+        /// 添加Actor
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="network"></param>
+        /// <param name="actorId"></param>
+        /// <param name="actorType"></param>
+        /// <param name="objectId"></param>
+        /// <returns></returns>
+        public static BaseActorComponent AddActor(this ActorComponentStorage current, Network network, int actorId
+            , ActorType actorType, string objectId)
+        {
+            var type = current.GetActorType(actorType);
+            var actor = Game.Scene.AddComponent(type) as BaseActorComponent;
+            actor.SetRemote(network, objectId, actorId);
             return actor;
         }
     }

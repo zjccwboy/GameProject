@@ -11,6 +11,7 @@ namespace H6Game.TestActorMessage
             Game.Scene.AddComponent<MongoConfig>();
             Game.Scene.AddComponent<NetDistributionsComponent>();
             Game.Scene.AddComponent<ActorComponentStorage>();
+            Game.Start();
 
             TestAccountActor.Start();
             TestGameActor.Start();

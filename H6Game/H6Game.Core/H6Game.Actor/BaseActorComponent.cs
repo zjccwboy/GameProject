@@ -7,7 +7,7 @@ namespace H6Game.Actor
     public abstract class BaseActorComponent<TEntity> : BaseActorComponent where TEntity : BaseEntity
     {
         public TEntity EntityInfo { get; protected set; }
-        public ActorComponentStorage ActorPool { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
+        private ActorComponentStorage ActorPool { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
 
         public override void Dispose()
         {
@@ -55,13 +55,33 @@ namespace H6Game.Actor
         /// </summary>
         public ActorMemberStorage Members { get; } = new ActorMemberStorage();
         public ActorEntity ActorEntity { get; } = new ActorEntity();
-        public bool IsLocalActor { get { return this.ActorEntity.ActorId == this.Id; } }
+        public bool IsLocalActor { get { return this.ActorEntity.ActorInfo != null; } }
         public abstract ActorType ActorType { get;}
         internal abstract void SetRemote(Network network, string objectId, int actorId);
     }
 
     public static class BaseActorExtensions
     {
+        /// <summary>
+        /// 发送当前Actor到指定的Network连接服务。
+        /// </summary>
+        /// <param name="actor">Actor类</param>
+        /// <param name="network">网络类</param>
+        /// <param name="messageCmd">消息指令</param>
+        public static void SendMySelf<TEnum>(this BaseActorComponent actor, Network network, TEnum messageCmd) where TEnum : Enum
+        {
+            if (!actor.IsLocalActor)
+                throw new ComponentException("非LocalActor不能发送ActorMySelf消息。");
+
+            var syncMessage = new ActorSyncMessage
+            {
+                ActorId = actor.Id,
+                ObjectId = actor.ActorEntity.Id,
+                ActorType = actor.ActorEntity.ActorType,
+            };
+            network.Send(syncMessage, messageCmd);
+        }
+
         /// <summary>
         /// 添加一个成员
         /// </summary>
@@ -71,7 +91,6 @@ namespace H6Game.Actor
         {
             current.Members.AddComponent(member);
         }
-
 
         /// <summary>
         /// 获取一个类型成员集合

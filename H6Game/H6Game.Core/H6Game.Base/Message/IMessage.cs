@@ -6,5 +6,6 @@ namespace H6Game.Base
     {
         int ActorId { get; set; }
     }
+
     public interface IMessage {}
 }

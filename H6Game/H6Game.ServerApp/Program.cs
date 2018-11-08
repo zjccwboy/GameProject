@@ -32,6 +32,7 @@ namespace H6Game.ServerApp
                     Game.Scene.AddComponent<NetDistributionsComponent>().OnConnect += network => { TestBenckmark.Start(network); };
                     break;
             }
+            Game.Start();
 
             while (true)
             {

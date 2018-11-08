@@ -39,11 +39,9 @@ namespace H6Game.Base
     /// </summary>
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     [SingleCase]
-    public sealed class NetDistributionsComponent : NetComponentSubscriber
+    public sealed class NetDistributionsComponent : BaseComponent
     {
         private NetConfigEntity Config { get; set; }
-        private NetEndPointMessage InNetMessage { get { return this.Config.GetLocalMessage(); } }
-        private OuterEndPointMessage OutNetMessage { get { return this.Config.GetOuterMessage(); } }
         private ConcurrentDictionary<NetEndPointMessage, Network> DisconnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
         private ConcurrentDictionary<NetEndPointMessage, Network> InConnectedNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
         private ConcurrentDictionary<NetEndPointMessage, Network> NotExistProxyNetworks { get; } = new ConcurrentDictionary<NetEndPointMessage, Network>();
@@ -51,6 +49,9 @@ namespace H6Game.Base
         private Dictionary<int, Network> OuAcceptNetworks { get; } = new Dictionary<int, Network>();
         private Network LocalAcceptor { get; set; }
         private Network CenterConnector { get; set; }
+
+        public OuterEndPointMessage OuterNetMessage { get { return this.Config.GetOuterMessage(); } }
+        public NetEndPointMessage InnerNetMessage { get { return this.Config.GetLocalMessage(); } }
 
         /// <summary>
         /// 监听外网连接网络类。
@@ -136,64 +137,7 @@ namespace H6Game.Base
                 network.Update();
         }
 
-        /// <summary>
-        /// 远程服务监听的端口IP信息。
-        /// </summary>
-        [NetCommand(SysNetCommand.AddInServerCmd)]
-        public void SubscribeOnAddServerConnection(NetEndPointMessage message)
-        {
-            if (InnerNetMapManager.Existed(message))
-                return;
-
-            AddNetwork(message);
-            if (!IsCenterServer)
-                return;
-
-            InnerNetMapManager.Add(this.CurrentNetwrok, message);
-            this.CurrentNetwrok.Broadcast(message, SysNetCommand.AddInServerCmd);
-            foreach (var entity in InnerNetMapManager.Entities)
-            {
-                this.CurrentNetwrok.Send(entity, SysNetCommand.AddInServerCmd);
-            }
-        }
-
-        /// <summary>
-        /// 远程服务外网监听的IP端口信息。
-        /// </summary>
-        [NetCommand(SysNetCommand.GetOutServerCmd)]
-        public OuterEndPointMessage SubscribeOnSyncOutNetMessage()
-        {
-            return this.OutNetMessage;
-        }
-
-        /// <summary>
-        /// 远程服务获取本地服务IP端口信息。
-        /// </summary>
-        [NetCommand(SysNetCommand.GetInServerCmd)]
-        public NetEndPointMessage SubscribeOnSyncInnerNetMessage()
-        {
-            return InNetMessage;
-        }
-
-        /// <summary>
-        /// 远程服务获取本地服务类型。
-        /// </summary>
-        [NetCommand(SysNetCommand.GetServerType)]
-        public int SubscribeOnGetServerType()
-        {
-            if (this.IsCenterServer)
-            {
-                return (int)ServerType.CenterServer;
-            }
-            else if (this.IsProxyServer)
-            {
-                return (int)ServerType.ProxyServer;
-            }
-
-            return (int)ServerType.Default;
-        }
-
-        private void AddNetwork(NetEndPointMessage message)
+        public void AddNetwork(NetEndPointMessage message)
         {
             if (this.IsCenterServer)
                 return;
@@ -207,6 +151,16 @@ namespace H6Game.Base
                 return;
 
             Connecting(message);
+        }
+
+        public void BroadcastAddNewService(Network network, NetEndPointMessage message)
+        {
+            this.InnerNetMapManager.Add(network, message);
+            network.Broadcast(message, SysNetCommand.AddInnerServerCmd);
+            foreach (var entity in this.InnerNetMapManager.Entities)
+            {
+                network.Send(entity, SysNetCommand.AddInnerServerCmd);
+            }
         }
 
         private void HandleAccept(NetEndPointMessage message)
@@ -329,12 +283,12 @@ namespace H6Game.Base
         {
             var localMessage = this.Config.GetLocalMessage();
             //连接成功后把本地监听端口发送给远程进程
-            network.Send(localMessage, SysNetCommand.AddInServerCmd);
+            network.Send(localMessage, SysNetCommand.AddInnerServerCmd);
 
             //把当前所有连接的内网监听服务发送给远程进程
             foreach (var entity in this.InnerNetMapManager.Entities)
             {
-                network.Send(entity, SysNetCommand.AddInServerCmd);
+                network.Send(entity, SysNetCommand.AddInnerServerCmd);
             }
         }
 
@@ -357,6 +311,65 @@ namespace H6Game.Base
 
 
             this.OnDisconnect?.Invoke(network);
+        }
+    }
+
+    [NetCommand(SysNetCommand.AddInnerServerCmd)]
+    public class SubscribeOnAddServerConnection : NetSubscriber<NetEndPointMessage>
+    {
+        private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
+
+        protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
+        {
+            if (Distributions.InnerNetMapManager.Existed(message))
+                return;
+
+            Distributions.AddNetwork(message);
+            if (!Distributions.IsCenterServer)
+                return;
+
+            Distributions.BroadcastAddNewService(network, message);
+        }
+    }
+
+    [NetCommand(SysNetCommand.GetOutServerCmd)]
+    public class SubscribeOnSyncOutNetMessage : NetSubscriber
+    {
+        private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
+        protected override void Subscribe(Network network, int netCommand)
+        {
+            network.Response(Distributions.OuterNetMessage);
+        }
+    }
+
+    [NetCommand(SysNetCommand.GetInServerCmd)]
+    public class SubscribeOnSyncInnerNetMessage : NetSubscriber
+    {
+        private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
+        protected override void Subscribe(Network network, int netCommand)
+        {
+            network.Response(Distributions.InnerNetMessage);
+        }
+    }
+
+    [NetCommand(SysNetCommand.GetServerType)]
+    public class SubscribeOnGetServerType : NetSubscriber
+    {
+        private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
+        protected override void Subscribe(Network network, int netCommand)
+        {
+            if (Distributions.IsCenterServer)
+            {
+                network.Response(ServerType.CenterServer);
+            }
+            else if (Distributions.IsProxyServer)
+            {
+                network.Response(ServerType.ProxyServer);
+            }
+            else
+            {
+                network.Response(ServerType.Default);
+            }
         }
     }
 }

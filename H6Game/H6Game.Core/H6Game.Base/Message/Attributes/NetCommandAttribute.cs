@@ -7,7 +7,7 @@ namespace H6Game.Base
     /// <summary>
     /// 标识网络消息命令特性器。
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NetCommandAttribute : Attribute
     {
         public List<int> MessageCmds { get;} = new List<int>();

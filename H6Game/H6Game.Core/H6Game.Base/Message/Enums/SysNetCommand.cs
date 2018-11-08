@@ -9,7 +9,7 @@ namespace H6Game.Base
         /// <summary>
         /// 新增一个监听内网服务连接
         /// </summary>
-        AddInServerCmd = 1,
+        AddInnerServerCmd = 1,
         /// <summary>
         /// 请求获取外网连接信息
         /// </summary>

@@ -26,7 +26,6 @@ namespace H6Game.Base
         {
             Game.Scene.Remove(this);
             Game.Event.Remove(this);
-            MethodContextStorage.Remove(this as IComponentSubscriber);
             this.PutBack();            
         }
 
