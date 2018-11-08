@@ -13,18 +13,18 @@ namespace H6Game.Base
         /// <summary>
         /// 请求获取外网连接信息
         /// </summary>
-        GetOutServerCmd,
+        GetOutServerCmd = 2,
         /// <summary>
         /// 请求获取内网连接信息
         /// </summary>
-        GetInServerCmd,
+        GetInServerCmd = 3,
         /// <summary>
         /// 获取一个网关连接地址
         /// </summary>
-        GetGateEndPoint,
+        GetGateEndPoint = 4,
         /// <summary>
         /// 获取远程服务的类型
         /// </summary>
-        GetServerType,
+        GetServerType = 5,
     }
 }

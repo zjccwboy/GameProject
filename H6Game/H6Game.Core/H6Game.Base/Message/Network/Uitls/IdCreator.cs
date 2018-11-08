@@ -17,20 +17,6 @@ namespace H6Game.Base
     }
 
     /// <summary>
-    /// Actor对象Id生成器
-    /// </summary>
-    public class ActorMessageIdCreator
-    {
-        private static long id;
-        public static uint CreateId()
-        {
-            Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 1, uint.MaxValue);
-            return (uint)id;
-        }
-    }
-
-    /// <summary>
     /// KCP连接确认号Conv生成器
     /// </summary>
     public class KcpConvIdCreator
@@ -40,20 +26,6 @@ namespace H6Game.Base
         {
             Interlocked.Increment(ref id);
             Interlocked.CompareExchange(ref id, 100000, int.MaxValue);
-            return id;
-        }
-    }
-
-    /// <summary>
-    /// 分布式消息排序
-    /// </summary>
-    public class MessageOrderCreator
-    {
-        private static int id = 0;
-        public static int CreateId()
-        {
-            Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 0, int.MaxValue);
             return id;
         }
     }

@@ -50,8 +50,8 @@ namespace H6Game.Base
         private Network LocalAcceptor { get; set; }
         private Network CenterConnector { get; set; }
 
-        public OuterEndPointMessage OuterNetMessage { get { return this.Config.GetOuterMessage(); } }
-        public NetEndPointMessage InnerNetMessage { get { return this.Config.GetLocalMessage(); } }
+        internal OuterEndPointMessage OuterNetMessage { get { return this.Config.GetOuterMessage(); } }
+        internal NetEndPointMessage InnerNetMessage { get { return this.Config.GetLocalMessage(); } }
 
         /// <summary>
         /// 监听外网连接网络类。
@@ -137,7 +137,7 @@ namespace H6Game.Base
                 network.Update();
         }
 
-        public void AddNetwork(NetEndPointMessage message)
+        internal void AddNetwork(NetEndPointMessage message)
         {
             if (this.IsCenterServer)
                 return;
@@ -153,7 +153,7 @@ namespace H6Game.Base
             Connecting(message);
         }
 
-        public void BroadcastAddNewService(Network network, NetEndPointMessage message)
+        internal void BroadcastAddNewService(Network network, NetEndPointMessage message)
         {
             this.InnerNetMapManager.Add(network, message);
             network.Broadcast(message, SysNetCommand.AddInnerServerCmd);

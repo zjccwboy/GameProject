@@ -8,9 +8,9 @@ namespace H6Game.Base
     {
         #region 框架自带类型 101 - 200
         NetEndPointMessage = 101,
-        OuterEndPointMessage,
-        ActorMessage,
-        SyncActorInfoEntity,
+        OuterEndPointMessage = 102,
+        ActorMessage = 103,
+        SyncActorInfoEntity = 104,
         #endregion
     }
 }
