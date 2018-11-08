@@ -9,17 +9,14 @@ namespace H6Game.Base
 
         static Game()
         {
-            ObjectTypeStorage.Load();
-            ObjectStorage.Load();
-
+            LoadObject();
             Scene = new SceneStorage();
             Event = new EventManager();
         }
 
         public static void Start()
         {
-            MessageCommandStorage.Load();
-            MessageSubscriberStorage.Load();
+            LoadMessage();
         }
 
         public static void Update()
@@ -33,6 +30,18 @@ namespace H6Game.Base
             {
                 Log.Fatal("未捕获的异常", e, LoggerBllType.System);
             }
+        }
+
+        private static void LoadObject()
+        {
+            ObjectTypeStorage.Load();
+            ObjectStorage.Load();
+        }
+
+        private static void LoadMessage()
+        {
+            MessageCommandStorage.Load();
+            MessageSubscriberStorage.Load();
         }
     }
 }
