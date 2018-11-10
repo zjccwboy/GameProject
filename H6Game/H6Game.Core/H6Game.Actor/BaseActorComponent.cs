@@ -11,10 +11,7 @@ namespace H6Game.Actor
 
         public override void Dispose()
         {
-            if (IsLocalActor)
-                ActorPool.RemoveLocal(this);
-            else
-                ActorPool.RemoveRemote(this);
+            ActorPool.Remove(this);
 
             this.EntityInfo = null;
             this.ActorEntity.Id = null;
@@ -33,7 +30,7 @@ namespace H6Game.Actor
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.ActorInfo = entityInfo;
 
-            this.ActorPool.AddLocal(this);
+            this.ActorPool.AddActor(this);
         }
 
         internal override void SetRemote(Network network, string objectId, int actorId)
@@ -43,7 +40,7 @@ namespace H6Game.Actor
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.Network = network;
 
-            this.ActorPool.AddRemote(this);
+            this.ActorPool.AddActor(this);
         }
     }
 

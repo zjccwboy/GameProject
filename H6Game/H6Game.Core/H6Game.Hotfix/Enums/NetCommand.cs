@@ -14,7 +14,7 @@ namespace H6Game.Base
         /// <summary>
         /// 客户端登出
         /// </summary>
-        ClientLogOut,
+        ClientLogOut = 1002,
         #endregion
 
         #region Actor CMD,2001开始
@@ -25,11 +25,11 @@ namespace H6Game.Base
         /// <summary>
         /// 删除Actor消息Cmd
         /// </summary>
-        RemoveActorCmd,
+        RemoveActorCmd = 2002,
         /// <summary>
         /// 获取Actor信息
         /// </summary>
-        SyncActorInfoCmd,
+        SyncActorInfoCmd = 2003,
         #endregion
     }
 }

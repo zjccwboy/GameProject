@@ -13,9 +13,13 @@ namespace H6Game.TestActorMessage
             Game.Scene.AddComponent<ActorComponentStorage>();
             Game.Start();
 
-            TestAccountActor.Start();
-            TestGameActor.Start();
-            TestRoomActor.Start();
+            var timer = Game.Scene.AddComponent<TimerComponent>();
+            timer.SetTimer(() =>
+            {
+                TestAccountActor.Start();
+                TestGameActor.Start();
+                TestRoomActor.Start();
+            }, 3000);
 
             while (true)
             {
