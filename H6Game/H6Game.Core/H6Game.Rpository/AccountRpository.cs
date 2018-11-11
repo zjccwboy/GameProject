@@ -1,6 +1,8 @@
 ﻿using H6Game.Base;
 using H6Game.Hotfix.Entities;
+using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace H6Game.Rpository
@@ -54,7 +56,7 @@ namespace H6Game.Rpository
             if (q.Any())
                 return false;
 
-            await this.DBContext.InsertAsync(account);
+            this.DBContext.Insert(account);
             return true;
         }
     }

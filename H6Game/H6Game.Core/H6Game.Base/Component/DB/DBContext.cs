@@ -256,19 +256,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 插入一行异步。
-        /// </summary>
-        /// <param name="entity">插入数据实体。</param>
-        /// <param name="options">插入数据配置项。</param>
-        /// <returns>Task</returns>
-        public Task InsertAsync(TEntity entity, InsertOneOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            return colleciton.InsertOneAsync(entity, options);
-        }
-
-        /// <summary>
         /// 批量插入。
         /// </summary>
         /// <param name="entities">插入实体集合。</param>
@@ -278,19 +265,6 @@ namespace H6Game.Base
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             colleciton.InsertMany(entities, options);
-        }
-
-        /// <summary>
-        /// 批量插入。
-        /// </summary>
-        /// <param name="entities">插入实体集合。</param>
-        /// <param name="options">插入数据配置项。</param>
-        /// <returns>Task</returns>
-        public Task InsertManyAsync(IEnumerable<TEntity> entities, InsertManyOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            return colleciton.InsertManyAsync(entities, options);
         }
 
         /// <summary>

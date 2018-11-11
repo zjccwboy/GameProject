@@ -8,7 +8,8 @@ namespace H6Game.Base
         public override DBType DBType => DBType.LoggerDb;
         public async Task WriteLogger(TLogger loggerEntity)
         {
-            await this.DBContext.InsertAsync(loggerEntity);
+            this.DBContext.Insert(loggerEntity);
+            await Task.CompletedTask;
         }
     }
 }

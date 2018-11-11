@@ -22,7 +22,7 @@ namespace H6Game.TestActorMessage
             var room = new TRoom();
             room.SetCreator("Admin");
             room.SetUpdater("Admin");
-            await rpository.DBContext.InsertAsync(room);
+            rpository.DBContext.Insert(room);
             return room;
         }
 

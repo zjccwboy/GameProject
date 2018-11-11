@@ -26,10 +26,7 @@ namespace H6Game.TestActorMessage
             };
             account.SetCreator("Admin");
             account.SetUpdater("Admin");
-            if (!await rpository.AddAsync(account))
-            {
-                throw new Exception("写账号信息到数据库失败");
-            }
+            rpository.DBContext.Insert(account);
             return account;
         }
 
