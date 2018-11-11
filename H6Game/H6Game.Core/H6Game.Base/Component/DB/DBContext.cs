@@ -35,16 +35,10 @@ namespace H6Game.Base
             this.Database = database;
             this.DatabaseName = databaseName;
             this.DBClient = dbClient;
-            this.DBServer = dbClient.GetServer();
         }
         #endregion
 
         #region 公共接口
-
-        /// <summary>
-        /// Mongo server.
-        /// </summary>
-        public MongoServer DBServer { get; }
 
         /// <summary>
         /// Mongo database.
@@ -126,49 +120,6 @@ namespace H6Game.Base
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             return colleciton.Find(filter, options).ToListAsync();
-        }
-
-
-        /// <summary>
-        /// 按需查找，可以指定字段名查找，实现要多少取多少的功能。
-        /// </summary>
-        /// <param name="memberExpression">查找成员表达式。</param>
-        /// <param name="fields">查找结果实体成员字段名。</param>
-        /// <returns>返回实体集合。</returns>
-        public List<TEntity> Where(Expression<Func<TEntity, bool>> memberExpression, params string[] fields)
-        {
-            var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
-            var elements = BuildFindElements(fields);
-            var fs = Fields.Include(elements);
-            var query = Query<TEntity>.Where(memberExpression);
-            var q = collection.FindAs<TEntity>(query).SetFields(fs);
-
-            if (q == null)
-                return null;
-
-            var result = q.ToList();
-            return result;
-        }
-
-        /// <summary>
-        /// 按需查找异步，可以指定字段名查找，实现要多少取多少的功能。
-        /// </summary>
-        /// <param name="memberExpression">查找成员表达式。</param>
-        /// <param name="fields">查找结果实体成员字段名。</param>
-        /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> memberExpression, params string[] fields)
-        {
-            var collection = this.DBServer.GetDatabase(this.DatabaseName).GetCollection<TEntity>(typeof(TEntity).Name);
-            var elements = BuildFindElements(fields);
-            var fs = Fields.Include(elements);
-            var query = Query<TEntity>.Where(memberExpression);
-            var q = collection.FindAs<TEntity>(query).SetFields(fs);
-
-            if (q == null)
-                return null;
-
-            var result = q.ToList();
-            return Task.FromResult(result);
         }
 
         /// <summary>
@@ -284,22 +235,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 更新一行异步。
-        /// </summary>
-        /// <param name="entity">更新实体。</param>
-        /// <param name="filter">过滤表达式。</param>
-        /// <param name="options">更新配置项。</param>
-        /// <returns>修改行数。</returns>
-        public async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            var result = await colleciton.UpdateOneAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
-            return (int)result.ModifiedCount;
-        }
-
-        /// <summary>
         /// 根据指定字段更新某一行。
         /// </summary>
         /// <param name="filter">过滤表达式。</param>
@@ -311,21 +246,6 @@ namespace H6Game.Base
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             var result = colleciton.UpdateOne(filter, updateFields, options);
-            return (int)result.ModifiedCount;
-        }
-
-        /// <summary>
-        /// 根据指定字段更新某一行异步。
-        /// </summary>
-        /// <param name="filter">过滤表达式。</param>
-        /// <param name="updateFields">指定更新字段。</param>
-        /// <param name="options">更新配置项。</param>
-        /// <returns>修改行数。</returns>
-        public async Task<int> UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            var result = await colleciton.UpdateOneAsync(filter, updateFields, options);
             return (int)result.ModifiedCount;
         }
 
@@ -346,22 +266,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 更新多行异步。
-        /// </summary>
-        /// <param name="entity">更新实体。</param>
-        /// <param name="filter">更新过滤表达式。</param>
-        /// <param name="options">更新配置项。</param>
-        /// <returns>修改行数。</returns>
-        public async Task<int> UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
-            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
-            return (int)result.ModifiedCount;
-        }
-
-        /// <summary>
         /// 批量更新，并指定更新的字段。
         /// </summary>
         /// <param name="entity">更新实体。</param>
@@ -374,22 +278,6 @@ namespace H6Game.Base
             var colleciton = GetMongoCollection(collectionName);
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
             var result = colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), null);
-            return (int)result.ModifiedCount;
-        }
-
-        /// <summary>
-        /// 批量更新，并指定更新的字段异步。
-        /// </summary>
-        /// <param name="entity">更新实体。</param>
-        /// <param name="filter">过滤表达式。</param>
-        /// <param name="updateFields">更新字段名。</param>
-        /// <returns>修改行数。</returns>
-        public async Task<int> UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, params string[] updateFields)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
-            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), null);
             return (int)result.ModifiedCount;
         }
 
@@ -408,20 +296,6 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 删除一行异步。
-        /// </summary>
-        /// <param name="filter">过滤表达式。</param>
-        /// <param name="options">删除配置项。</param>
-        /// <returns>删除结果，删除成功为true，删除失败为false。</returns>
-        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            var result = await colleciton.DeleteOneAsync(filter, options);
-            return result.DeletedCount > 0;
-        }
-
-        /// <summary>
         /// 删除多行。
         /// </summary>
         /// <param name="filter">过滤表达式。</param>
@@ -432,20 +306,6 @@ namespace H6Game.Base
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             return colleciton.DeleteMany(filter, options);
-        }
-
-        /// <summary>
-        /// 删除多行异步。
-        /// </summary>
-        /// <param name="filter">过滤表达式。</param>
-        /// <param name="options">删除配置项。</param>
-        /// <returns>删除结果。</returns>
-        public Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            var result = colleciton.DeleteManyAsync(filter, options);
-            return result;
         }
 
         /// <summary>
