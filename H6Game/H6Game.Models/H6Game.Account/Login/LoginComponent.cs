@@ -10,6 +10,11 @@ namespace H6Game.Account
     [NetCommand(NetCommand.ClientLogin)]
     public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
+        protected override void Subscribe(LoginRequestMessage message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         protected override void Subscribe(Network network, LoginRequestMessage message, int messageCmd)
         {
             Game.Scene.GetComponent<LoginComponent>().OnLogin(network, message);

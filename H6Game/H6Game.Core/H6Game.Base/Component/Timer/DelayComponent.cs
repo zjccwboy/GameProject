@@ -4,13 +4,11 @@ using System.Diagnostics;
 namespace H6Game.Base
 {
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
-    public class TimerComponent : BaseComponent
+    public class DelayComponent : BaseComponent
     {
-
         private Stopwatch Stopwatch { get; } = new Stopwatch();
         private Action Action { get; set; }
-        private long MillisecondInterval { get; set; }
-        private long LastTime { get; set; }
+        private long MillisecondDelay { get; set; }
         private bool IsStart { get; set; }
 
         public override void Awake()
@@ -28,33 +26,28 @@ namespace H6Game.Base
             if (!IsStart)
                 return;
 
-            if (Stopwatch.ElapsedMilliseconds < MillisecondInterval)
+            if (Stopwatch.ElapsedMilliseconds < MillisecondDelay)
                 return;
-
-            if (Stopwatch.ElapsedMilliseconds - this.LastTime < MillisecondInterval)
-                return;
-
-            this.LastTime = Stopwatch.ElapsedMilliseconds;
 
             Action?.Invoke();
+
+            this.Dispose();
         }
 
         public override void Dispose()
         {
             IsStart = false;
             Stopwatch.Stop();
-            MillisecondInterval = 0;
-            LastTime = 0;
+            MillisecondDelay = 0;
             Action = null;
             base.Dispose();
         }
 
-        public void SetTimer(Action action, long millisecondInterval)
+        public void SetDelay(Action action, long millisecondsDelay)
         {
-            this.MillisecondInterval = millisecondInterval;
+            this.MillisecondDelay = millisecondsDelay;
             this.Action = action;
             this.IsStart = true;
         }
-
     }
 }

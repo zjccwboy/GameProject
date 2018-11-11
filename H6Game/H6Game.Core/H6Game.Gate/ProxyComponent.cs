@@ -42,6 +42,12 @@ namespace H6Game.Gate
     public class SubscribeOnGetGateEndPointMessage : NetSubscriber<int>
     {
         private ProxyComponent proxy { get; } = Game.Scene.GetComponent<ProxyComponent>();
+
+        protected override void Subscribe(int message)
+        {
+            throw new System.NotImplementedException();
+        }
+
         protected override void Subscribe(Network network, int message, int netCommand)
         {
             var connectInfo = proxy.GetGetGoodConnectedInfo(message);

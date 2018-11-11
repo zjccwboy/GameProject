@@ -5,20 +5,26 @@ namespace H6Game.Base
     public class EventManager
     {
         private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
+        private List<BaseComponent> TempUpdates { get; } = new List<BaseComponent>();
         private List<BaseComponent> Starts { get; } = new List<BaseComponent>();
+        private List<BaseComponent> TempStarts { get; } = new List<BaseComponent>();
 
         public void Update()
         {
-            foreach (var component in Starts)
+            TempStarts.AddRange(Starts);
+            foreach (var component in TempStarts)
             {
                 component.Start();
             }
             Starts.Clear();
+            TempStarts.Clear();
 
-            foreach (var component in Updates)
+            TempUpdates.AddRange(Updates);
+            foreach (var component in TempUpdates)
             {
                 component.Update();
             }
+            TempUpdates.Clear();
         }
 
         public bool Add(BaseComponent component)

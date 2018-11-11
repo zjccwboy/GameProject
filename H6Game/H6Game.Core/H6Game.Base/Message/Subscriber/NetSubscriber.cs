@@ -41,10 +41,21 @@ namespace H6Game.Base
         }
 
         /// <summary>
-        /// 消息分发接口
+        /// 订阅网络消息
         /// </summary>
         /// <param name="response"></param>
         protected abstract void Subscribe(Network network, Message message, int netCommand);
+
+        /// <summary>
+        /// 订阅本地消息
+        /// </summary>
+        /// <param name="message"></param>
+        protected abstract void Subscribe(Message message);
+
+        public void Subscribe(object message)
+        {
+            this.Subscribe((Message)message);
+        }
     }
 
     /// <summary>
@@ -69,8 +80,10 @@ namespace H6Game.Base
             Subscribe(network, network.RecvPacket.NetCommand);
         }
 
+        public void Subscribe(object message){}
+
         /// <summary>
-        /// 消息分发接口
+        /// 订阅网络消息
         /// </summary>
         /// <param name="response"></param>
         protected abstract void Subscribe(Network network, int netCommand);

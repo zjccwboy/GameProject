@@ -80,6 +80,34 @@ namespace H6Game.Actor
         }
 
         /// <summary>
+        /// 从当前Actor发送消息给另一个Actor
+        /// </summary>
+        /// <param name="actor"></param>
+        /// <param name="message"></param>
+        public static void SendActorMessage<TActorMessage>(this BaseActorComponent actor, TActorMessage message, int messageCmd) where TActorMessage : IActorMessage
+        {
+            if (actor.IsLocalActor)
+            {
+                if (!MessageSubscriberStorage.TryGetSubscribers(messageCmd, out HashSet<ISubscriber> subscribers))
+                    return;
+
+                var type = message.GetType();
+                foreach (var subscriber in subscribers)
+                {
+                    if (type != subscriber.MessageType)
+                        continue;
+
+                    subscriber.Subscribe(message);
+                }
+
+                return;
+            }
+
+            var network = actor.ActorEntity.Network;
+            network.Send(message, messageCmd);
+        }
+
+        /// <summary>
         /// 添加一个成员
         /// </summary>
         /// <param name="current"></param>

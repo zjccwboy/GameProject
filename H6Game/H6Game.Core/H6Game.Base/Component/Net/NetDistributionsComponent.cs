@@ -319,6 +319,11 @@ namespace H6Game.Base
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
 
+        protected override void Subscribe(NetEndPointMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
         {
             if (Distributions.InnerNetMapManager.Existed(message))

@@ -176,6 +176,12 @@ namespace H6Game.Actor
     public class SubscribeOnRemoteAddActor : NetSubscriber<ActorSyncMessage>
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
+
+        protected override void Subscribe(ActorSyncMessage message)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Subscribe(Network network, ActorSyncMessage message, int netCommand)
         {
             var logs = $"CMD:{netCommand} ActorId:{message.ActorId} MSG:{message.ToJson()}";
@@ -187,6 +193,11 @@ namespace H6Game.Actor
     [NetCommand(NetCommand.RemoveActorCmd)]
     public class SubscribeOnRemoteActorRemove : NetSubscriber<int>
     {
+        protected override void Subscribe(int message)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Subscribe(Network network, int message, int netCommand)
         {
             Log.Info($"CMD：{netCommand} 删除AcotrId:{message} ", LoggerBllType.System);

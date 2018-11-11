@@ -57,7 +57,6 @@ namespace TestMogodb
             var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount { FAccountName = "SAM" };
             
-            var q = await rpository.DBContext.WhereAsync(a => a.FAccountName == "SAM", nameof(account.FType), nameof(account.FSex));
 
             // var q = chuncks.Find(query).SetFields(fields).FirstOrDefault();
             //var q = gridFS.Find(query).SetFields(fields);
@@ -79,7 +78,6 @@ namespace TestMogodb
 
             //await Game.Scene.GetComponent<AccountRpository>().AddAsync(account);
 
-            await Game.Scene.GetComponent<AccountRpository>().DBContext.UpdateManyAsync(account, a => a.Id == "5b976935ed0bd7a9d8c87908");
         }
 
         static async void TestDBContext()
@@ -88,7 +86,6 @@ namespace TestMogodb
 
             var context = Game.Scene.GetComponent<AccountRpository>().DBContext;
 
-            var delResult =  await context.DeleteManyAsync(t => t.FAccountName != null);
 
             var accountInfo = new TAccount
             {
@@ -100,7 +97,6 @@ namespace TestMogodb
             {
                 FCreateTime = DateTime.Now,
             };
-            await context.InsertAsync(accountInfo);
 
             
             var inserts = new List<TAccount>();
@@ -124,7 +120,7 @@ namespace TestMogodb
                 };
                 inserts.Add(accountInfo);
             }
-            await context.InsertManyAsync(inserts);
+
             
 
             var findResult = context.Where(t => t.FAccountName == "InsertMany");
@@ -141,10 +137,6 @@ namespace TestMogodb
             }, t => t.FAccountName == "Insert");
 
 
-            await context.UpdateAsync(new TAccount
-            {
-                FCreateTime = DateTime.Now,
-            }, t => t.FAccountName == "InsertAsync");
 
 
             context.Update(t => t.FAccountName == "InsertMany", Builders<TAccount>.Update.Set("FAmt", 102));
@@ -154,18 +146,13 @@ namespace TestMogodb
 
             var ecp = Game.Scene.AddComponent<EntityComponent>();
             var  elementName = ecp[typeof(TestAccount), "FAmt"];
-            await context.UpdateAsync(t => t.FAccountName == "Update", Builders<TAccount>.Update.Set("FAmt", 103));
+
 
 
             context.UpdateMany(new TAccount
             {
                 FCreateTime = DateTime.Now,
             }, t => t.FAccountName == "InsertAsync");
-
-            await context.UpdateManyAsync(new TAccount
-            {
-                FCreateTime = DateTime.Now,
-            }, t => t.FAccountName == "InsertManyAsync");
 
             context.Delete(t => t.FAccountName == "UpdateMany");
 
