@@ -177,7 +177,7 @@ namespace H6Game.Actor
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
 
-        protected override void Subscribe(ActorSyncMessage message, int command)
+        protected override void Subscribe(ActorSyncMessage message, int command, int rpcId)
         {
             throw new NotImplementedException();
         }
@@ -193,7 +193,7 @@ namespace H6Game.Actor
     [NetCommand(NetCommand.RemoveActorCmd)]
     public class SubscribeOnRemoteActorRemove : NetSubscriber<int>
     {
-        protected override void Subscribe(int message, int command)
+        protected override void Subscribe(int message, int command, int rpcId)
         {
             throw new NotImplementedException();
         }

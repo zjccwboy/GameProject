@@ -10,7 +10,7 @@ namespace H6Game.Account
     [NetCommand(NetCommand.ClientLogin)]
     public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
-        protected override void Subscribe(LoginRequestMessage message, int command)
+        protected override void Subscribe(LoginRequestMessage message, int command, int rpcId)
         {
             throw new System.NotImplementedException();
         }

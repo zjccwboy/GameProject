@@ -9,7 +9,7 @@ namespace H6Game.ServerApp
     [NetCommand(TestCMD.TestCmd)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(TestMessage message, int command)
+        protected override void Subscribe(TestMessage message, int command, int rpcId)
         {
             throw new System.NotImplementedException();
         }

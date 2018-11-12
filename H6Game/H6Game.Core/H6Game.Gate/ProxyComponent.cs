@@ -43,7 +43,7 @@ namespace H6Game.Gate
     {
         private ProxyComponent proxy { get; } = Game.Scene.GetComponent<ProxyComponent>();
 
-        protected override void Subscribe(int message, int command)
+        protected override void Subscribe(int message, int command, int rpcId)
         {
             throw new System.NotImplementedException();
         }

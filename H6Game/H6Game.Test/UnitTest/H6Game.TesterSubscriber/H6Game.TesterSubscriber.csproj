@@ -32,19 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\..\..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Hotfix">
-      <HintPath>..\..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.TesterMember, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\H6Game.TesterMember\bin\Debug\netstandard2.0\H6Game.TesterMember.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +48,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\H6Game.Core\H6Game.Base\H6Game.Base.csproj">
+      <Project>{ae9a6de4-d93a-4eef-becf-16e242e111d8}</Project>
+      <Name>H6Game.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\H6Game.Core\H6Game.Hotfix\H6Game.Hotfix.csproj">
+      <Project>{08b68702-8132-4617-beb5-286420e74944}</Project>
+      <Name>H6Game.Hotfix</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj">
+      <Project>{e2f45c9c-7db6-4188-8399-fc3f1b82b56e}</Project>
+      <Name>Google.Protobuf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\H6Game.TesterMember\H6Game.TesterMember.csproj">
+      <Project>{eb95c38a-cf3d-4c4b-aff9-07081250a1ef}</Project>
+      <Name>H6Game.TesterMember</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

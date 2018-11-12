@@ -27,7 +27,7 @@ namespace H6Game.BaseTest
     [NetCommand(2001)]
     public class TestClass3 : NetSubscriber<int>
     {
-        protected override void Subscribe(int message, int command)
+        protected override void Subscribe(int message, int command, int rpcId)
         {
             throw new NotImplementedException();
         }
