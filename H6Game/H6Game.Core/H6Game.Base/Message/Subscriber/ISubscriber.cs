@@ -24,10 +24,11 @@ namespace H6Game.Base
         void Receive(Network network);
 
         /// <summary>
-        /// 订阅本地消息，如果来源于本地进程的消息就在该接口中处理。
+        /// 通知本地订阅消息接口
         /// </summary>
         /// <param name="message"></param>
         /// <param name="command"></param>
-        void Subscribe(object message, int command);
+        /// <param name="rpcId"></param>
+        void Notify(object message, int command, int rpcId);
     }
 }

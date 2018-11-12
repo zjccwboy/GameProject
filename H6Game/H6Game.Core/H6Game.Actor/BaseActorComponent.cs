@@ -60,6 +60,8 @@ namespace H6Game.Actor
 
     public static class BaseActorExtensions
     {
+        private static Dictionary<int, Action<IActorMessage>> LocalCallActions { get; } = new Dictionary<int, Action<IActorMessage>>();
+
         /// <summary>
         /// 发送当前Actor到指定的Network连接服务。
         /// </summary>
@@ -83,9 +85,12 @@ namespace H6Game.Actor
         /// <summary>
         /// 从当前Actor发送消息给另一个Actor
         /// </summary>
+        /// <typeparam name="TActorMessage"></typeparam>
         /// <param name="actor"></param>
         /// <param name="message"></param>
-        public static void SendActor <TActorMessage>(this BaseActorComponent actor, TActorMessage message, int command)
+        /// <param name="command"></param>
+        /// <param name="rpcId"></param>
+        public static void SendActor <TActorMessage>(this BaseActorComponent actor, TActorMessage message, int command, int rpcId)
             where TActorMessage : IActorMessage
         {
             if (actor.IsLocalActor)
@@ -93,21 +98,27 @@ namespace H6Game.Actor
                 if (!MessageSubscriberStorage.TryGetSubscribers(command, out HashSet<ISubscriber> subscribers))
                     return;
 
+                if(LocalCallActions.TryGetValue(rpcId, out Action<IActorMessage> action))
+                {
+                    action(message);
+                    return;
+                }
+
                 var type = message.GetType();
                 foreach (var subscriber in subscribers)
                 {
                     if (type != subscriber.MessageType)
                         continue;
 
-                    subscriber.Subscribe(message, command);
+                    subscriber.Notify(message, command, rpcId);
                     break;
                 }
-
-                return;
             }
-
-            var network = actor.ActorEntity.Network;
-            network.Send(message, command);
+            else
+            {
+                var network = actor.ActorEntity.Network;
+                network.Send(message, command);
+            }
         }
 
         /// <summary>
@@ -134,7 +145,13 @@ namespace H6Game.Actor
                     if (type != subscriber.MessageType)
                         continue;
 
-                    subscriber.Subscribe(message, command);
+                    var rpcId = ActorLocalRpcIdCreator.RpcId;
+                    while (LocalCallActions.ContainsKey(rpcId))
+                    {
+                        rpcId = ActorLocalRpcIdCreator.RpcId;
+                    }
+                    LocalCallActions[rpcId] = a => { response = (TActorResponse)a; };
+                    subscriber.Notify(message, command, rpcId);
                     break;
                 }
             }

@@ -51,11 +51,11 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="message"></param>
         /// <param name="command"></param>
-        protected abstract void Subscribe(Message message, int command);
+        protected abstract void Subscribe(Message message, int command, int rpcId);
 
-        public void Subscribe(object message, int command)
+        public void Notify(object message, int command, int rpcId)
         {
-            this.Subscribe((Message)message, command);
+            this.Subscribe((Message)message, command, rpcId);
         }
     }
 
@@ -81,7 +81,7 @@ namespace H6Game.Base
             Subscribe(network, network.RecvPacket.NetCommand);
         }
 
-        public void Subscribe(object message, int command) {}
+        public void Notify(object message, int command, int rpcId) {}
 
         /// <summary>
         /// 订阅网络消息
