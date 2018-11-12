@@ -10,7 +10,7 @@ namespace H6Game.TestDistributedNetCore
     [NetCommand(TestCMD.TestCmd)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(TestMessage message)
+        protected override void Subscribe(TestMessage message, int command)
         {
             throw new System.NotImplementedException();
         }

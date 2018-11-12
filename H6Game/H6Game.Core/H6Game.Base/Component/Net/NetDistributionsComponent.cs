@@ -319,7 +319,7 @@ namespace H6Game.Base
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
 
-        protected override void Subscribe(NetEndPointMessage message)
+        protected override void Subscribe(NetEndPointMessage message, int command)
         {
             throw new NotImplementedException();
         }

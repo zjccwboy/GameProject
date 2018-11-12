@@ -20,7 +20,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubInt)]
     public class SubInt : NetSubscriber<int>
     {
-        protected override void Subscribe(int message)
+        protected override void Subscribe(int message, int command)
         {
             throw new NotImplementedException();
         }
@@ -34,7 +34,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubUInt)]
     public class SubUInt : NetSubscriber<uint>
     {
-        protected override void Subscribe(uint message)
+        protected override void Subscribe(uint message, int command)
         {
             throw new NotImplementedException();
         }
@@ -48,7 +48,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubString)]
     public class SubString : NetSubscriber<string>
     {
-        protected override void Subscribe(string message)
+        protected override void Subscribe(string message, int command)
         {
             throw new NotImplementedException();
         }
@@ -62,7 +62,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubLong)]
     public class SubLong : NetSubscriber<long>
     {
-        protected override void Subscribe(long message)
+        protected override void Subscribe(long message, int command)
         {
             throw new NotImplementedException();
         }
@@ -76,7 +76,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubULong)]
     public class SubULong : NetSubscriber<ulong>
     {
-        protected override void Subscribe(ulong message)
+        protected override void Subscribe(ulong message, int command)
         {
             throw new NotImplementedException();
         }
@@ -90,7 +90,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubFloat)]
     public class SubFloat : NetSubscriber<float>
     {
-        protected override void Subscribe(float message)
+        protected override void Subscribe(float message, int command)
         {
             throw new NotImplementedException();
         }
@@ -104,7 +104,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubDouble)]
     public class SubDouble : NetSubscriber<double>
     {
-        protected override void Subscribe(double message)
+        protected override void Subscribe(double message, int command)
         {
             throw new NotImplementedException();
         }
@@ -118,7 +118,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubDecimal)]
     public class SubDecimal : NetSubscriber<decimal>
     {
-        protected override void Subscribe(decimal message)
+        protected override void Subscribe(decimal message, int command)
         {
             throw new NotImplementedException();
         }
@@ -132,7 +132,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubByte)]
     public class SubByte : NetSubscriber<byte>
     {
-        protected override void Subscribe(byte message)
+        protected override void Subscribe(byte message, int command)
         {
             throw new NotImplementedException();
         }
@@ -146,7 +146,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubSByte)]
     public class SubSByte : NetSubscriber<sbyte>
     {
-        protected override void Subscribe(sbyte message)
+        protected override void Subscribe(sbyte message, int command)
         {
             throw new NotImplementedException();
         }
@@ -160,7 +160,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubShort)]
     public class SubShort : NetSubscriber<short>
     {
-        protected override void Subscribe(short message)
+        protected override void Subscribe(short message, int command)
         {
             throw new NotImplementedException();
         }
@@ -174,7 +174,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubUShort)]
     public class SubUShort : NetSubscriber<ushort>
     {
-        protected override void Subscribe(ushort message)
+        protected override void Subscribe(ushort message, int command)
         {
             throw new NotImplementedException();
         }
@@ -188,7 +188,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubChar)]
     public class SubUChar : NetSubscriber<char>
     {
-        protected override void Subscribe(char message)
+        protected override void Subscribe(char message, int command)
         {
             throw new NotImplementedException();
         }
@@ -202,7 +202,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubClass)]
     public class SubObject : NetSubscriber<TesterMessage>
     {
-        protected override void Subscribe(TesterMessage message)
+        protected override void Subscribe(TesterMessage message, int command)
         {
             throw new NotImplementedException();
         }
@@ -216,7 +216,7 @@ namespace H6Game.TesterSubscriber
     [NetCommand(NetCommandTest.SubEnum)]
     public class SubEnum : NetSubscriber<EnumType>
     {
-        protected override void Subscribe(EnumType message)
+        protected override void Subscribe(EnumType message, int command)
         {
             throw new NotImplementedException();
         }

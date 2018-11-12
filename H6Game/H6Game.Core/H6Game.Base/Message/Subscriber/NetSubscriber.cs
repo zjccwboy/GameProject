@@ -50,11 +50,12 @@ namespace H6Game.Base
         /// 订阅本地消息
         /// </summary>
         /// <param name="message"></param>
-        protected abstract void Subscribe(Message message);
+        /// <param name="command"></param>
+        protected abstract void Subscribe(Message message, int command);
 
-        public void Subscribe(object message)
+        public void Subscribe(object message, int command)
         {
-            this.Subscribe((Message)message);
+            this.Subscribe((Message)message, command);
         }
     }
 
@@ -80,7 +81,7 @@ namespace H6Game.Base
             Subscribe(network, network.RecvPacket.NetCommand);
         }
 
-        public void Subscribe(object message){}
+        public void Subscribe(object message, int command) {}
 
         /// <summary>
         /// 订阅网络消息

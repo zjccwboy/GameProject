@@ -5,26 +5,28 @@ namespace H6Game.Base
     public class EventManager
     {
         private HashSet<BaseComponent> Updates { get; } = new HashSet<BaseComponent>();
-        private List<BaseComponent> TempUpdates { get; } = new List<BaseComponent>();
         private List<BaseComponent> Starts { get; } = new List<BaseComponent>();
-        private List<BaseComponent> TempStarts { get; } = new List<BaseComponent>();
+        private List<BaseComponent> Disposers { get; } = new List<BaseComponent>();
 
         public void Update()
         {
-            TempStarts.AddRange(Starts);
-            foreach (var component in TempStarts)
+
+            foreach (var component in Starts)
             {
                 component.Start();
             }
             Starts.Clear();
-            TempStarts.Clear();
 
-            TempUpdates.AddRange(Updates);
-            foreach (var component in TempUpdates)
+            foreach (var dispose in Disposers)
+            {
+                Updates.Remove(dispose);
+            }
+            Disposers.Clear();
+
+            foreach (var component in Updates)
             {
                 component.Update();
             }
-            TempUpdates.Clear();
         }
 
         public bool Add(BaseComponent component)
@@ -45,9 +47,9 @@ namespace H6Game.Base
             return true;
         }
 
-        public bool Remove(BaseComponent component)
+        public void Remove(BaseComponent component)
         {
-            return Updates.Remove(component);
+            Disposers.Add(component);
         }
 
         private void HandlerEvent(BaseComponent component, EventType eventType)

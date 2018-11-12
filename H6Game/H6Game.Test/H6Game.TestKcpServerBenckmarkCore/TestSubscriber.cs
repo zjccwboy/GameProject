@@ -7,7 +7,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [NetCommand(1024)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(TestMessage message)
+        protected override void Subscribe(TestMessage message, int command)
         {
             throw new System.NotImplementedException();
         }
@@ -21,7 +21,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [NetCommand(1024)]
     public class TestSubscriberInt : NetSubscriber<int>
     {
-        protected override void Subscribe(int message)
+        protected override void Subscribe(int message, int command)
         {
             throw new System.NotImplementedException();
         }

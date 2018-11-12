@@ -1,6 +1,7 @@
 ﻿using H6Game.Base;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace H6Game.Actor
 {
@@ -64,8 +65,8 @@ namespace H6Game.Actor
         /// </summary>
         /// <param name="actor">Actor类</param>
         /// <param name="network">网络类</param>
-        /// <param name="messageCmd">消息指令</param>
-        public static void SendMySelf<TEnum>(this BaseActorComponent actor, Network network, TEnum messageCmd) where TEnum : Enum
+        /// <param name="command">消息指令</param>
+        public static void SendMySelf<TEnum>(this BaseActorComponent actor, Network network, TEnum command) where TEnum : Enum
         {
             if (!actor.IsLocalActor)
                 throw new ComponentException("非LocalActor不能发送ActorMySelf消息。");
@@ -76,7 +77,7 @@ namespace H6Game.Actor
                 ObjectId = actor.ActorEntity.Id,
                 ActorType = actor.ActorEntity.ActorType,
             };
-            network.Send(syncMessage, messageCmd);
+            network.Send(syncMessage, command);
         }
 
         /// <summary>
@@ -84,11 +85,12 @@ namespace H6Game.Actor
         /// </summary>
         /// <param name="actor"></param>
         /// <param name="message"></param>
-        public static void SendActorMessage<TActorMessage>(this BaseActorComponent actor, TActorMessage message, int messageCmd) where TActorMessage : IActorMessage
+        public static void SendActor <TActorMessage>(this BaseActorComponent actor, TActorMessage message, int command)
+            where TActorMessage : IActorMessage
         {
             if (actor.IsLocalActor)
             {
-                if (!MessageSubscriberStorage.TryGetSubscribers(messageCmd, out HashSet<ISubscriber> subscribers))
+                if (!MessageSubscriberStorage.TryGetSubscribers(command, out HashSet<ISubscriber> subscribers))
                     return;
 
                 var type = message.GetType();
@@ -97,14 +99,51 @@ namespace H6Game.Actor
                     if (type != subscriber.MessageType)
                         continue;
 
-                    subscriber.Subscribe(message);
+                    subscriber.Subscribe(message, command);
+                    break;
                 }
 
                 return;
             }
 
             var network = actor.ActorEntity.Network;
-            network.Send(message, messageCmd);
+            network.Send(message, command);
+        }
+
+        /// <summary>
+        /// 请求一条Actor消息
+        /// </summary>
+        /// <typeparam name="TActorRequest"></typeparam>
+        /// <typeparam name="TActorResponse"></typeparam>
+        /// <param name="actor"></param>
+        /// <param name="message"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public static async Task<TActorResponse> CallActor<TActorRequest,TActorResponse>(this BaseActorComponent actor, TActorRequest message, int command) 
+            where TActorRequest : IActorMessage where TActorResponse : IActorMessage
+        {
+            TActorResponse response = default;
+            if (actor.IsLocalActor)
+            {
+                if (!MessageSubscriberStorage.TryGetSubscribers(command, out HashSet<ISubscriber> subscribers))
+                    return response;
+
+                var type = message.GetType();
+                foreach (var subscriber in subscribers)
+                {
+                    if (type != subscriber.MessageType)
+                        continue;
+
+                    subscriber.Subscribe(message, command);
+                    break;
+                }
+            }
+            else
+            {
+                var network = actor.ActorEntity.Network;
+                response = await network.CallMessageAsync<TActorRequest, TActorResponse>(message, command);
+            }
+            return response;
         }
 
         /// <summary>

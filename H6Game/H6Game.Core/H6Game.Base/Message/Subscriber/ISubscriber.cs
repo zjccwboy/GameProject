@@ -27,6 +27,7 @@ namespace H6Game.Base
         /// 订阅本地消息，如果来源于本地进程的消息就在该接口中处理。
         /// </summary>
         /// <param name="message"></param>
-        void Subscribe(object message);
+        /// <param name="command"></param>
+        void Subscribe(object message, int command);
     }
 }
