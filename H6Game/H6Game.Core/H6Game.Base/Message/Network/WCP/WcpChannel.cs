@@ -109,6 +109,7 @@ namespace H6Game.Base
             {
                 Log.Error(e, LoggerBllType.System);
                 this.DisConnect();
+                this.IsSending = false;
             }
         }
 
