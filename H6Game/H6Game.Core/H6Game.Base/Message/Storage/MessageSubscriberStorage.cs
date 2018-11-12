@@ -10,7 +10,7 @@ namespace H6Game.Base
     /// </summary>
     public static class MessageSubscriberStorage
     {
-        private static Dictionary<int, HashSet<ISubscriber>> Subscribers { get; } = new Dictionary<int, HashSet<ISubscriber>>();
+        private static Dictionary<int, Dictionary<Type, ISubscriber>> Subscribers { get; } = new Dictionary<int, Dictionary<Type, ISubscriber>>();
         private static Dictionary<int, HashSet<Type>> CmdTypes { get; } = new Dictionary<int, HashSet<Type>>();
         private static Dictionary<Type, HashSet<int>> TypeCmds { get; } = new Dictionary<Type, HashSet<int>>();
 
@@ -39,12 +39,12 @@ namespace H6Game.Base
                     //校验订阅的NetCommand是否相同，相同抛出一个异常。
                     Validate(subscriber, cmd);
 
-                    if (!Subscribers.TryGetValue(cmd, out HashSet<ISubscriber> subscribers))
+                    if (!Subscribers.TryGetValue(cmd, out Dictionary<Type, ISubscriber> subscribers))
                     {
-                        subscribers = new HashSet<ISubscriber>();
+                        subscribers = new Dictionary<Type, ISubscriber>();
                         Subscribers[cmd] = subscribers;
                     }
-                    subscribers.Add(subscriber);
+                    subscribers.Add(subscriber.MessageType, subscriber);
 
                     if (subscriber.MessageType == null)
                         continue;
@@ -77,42 +77,29 @@ namespace H6Game.Base
             return ExistCmd(type, netCommand) && ExistType(type, netCommand);
         }
 
-        /// <summary>
-        /// 获取指定订阅NetCommand与指定消息类型集合
-        /// </summary>
-        /// <param name="netCommand"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static IEnumerable<ISubscriber> GetSubscribers(int netCommand, Type type)
-        {
-            var result = new List<ISubscriber>();
-            if(Subscribers.TryGetValue(netCommand, out HashSet<ISubscriber> subscribers))
-            {
-                foreach(var subscriber in subscribers)
-                {
-                    if (subscriber.MessageType == type)
-                        result.Add(subscriber);
-                }
-            }
-
-            return result;
-        }
-
-        public static bool TryGetSubscribers(int netCommand, out HashSet<ISubscriber> subscribers)
+        public static bool TryGetSubscribers(int netCommand, out Dictionary<Type, ISubscriber> subscribers)
         {
             return Subscribers.TryGetValue(netCommand, out subscribers);
         }
 
+        public static bool TryGetSubscriber(int netCommand, out ISubscriber subscriber, Type messageType)
+        {
+            subscriber = default;
+            if (!Subscribers.TryGetValue(netCommand, out Dictionary<Type, ISubscriber> subscribers))
+            {
+                return false;
+            }
+
+            return subscribers.TryGetValue(messageType, out subscriber);
+        }
+
         private static void Validate(ISubscriber subscriber, int netCommand)
         {
-            if(Subscribers.TryGetValue(netCommand, out HashSet<ISubscriber> oldSubscribers))
+            if(Subscribers.TryGetValue(netCommand, out Dictionary<Type, ISubscriber> oldSubscribers))
             {
-                foreach(var odlSubscriber in oldSubscribers)
+                if (oldSubscribers.ContainsKey(subscriber.MessageType))
                 {
-                    if(subscriber.MessageType == odlSubscriber.MessageType)
-                    {
-                        throw new SubscribeException($"类:{subscriber.GetType()}与类:{odlSubscriber.GetType()}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
-                    }
+                    throw new SubscribeException($"类:{subscriber.GetType()}与类:{subscriber.GetType()}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
                 }
             }
         }

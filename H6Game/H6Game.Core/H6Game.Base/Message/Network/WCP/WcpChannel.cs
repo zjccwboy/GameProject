@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace H6Game.Base
 {
@@ -35,6 +36,11 @@ namespace H6Game.Base
 
         public override async void StartConnecting()
         {
+            await Connecting();
+        }
+
+        private async Task Connecting()
+        {
             try
             {
                 if (this.Connected)
@@ -67,6 +73,11 @@ namespace H6Game.Base
         }
 
         public override async void StartSend()
+        {
+            await Sending();
+        }
+
+        private async Task Sending()
         {
             if (!this.Connected)
             {
@@ -110,7 +121,12 @@ namespace H6Game.Base
         private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
         public override async void StartRecv()
         {
-            while (!CancellationToken.None.IsCancellationRequested)
+            await Recevice();
+        }
+
+        private async Task Recevice()
+        {
+            while (true)
             {
                 try
                 {
@@ -125,7 +141,7 @@ namespace H6Game.Base
                     ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
                     AutoReset.WaitOne();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Log.Error(e, LoggerBllType.System);
                     this.DisConnect();
@@ -156,7 +172,7 @@ namespace H6Game.Base
             }
         }
 
-        public override void DisConnect()
+        public async override void DisConnect()
         {
             if (!this.Connected)
                 return;
@@ -180,10 +196,10 @@ namespace H6Game.Base
                 this.RecvParser.Clear();
             }
 
-            SendClose(this.NetSocket);
+            await SendClose(this.NetSocket);
         }
 
-        private async void SendClose(WebSocket netSocket)
+        private async Task SendClose(WebSocket netSocket)
         {
             var socket = netSocket;
             try

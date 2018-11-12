@@ -23,6 +23,12 @@ namespace H6Game.TestWebSocket
 
             });
 
+            try
+            {
+                Game.Start();
+            }
+            catch{}
+
             while (true)
             {
                 Game.Update();
@@ -30,6 +36,15 @@ namespace H6Game.TestWebSocket
                 client.Session.Update();
                 Thread.Sleep(1);
             }
+        }
+    }
+
+    [NetCommand(1000)]
+    public class Sub1000 : NetSubscriber
+    {
+        protected override void Subscribe(Network network, int netCommand)
+        {
+            network.Send(netCommand);
         }
     }
 }

@@ -95,9 +95,6 @@ namespace H6Game.Actor
         {
             if (actor.IsLocalActor)
             {
-                if (!MessageSubscriberStorage.TryGetSubscribers(command, out HashSet<ISubscriber> subscribers))
-                    return;
-
                 if(LocalCallActions.TryGetValue(rpcId, out Action<IActorMessage> action))
                 {
                     action(message);
@@ -105,14 +102,10 @@ namespace H6Game.Actor
                 }
 
                 var type = message.GetType();
-                foreach (var subscriber in subscribers)
-                {
-                    if (type != subscriber.MessageType)
-                        continue;
+                if (!MessageSubscriberStorage.TryGetSubscriber(command, out ISubscriber subscriber, type))
+                    return;
 
-                    subscriber.Notify(message, command, rpcId);
-                    break;
-                }
+                subscriber.Notify(message, command, rpcId);
             }
             else
             {
@@ -136,24 +129,17 @@ namespace H6Game.Actor
             TActorResponse response = default;
             if (actor.IsLocalActor)
             {
-                if (!MessageSubscriberStorage.TryGetSubscribers(command, out HashSet<ISubscriber> subscribers))
+                var type = message.GetType();
+                if (!MessageSubscriberStorage.TryGetSubscriber(command, out ISubscriber subscriber, type))
                     return response;
 
-                var type = message.GetType();
-                foreach (var subscriber in subscribers)
+                var rpcId = ActorLocalRpcIdCreator.RpcId;
+                while (LocalCallActions.ContainsKey(rpcId))
                 {
-                    if (type != subscriber.MessageType)
-                        continue;
-
-                    var rpcId = ActorLocalRpcIdCreator.RpcId;
-                    while (LocalCallActions.ContainsKey(rpcId))
-                    {
-                        rpcId = ActorLocalRpcIdCreator.RpcId;
-                    }
-                    LocalCallActions[rpcId] = a => { response = (TActorResponse)a; };
-                    subscriber.Notify(message, command, rpcId);
-                    break;
+                    rpcId = ActorLocalRpcIdCreator.RpcId;
                 }
+                LocalCallActions[rpcId] = a => { response = (TActorResponse)a; };
+                subscriber.Notify(message, command, rpcId);
             }
             else
             {
