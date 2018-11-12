@@ -44,6 +44,8 @@ namespace H6Game.TestWebSocket
     {
         protected override void Subscribe(Network network, int netCommand)
         {
+            Console.WriteLine(netCommand);
+
             network.Send(netCommand);
         }
     }
