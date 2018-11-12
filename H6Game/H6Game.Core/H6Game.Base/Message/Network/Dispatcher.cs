@@ -19,11 +19,10 @@ namespace H6Game.Base
         {
             try
             {
-                if (MessageSubscriberStorage.TryGetSubscribers(packet.NetCommand, out Dictionary<Type, ISubscriber> subscribers))
+                var type = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
+                if (MessageSubscriberStorage.TryGetSubscriber(packet.NetCommand, out ISubscriber subscriber, type))
                 {
-                    foreach (var subscriber in subscribers.Values)
-                        subscriber.Receive(network);
-
+                    subscriber.Receive(network);
                     return;
                 }
 
