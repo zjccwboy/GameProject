@@ -54,8 +54,8 @@ namespace H6Game.Base
                 CodeMsgTypes[(int)val.Value] = val.Key;
             }
 
-            MsgCodes[typeof(Nullable)] = 0;
-            CodeMsgTypes[0] = typeof(Nullable);
+            MsgCodes[typeof(H6Null)] = 0;
+            CodeMsgTypes[0] = typeof(H6Null);
         }
 
         private static IDictionary<Type, BasicMessageType> GetValueTypeCode()

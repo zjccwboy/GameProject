@@ -20,7 +20,7 @@ namespace H6Game.Base
             try
             {
                 var type = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
-                if (MessageSubscriberStorage.TryGetSubscriber(packet.NetCommand, out ISubscriber subscriber, type))
+                if (MessageSubscriberStorage.TryGetSubscriber(packet.NetCommand, type, out ISubscriber subscriber))
                 {
                     subscriber.Receive(network);
                     return;

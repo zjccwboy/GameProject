@@ -67,7 +67,7 @@ namespace H6Game.Base
         /// <summary>
         /// 返回数据约定类型
         /// </summary>
-        public Type MessageType { get { return typeof(Nullable); } }
+        public Type MessageType { get { return typeof(H6Null); } }
 
         /// <summary>
         /// 接收处理

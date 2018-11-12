@@ -82,7 +82,7 @@ namespace H6Game.Base
             return Subscribers.TryGetValue(netCommand, out subscribers);
         }
 
-        public static bool TryGetSubscriber(int netCommand, out ISubscriber subscriber, Type messageType)
+        public static bool TryGetSubscriber(int netCommand, Type messageType, out ISubscriber subscriber)
         {
             subscriber = default;
             if (!Subscribers.TryGetValue(netCommand, out Dictionary<Type, ISubscriber> subscribers))

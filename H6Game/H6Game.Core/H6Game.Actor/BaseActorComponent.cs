@@ -102,7 +102,7 @@ namespace H6Game.Actor
                 }
 
                 var type = message.GetType();
-                if (!MessageSubscriberStorage.TryGetSubscriber(command, out ISubscriber subscriber, type))
+                if (!MessageSubscriberStorage.TryGetSubscriber(command, type, out ISubscriber subscriber))
                     return;
 
                 subscriber.Notify(message, command, rpcId);
@@ -130,7 +130,7 @@ namespace H6Game.Actor
             if (actor.IsLocalActor)
             {
                 var type = message.GetType();
-                if (!MessageSubscriberStorage.TryGetSubscriber(command, out ISubscriber subscriber, type))
+                if (!MessageSubscriberStorage.TryGetSubscriber(command, type, out ISubscriber subscriber))
                     return response;
 
                 var rpcId = ActorLocalRpcIdCreator.RpcId;
