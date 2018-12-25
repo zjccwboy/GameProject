@@ -1,5 +1,7 @@
 ﻿using H6Game.Actor;
 using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Message;
 using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Entities.Enums;
 using H6Game.Hotfix.Messages.OutNet;
@@ -10,10 +12,6 @@ namespace H6Game.Account
     [NetCommand(NetCommand.ClientLogin)]
     public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
-        protected override void Subscribe(LoginRequestMessage message, int command, int rpcId)
-        {
-            throw new System.NotImplementedException();
-        }
 
         protected override void Subscribe(Network network, LoginRequestMessage message, int messageCmd)
         {

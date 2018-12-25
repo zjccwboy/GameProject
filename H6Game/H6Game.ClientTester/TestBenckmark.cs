@@ -1,4 +1,6 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Logger;
+using H6Game.Base.Message;
 using H6Game.Hotfix.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;

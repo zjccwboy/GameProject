@@ -1,5 +1,8 @@
 ﻿using H6Game.Actor;
 using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Message;
 using System.Collections.Generic;
 
 namespace H6Game.Gate

@@ -1,4 +1,6 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Config;
 using H6Game.BaseTest;
 using System;
 using System.Collections.Generic;

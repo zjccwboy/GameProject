@@ -1,4 +1,8 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Config;
+using H6Game.Base.Logger;
+using H6Game.Base.Message;
 using H6Game.Hotfix.Enums;
 using System.Diagnostics;
 using System.Threading;

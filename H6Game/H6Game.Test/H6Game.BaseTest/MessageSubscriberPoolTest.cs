@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using H6Game.Base;
+using H6Game.Base.Message;
+using H6Game.Base.Config;
+using H6Game.Base.Component;
 
 namespace H6Game.BaseTest
 {
@@ -27,11 +30,6 @@ namespace H6Game.BaseTest
     [NetCommand(2001)]
     public class TestClass3 : NetSubscriber<int>
     {
-        protected override void Subscribe(int message, int command, int rpcId)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override void Subscribe(Network network, int message, int netCommand)
         {
             throw new NotImplementedException();

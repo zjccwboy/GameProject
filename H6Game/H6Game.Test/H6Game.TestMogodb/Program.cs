@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Config;
 using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Entities.Enums;
 using H6Game.Rpository;

@@ -6,6 +6,7 @@ using H6Game.Hotfix.Entities;
 using H6Game.Hotfix.Entities.Enums;
 using System.Linq;
 using System.Threading;
+using H6Game.Base.Config;
 
 namespace H6Game.BaseTest
 {

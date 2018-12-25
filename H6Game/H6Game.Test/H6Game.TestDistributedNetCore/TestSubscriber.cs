@@ -1,5 +1,5 @@
 ﻿using H6Game.Base;
-
+using H6Game.Base.Message;
 using H6Game.Hotfix.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -10,11 +10,6 @@ namespace H6Game.TestDistributedNetCore
     [NetCommand(TestCMD.TestCmd)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(TestMessage message, int command, int rpcId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override void Subscribe(Network network, TestMessage message, int messageCmd)
         {
             network.Response(message);

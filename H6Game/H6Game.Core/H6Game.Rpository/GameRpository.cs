@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using H6Game.Hotfix.Entities;
+using H6Game.Base.Component;
 
 namespace H6Game.Rpository
 {

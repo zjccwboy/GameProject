@@ -1,4 +1,6 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Config;
+using H6Game.Base.Logger;
 using System.Threading;
 
 namespace H6Game.TestLooger

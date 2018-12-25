@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using H6Game.Base;
+using H6Game.Base.Message;
 
 namespace H6Game.TestWebSocket
 {

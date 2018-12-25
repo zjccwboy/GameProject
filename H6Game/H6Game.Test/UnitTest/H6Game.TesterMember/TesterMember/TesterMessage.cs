@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using H6Game.Base;
+using H6Game.Base.Message;
 
 namespace H6Game.BaseTest
 {

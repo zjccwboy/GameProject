@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
 using System.Threading;
 
 namespace H6Game.ClientTester

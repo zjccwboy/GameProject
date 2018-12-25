@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Message;
 using H6Game.Hotfix.Entities.Enums;
 using H6Game.Hotfix.Enums;
 using ProtoBuf;

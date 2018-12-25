@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
 using H6Game.Hotfix.Entities;
 using System;
 using System.Linq;

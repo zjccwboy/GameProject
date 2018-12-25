@@ -1,5 +1,7 @@
 ﻿using H6Game.Actor;
 using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Config;
 using H6Game.Gate;
 using System.Threading;
 

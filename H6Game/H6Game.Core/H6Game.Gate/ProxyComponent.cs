@@ -1,4 +1,7 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Message;
 using System.Collections.Generic;
 
 namespace H6Game.Gate
@@ -42,11 +45,6 @@ namespace H6Game.Gate
     public class SubscribeOnGetGateEndPointMessage : NetSubscriber<int>
     {
         private ProxyComponent proxy { get; } = Game.Scene.GetComponent<ProxyComponent>();
-
-        protected override void Subscribe(int message, int command, int rpcId)
-        {
-            throw new System.NotImplementedException();
-        }
 
         protected override void Subscribe(Network network, int message, int netCommand)
         {
