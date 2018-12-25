@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace H6Game.Base
+namespace H6Game.Base.Config
 {
     public enum ApplicationType
     {

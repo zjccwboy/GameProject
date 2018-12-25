@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization;
 using System;
 using System.IO;
 
-namespace H6Game.Base
+namespace H6Game.Base.Config
 {
     public class LoggerConfig
     {

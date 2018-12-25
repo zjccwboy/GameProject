@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
 using System;
 using System.Collections.Generic;
 using System.Linq;

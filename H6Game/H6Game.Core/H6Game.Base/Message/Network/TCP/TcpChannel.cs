@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Net;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// TCP通讯管道

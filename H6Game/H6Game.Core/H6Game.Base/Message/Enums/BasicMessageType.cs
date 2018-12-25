@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 网络消息基础值类型，该枚举范围为1-100

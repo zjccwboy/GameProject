@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 服务类型

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     [ComponentEvent(EventType.Awake | EventType.Start | EventType.Update)]
     public class DelayComponent : BaseComponent

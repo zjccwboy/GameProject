@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     /// <summary>
     /// 组件事件特性器，在组件重写Awake、Start、Update事件时需要用改特性器标识相应的类事件，否则重写的

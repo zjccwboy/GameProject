@@ -1,5 +1,7 @@
 ﻿
-namespace H6Game.Base
+using H6Game.Base.Config;
+
+namespace H6Game.Base.Logger
 {
     public static class LoggerFactory
     {

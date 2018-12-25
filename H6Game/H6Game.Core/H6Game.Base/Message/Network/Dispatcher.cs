@@ -1,8 +1,11 @@
-﻿using MongoDB.Bson;
+﻿using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 消息分发

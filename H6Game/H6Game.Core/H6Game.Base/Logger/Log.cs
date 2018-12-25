@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public static class Log
     {

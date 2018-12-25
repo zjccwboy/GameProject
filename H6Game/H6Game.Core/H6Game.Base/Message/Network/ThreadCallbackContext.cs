@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 多线程回调上下文执行队列

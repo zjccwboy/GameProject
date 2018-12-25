@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 数据包

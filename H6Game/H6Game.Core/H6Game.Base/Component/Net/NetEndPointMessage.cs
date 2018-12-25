@@ -1,6 +1,7 @@
-﻿using ProtoBuf;
+﻿using H6Game.Base.Message;
+using ProtoBuf;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     /// <summary>
     /// 外网连接信息

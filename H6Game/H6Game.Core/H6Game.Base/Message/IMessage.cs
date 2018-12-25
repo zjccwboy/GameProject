@@ -1,6 +1,6 @@
 ﻿
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     public interface IActorMessage : IMessage
     {

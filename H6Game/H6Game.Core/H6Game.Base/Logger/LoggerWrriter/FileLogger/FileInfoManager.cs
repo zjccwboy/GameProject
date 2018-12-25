@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public static class FileInfoManager
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 系统消息类型，该枚举范围为101-200

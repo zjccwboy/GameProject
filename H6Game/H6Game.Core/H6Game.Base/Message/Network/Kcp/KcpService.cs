@@ -1,8 +1,9 @@
-﻿using System;
+﻿using H6Game.Base.Logger;
+using System;
 using System.Net;
 using System.Net.Sockets;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// KCP通讯服务

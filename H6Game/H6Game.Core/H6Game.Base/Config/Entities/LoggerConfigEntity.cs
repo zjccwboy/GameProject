@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Base
+namespace H6Game.Base.Config
 {
     public class LoggerConfigEntity
     {

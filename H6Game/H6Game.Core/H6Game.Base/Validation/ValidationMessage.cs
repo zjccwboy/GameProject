@@ -1,4 +1,5 @@
-﻿using H6Game.Base.Validation;
+﻿using H6Game.Base.Message;
+using H6Game.Base.Validation;
 
 namespace H6Game.Base
 {

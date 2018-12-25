@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public class TLogger : BaseEntity
     {

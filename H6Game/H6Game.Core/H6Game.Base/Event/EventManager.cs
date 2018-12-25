@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using H6Game.Base.Component;
+using System.Collections.Generic;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public class EventManager
     {

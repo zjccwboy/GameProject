@@ -1,6 +1,9 @@
 ﻿
 
-namespace H6Game.Base
+using H6Game.Base.Component;
+using H6Game.Base.Message;
+
+namespace H6Game.Base.Config
 {
     public class NetConfigEntity
     {

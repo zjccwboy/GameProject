@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 订阅者与消息Code池

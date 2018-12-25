@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     [ComponentEvent(EventType.Awake)]
     [SingleCase]

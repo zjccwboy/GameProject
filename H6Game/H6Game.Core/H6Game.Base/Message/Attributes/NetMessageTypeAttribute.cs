@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 标识网络消息类型特性器

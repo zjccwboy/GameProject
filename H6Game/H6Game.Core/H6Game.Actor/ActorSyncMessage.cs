@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Message;
 using ProtoBuf;
 
 namespace H6Game.Actor

@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Net;
+using H6Game.Base.Config;
+using H6Game.Base.Message;
+using H6Game.Base.Logger;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     /// 内网分布式连接核心组件，如果服务是基于分布式构建，应该使用该组件来构建基于分布式的Socket连接，该组
     /// 件能够提供一个基于去中心化、可靠、高可扩展的分布式模型，只需要对"H6Game.DistributionsConfig.json"
@@ -318,12 +321,6 @@ namespace H6Game.Base
     public class SubscribeOnAddServerConnection : NetSubscriber<NetEndPointMessage>
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
-
-        protected override void Subscribe(NetEndPointMessage message, int command, int rpcId)
-        {
-            throw new NotImplementedException();
-        }
-
         protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
         {
             if (Distributions.InnerNetMapManager.Existed(message))

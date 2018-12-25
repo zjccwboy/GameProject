@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 系统保留网络指令类型，该类型范围为1-1000

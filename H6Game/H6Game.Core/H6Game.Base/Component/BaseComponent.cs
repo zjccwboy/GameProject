@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public abstract class BaseComponent : IDisposable
     {        

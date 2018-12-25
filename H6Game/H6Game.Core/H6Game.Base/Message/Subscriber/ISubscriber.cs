@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
 
     /// <summary>
@@ -22,13 +22,5 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="network"></param>
         void Receive(Network network);
-
-        /// <summary>
-        /// 通知本地订阅消息接口
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="command"></param>
-        /// <param name="rpcId"></param>
-        void Notify(object message, int command, int rpcId);
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using H6Game.Base.Logger;
+using H6Game.Base.Message;
+using System;
 using System.Net;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     [ComponentEvent(EventType.Awake)]
     public class NetAcceptorComponent : BaseComponent

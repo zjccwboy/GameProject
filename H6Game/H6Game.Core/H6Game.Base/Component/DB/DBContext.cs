@@ -9,7 +9,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     /// <summary>
     /// MongoDB 驱动上下文类。

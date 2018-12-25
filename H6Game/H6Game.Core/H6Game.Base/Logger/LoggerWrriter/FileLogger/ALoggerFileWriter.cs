@@ -1,10 +1,11 @@
-﻿using System;
+﻿using H6Game.Base.Config;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public abstract class ALoggerFileWriter : ILoggerFileWriter
     {

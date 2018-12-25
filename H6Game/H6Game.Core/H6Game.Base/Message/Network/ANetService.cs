@@ -1,8 +1,10 @@
-﻿using System;
+﻿using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
+using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 网络通讯服务抽象类

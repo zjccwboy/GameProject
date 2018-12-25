@@ -1,9 +1,10 @@
-﻿using System;
+﻿using H6Game.Base.Logger;
+using System;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// WebSocket通讯管道

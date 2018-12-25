@@ -1,8 +1,11 @@
-﻿using MongoDB.Driver;
+﻿using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
+using MongoDB.Driver;
 using System;
 using System.Linq;
 
-namespace H6Game.Base
+namespace H6Game.Base.Config
 {
     [ComponentEvent(EventType.Awake)]
     [SingleCase]

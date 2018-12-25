@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 字节数组缓冲区，使用两个队列存放字节数组，WorkerBuffer是读写的缓冲区，在读完队列第一个字节数组后把字节数

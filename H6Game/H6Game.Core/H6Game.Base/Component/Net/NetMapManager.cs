@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using H6Game.Base.Message;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     /// <summary>
     /// 外网连接管理

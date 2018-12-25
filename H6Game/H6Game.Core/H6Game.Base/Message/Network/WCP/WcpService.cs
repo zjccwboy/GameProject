@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     public class WcpService : ANetService
     {

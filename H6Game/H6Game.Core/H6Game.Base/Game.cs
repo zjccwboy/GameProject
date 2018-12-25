@@ -1,4 +1,7 @@
-﻿using System;
+﻿using H6Game.Base.Component;
+using H6Game.Base.Logger;
+using H6Game.Base.Message;
+using System;
 
 namespace H6Game.Base
 {

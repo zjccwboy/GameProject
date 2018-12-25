@@ -1,5 +1,5 @@
 ﻿
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     /// <summary>
     /// 日志级别

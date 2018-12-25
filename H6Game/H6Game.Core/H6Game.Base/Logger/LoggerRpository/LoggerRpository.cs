@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using H6Game.Base.Component;
+using System.Threading.Tasks;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     [SingleCase]
     public class LoggerRpository : DBRpository<TLogger>

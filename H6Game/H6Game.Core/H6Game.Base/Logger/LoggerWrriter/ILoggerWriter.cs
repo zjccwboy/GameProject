@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public interface ILoggerWriter
     {

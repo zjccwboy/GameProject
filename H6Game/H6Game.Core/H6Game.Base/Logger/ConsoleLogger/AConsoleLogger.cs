@@ -1,7 +1,8 @@
-﻿using System;
+﻿using H6Game.Base.Config;
+using System;
 using System.Text;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public abstract class AConsoleLogger : IConsoleLogger
     {

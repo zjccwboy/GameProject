@@ -6,7 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     public class Kcp
     {

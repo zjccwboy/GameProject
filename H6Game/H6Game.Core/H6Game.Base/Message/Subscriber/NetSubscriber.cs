@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 消息订阅者类
@@ -45,18 +45,6 @@ namespace H6Game.Base
         /// </summary>
         /// <param name="response"></param>
         protected abstract void Subscribe(Network network, Message message, int netCommand);
-
-        /// <summary>
-        /// 订阅本地消息
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="command"></param>
-        protected abstract void Subscribe(Message message, int command, int rpcId);
-
-        public void Notify(object message, int command, int rpcId)
-        {
-            this.Subscribe((Message)message, command, rpcId);
-        }
     }
 
     /// <summary>
@@ -80,8 +68,6 @@ namespace H6Game.Base
 
             Subscribe(network, network.RecvPacket.NetCommand);
         }
-
-        public void Notify(object message, int command, int rpcId) {}
 
         /// <summary>
         /// 订阅网络消息

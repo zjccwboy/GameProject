@@ -1,6 +1,10 @@
-﻿using System;
+﻿using H6Game.Base.Config;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
+using H6Game.Base.Message;
+using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public enum ConnectType
     {

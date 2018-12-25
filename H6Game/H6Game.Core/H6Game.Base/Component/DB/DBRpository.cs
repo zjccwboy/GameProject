@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using System.Linq;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public abstract class DBRpository<TEntity> : BaseComponent, IRpository<TEntity> where TEntity : BaseEntity, new()
     {

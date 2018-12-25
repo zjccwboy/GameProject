@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {
     /// <summary>
     /// 通讯通道Id生成器，只适应TCP

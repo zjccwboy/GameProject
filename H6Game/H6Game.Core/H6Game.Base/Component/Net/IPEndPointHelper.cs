@@ -1,8 +1,10 @@
-﻿using System;
+﻿using H6Game.Base.Config;
+using H6Game.Base.Exceptions;
+using System;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public class IPEndPointHelper
     {

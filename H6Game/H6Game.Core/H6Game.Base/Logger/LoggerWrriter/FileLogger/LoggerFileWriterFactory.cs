@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using H6Game.Base.Config;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace H6Game.Base
+namespace H6Game.Base.Logger
 {
     public class LoggerFileWriterFactory
     {

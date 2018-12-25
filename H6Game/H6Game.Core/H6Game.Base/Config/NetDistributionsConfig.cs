@@ -1,9 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using H6Game.Base.Message;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using System;
 using System.IO;
 
-namespace H6Game.Base
+namespace H6Game.Base.Config
 {
     public sealed class NetDistributionsConfig
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace H6Game.Base
+namespace H6Game.Base.Exceptions
 {
     public class PacketParserException : AggregateException
     {

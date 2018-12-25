@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public class ComponentIdCreator
     {

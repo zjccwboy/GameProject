@@ -1,4 +1,7 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
+using H6Game.Base.Exceptions;
+using H6Game.Base.Message;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -100,12 +103,6 @@ namespace H6Game.Actor
                     action(message);
                     return;
                 }
-
-                var type = message.GetType();
-                if (!MessageSubscriberStorage.TryGetSubscriber(command, type, out ISubscriber subscriber))
-                    return;
-
-                subscriber.Notify(message, command, rpcId);
             }
             else
             {
@@ -139,7 +136,6 @@ namespace H6Game.Actor
                     rpcId = ActorLocalRpcIdCreator.RpcId;
                 }
                 LocalCallActions[rpcId] = a => { response = (TActorResponse)a; };
-                subscriber.Notify(message, command, rpcId);
             }
             else
             {

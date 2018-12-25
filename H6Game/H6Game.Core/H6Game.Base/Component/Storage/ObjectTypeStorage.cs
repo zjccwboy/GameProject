@@ -1,9 +1,10 @@
-﻿using System;
+﻿using H6Game.Base.Message;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace H6Game.Base
+namespace H6Game.Base.Component
 {
     public static class ObjectTypeStorage
     {

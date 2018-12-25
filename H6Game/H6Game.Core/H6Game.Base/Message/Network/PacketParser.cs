@@ -1,7 +1,8 @@
-﻿using System;
+﻿using H6Game.Base.Exceptions;
+using System;
 using System.IO;
 
-namespace H6Game.Base
+namespace H6Game.Base.Message
 {   
     public class ParseState
     {
