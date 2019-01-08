@@ -43,17 +43,17 @@ namespace H6Game.Base.Message
         /// </summary>
         public const int BitFlagSize = sizeof(byte);
         /// <summary>
-        /// 包头协议中Msg消息Id字节数，4个字节
+        /// 包头协议中Msg消息Id字节数，2个字节
         /// </summary>
-        public const int NetCommandFlagSize = sizeof(int);
+        public const int NetCommandFlagSize = sizeof(ushort);
         /// <summary>
-        /// 消息类型,4个字节
+        /// 消息类型,2个字节
         /// </summary>
-        public const int MsgTypeFlagSize = sizeof(int);
+        public const int MsgTypeFlagSize = sizeof(ushort);
         /// <summary>
-        /// 包头协议中RPC请求Id的字节数，4个字节
+        /// 包头协议中RPC请求Id的字节数，2个字节
         /// </summary>
-        public const int RpcFlagSize = sizeof(int);
+        public const int RpcFlagSize = sizeof(ushort);
         /// <summary>
         /// 包头大小
         /// </summary>
@@ -173,7 +173,7 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(NetCommandFlagSize - count);
             }
             ReadLength += NetCommandFlagSize;
-            Packet.NetCommand = BitConverter.ToInt32(Packet.HeadBytes, offset);
+            Packet.NetCommand = BitConverter.ToUInt16(Packet.HeadBytes, offset);
         }
 
         private void ReadMsgType()
@@ -193,7 +193,7 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(MsgTypeFlagSize - count);
             }
             ReadLength += MsgTypeFlagSize;
-            Packet.MsgTypeCode = BitConverter.ToInt32(Packet.HeadBytes, offset);
+            Packet.MsgTypeCode = BitConverter.ToUInt16(Packet.HeadBytes, offset);
         }
 
         private void ReadRpcId()
@@ -213,7 +213,7 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(RpcFlagSize - count);
             }
             ReadLength += RpcFlagSize;
-            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
+            Packet.RpcId = BitConverter.ToUInt16(Packet.HeadBytes, offset);
         }
 
         private void ReadBody()

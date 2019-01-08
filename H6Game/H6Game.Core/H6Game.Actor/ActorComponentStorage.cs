@@ -128,6 +128,16 @@ namespace H6Game.Actor
             return component;
         }
 
+        public BaseActorComponent GetActor(int actorId)
+        {
+            if(!Game.Scene.GetComponent(actorId, out BaseComponent component))
+            {
+                return null;
+            }
+
+            return component as BaseActorComponent;
+        }
+
         internal void Remove(BaseActorComponent component)
         {
             if (component.ActorEntity == null)
@@ -159,7 +169,6 @@ namespace H6Game.Actor
 
             if (!RemoteActors.Remove(component.Id))
                 return;
-
         }
 
         private void RemoveLocal(BaseActorComponent component)
@@ -172,79 +181,6 @@ namespace H6Game.Actor
                 return;
 
             this.Distributions.InnerNetworks.Broadcast(component.Id, NetCommand.RemoveActorCmd);
-        }
-    }
-
-    [NetCommand(NetCommand.AddActorCmd)]
-    public class SubscribeOnRemoteAddActor : NetSubscriber<ActorSyncMessage>
-    {
-        private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
-
-        protected override void Subscribe(Network network, ActorSyncMessage message, int netCommand)
-        {
-            var logs = $"CMD:{netCommand} ActorId:{message.ActorId} MSG:{message.ToJson()}";
-            Log.Info(logs, LoggerBllType.System);
-            ActorStorage.AddActor(network, message.ActorId, message.ActorType, message.ObjectId);
-        }
-    }
-
-    [NetCommand(NetCommand.RemoveActorCmd)]
-    public class SubscribeOnRemoteActorRemove : NetSubscriber<int>
-    {
-        protected override void Subscribe(Network network, int message, int netCommand)
-        {
-            Log.Info($"CMD：{netCommand} 删除AcotrId:{message} ", LoggerBllType.System);
-            if (Game.Scene.GetComponent(message, out BaseComponent component))
-                component.Dispose();
-        }
-    }
-
-    [NetCommand(NetCommand.SyncActorInfoCmd)]
-    public class SubscribeOnRemoteSyncFullActorInfo : NetSubscriber
-    {
-        private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
-        protected override void Subscribe(Network network, int netCommand)
-        {
-            Log.Info(netCommand, LoggerBllType.System);
-            this.ActorStorage.SendLocalActors(network);
-        }
-    }
-
-
-    public static class ActorComponentStorageExtensions
-    {
-        /// <summary>
-        /// 添加Actor
-        /// </summary>
-        /// <typeparam name="TActor"></typeparam>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="current"></param>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public static TActor AddActor<TActor, TEntity>(this ActorComponentStorage current, TEntity entity)
-            where TEntity : BaseEntity where TActor : BaseActorComponent<TEntity>
-        {
-            var actor = Game.Scene.AddComponent<TActor>();
-            actor.SetLocal(entity);
-            return actor;
-        }
-
-        /// <summary>
-        /// 添加Actor
-        /// </summary>
-        /// <param name="current"></param>
-        /// <param name="network"></param>
-        /// <param name="actorId"></param>
-        /// <param name="actorType"></param>
-        /// <param name="objectId"></param>
-        /// <returns></returns>
-        public static BaseActorComponent AddActor(this ActorComponentStorage current, Network network, int actorId
-            , ActorType actorType, string objectId)
-        {
-            var type = current.GetActorType(actorType);
-            var actor = Game.Scene.AddComponent(type) as BaseActorComponent;
-            actor.SetRemote(network, objectId, actorId);
-            return actor;
         }
     }
 }

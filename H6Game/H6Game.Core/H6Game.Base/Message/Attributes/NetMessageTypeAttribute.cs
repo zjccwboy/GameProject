@@ -8,16 +8,16 @@ namespace H6Game.Base.Message
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NetMessageTypeAttribute : Attribute
     {
-        public int TypeCode { get; }
+        public ushort TypeCode { get; }
 
         public NetMessageTypeAttribute(int type)
         {
-            TypeCode = type;
+            TypeCode = (ushort)type;
         }
 
         public NetMessageTypeAttribute(object type)
         {
-            TypeCode = (int)type;
+            TypeCode = (ushort)type;
         }
     }
 }

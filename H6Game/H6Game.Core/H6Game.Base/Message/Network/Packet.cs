@@ -35,17 +35,17 @@ namespace H6Game.Base.Message
         /// <summary>
         /// NetCommand
         /// </summary>
-        public int NetCommand;
+        public ushort NetCommand;
 
         /// <summary>
         /// 消息类型指定代码
         /// </summary>
-        public int MsgTypeCode;
+        public ushort MsgTypeCode;
 
         /// <summary>
         /// Rpc请求标识
         /// </summary>
-        public int RpcId;
+        public ushort RpcId;
 
         /// <summary>
         /// 包头字节数组

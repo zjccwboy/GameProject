@@ -33,20 +33,27 @@ internal static class PacketExtensions
         packet.NetCommand.WriteTo(packet.HeadBytes, 5);
 
         //写MsgTypeCode
-        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 9);
+        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 7);
 
         //写RpcId
-        packet.RpcId.WriteTo(packet.HeadBytes, 13);
+        packet.RpcId.WriteTo(packet.HeadBytes, 9);
 
         return packet.HeadBytes;
     }
 
+    internal static void WriteTo(this ushort value, byte[] bytes, int offset)
+    {
+        for (var i = 0; i < 2; i++)
+        {
+            bytes[i + offset] = (byte)(value >> i * 8);
+        }
+    }
+
     internal static void WriteTo(this int value, byte[] bytes, int offset)
     {
-        var netIntVal = Convert.ToInt32(value);
         for (var i = 0; i < 4; i++)
         {
-            bytes[i + offset] = (byte)(netIntVal >> i * 8);
+            bytes[i + offset] = (byte)(value >> i * 8);
         }
     }
 
@@ -62,7 +69,7 @@ internal static class PacketExtensions
         var type = obj.GetType();
         if (type.BaseType == typeof(Enum))
             type = typeof(int);
-        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
+        packet.MsgTypeCode = (ushort)MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
     }
 
@@ -73,7 +80,7 @@ internal static class PacketExtensions
 
         if (type.BaseType == typeof(Enum))
             type = typeof(int);
-        packet.MsgTypeCode = MessageCommandStorage.GetMsgCode(type);
+        packet.MsgTypeCode = (ushort)MessageCommandStorage.GetMsgCode(type);
         packet.WriteBuffer();
     }
 

@@ -196,8 +196,8 @@ namespace H6Game.Base.Message
 
         private void SetHead(Packet packet, int netCommand, int rpcId)
         {
-            packet.NetCommand = netCommand;
-            packet.RpcId = rpcId;
+            packet.NetCommand = (ushort)netCommand;
+            packet.RpcId = (ushort)rpcId;
         }
 
         public void Dispose()

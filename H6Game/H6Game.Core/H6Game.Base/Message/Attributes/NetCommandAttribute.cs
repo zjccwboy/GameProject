@@ -10,9 +10,9 @@ namespace H6Game.Base.Message
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NetCommandAttribute : Attribute
     {
-        public List<int> MessageCmds { get;} = new List<int>();
+        public List<ushort> MessageCmds { get;} = new List<ushort>();
 
-        public NetCommandAttribute(params int[] commands)
+        public NetCommandAttribute(params ushort[] commands)
         {
             if(!commands.Any())
             {
@@ -27,7 +27,7 @@ namespace H6Game.Base.Message
             {
                 throw new NullReferenceException("消息commands不能为空.");
             }
-            this.MessageCmds.AddRange(commands.Select(c => (int)c));
+            this.MessageCmds.AddRange(commands.Select(c => (ushort)c));
         }
     }
 }
