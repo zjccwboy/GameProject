@@ -8,7 +8,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [NetCommand(1024)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(Network network, TestMessage message, int messageCmd)
+        protected override void Subscribe(Network network, TestMessage message, ushort messageCmd)
         {
             network.Response(message);
         }
@@ -17,7 +17,7 @@ namespace H6Game.TestKcpServerBenckmarkCore
     [NetCommand(1024)]
     public class TestSubscriberInt : NetSubscriber<int>
     {
-        protected override void Subscribe(Network network, int message, int messageCmd)
+        protected override void Subscribe(Network network, int message, ushort messageCmd)
         {
             network.Response(message);
         }

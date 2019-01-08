@@ -44,7 +44,7 @@ namespace H6Game.Base.Message
         /// 订阅网络消息
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Subscribe(Network network, Message message, int netCommand);
+        protected abstract void Subscribe(Network network, Message message, ushort netCommand);
     }
 
     /// <summary>
@@ -73,6 +73,6 @@ namespace H6Game.Base.Message
         /// 订阅网络消息
         /// </summary>
         /// <param name="response"></param>
-        protected abstract void Subscribe(Network network, int netCommand);
+        protected abstract void Subscribe(Network network, ushort netCommand);
     }
 }

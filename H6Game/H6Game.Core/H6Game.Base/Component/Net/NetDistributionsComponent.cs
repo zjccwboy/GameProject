@@ -159,10 +159,10 @@ namespace H6Game.Base.Component
         internal void BroadcastAddNewService(Network network, NetEndPointMessage message)
         {
             this.InnerNetMapManager.Add(network, message);
-            network.Broadcast(message, SysNetCommand.AddInnerServerCmd);
+            network.Broadcast(message, (ushort)SysNetCommand.AddInnerServerCmd);
             foreach (var entity in this.InnerNetMapManager.Entities)
             {
-                network.Send(entity, SysNetCommand.AddInnerServerCmd);
+                network.Send(entity, (ushort)SysNetCommand.AddInnerServerCmd);
             }
         }
 
@@ -265,13 +265,13 @@ namespace H6Game.Base.Component
                 return;
             }
 
-            var outerMessage = await network.CallMessageAsync<OuterEndPointMessage>(SysNetCommand.GetOutServerCmd);
+            var outerMessage = await network.CallMessageAsync<OuterEndPointMessage>((ushort)SysNetCommand.GetOutServerCmd);
             this.OuterNetMapManager.Add(network, outerMessage);
 
             if (this.IsProxyServer)
                 return;
 
-            var serverType = await network.CallMessageAsync<int>(SysNetCommand.GetServerType);
+            var serverType = await network.CallMessageAsync<int>((ushort)SysNetCommand.GetServerType);
             if (serverType != (int)ServerType.Default)
             {
                 //删掉连接中的代理服务
@@ -286,12 +286,12 @@ namespace H6Game.Base.Component
         {
             var localMessage = this.Config.GetLocalMessage();
             //连接成功后把本地监听端口发送给远程进程
-            network.Send(localMessage, SysNetCommand.AddInnerServerCmd);
+            network.Send(localMessage, (ushort)SysNetCommand.AddInnerServerCmd);
 
             //把当前所有连接的内网监听服务发送给远程进程
             foreach (var entity in this.InnerNetMapManager.Entities)
             {
-                network.Send(entity, SysNetCommand.AddInnerServerCmd);
+                network.Send(entity, (ushort)SysNetCommand.AddInnerServerCmd);
             }
         }
 

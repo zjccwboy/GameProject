@@ -49,7 +49,7 @@ namespace H6Game.TestDistributedNetCore
 
         public static async Task Call(Network network)
         {
-            await network.CallMessageAsync<TestMessage, TestMessage>(send, TestCMD.TestCmd);
+            await network.CallMessageAsync<TestMessage, TestMessage>(send, (ushort)TestCMD.TestCmd);
 
             Count++;
             if (stopWatch.ElapsedMilliseconds > 1000)

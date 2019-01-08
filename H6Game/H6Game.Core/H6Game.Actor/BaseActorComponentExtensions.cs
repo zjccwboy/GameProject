@@ -30,7 +30,7 @@ namespace H6Game.Actor
                 ObjectId = actor.ActorEntity.Id,
                 ActorType = actor.ActorEntity.ActorType,
             };
-            network.Send(syncMessage, command);
+            network.Send(syncMessage, (ushort)command);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace H6Game.Actor
             else
             {
                 var network = actor.ActorEntity.Network;
-                network.Send(message, command);
+                network.Send(message, (ushort)command);
             }
         }
 
@@ -58,13 +58,12 @@ namespace H6Game.Actor
         /// 请求一条Actor消息
         /// </summary>
         /// <typeparam name="TActorRequest"></typeparam>
-        /// <typeparam name="TActorResponse"></typeparam>
         /// <param name="actor"></param>
         /// <param name="message"></param>
         /// <param name="command"></param>
         /// <returns></returns>
-        internal static async Task<TActorResponse> CallActor<TActorRequest, TActorResponse>(this BaseActorComponent actor, TActorRequest message, NetCommand command)
-            where TActorRequest : IActorMessage where TActorResponse : IActorMessage
+        internal static async Task<TActorResponse> CallActor<TActorResponse>(this BaseActorComponent actor, IActorMessage message, NetCommand command)
+            where TActorResponse : IActorMessage
         {
             TActorResponse response = default;
             if (actor.IsLocalActor)
@@ -74,7 +73,7 @@ namespace H6Game.Actor
             else
             {
                 var network = actor.ActorEntity.Network;
-                response = await network.CallMessageAsync<TActorRequest, TActorResponse>(message, command);
+                response = await network.CallMessageAsync<TActorResponse>(message, (ushort)command);
             }
             return response;
         }

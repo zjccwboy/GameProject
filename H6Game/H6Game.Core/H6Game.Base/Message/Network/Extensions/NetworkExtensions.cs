@@ -34,7 +34,7 @@ public static class NetworkExtensions
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">表示这条消息指令</param>
-    public static void Send<TSender>(this Network network, TSender data, int netCommand)
+    public static void Send<TSender>(this Network network, TSender data, ushort netCommand)
     {
         network.Session.Send(network.Channel, data, netCommand, 0);
     }
@@ -42,101 +42,26 @@ public static class NetworkExtensions
     /// <summary>
     /// 发送消息
     /// </summary>
-    /// <typeparam name="TSender"></typeparam>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    public static void Send<TSender,TEnum>(this Network network, TSender data, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        network.Session.Send(network.Channel, data, command, 0);
-    }
-
-    /// <summary>
-    /// 发送消息
-    /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="netCommand">表示这条消息指令</param>
-    public static void Send(this Network network, int netCommand)
+    public static void Send(this Network network, ushort netCommand)
     {
         network.Session.Send(network.Channel, netCommand, 0);
     }
 
     /// <summary>
-    /// 发送消息
-    /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="netCommand">表示这条消息指令</param>
-    public static void Send<TEnum>(this Network network, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        network.Session.Send(network.Channel, command, 0);
-    }
-
-    /// <summary>
-    /// 远程调用一条RPC消息
-    /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
-    /// <typeparam name="TResponse"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<TRequest, TResponse>(this Network network, TRequest data, Action<TResponse> notificationAction, int netCommand)
-    {
-        network.Session.Subscribe(network.Channel, data, (p) => {
-            var response = p.Read<TResponse>();
-            notificationAction(response);
-        }, netCommand);
-    }
-
-    /// <summary>
-    /// 远程调用一条RPC消息
-    /// </summary>
-    /// <typeparam name="TRequest"></typeparam>
-    /// <typeparam name="TResponse"></typeparam>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<TRequest, TResponse, TEnum>(this Network network, TRequest data, Action<TResponse> notificationAction, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        network.CallMessage(data, notificationAction, command);
-    }
-
-    /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TResponse">返回数据类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="notificationAction">订阅回调</param>
     /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<TResponse>(this Network network, Action<TResponse> notificationAction, int netCommand)
+    public static void CallMessage<TResponse>(this Network network, Action<TResponse> notificationAction, ushort netCommand)
     {
         network.Session.Subscribe(network.Channel, (p) => {
             var response = p.Read<TResponse>();
             notificationAction(response);
         }, netCommand);
-    }
-
-    /// <summary>
-    /// 远程调用一条RPC消息
-    /// </summary>
-    /// <typeparam name="TResponse">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<TResponse>(this Network network, Action<TResponse> notificationAction, Enum netCommand)
-    {
-        var command = Convert.ToInt32(netCommand);
-        network.CallMessage(notificationAction, command);
     }
 
     /// <summary>
@@ -148,7 +73,7 @@ public static class NetworkExtensions
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
     /// <returns>返回消息数据。</returns>
-    public static Task<TResponse> CallMessageAsync<TRequest, TResponse>(this Network network, TRequest data, int netCommand)
+    public static Task<TResponse> CallMessageAsync<TRequest, TResponse>(this Network network, TRequest data, ushort netCommand)
     {
         var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, data, (p) =>
@@ -163,16 +88,22 @@ public static class NetworkExtensions
     /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
-    /// <typeparam name="TRequest">返回消息类型</typeparam>
     /// <typeparam name="TResponse">返回消息类型</typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
     /// <returns>返回消息数据。</returns>
-    public static Task<TResponse> CallMessageAsync<TRequest, TResponse>(this Network network, TRequest data, Enum netCommand)
+    public static Task<TResponse> CallMessageAsync<TResponse>(this Network network, object data, ushort netCommand)
     {
         var command = Convert.ToInt32(netCommand);
-        return network.CallMessageAsync<TRequest, TResponse>(data, command);
+        var tcs = new TaskCompletionSource<TResponse>();
+        network.Session.Subscribe(network.Channel, data, (p) =>
+        {
+            var response = p.Read<TResponse>();
+            tcs.TrySetResult(response);
+        }, netCommand);
+
+        return tcs.Task;
     }
 
     /// <summary>
@@ -182,7 +113,7 @@ public static class NetworkExtensions
     /// <param name="network">网络类</param>
     /// <param name="netCommand">消息指令</param>
     /// <returns>返回消息数据。</returns>
-    public static Task<TResponse> CallMessageAsync<TResponse>(this Network network, int netCommand)
+    public static Task<TResponse> CallMessageAsync<TResponse>(this Network network, ushort netCommand)
     {
         var tcs = new TaskCompletionSource<TResponse>();
         network.Session.Subscribe(network.Channel, (p) =>
@@ -194,26 +125,13 @@ public static class NetworkExtensions
     }
 
     /// <summary>
-    /// 远程调用一条RPC消息
-    /// </summary>
-    /// <typeparam name="TResponse">返回消息类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="netCommand">消息指令</param>
-    /// <returns>返回消息数据。</returns>
-    public static Task<TResponse> CallMessageAsync<TResponse>(this Network network, Enum netCommand)
-    {
-        var command = Convert.ToInt32(netCommand);
-        return network.CallMessageAsync<TResponse>(command);
-    }
-
-    /// <summary>
     /// 给所有Socket连接广播一条消息
     /// </summary>
     /// <typeparam name="TSender"></typeparam>
     /// <param name="network">网络类</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TSender>(this Network network, TSender data, int netCommand)
+    public static void Broadcast<TSender>(this Network network, TSender data, ushort netCommand)
     {
         network.Session.Broadcast(data, netCommand);
     }
@@ -221,39 +139,11 @@ public static class NetworkExtensions
     /// <summary>
     /// 给所有Socket连接广播一条消息
     /// </summary>
-    /// <typeparam name="TSender"></typeparam>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TSender, TEnum>(this Network network, TSender data, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        network.Broadcast(data, command);
-    }
-
-    /// <summary>
-    /// 给所有Socket连接广播一条消息
-    /// </summary>
     /// <param name="network">网络类</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast(this Network network, int netCommand)
+    public static void Broadcast(this Network network, ushort netCommand)
     {
         network.Session.Broadcast(netCommand);
-    }
-
-    /// <summary>
-    /// 给所有Socket连接广播一条消息
-    /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TEnum>(this Network network, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        network.Broadcast(command);
     }
 
     /// <summary>
@@ -263,7 +153,7 @@ public static class NetworkExtensions
     /// <param name="networks">一组网络</param>
     /// <param name="data">发送数据</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TSender>(this IEnumerable<Network> networks, TSender data, int netCommand)
+    public static void Broadcast<TSender>(this IEnumerable<Network> networks, TSender data, ushort netCommand)
     {
         foreach (var network in networks)
         {
@@ -274,41 +164,13 @@ public static class NetworkExtensions
     /// <summary>
     /// 给一组Socket连接网络广播一条消息
     /// </summary>
-    /// <typeparam name="TSender"></typeparam>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="networks">一组网络</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TSender,TEnum>(this IEnumerable<Network> networks, TSender data, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        networks.Broadcast(data, command);
-    }
-
-    /// <summary>
-    /// 给一组Socket连接网络广播一条消息
-    /// </summary>
     /// <param name="networks">一组网络</param>
     /// <param name="netCommand">消息指令</param>
-    public static void Broadcast(this IEnumerable<Network> networks, int netCommand)
+    public static void Broadcast(this IEnumerable<Network> networks, ushort netCommand)
     {
         foreach (var network in networks)
         {
             network.Send(netCommand);
         }
-    }
-
-    /// <summary>
-    /// 给一组Socket连接网络广播一条消息
-    /// </summary>
-    /// <typeparam name="TEnum"></typeparam>
-    /// <param name="networks">一组网络</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TEnum>(this IEnumerable<Network> networks, TEnum netCommand) where TEnum : Enum
-    {
-        var enumObj = netCommand as Enum;
-        var command = Convert.ToInt32(enumObj);
-        networks.Broadcast(command);
     }
 }

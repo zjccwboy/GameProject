@@ -13,7 +13,7 @@ namespace H6Game.Account
     public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
 
-        protected override void Subscribe(Network network, LoginRequestMessage message, int messageCmd)
+        protected override void Subscribe(Network network, LoginRequestMessage message, ushort messageCmd)
         {
             Game.Scene.GetComponent<LoginComponent>().OnLogin(network, message);
         }

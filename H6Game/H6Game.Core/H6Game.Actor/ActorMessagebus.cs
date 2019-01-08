@@ -14,7 +14,7 @@ namespace H6Game.Actor
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
 
-        protected override void Subscribe(Network network, ActorSyncMessage message, int netCommand)
+        protected override void Subscribe(Network network, ActorSyncMessage message, ushort netCommand)
         {
             var logs = $"CMD:{netCommand} ActorId:{message.ActorId} MSG:{message.ToJson()}";
             Log.Info(logs, LoggerBllType.System);
@@ -25,7 +25,7 @@ namespace H6Game.Actor
     [NetCommand(NetCommand.RemoveActorCmd)]
     public class SubscribeOnRemoteActorRemove : NetSubscriber<int>
     {
-        protected override void Subscribe(Network network, int message, int netCommand)
+        protected override void Subscribe(Network network, int message, ushort netCommand)
         {
             Log.Info($"CMD：{netCommand} 删除AcotrId:{message} ", LoggerBllType.System);
             if (Game.Scene.GetComponent(message, out BaseComponent component))
@@ -37,7 +37,7 @@ namespace H6Game.Actor
     public class SubscribeOnRemoteSyncFullActorInfo : NetSubscriber
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
-        protected override void Subscribe(Network network, int netCommand)
+        protected override void Subscribe(Network network, ushort netCommand)
         {
             Log.Info(netCommand, LoggerBllType.System);
             this.ActorStorage.SendLocalActors(network);

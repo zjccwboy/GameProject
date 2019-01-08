@@ -68,8 +68,8 @@ namespace H6Game.Base.Message
         public const uint ReConnectInterval = 3000;
         public Network Network { get; }
 
-        private int rpcId;
-        public int RpcId { get { if (rpcId == int.MaxValue) rpcId = 0; return ++rpcId; } }
+        private ushort rpcId;
+        public ushort RpcId { get { if (rpcId == ushort.MaxValue) rpcId = 0; return ++rpcId; } }
         public PacketParser RecvParser { get; protected set; }
         public PacketParser SendParser { get; protected set; }
         public ANetService NetService { get; }

@@ -10,7 +10,7 @@ namespace H6Game.TestDistributedNetCore
     [NetCommand(TestCMD.TestCmd)]
     public class TestSubscriber : NetSubscriber<TestMessage>
     {
-        protected override void Subscribe(Network network, TestMessage message, int messageCmd)
+        protected override void Subscribe(Network network, TestMessage message, ushort messageCmd)
         {
             network.Response(message);
         }
@@ -18,7 +18,7 @@ namespace H6Game.TestDistributedNetCore
 
     public enum TestCMD
     {
-        TestCmd = 1099999,
+        TestCmd = 47779,
     }
 
     [ProtoBuf.ProtoContract]

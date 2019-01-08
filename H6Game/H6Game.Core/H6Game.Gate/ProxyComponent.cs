@@ -46,7 +46,7 @@ namespace H6Game.Gate
     {
         private ProxyComponent proxy { get; } = Game.Scene.GetComponent<ProxyComponent>();
 
-        protected override void Subscribe(Network network, int message, int netCommand)
+        protected override void Subscribe(Network network, int message, ushort netCommand)
         {
             var connectInfo = proxy.GetGetGoodConnectedInfo(message);
             network.Response(connectInfo);

@@ -9,7 +9,7 @@ namespace H6Game.Base.Component.Net
     public class SubscribeOnAddServerConnection : NetSubscriber<NetEndPointMessage>
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
-        protected override void Subscribe(Network network, NetEndPointMessage message, int netCommand)
+        protected override void Subscribe(Network network, NetEndPointMessage message, ushort netCommand)
         {
             if (Distributions.InnerNetMapManager.Existed(message))
                 return;
@@ -26,7 +26,7 @@ namespace H6Game.Base.Component.Net
     public class SubscribeOnSyncOutNetMessage : NetSubscriber
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
-        protected override void Subscribe(Network network, int netCommand)
+        protected override void Subscribe(Network network, ushort netCommand)
         {
             network.Response(Distributions.OuterNetMessage);
         }
@@ -36,7 +36,7 @@ namespace H6Game.Base.Component.Net
     public class SubscribeOnSyncInnerNetMessage : NetSubscriber
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
-        protected override void Subscribe(Network network, int netCommand)
+        protected override void Subscribe(Network network, ushort netCommand)
         {
             network.Response(Distributions.InnerNetMessage);
         }
@@ -46,7 +46,7 @@ namespace H6Game.Base.Component.Net
     public class SubscribeOnGetServerType : NetSubscriber
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
-        protected override void Subscribe(Network network, int netCommand)
+        protected override void Subscribe(Network network, ushort netCommand)
         {
             if (Distributions.IsCenterServer)
             {

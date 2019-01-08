@@ -50,7 +50,7 @@ namespace H6Game.Actor
             this.Distributions.OnConnect += network => 
             {
                 this.OnConnected?.Invoke(network);
-                network.Send(NetCommand.SyncActorInfoCmd);
+                network.Send((ushort)NetCommand.SyncActorInfoCmd);
             };
         }
 
@@ -101,7 +101,7 @@ namespace H6Game.Actor
                 ObjectId = component.ActorEntity.Id,
                 ActorType = component.ActorEntity.ActorType,
             };
-            this.Distributions.InnerNetworks.Broadcast(message, NetCommand.AddActorCmd);
+            this.Distributions.InnerNetworks.Broadcast(message, (ushort)NetCommand.AddActorCmd);
         }
 
         private void AddRemote(BaseActorComponent component)
@@ -180,7 +180,7 @@ namespace H6Game.Actor
             if (!LocalActors.Remove(component.Id))
                 return;
 
-            this.Distributions.InnerNetworks.Broadcast(component.Id, NetCommand.RemoveActorCmd);
+            this.Distributions.InnerNetworks.Broadcast(component.Id, (ushort)NetCommand.RemoveActorCmd);
         }
     }
 }

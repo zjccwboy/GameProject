@@ -11,9 +11,9 @@ namespace H6Game.BaseTest
         Test2,
     }
 
-    public enum NetCommandTest
+    public enum NetCommandTest : ushort
     {
-        SubEmpty = 999999,
+        SubEmpty = 55555,
         SubString,
         SubInt,
         SubUInt,

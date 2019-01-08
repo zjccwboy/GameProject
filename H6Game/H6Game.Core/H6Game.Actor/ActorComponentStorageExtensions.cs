@@ -88,21 +88,20 @@ namespace H6Game.Actor
         /// <summary>
         /// 请求一条Actor消息
         /// </summary>
-        /// <typeparam name="TActorRequest"></typeparam>
         /// <typeparam name="TActorResponse"></typeparam>
         /// <param name="actor"></param>
         /// <param name="message"></param>
         /// <param name="command"></param>
         /// <returns></returns>
-        public static async Task<TActorResponse> CallActor<TActorRequest, TActorResponse>(this ActorComponentStorage current, TActorRequest message, NetCommand command)
-            where TActorRequest : IActorMessage where TActorResponse : IActorMessage
+        public static async Task<TActorResponse> CallActor<TActorResponse>(this ActorComponentStorage current, IActorMessage message, NetCommand command)
+            where TActorResponse : IActorMessage
         {
             var actor = current.GetActor(message.ActorId);
             if (actor != null)
             {
                 return default;
             }
-            return await actor.CallActor<TActorRequest, TActorResponse>(message, command);
+            return await actor.CallActor<TActorResponse>(message, command);
         }
     }
 }

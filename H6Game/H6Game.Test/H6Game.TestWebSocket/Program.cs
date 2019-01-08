@@ -43,7 +43,7 @@ namespace H6Game.TestWebSocket
     [NetCommand(1000)]
     public class Sub1000 : NetSubscriber
     {
-        protected override void Subscribe(Network network, int netCommand)
+        protected override void Subscribe(Network network, ushort netCommand)
         {
             Console.WriteLine(netCommand);
 
