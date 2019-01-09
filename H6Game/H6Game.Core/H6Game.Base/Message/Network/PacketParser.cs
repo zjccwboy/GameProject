@@ -7,10 +7,11 @@ namespace H6Game.Base.Message
     public class ParseState
     {
         public const int PacketSize = 1;
-        public const int Command = 2;
-        public const int MsgType = 3;
-        public const int RpcId = 4;
-        public const int Body = 5;
+        public const int BitFlag = 2;
+        public const int Command = 3;
+        public const int MsgType = 4;
+        public const int RpcId = 5;
+        public const int Body = 6;
     }
 
     /// <summary>
@@ -77,7 +78,7 @@ namespace H6Game.Base.Message
             var tryCount = 0;
             while (true)
             {
-                if (tryCount > 5)
+                if (tryCount > 6)
                     throw new PacketParserException("解包错误，数据包非法.");
 
                 tryCount++;
@@ -85,31 +86,37 @@ namespace H6Game.Base.Message
                 {
                     case ParseState.PacketSize:
                         {
-                            if (ReadLength == 0 && Buffer.DataSize < HeadSize)
+                            if (Buffer.DataSize < HeadSize)
                                 return;
 
                             ReadPacketSize();
+                            State = ParseState.BitFlag;
+                        }
+                        continue;
+                    case ParseState.BitFlag:
+                        {
+                            this.ReadBitFlag();
                             State = ParseState.Command;
                         }
-                        break;
+                        continue;
                     case ParseState.Command:
                         {
                             ReadCommand();
                             State = ParseState.MsgType;
                         }
-                        break;
+                        continue;
                     case ParseState.MsgType:
                         {
                             ReadMsgType();
                             State = ParseState.RpcId;
                         }
-                        break;
+                        continue;
                     case ParseState.RpcId:
                         {
                             ReadRpcId();
                             State = ParseState.Body;
                         }
-                        break;
+                        continue;
                     case ParseState.Body:
                         {
                             ReadBody();
@@ -125,7 +132,8 @@ namespace H6Game.Base.Message
                     IsOk = true;
                     return;
                 }
-                else if (Buffer.DataSize == 0)
+
+                if (Buffer.DataSize == 0)
                     return;
                 else if (Buffer.DataSize < PacketSize - ReadLength)
                     return;
@@ -149,7 +157,10 @@ namespace H6Game.Base.Message
             }
             ReadLength += LengthFlagSize;
             PacketSize = BitConverter.ToInt32(Packet.HeadBytes, 0);
+        }
 
+        private void ReadBitFlag()
+        {
             System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
             Buffer.UpdateRead(BitFlagSize);
             ReadLength += BitFlagSize;

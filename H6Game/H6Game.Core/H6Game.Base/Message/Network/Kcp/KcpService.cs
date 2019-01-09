@@ -140,10 +140,8 @@ namespace H6Game.Base.Message
             {
                 uint connectConv = BitConverter.ToUInt32(ReuseRecvBytes, 0);
                 if (!this.Channels.TryGetValue(connectConv, out ANetChannel channel))
-                {
-                    ConnectSender.SendFIN(this.ConnectParser.Packet, this.Acceptor, this.ReuseEndPoint, (int)connectConv);
                     return;
-                }
+
                 (channel as KcpChannel).HandleRecv(ReuseRecvBytes, 0, recvCount);
                 channel.StartRecv();
             }
