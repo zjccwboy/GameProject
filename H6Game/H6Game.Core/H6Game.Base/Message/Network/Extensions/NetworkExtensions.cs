@@ -67,21 +67,6 @@ public static class NetworkExtensions
     /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
-    /// <typeparam name="TResponse">返回数据类型</typeparam>
-    /// <param name="network">网络类</param>
-    /// <param name="notificationAction">订阅回调</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void CallMessage<TResponse>(this Network network, Action<TResponse> notificationAction, ushort netCommand)
-    {
-        network.Session.Subscribe(network.Channel, (p) => {
-            var response = p.Read<TResponse>();
-            notificationAction(response);
-        }, netCommand);
-    }
-
-    /// <summary>
-    /// 远程调用一条RPC消息
-    /// </summary>
     /// <typeparam name="TRequest">返回消息类型</typeparam>
     /// <typeparam name="TResponse">返回消息类型</typeparam>
     /// <param name="network">网络类</param>
