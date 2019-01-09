@@ -11,7 +11,7 @@ namespace H6Game.Actor
         [ProtoMember(1)]
         public int ActorId { get; set; }
 
-        [ProtoMember(3)]
+        [ProtoMember(2)]
         public ActorType ActorType { get; set; }
     }
 }
