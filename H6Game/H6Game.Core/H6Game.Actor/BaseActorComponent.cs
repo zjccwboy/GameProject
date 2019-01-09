@@ -23,6 +23,12 @@ namespace H6Game.Actor
             this.ActorEntity.Network = null;
             this.Members.Clear();
 
+            if(this.Parent != null)
+            {
+                this.Parent.Remove(this.Id);
+                this.Parent = null;
+            }
+
             base.Dispose();
         }
 
@@ -37,10 +43,9 @@ namespace H6Game.Actor
             this.ActorPool.AddActor(this);
         }
 
-        internal override void SetRemote(Network network, string objectId, int actorId)
+        internal override void SetRemote(Network network, int actorId)
         {
             this.ActorEntity.ActorId = actorId;
-            this.ActorEntity.Id = objectId;
             this.ActorEntity.ActorType = this.ActorType;
             this.ActorEntity.Network = network;
 
@@ -58,8 +63,9 @@ namespace H6Game.Actor
         public ActorEntity ActorEntity { get; } = new ActorEntity();
         public bool IsLocalActor { get { return this.ActorEntity.ActorInfo != null; } }
         public abstract ActorType ActorType { get;}
-        internal abstract void SetRemote(Network network, string objectId, int actorId);
-        public abstract void ReceiveMessage(IActorMessage message);
-        public abstract IActorMessage ReceiveRpcMessage(IActorMessage message);
+        public BaseActorComponent Parent { get; set; }
+        internal abstract void SetRemote(Network network, int actorId);
+        public abstract void ReceiveMessage(IActorMessage message, MSGCommand command);
+        public abstract IActorMessage ReceiveRpcMessage(IActorMessage message, MSGCommand command);
     }
 }

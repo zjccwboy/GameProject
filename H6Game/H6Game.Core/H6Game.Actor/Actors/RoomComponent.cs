@@ -1,4 +1,5 @@
-﻿using H6Game.Base.Message;
+﻿using H6Game.Base;
+using H6Game.Base.Message;
 using H6Game.Hotfix.Entities;
 
 namespace H6Game.Actor
@@ -7,12 +8,12 @@ namespace H6Game.Actor
     {
         public override ActorType ActorType => ActorType.Room;
 
-        public override void ReceiveMessage(IActorMessage message)
+        public override void ReceiveMessage(IActorMessage message, MSGCommand command)
         {
             throw new System.NotImplementedException();
         }
 
-        public override IActorMessage ReceiveRpcMessage(IActorMessage message)
+        public override IActorMessage ReceiveRpcMessage(IActorMessage message, MSGCommand command)
         {
             throw new System.NotImplementedException();
         }

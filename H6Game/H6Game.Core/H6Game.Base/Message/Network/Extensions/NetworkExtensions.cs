@@ -50,6 +50,21 @@ public static class NetworkExtensions
     }
 
     /// <summary>
+    /// 给一组Socket连接网络广播一条消息
+    /// </summary>
+    /// <typeparam name="TSender"></typeparam>
+    /// <param name="networks">一组网络</param>
+    /// <param name="data">发送数据</param>
+    /// <param name="netCommand">消息指令</param>
+    public static void Send<TSender>(this IEnumerable<Network> networks, TSender data, ushort netCommand)
+    {
+        foreach (var network in networks)
+        {
+            network.Send(data, netCommand);
+        }
+    }
+
+    /// <summary>
     /// 远程调用一条RPC消息
     /// </summary>
     /// <typeparam name="TResponse">返回数据类型</typeparam>
@@ -144,33 +159,5 @@ public static class NetworkExtensions
     public static void Broadcast(this Network network, ushort netCommand)
     {
         network.Session.Broadcast(netCommand);
-    }
-
-    /// <summary>
-    /// 给一组Socket连接网络广播一条消息
-    /// </summary>
-    /// <typeparam name="TSender"></typeparam>
-    /// <param name="networks">一组网络</param>
-    /// <param name="data">发送数据</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast<TSender>(this IEnumerable<Network> networks, TSender data, ushort netCommand)
-    {
-        foreach (var network in networks)
-        {
-            network.Send(data, netCommand);
-        }
-    }
-
-    /// <summary>
-    /// 给一组Socket连接网络广播一条消息
-    /// </summary>
-    /// <param name="networks">一组网络</param>
-    /// <param name="netCommand">消息指令</param>
-    public static void Broadcast(this IEnumerable<Network> networks, ushort netCommand)
-    {
-        foreach (var network in networks)
-        {
-            network.Send(netCommand);
-        }
     }
 }

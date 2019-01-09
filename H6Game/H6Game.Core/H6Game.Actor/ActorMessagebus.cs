@@ -9,7 +9,7 @@ using System.Text;
 
 namespace H6Game.Actor
 {
-    [NetCommand(NetCommand.AddActorCmd)]
+    [NetCommand(MSGCommand.AddActorCmd)]
     public class SubscribeOnRemoteAddActor : NetSubscriber<ActorSyncMessage>
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();
@@ -22,7 +22,7 @@ namespace H6Game.Actor
         }
     }
 
-    [NetCommand(NetCommand.RemoveActorCmd)]
+    [NetCommand(MSGCommand.RemoveActorCmd)]
     public class SubscribeOnRemoteActorRemove : NetSubscriber<int>
     {
         protected override void Subscribe(Network network, int message, ushort netCommand)
@@ -33,7 +33,7 @@ namespace H6Game.Actor
         }
     }
 
-    [NetCommand(NetCommand.SyncActorInfoCmd)]
+    [NetCommand(MSGCommand.SyncActorInfoCmd)]
     public class SubscribeOnRemoteSyncFullActorInfo : NetSubscriber
     {
         private ActorComponentStorage ActorStorage { get; } = Game.Scene.GetComponent<ActorComponentStorage>();

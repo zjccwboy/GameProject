@@ -4,7 +4,7 @@ namespace H6Game.Base
     /// <summary>
     /// 网络消息指令，系统保留指令为1-1000，不能在该枚举中定义。
     /// </summary>
-    public enum NetCommand : ushort
+    public enum MSGCommand : ushort
     {
         #region 游戏客户端交互消息指令1001开始
         /// <summary>

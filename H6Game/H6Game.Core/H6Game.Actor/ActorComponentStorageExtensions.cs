@@ -39,7 +39,7 @@ namespace H6Game.Actor
         {
             var type = current.GetActorType(message.ActorType);
             var actor = Game.Scene.AddComponent(type) as BaseActorComponent;
-            actor.SetRemote(network, message.ObjectId, message.ActorId);
+            actor.SetRemote(network, message.ActorId);
             return actor;
         }
 
@@ -75,7 +75,7 @@ namespace H6Game.Actor
         /// <param name="actor"></param>
         /// <param name="message"></param>
         /// <param name="command"></param>
-        public static void SendActor<TActorMessage>(this ActorComponentStorage current, TActorMessage message, NetCommand command)
+        internal static void SendActor<TActorMessage>(this ActorComponentStorage current, TActorMessage message, MSGCommand command)
             where TActorMessage : IActorMessage
         {
             var actor = current.GetActor(message.ActorId);
@@ -93,7 +93,7 @@ namespace H6Game.Actor
         /// <param name="message"></param>
         /// <param name="command"></param>
         /// <returns></returns>
-        public static async Task<TActorResponse> CallActor<TActorResponse>(this ActorComponentStorage current, IActorMessage message, NetCommand command)
+        internal static async Task<TActorResponse> CallActor<TActorResponse>(this ActorComponentStorage current, IActorMessage message, MSGCommand command)
             where TActorResponse : IActorMessage
         {
             var actor = current.GetActor(message.ActorId);

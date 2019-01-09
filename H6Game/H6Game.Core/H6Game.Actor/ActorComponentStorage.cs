@@ -50,7 +50,7 @@ namespace H6Game.Actor
             this.Distributions.OnConnect += network => 
             {
                 this.OnConnected?.Invoke(network);
-                network.Send((ushort)NetCommand.SyncActorInfoCmd);
+                network.Send((ushort)MSGCommand.SyncActorInfoCmd);
             };
         }
 
@@ -59,7 +59,7 @@ namespace H6Game.Actor
             var count = 0;
             foreach (var actor in LocalActors.Values)
             {
-                actor.SendMySelf(network, NetCommand.AddActorCmd);
+                actor.SendMySelf(network, MSGCommand.AddActorCmd);
                 count++;
 
                 //一次最多发送100条，避免服务端分配过大的缓冲区
@@ -78,44 +78,43 @@ namespace H6Game.Actor
 
         internal void AddActor(BaseActorComponent component)
         {
-            this.ActorComponents[component.ActorEntity.Id] = component;
-
             if (component.IsLocalActor)
             {
-                AddLocal(component);
+                this.AddLocal(component);
                 return;
             }
-            AddRemote(component);
+            this.AddRemote(component);
         }
 
         private void AddLocal(BaseActorComponent component)
         {
-            if (LocalActors.ContainsKey(component.Id))
+            if (this.LocalActors.ContainsKey(component.Id))
                 return;
 
-            LocalActors.Add(component.Id, component);
+            this.LocalActors.Add(component.Id, component);
+
+            this.ActorComponents[component.ActorEntity.Id] = component;
 
             var message = new ActorSyncMessage
             {
                 ActorId = component.Id,
-                ObjectId = component.ActorEntity.Id,
                 ActorType = component.ActorEntity.ActorType,
             };
-            this.Distributions.InnerNetworks.Broadcast(message, (ushort)NetCommand.AddActorCmd);
+            this.Distributions.InnerNetworks.Send(message, (ushort)MSGCommand.AddActorCmd);
         }
 
         private void AddRemote(BaseActorComponent component)
         {
-            if (RemoteActors.ContainsKey(component.Id))
+            if (this.RemoteActors.ContainsKey(component.Id))
                 return;
 
-            RemoteActors[component.Id] = component;
+            this.RemoteActors[component.Id] = component;
 
             var entity = component.ActorEntity;
-            if (!NetIdActors.TryGetValue(entity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
+            if (!this.NetIdActors.TryGetValue(entity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
             {
                 dicVal = new Dictionary<int, BaseActorComponent>();
-                NetIdActors[entity.Network.Id] = dicVal;
+                this.NetIdActors[entity.Network.Id] = dicVal;
             }
             dicVal[component.ActorEntity.ActorId] = component;
         }
@@ -140,28 +139,27 @@ namespace H6Game.Actor
 
         internal void Remove(BaseActorComponent component)
         {
+            if (component == null)
+                return;
+
             if (component.ActorEntity == null)
                 return;
 
-            if (component.ActorEntity.Id == null)
-                return;
-
-            this.ActorComponents.Remove(component.ActorEntity.Id);
-
-            if (component.IsLocalActor)
+            if (this.LocalActors.ContainsKey(component.Id))
             {
                 RemoveLocal(component);
                 return;
             }
-            RemoveRemote(component);
+
+            if (this.RemoteActors.ContainsKey(component.Id))
+            {
+                this.RemoveRemote(component);
+            }
         }
 
         private void RemoveRemote(BaseActorComponent component)
         {
-            if (component == null)
-                return;
-
-            if (!NetIdActors.TryGetValue(component.ActorEntity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
+            if (!this.NetIdActors.TryGetValue(component.ActorEntity.Network.Id, out Dictionary<int, BaseActorComponent> dicVal))
                 return;
 
             if (!dicVal.Remove(component.ActorEntity.ActorId))
@@ -173,14 +171,13 @@ namespace H6Game.Actor
 
         private void RemoveLocal(BaseActorComponent component)
         {
-            if (component == null)
+            if (!this.LocalActors.Remove(component.Id))
                 return;
 
-
-            if (!LocalActors.Remove(component.Id))
+            if (!this.ActorComponents.Remove(component.ActorEntity.Id))
                 return;
 
-            this.Distributions.InnerNetworks.Broadcast(component.Id, (ushort)NetCommand.RemoveActorCmd);
+            this.Distributions.InnerNetworks.Send(component.Id, (ushort)MSGCommand.RemoveActorCmd);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace H6Game.ClientTester
     }
 
     [ProtoBuf.ProtoContract]
-    [NetMessageType(NetMessageType.TestDistributedTestMessage)]
+    [NetMessageType(MessageType.TestDistributedTestMessage)]
     public class TestMessage : IMessage
     {
         [ProtoBuf.ProtoMember(1)]

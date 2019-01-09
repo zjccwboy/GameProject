@@ -16,7 +16,7 @@ namespace H6Game.Actor
         /// <param name="actor"></param>
         /// <param name="message"></param>
         /// <param name="command"></param>
-        public static void SendActor<TActorMessage>(TActorMessage message, NetCommand command)
+        public static void SendActor<TActorMessage>(TActorMessage message, MSGCommand command)
             where TActorMessage : IActorMessage
         {
            Game.Scene.GetComponent<ActorComponentStorage>().SendActor(message, command);
@@ -30,7 +30,7 @@ namespace H6Game.Actor
         /// <param name="message"></param>
         /// <param name="command"></param>
         /// <returns></returns>
-        public static async Task<TActorResponse> CallActor<TActorResponse>(IActorMessage message, NetCommand command)
+        public static async Task<TActorResponse> CallActor<TActorResponse>(IActorMessage message, MSGCommand command)
             where TActorResponse : IActorMessage
         {
             return await Game.Scene.GetComponent<ActorComponentStorage>().CallActor<TActorResponse>(message, command);

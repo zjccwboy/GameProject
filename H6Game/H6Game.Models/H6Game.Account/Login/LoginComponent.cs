@@ -9,7 +9,7 @@ using H6Game.Rpository;
 
 namespace H6Game.Account
 {
-    [NetCommand(NetCommand.ClientLogin)]
+    [NetCommand(MSGCommand.ClientLogin)]
     public class LoginSubscriber : NetSubscriber<LoginRequestMessage>
     {
 
