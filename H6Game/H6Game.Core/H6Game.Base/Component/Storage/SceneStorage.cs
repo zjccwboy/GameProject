@@ -187,10 +187,10 @@ namespace H6Game.Base.Component
             var type = typeof(T);
             var isSingle = ObjectStorage.IsSingleType(type);
             if (!isSingle)
-                throw new ComponentException($"类型:{type}非SingleCase组件不允许获取.");
+                return null;
 
             if (!SingleComponents.TryGetValue(type, out BaseComponent component))
-                throw new ComponentException($"类型:{type}没有加到该组件中.");
+                return null;
 
             return (T)component;
         }
@@ -199,19 +199,16 @@ namespace H6Game.Base.Component
         /// 获取一个组件集合，不允许获取SingleCase
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
-        /// <exception cref="ComponentException">不允许获取SingleCase类型组件异常。</exception>
         /// <returns>返回一个类型的多例(ManyCase)组件集合。</returns>
         public HashSet<BaseComponent> GetComponents<T>() where T : BaseComponent
         {
             var type = typeof(T);
             var isSingle = ObjectStorage.IsSingleType(type);
             if (isSingle)
-                throw new ComponentException($"类型:{type}是SingleCase组件不允许获取.");
+                return null;
 
             if (!TypeComponents.TryGetValue(type, out HashSet<BaseComponent> components))
-            {
-                throw new ComponentException($"类型:{type}没有加到该组件中.");
-            }
+                return null;
 
             return components;
         }
@@ -221,20 +218,18 @@ namespace H6Game.Base.Component
         /// </summary>
         /// <typeparam name="T">组件类型。</typeparam>
         /// <param name="id">组件Id。</param>
-        /// <exception cref="ComponentException">不允许获取SingleCase类型组件异常。</exception>
         /// <returns>返回一个类型的多例(ManyCase)组件。</returns>        
         public T GetComponent<T>(int id) where T : BaseComponent
         {
             var type = typeof(T);
             var isSingle = ObjectStorage.IsSingleType(type);
             if (isSingle)
-                throw new ComponentException($"类型:{type}是SingleCase组件不允许获取.");
+                return null;
 
             if (IdComponents.TryGetValue(id, out BaseComponent component))
-            {
-                return (T)component;
-            }
-            throw new ComponentException($"类型:{type} ID:{id}组件没有加到该组件中.");
+                return null;
+
+            return (T)component;
         }
 
         /// <summary>
