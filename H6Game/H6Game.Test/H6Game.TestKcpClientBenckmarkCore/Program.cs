@@ -38,31 +38,28 @@ namespace H6Game.TestKcpClientBenckmarkCore
             Swatch.Start();
 
             for (var i = 0; i < 2000; i++)
-                Test();
+                Call();
         }
 
-        static async void Test()
+        private static async void Call()
         {
             while (true)
-                await Call();
-        }
-
-        private static async Task Call()
-        {
-            var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-
-            var result = await network.CallMessageAsync<TestMessage, TestMessage>(send, 1024);
-            if(result.Actor != send.Actor && result.Message != send.Message)
             {
-                Log.Error($"解包出错。", LoggerBllType.System);
-            }
-            
-            Count++;
-            if (Swatch.ElapsedMilliseconds >= 1000)
-            {
-                Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
-                Swatch.Restart();
-                Count = 0;
+                var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
+
+                var result = await network.CallMessageAsync<TestMessage, TestMessage>(send, 1024);
+                if (result.Actor != send.Actor && result.Message != send.Message)
+                {
+                    Log.Error($"解包出错。", LoggerBllType.System);
+                }
+
+                Count++;
+                if (Swatch.ElapsedMilliseconds >= 1000)
+                {
+                    Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                    Swatch.Restart();
+                    Count = 0;
+                }
             }
         }
     }

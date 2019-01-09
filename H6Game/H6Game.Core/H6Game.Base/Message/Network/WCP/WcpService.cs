@@ -41,6 +41,7 @@ namespace H6Game.Base.Message
             };
             OnAccept(channel);
             channel.StartRecv();
+            channel.StartSend();
         }
 
         public override void Update()
@@ -48,10 +49,6 @@ namespace H6Game.Base.Message
             if (this.ServiceType == NetServiceType.Client && ClientChannel != null)
                 ClientChannel.StartConnecting();
 
-            foreach (var channel in this.Channels.Values)
-            {
-                channel.StartSend();
-            }
             this.CheckHeadbeat();
         }
 
@@ -61,7 +58,7 @@ namespace H6Game.Base.Message
             {
                 ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
                 {
-                    OnConnect = c=> { OnConnect(c); c.StartRecv(); } 
+                    OnConnect = c=> { OnConnect(c); c.StartRecv(); c.StartSend(); } 
                 };
                 ClientChannel.StartConnecting();
             }

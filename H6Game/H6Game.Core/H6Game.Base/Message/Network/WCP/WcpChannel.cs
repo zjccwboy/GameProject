@@ -14,18 +14,12 @@ namespace H6Game.Base.Message
         public string HttpPrefixed { get;}
         private WebSocket NetSocket { get; set; }
 
-        /// <summary>
-        /// 发送状态机
-        /// </summary>
-        private bool IsSending { get; set; }
-
         public WcpChannel(string httpPrefixed, ANetService netService, Network network) : base(netService, network)
         {
             this.HttpPrefixed = httpPrefixed;
             this.RecvParser = ParserStorage.GetParser();
             this.SendParser = ParserStorage.GetParser();
         }
-
 
         public WcpChannel(string httpPrefixed, WebSocket socket, ANetService netService) : base(netService)
         {
@@ -70,27 +64,13 @@ namespace H6Game.Base.Message
 
         public override async void StartSend()
         {
-            if (!this.Connected)
+            while (true)
             {
-                this.IsSending = false;
-                return;
+                if (!this.Connected)
+                    return;
+
+                await SendAsync();
             }
-
-            if (this.SendParser.Buffer.DataSize <= 0)
-            {
-                this.IsSending = false;
-                return;
-            }
-
-            if (this.IsSending)
-                return;
-
-            this.IsSending = true;
-
-            await SendAsync();
-
-            this.LastSendTime = TimeUitls.Now();
-            this.IsSending = false;
         }
 
         private async Task SendAsync()
@@ -117,10 +97,10 @@ namespace H6Game.Base.Message
 
                 var recvResult = await ReceviceAsync();
                 if (recvResult == null)
-                    continue;
+                    return;
 
                 if (recvResult.Count == 0)
-                    continue;
+                    return;
 
                 this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
                 while (true)
@@ -143,9 +123,7 @@ namespace H6Game.Base.Message
                 var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
                 result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
                 if (result.Count == 0)
-                {
                     this.DisConnect();
-                }
             }
             catch (Exception e)
             {

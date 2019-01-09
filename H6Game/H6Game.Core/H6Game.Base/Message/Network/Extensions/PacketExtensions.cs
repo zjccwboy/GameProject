@@ -64,8 +64,7 @@ internal static class PacketExtensions
 
     internal static void WriteTo<T>(this Packet packet, T obj)
     {
-        if (obj != default)
-            Serializer.Serialize(packet.BodyStream, obj);
+        Serializer.Serialize(packet.BodyStream, obj);
         var type = obj.GetType();
         if (type.BaseType == typeof(Enum))
             type = typeof(int);
@@ -75,9 +74,7 @@ internal static class PacketExtensions
 
     internal static void WriteTo(this Packet packet, object obj, Type type)
     {
-        if (obj != default)
-            Serializer.Serialize(packet.BodyStream, obj);
-
+        Serializer.Serialize(packet.BodyStream, obj);
         if (type.BaseType == typeof(Enum))
             type = typeof(int);
         packet.MsgTypeCode = (ushort)MessageCommandStorage.GetMsgCode(type);
