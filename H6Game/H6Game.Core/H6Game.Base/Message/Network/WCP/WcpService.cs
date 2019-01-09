@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 
 namespace H6Game.Base.Message
 {
@@ -25,15 +26,12 @@ namespace H6Game.Base.Message
             while (true)
             {
                 var context = await this.Listener.GetContextAsync();
-
-                //GetContextAsync多线程异步，放到主线程中执行回调
-                ThreadCallbackContext.Instance.Post(HandleAccept, context);
+                await HandleAccept(context);
             }
         }
 
-        private async void HandleAccept(object obj)
+        private async Task HandleAccept(HttpListenerContext context)
         {
-            var context = obj as HttpListenerContext;
             var wsContext = await context.AcceptWebSocketAsync(null);
             var client = wsContext.WebSocket;
             var channel = new WcpChannel(this.HttpPrefixed, client, this)
@@ -41,8 +39,8 @@ namespace H6Game.Base.Message
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
-            channel.StartRecv();
             OnAccept(channel);
+            channel.StartRecv();
         }
 
         public override void Update()
@@ -63,7 +61,7 @@ namespace H6Game.Base.Message
             {
                 ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
                 {
-                    OnConnect = c=> { c.StartRecv(); OnConnect(c); } 
+                    OnConnect = c=> { OnConnect(c); c.StartRecv(); } 
                 };
                 ClientChannel.StartConnecting();
             }

@@ -37,48 +37,38 @@ namespace H6Game.Base.Message
 
         public override async void StartConnecting()
         {
-            await Connecting();
+            if (this.Connected)
+                return;
+
+            var now = TimeUitls.Now();
+            if (now - this.LastConnectTime < ReConnectInterval)
+                return;
+
+            this.LastConnectTime = now;
+            if(await StartConnectingAsync())
+            {
+                this.Connected = true;
+                this.OnConnect?.Invoke(this);
+            }
         }
 
-        private async Task Connecting()
+        private async Task<bool> StartConnectingAsync()
         {
             try
             {
-                if (this.Connected)
-                    return;
-
-                var now = TimeUitls.Now();
-                if (now - this.LastConnectTime < ReConnectInterval)
-                    return;
-
-                this.LastConnectTime = now;
-
                 this.NetSocket = new ClientWebSocket();
                 var ctk = new CancellationTokenSource();
                 await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), ctk.Token);
-
-                //ConnectAsync为多线程异步，需要放到主线程中执行
-                ThreadCallbackContext.Instance.Post(OnConnectComplete, this);
-
+                return true;
             }
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
+                return false;
             }
         }
 
-        private void OnConnectComplete(object o)
-        {
-            this.Connected = true;
-            this.OnConnect?.Invoke(o as WcpChannel);
-        }
-
         public override async void StartSend()
-        {
-            await Sending();
-        }
-
-        private async Task Sending()
         {
             if (!this.Connected)
             {
@@ -97,67 +87,42 @@ namespace H6Game.Base.Message
 
             this.IsSending = true;
 
+            await SendAsync();
+
+            this.LastSendTime = TimeUitls.Now();
+            this.IsSending = false;
+        }
+
+        private async Task SendAsync()
+        {
             try
             {
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
                 this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                 await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
-
-                //SendAsync为多线程异步，需要放到主线程中执行
-                ThreadCallbackContext.Instance.Post(OnSendComplete, null);
             }
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
                 this.DisConnect();
-                this.IsSending = false;
             }
         }
 
-        private void OnSendComplete(object o)
-        {
-            this.LastSendTime = TimeUitls.Now();
-            this.IsSending = false;
-        }
-
-        private readonly AutoResetEvent AutoReset = new AutoResetEvent(false);
         public override async void StartRecv()
-        {
-            await Recevice();
-        }
-
-        private async Task Recevice()
         {
             while (true)
             {
-                try
-                {
-                    var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
-                    var result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-                    if (result.Count == 0)
-                    {
-                        this.DisConnect();
-                        return;
-                    }
-                    //ReceiveAsync为多线程异步，需要放到主线程中执行
-                    ThreadCallbackContext.Instance.Post(OnRecvComplete, result);
-                    AutoReset.WaitOne();
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, LoggerBllType.System);
-                    this.DisConnect();
+                if (!this.Connected)
                     return;
-                }
-            }
-        }
 
-        private void OnRecvComplete(object o)
-        {
-            var result = o as WebSocketReceiveResult;
-            this.RecvParser.Buffer.UpdateWrite(result.Count);
-            try
-            {
+                var recvResult = await ReceviceAsync();
+                if (recvResult == null)
+                    continue;
+
+                if (recvResult.Count == 0)
+                    continue;
+
+                this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
                 while (true)
                 {
                     if (!this.RecvParser.TryRead())
@@ -168,10 +133,26 @@ namespace H6Game.Base.Message
                     this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
                 }
             }
-            finally
+        }
+
+        private async Task<WebSocketReceiveResult> ReceviceAsync()
+        {
+            WebSocketReceiveResult result = null;
+            try
             {
-                AutoReset.Set();
+                var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+                result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
+                if (result.Count == 0)
+                {
+                    this.DisConnect();
+                }
             }
+            catch (Exception e)
+            {
+                Log.Error(e, LoggerBllType.System);
+                this.DisConnect();
+            }
+            return result;
         }
 
         public async override void DisConnect()
