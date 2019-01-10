@@ -71,8 +71,20 @@ namespace H6Game.Base.Message
                 if (!this.Connected)
                     return;
 
-                await SendAsync();
+                while (this.SendParser.Buffer.DataSize > 0)
+                {
+                    var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+                    this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
 
+                    try
+                    {
+                        await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                    }
+                    catch
+                    {
+                        this.Disconnect();
+                    }
+                }
                 var tcs = new TaskCompletionSource<bool>();
                 ThreadCallbackContext.Instance.Post(this.OnSendComplete, tcs);
                 await tcs.Task;
@@ -83,20 +95,6 @@ namespace H6Game.Base.Message
         {
             var tcs = o as TaskCompletionSource<bool>;
             tcs.SetResult(true);
-        }
-
-        private async Task SendAsync()
-        {
-            try
-            {
-                var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
-                await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
-            }
-            catch
-            {
-                this.Disconnect();
-            }
         }
 
         public override async void StartRecv()
