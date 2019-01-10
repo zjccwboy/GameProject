@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\bin\Debug\netstandard2.0\MongoDB.Bson.dll</HintPath>
-    </Reference>
     <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
@@ -45,7 +41,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
@@ -76,6 +71,14 @@
     <ProjectReference Include="..\..\H6Game.Core\H6Game.Rpository\H6Game.Rpository.csproj">
       <Project>{48795a7c-b5dc-4ff4-a715-91294371014e}</Project>
       <Name>H6Game.Rpository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj">
+      <Project>{e2f45c9c-7db6-4188-8399-fc3f1b82b56e}</Project>
+      <Name>Google.Protobuf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\MongoDB.Bson.csproj">
+      <Project>{aa139d1f-e279-45a4-8d5f-d9b556016f90}</Project>
+      <Name>MongoDB.Bson</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
