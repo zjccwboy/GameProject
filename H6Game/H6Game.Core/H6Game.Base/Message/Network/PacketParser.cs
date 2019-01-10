@@ -8,9 +8,9 @@ namespace H6Game.Base.Message
     {
         public const int PacketSize = 1;
         public const int BitFlag = 2;
-        public const int Command = 3;
-        public const int MsgType = 4;
-        public const int RpcId = 5;
+        public const int RpcId = 3;
+        public const int Command = 4;
+        public const int MsgType = 5;
         public const int Body = 6;
     }
 
@@ -44,6 +44,10 @@ namespace H6Game.Base.Message
         /// </summary>
         public const int BitFlagSize = sizeof(byte);
         /// <summary>
+        /// 包头协议中RPC请求Id的字节数，3个字节
+        /// </summary>
+        public const int RpcFlagSize = sizeof(int) - 1;
+        /// <summary>
         /// 包头协议中Msg消息Id字节数，2个字节
         /// </summary>
         public const int NetCommandFlagSize = sizeof(ushort);
@@ -52,26 +56,25 @@ namespace H6Game.Base.Message
         /// </summary>
         public const int MsgTypeFlagSize = sizeof(ushort);
         /// <summary>
-        /// 包头协议中RPC请求Id的字节数，2个字节
-        /// </summary>
-        public const int RpcFlagSize = sizeof(ushort);
-        /// <summary>
         /// 包头大小
         /// </summary>
-        public const int HeadSize = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeFlagSize + RpcFlagSize;
-
+        public const int HeadSize = LengthFlagSize + BitFlagSize + RpcFlagSize + NetCommandFlagSize + MsgTypeFlagSize;
         /// <summary>
-        /// NetCommand偏移地址
+        /// BitFlag偏移地址
         /// </summary>
-        private const int NetCommandOffset = LengthFlagSize + BitFlagSize;
-        /// <summary>
-        /// MsgType偏移地址
-        /// </summary>
-        private const int MsgTypeOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize;
+        private const int BitFlagOffset = LengthFlagSize;
         /// <summary>
         /// RpcId偏移地址
         /// </summary>
-        private const int RpcIdOffset = LengthFlagSize + BitFlagSize + NetCommandFlagSize + MsgTypeFlagSize;
+        private const int RpcIdOffset = LengthFlagSize + BitFlagSize;
+        /// <summary>
+        /// NetCommand偏移地址
+        /// </summary>
+        private const int NetCommandOffset = LengthFlagSize + BitFlagSize + RpcFlagSize;
+        /// <summary>
+        /// MsgType偏移地址
+        /// </summary>
+        private const int MsgTypeOffset = LengthFlagSize + BitFlagSize + RpcFlagSize + NetCommandFlagSize;
 
         private void Parse()
         {
@@ -96,6 +99,12 @@ namespace H6Game.Base.Message
                     case ParseState.BitFlag:
                         {
                             this.ReadBitFlag();
+                            State = ParseState.RpcId;
+                        }
+                        continue;
+                    case ParseState.RpcId:
+                        {
+                            ReadRpcId();
                             State = ParseState.Command;
                         }
                         continue;
@@ -108,12 +117,6 @@ namespace H6Game.Base.Message
                     case ParseState.MsgType:
                         {
                             ReadMsgType();
-                            State = ParseState.RpcId;
-                        }
-                        continue;
-                    case ParseState.RpcId:
-                        {
-                            ReadRpcId();
                             State = ParseState.Body;
                         }
                         continue;
@@ -161,10 +164,30 @@ namespace H6Game.Base.Message
 
         private void ReadBitFlag()
         {
-            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, LengthFlagSize, BitFlagSize);
+            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, BitFlagOffset, BitFlagSize);
             Buffer.UpdateRead(BitFlagSize);
             ReadLength += BitFlagSize;
-            SetBitFlag(Packet.HeadBytes[LengthFlagSize]);
+            SetBitFlag(Packet.HeadBytes[BitFlagOffset]);
+        }
+
+        private void ReadRpcId()
+        {
+            var offset = RpcIdOffset;
+            if (Buffer.FirstDataSize >= RpcFlagSize)
+            {
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
+                Buffer.UpdateRead(RpcFlagSize);
+            }
+            else
+            {
+                var count = Buffer.FirstDataSize;
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
+                Buffer.UpdateRead(count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
+                Buffer.UpdateRead(RpcFlagSize - count);
+            }
+            ReadLength += RpcFlagSize;
+            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset) & 0xFFFFFFF;
         }
 
         private void ReadCommand()
@@ -205,26 +228,6 @@ namespace H6Game.Base.Message
             }
             ReadLength += MsgTypeFlagSize;
             Packet.MsgTypeCode = BitConverter.ToUInt16(Packet.HeadBytes, offset);
-        }
-
-        private void ReadRpcId()
-        {
-            var offset = RpcIdOffset;
-            if (Buffer.FirstDataSize >= RpcFlagSize)
-            {
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
-                Buffer.UpdateRead(RpcFlagSize);
-            }
-            else
-            {
-                var count = Buffer.FirstDataSize;
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                Buffer.UpdateRead(count);
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
-                Buffer.UpdateRead(RpcFlagSize - count);
-            }
-            ReadLength += RpcFlagSize;
-            Packet.RpcId = BitConverter.ToUInt16(Packet.HeadBytes, offset);
         }
 
         private void ReadBody()

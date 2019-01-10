@@ -35,6 +35,7 @@ namespace H6Game.TestWebSocket
             Game.Start();
             while (true)
             {
+                Game.Update();
                 client.Session.Update();
                 server.Session.Update();
                 Thread.Sleep(1);

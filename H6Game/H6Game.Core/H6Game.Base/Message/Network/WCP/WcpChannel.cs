@@ -97,10 +97,10 @@ namespace H6Game.Base.Message
 
                 var recvResult = await ReceviceAsync();
                 if (recvResult == null)
-                    return;
+                    continue;
 
                 if (recvResult.Count == 0)
-                    return;
+                    continue;
 
                 this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
                 while (true)
@@ -123,7 +123,7 @@ namespace H6Game.Base.Message
                 var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
                 result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
                 if (result.Count == 0)
-                    this.DisConnect();
+                    return result;
             }
             catch (Exception e)
             {

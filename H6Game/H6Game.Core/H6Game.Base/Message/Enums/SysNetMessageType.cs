@@ -9,8 +9,7 @@ namespace H6Game.Base.Message
         #region 框架自带类型 101 - 200
         NetEndPointMessage = 101,
         OuterEndPointMessage = 102,
-        ActorMessage = 103,
-        SyncActorInfoEntity = 104,
+        ActorSyncMessage = 103,
         #endregion
     }
 }

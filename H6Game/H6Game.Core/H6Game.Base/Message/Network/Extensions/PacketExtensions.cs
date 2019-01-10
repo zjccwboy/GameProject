@@ -13,7 +13,7 @@ internal static class PacketExtensions
     {
         //写包大小
         var packetSize = PacketParser.HeadSize + bodySize;
-        packetSize.WriteTo(packet.HeadBytes, 0);
+        packetSize.WriteTo(packet.HeadBytes, 0, 4);
 
         packet.HeadBytes[4] = 0;
         //写标志位
@@ -29,14 +29,14 @@ internal static class PacketExtensions
         if (packet.KcpProtocal > 0)
             packet.HeadBytes[4] |= (byte)(packet.KcpProtocal << 4);
 
+        //写RpcId
+        packet.RpcId.WriteTo(packet.HeadBytes, 5, 3);
+
         //写MessageId
-        packet.NetCommand.WriteTo(packet.HeadBytes, 5);
+        packet.NetCommand.WriteTo(packet.HeadBytes, 8);
 
         //写MsgTypeCode
-        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 7);
-
-        //写RpcId
-        packet.RpcId.WriteTo(packet.HeadBytes, 9);
+        packet.MsgTypeCode.WriteTo(packet.HeadBytes, 10);
 
         return packet.HeadBytes;
     }
@@ -49,9 +49,9 @@ internal static class PacketExtensions
         }
     }
 
-    internal static void WriteTo(this int value, byte[] bytes, int offset)
+    internal static void WriteTo(this int value, byte[] bytes, int offset, int count)
     {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < count; i++)
         {
             bytes[i + offset] = (byte)(value >> i * 8);
         }

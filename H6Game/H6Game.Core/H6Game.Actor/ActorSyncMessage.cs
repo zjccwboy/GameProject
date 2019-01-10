@@ -4,9 +4,9 @@ using ProtoBuf;
 
 namespace H6Game.Actor
 {
-    [NetMessageType(SysNetMessageType.ActorMessage)]
+    [NetMessageType(SysNetMessageType.ActorSyncMessage)]
     [ProtoContract]
-    public class ActorSyncMessage : IActorMessage
+    public class ActorSyncMessage : IMessage
     {
         [ProtoMember(1)]
         public int ActorId { get; set; }

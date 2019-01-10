@@ -33,6 +33,11 @@ namespace H6Game.Base.Message
         public byte KcpProtocal;
 
         /// <summary>
+        /// Rpc请求标识
+        /// </summary>
+        public int RpcId;
+
+        /// <summary>
         /// NetCommand
         /// </summary>
         public ushort NetCommand;
@@ -41,11 +46,6 @@ namespace H6Game.Base.Message
         /// 消息类型指定代码
         /// </summary>
         public ushort MsgTypeCode;
-
-        /// <summary>
-        /// Rpc请求标识
-        /// </summary>
-        public ushort RpcId;
 
         /// <summary>
         /// 包头字节数组

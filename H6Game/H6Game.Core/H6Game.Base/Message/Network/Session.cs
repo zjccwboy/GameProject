@@ -141,21 +141,21 @@ namespace H6Game.Base.Message
             this.NService.Update();
         }
         
-        internal void Send<TSender>(ANetChannel channel, TSender data, ushort netCommand, ushort rpcId)
+        internal void Send<TSender>(ANetChannel channel, TSender data, ushort netCommand, int rpcId)
         {
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
             packet.WriteTo(data);
         }
 
-        internal void Send(ANetChannel channel, object data, ushort netCommand, ushort rpcId, Type type)
+        internal void Send(ANetChannel channel, object data, ushort netCommand, int rpcId, Type type)
         {
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
             packet.WriteTo(data, type);
         }
 
-        internal void Send(ANetChannel channel, ushort netCommand, ushort rpcId)
+        internal void Send(ANetChannel channel, ushort netCommand, int rpcId)
         {
             var packet = channel.SendParser.Packet;
             SetHead(packet, netCommand, rpcId);
@@ -201,10 +201,10 @@ namespace H6Game.Base.Message
             }
         }
 
-        private void SetHead(Packet packet, ushort netCommand, ushort rpcId)
+        private void SetHead(Packet packet, ushort netCommand, int rpcId)
         {
-            packet.NetCommand = (ushort)netCommand;
-            packet.RpcId = (ushort)rpcId;
+            packet.NetCommand = netCommand;
+            packet.RpcId = rpcId;
         }
 
         public void Dispose()
