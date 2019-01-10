@@ -6,27 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Actor">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Actor.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Hotfix">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Rpository">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Rpository.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Bson">
-      <HintPath>..\..\Bin\netstandard2.0\MongoDB.Bson.dll</HintPath>
-    </Reference>
-    <Reference Include="MongoDB.Driver">
-      <HintPath>..\..\Bin\netstandard2.0\MongoDB.Driver.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\H6Game.Core\H6Game.Base\H6Game.Base.csproj" />
+    <ProjectReference Include="..\..\H6Game.Core\H6Game.Hotfix\H6Game.Hotfix.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\MongoDB.Bson.csproj" />
   </ItemGroup>
 
 </Project>
