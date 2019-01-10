@@ -83,7 +83,7 @@ namespace H6Game.Base.Message
         public Action<ANetChannel> OnDisConnect { get; set; }
         public bool Connected { get; set; }
         public abstract void StartConnecting();
-        public abstract void DisConnect();
+        public abstract void Disconnect();
         public abstract void StartSend();
         public abstract void StartRecv();
 
@@ -128,7 +128,7 @@ namespace H6Game.Base.Message
 
         public void Dispose()
         {
-            DisConnect();
+            Disconnect();
         }
     }
 }

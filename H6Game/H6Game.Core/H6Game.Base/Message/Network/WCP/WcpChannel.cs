@@ -40,10 +40,13 @@ namespace H6Game.Base.Message
 
             this.LastConnectTime = now;
             if(await StartConnectingAsync())
-            {
-                this.Connected = true;
-                this.OnConnect?.Invoke(this);
-            }
+                ThreadCallbackContext.Instance.Post(this.OnConnected, null);
+        }
+
+        private void OnConnected(object o)
+        {
+            this.Connected = true;
+            this.OnConnect?.Invoke(this);
         }
 
         private async Task<bool> StartConnectingAsync()
@@ -70,7 +73,17 @@ namespace H6Game.Base.Message
                     return;
 
                 await SendAsync();
+
+                var tcs = new TaskCompletionSource<bool>();
+                ThreadCallbackContext.Instance.Post(this.OnSendComplete, tcs);
+                await tcs.Task;
             }
+        }
+
+        private void OnSendComplete(object o)
+        {
+            var tcs = o as TaskCompletionSource<bool>;
+            tcs.SetResult(true);
         }
 
         private async Task SendAsync()
@@ -84,7 +97,7 @@ namespace H6Game.Base.Message
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
-                this.DisConnect();
+                this.Disconnect();
             }
         }
 
@@ -103,16 +116,26 @@ namespace H6Game.Base.Message
                     continue;
 
                 this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
-                while (true)
-                {
-                    if (!this.RecvParser.TryRead())
-                        break;
 
-                    this.HandleReceive(this.RecvParser.Packet);
-                    this.RecvParser.Packet.BodyStream.SetLength(0);
-                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
-                }
+                var tcs = new TaskCompletionSource<bool>();
+                ThreadCallbackContext.Instance.Post(this.OnReceiveComplete, tcs);
+                await tcs.Task;
             }
+        }
+
+        private void OnReceiveComplete(object o)
+        {
+            var tcs = o as TaskCompletionSource<bool>;
+            while (true)
+            {
+                if (!this.RecvParser.TryRead())
+                    break;
+
+                this.HandleReceive(this.RecvParser.Packet);
+                this.RecvParser.Packet.BodyStream.SetLength(0);
+                this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+            }
+            tcs.SetResult(true);
         }
 
         private async Task<WebSocketReceiveResult> ReceviceAsync()
@@ -128,12 +151,12 @@ namespace H6Game.Base.Message
             catch (Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
-                this.DisConnect();
+                this.Disconnect();
             }
             return result;
         }
 
-        public async override void DisConnect()
+        public async override void Disconnect()
         {
             if (!this.Connected)
                 return;
@@ -142,8 +165,6 @@ namespace H6Game.Base.Message
                 return;
 
             this.Connected = false;
-
-            this.OnDisConnect(this);
 
             //服务端连接断开把缓冲区丢进池
             if (this.NetService.ServiceType == NetServiceType.Server)
@@ -158,6 +179,13 @@ namespace H6Game.Base.Message
             }
 
             await SendClose(this.NetSocket);
+
+            ThreadCallbackContext.Instance.Post(this.OnDisconnected, null);
+        }
+
+        private void OnDisconnected(object o)
+        {
+            this.OnDisConnect(this);
         }
 
         private async Task SendClose(WebSocket netSocket)

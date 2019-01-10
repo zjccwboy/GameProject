@@ -162,7 +162,7 @@ namespace H6Game.Base.Message
         /// <summary>
         /// 断开连接
         /// </summary>
-        public override void DisConnect()
+        public override void Disconnect()
         {
             if (!this.Connected)
                 return;
@@ -200,7 +200,7 @@ namespace H6Game.Base.Message
             catch(Exception e)
             {
                 Log.Error(e, LoggerBllType.System);
-                this.DisConnect();
+                this.Disconnect();
             }
         }
 

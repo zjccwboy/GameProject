@@ -98,7 +98,7 @@ namespace H6Game.Base.Message
                     if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
                     {
                         Log.Debug($"{this.ProtocalType}客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
-                        channel.DisConnect();
+                        channel.Disconnect();
                     }
                 }
             }

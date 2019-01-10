@@ -174,7 +174,7 @@ namespace H6Game.Base.Message
             {
                 this.IsSending = false;
                 Log.Error(e, LoggerBllType.System);
-                this.DisConnect();
+                this.Disconnect();
                 return;
             }
             this.OnSendComplete(this.OutArgs);
@@ -192,7 +192,7 @@ namespace H6Game.Base.Message
 
             if (e.SocketError != SocketError.Success)
             {
-                this.DisConnect();
+                this.Disconnect();
                 return;
             }
 
@@ -231,7 +231,7 @@ namespace H6Game.Base.Message
             {
                 this.IsReceiving = false;
                 Log.Error(e, LoggerBllType.System);
-                DisConnect();
+                Disconnect();
             }
         }
 
@@ -245,13 +245,13 @@ namespace H6Game.Base.Message
 
             if (e.SocketError != SocketError.Success)
             {
-                this.DisConnect();
+                this.Disconnect();
                 return;
             }
 
             if (e.BytesTransferred == 0)
             {
-                this.DisConnect();
+                this.Disconnect();
                 return;
             }
 
@@ -267,7 +267,7 @@ namespace H6Game.Base.Message
             }
         }
 
-        public override void DisConnect()
+        public override void Disconnect()
         {
             if (!this.Connected)
                 return;

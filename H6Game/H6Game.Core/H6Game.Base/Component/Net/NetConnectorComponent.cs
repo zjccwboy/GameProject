@@ -110,7 +110,7 @@ namespace H6Game.Base.Component
                     this.OnConnect?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
-                    proxyNetwork.DisConnect();
+                    proxyNetwork.Disconnect();
                 }, network =>
                 {
                     this.OnDisconnect?.Invoke(network, ConnectType.Gate);
@@ -125,7 +125,7 @@ namespace H6Game.Base.Component
                     this.OnConnect?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
-                    proxyNetwork.DisConnect();
+                    proxyNetwork.Disconnect();
                 },
                 network =>
                 {
