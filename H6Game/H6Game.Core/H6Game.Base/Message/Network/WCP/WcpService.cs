@@ -25,7 +25,15 @@ namespace H6Game.Base.Message
             this.Listener.Start();
             while (true)
             {
-                var context = await this.Listener.GetContextAsync();
+                HttpListenerContext context = null;
+                try
+                {
+                    context = await this.Listener.GetContextAsync();
+                }
+                catch
+                {
+                    return;
+                }
                 await HandleAccept(context);
             }
         }
@@ -39,6 +47,12 @@ namespace H6Game.Base.Message
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
+            ThreadCallbackContext.Instance.Post(this.OnAcceptComplete, channel);
+        }
+
+        private void OnAcceptComplete(object o)
+        {
+            var channel = o as ANetChannel;
             OnAccept(channel);
             channel.StartRecv();
             channel.StartSend();

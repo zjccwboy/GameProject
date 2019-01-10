@@ -58,9 +58,8 @@ namespace H6Game.Base.Message
                 await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), ctk.Token);
                 return true;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error(e, LoggerBllType.System);
                 return false;
             }
         }
@@ -94,9 +93,8 @@ namespace H6Game.Base.Message
                 this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                 await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error(e, LoggerBllType.System);
                 this.Disconnect();
             }
         }
@@ -148,9 +146,8 @@ namespace H6Game.Base.Message
                 if (result.Count == 0)
                     return result;
             }
-            catch (Exception e)
+            catch
             {
-                Log.Error(e, LoggerBllType.System);
                 this.Disconnect();
             }
             return result;
