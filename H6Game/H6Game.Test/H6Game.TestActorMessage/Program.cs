@@ -16,12 +16,9 @@ namespace H6Game.TestActorMessage
             Game.Start();
 
             var delay = Game.Scene.AddComponent<DelayComponent>();
-            delay.SetDelay(() =>
-            {
-                TestAccountActor.Start();
-                TestGameActor.Start();
-                TestRoomActor.Start();
-            }, 3000);
+            TestAccountActor.Start();
+            TestGameActor.Start();
+            TestRoomActor.Start();
 
             while (true)
             {

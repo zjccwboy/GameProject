@@ -271,8 +271,8 @@ namespace H6Game.Base.Component
             if (this.IsProxyServer)
                 return;
 
-            var serverType = await network.CallMessageAsync<int>((ushort)SysNetCommand.GetServerType);
-            if (serverType != (int)ServerType.Default)
+            var serverType = await network.CallMessageAsync<ServerType>((ushort)SysNetCommand.GetServerType);
+            if (serverType != ServerType.Default)
             {
                 //删掉连接中的代理服务
                 this.NotExistProxyNetworks.TryRemove(message, out Network valu);

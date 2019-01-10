@@ -66,7 +66,7 @@ namespace H6Game.Base.Message
         /// <summary>
         /// RpcId偏移地址
         /// </summary>
-        private const int RpcIdOffset = LengthFlagSize + BitFlagSize;
+        private const int RpcIdOffset = LengthFlagSize;
         /// <summary>
         /// NetCommand偏移地址
         /// </summary>
