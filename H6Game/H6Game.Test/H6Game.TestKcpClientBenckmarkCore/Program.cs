@@ -26,7 +26,7 @@ namespace H6Game.TestKcpClientBenckmarkCore
         }
 
         static int Count;
-        static int Total;
+        static int SN;
         static Stopwatch Swatch = new Stopwatch();
 
         static void Start()
@@ -56,10 +56,10 @@ namespace H6Game.TestKcpClientBenckmarkCore
                 }
 
                 Count++;
-                Total++;
                 if (Swatch.ElapsedMilliseconds >= 1000)
                 {
-                    Log.Info($"{Total}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                    SN++;
+                    Log.Info($"{SN}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
                     Swatch.Restart();
                     Count = 0;
                 }
