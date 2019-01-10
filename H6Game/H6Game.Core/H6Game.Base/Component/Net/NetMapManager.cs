@@ -88,15 +88,15 @@ namespace H6Game.Base.Component
     /// </summary>
     public class NetMapManager
     {
-        private HashSet<NetEndPointMessage> ConnectEntities { get; } = new HashSet<NetEndPointMessage>();
+        private HashSet<NetEndPointMessage> ConnectInfos { get; } = new HashSet<NetEndPointMessage>();
         private Dictionary<int, NetEndPointMessage> NetworkMapMessages { get; } = new Dictionary<int, NetEndPointMessage>();
         private Dictionary<int, Network> HCodeMapChannel { get; } = new Dictionary<int, Network>();
 
-        public IEnumerable<NetEndPointMessage> Entities { get { return ConnectEntities; } }
+        public IEnumerable<NetEndPointMessage> ConnectMessageInfos { get { return ConnectInfos; } }
 
         internal bool Existed(NetEndPointMessage message)
         {
-            return this.ConnectEntities.Contains(message);
+            return this.ConnectInfos.Contains(message);
         }
 
         internal virtual void Remove(Network network)
@@ -107,7 +107,7 @@ namespace H6Game.Base.Component
 
         internal virtual void Remove(NetEndPointMessage message)
         {
-            if (this.ConnectEntities.Remove(message))
+            if (this.ConnectInfos.Remove(message))
             {
                 if (!this.HCodeMapChannel.TryGetValue(message.GetHashCode(), out Network network))
                     return;
@@ -119,10 +119,10 @@ namespace H6Game.Base.Component
 
         internal virtual void Add(Network network, NetEndPointMessage message)
         {
-            if (this.ConnectEntities.Contains(message))
+            if (this.ConnectInfos.Contains(message))
                 return;
 
-            this.ConnectEntities.Add(message);
+            this.ConnectInfos.Add(message);
             this.NetworkMapMessages[network.Id] = message;
             this.HCodeMapChannel[message.GetHashCode()] = network;
         }

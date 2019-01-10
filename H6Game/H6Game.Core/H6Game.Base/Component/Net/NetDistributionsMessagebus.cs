@@ -22,7 +22,7 @@ namespace H6Game.Base.Component.Net
         }
     }
 
-    [NetCommand(SysNetCommand.GetOutServerCmd)]
+    [NetCommand(SysNetCommand.GetOuterServerCmd)]
     public class SubscribeOnSyncOutNetMessage : NetSubscriber
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();
@@ -32,7 +32,7 @@ namespace H6Game.Base.Component.Net
         }
     }
 
-    [NetCommand(SysNetCommand.GetInServerCmd)]
+    [NetCommand(SysNetCommand.GetInnerServerCmd)]
     public class SubscribeOnSyncInnerNetMessage : NetSubscriber
     {
         private NetDistributionsComponent Distributions { get; } = Game.Scene.GetComponent<NetDistributionsComponent>();

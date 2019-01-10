@@ -62,7 +62,7 @@ namespace H6Game.Base.Component
     /// 网络连接信息消息
     /// </summary>
     [ProtoContract]
-    [NetMessageType(SysNetMessageType.NetEndPointMessage)]
+    [NetMessageType(SysNetMessageType.InnerEndPointMessage)]
     public class NetEndPointMessage : IMessage
     {
         [ProtoMember(1)]

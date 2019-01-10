@@ -7,7 +7,7 @@ namespace H6Game.Base.Message
     public enum SysNetMessageType : ushort
     {
         #region 框架自带类型 101 - 200
-        NetEndPointMessage = 101,
+        InnerEndPointMessage = 101,
         OuterEndPointMessage = 102,
         ActorSyncMessage = 103,
         #endregion

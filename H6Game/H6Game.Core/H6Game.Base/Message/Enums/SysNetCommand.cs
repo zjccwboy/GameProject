@@ -13,11 +13,11 @@ namespace H6Game.Base.Message
         /// <summary>
         /// 请求获取外网连接信息
         /// </summary>
-        GetOutServerCmd = 2,
+        GetOuterServerCmd = 2,
         /// <summary>
         /// 请求获取内网连接信息
         /// </summary>
-        GetInServerCmd = 3,
+        GetInnerServerCmd = 3,
         /// <summary>
         /// 获取一个网关连接地址
         /// </summary>
