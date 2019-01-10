@@ -66,15 +66,15 @@ namespace H6Game.Base.Message
         /// <summary>
         /// RpcId偏移地址
         /// </summary>
-        private const int RpcIdOffset = LengthFlagSize;
+        private const int RpcIdOffset = BitFlagOffset + BitFlagSize;
         /// <summary>
         /// NetCommand偏移地址
         /// </summary>
-        private const int NetCommandOffset = LengthFlagSize + BitFlagSize + RpcFlagSize;
+        private const int NetCommandOffset = RpcIdOffset + RpcFlagSize;
         /// <summary>
         /// MsgType偏移地址
         /// </summary>
-        private const int MsgTypeOffset = LengthFlagSize + BitFlagSize + RpcFlagSize + NetCommandFlagSize;
+        private const int MsgTypeOffset = NetCommandOffset + NetCommandFlagSize;
 
         private void Parse()
         {
@@ -187,7 +187,7 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(RpcFlagSize - count);
             }
             ReadLength += RpcFlagSize;
-            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset) & 0xFFFFFFF;
+            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
         }
 
         private void ReadCommand()

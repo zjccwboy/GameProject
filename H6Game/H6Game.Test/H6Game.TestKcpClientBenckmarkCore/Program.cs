@@ -26,12 +26,8 @@ namespace H6Game.TestKcpClientBenckmarkCore
         }
 
         static int Count;
+        static int Total;
         static Stopwatch Swatch = new Stopwatch();
-        static TestMessage send = new TestMessage
-        {
-            Actor = 1020201,
-            Message = "我是客户端",
-        };
 
         static void Start()
         {
@@ -47,6 +43,12 @@ namespace H6Game.TestKcpClientBenckmarkCore
             {
                 var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 
+                var send = new TestMessage
+                {
+                    Actor = Count,
+                    Message = "我是客户端",
+                };
+
                 var result = await network.CallMessageAsync<TestMessage, TestMessage>(send, 1024);
                 if (result.Actor != send.Actor && result.Message != send.Message)
                 {
@@ -54,9 +56,10 @@ namespace H6Game.TestKcpClientBenckmarkCore
                 }
 
                 Count++;
+                Total++;
                 if (Swatch.ElapsedMilliseconds >= 1000)
                 {
-                    Log.Info($"耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                    Log.Info($"{Total}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
                     Swatch.Restart();
                     Count = 0;
                 }

@@ -69,7 +69,7 @@ namespace H6Game.Base.Message
         public Network Network { get; }
 
         private int rpcId;
-        public int RpcId { get { if (rpcId == 0xFFFFFFF) rpcId = 0; return ++rpcId; } }
+        public int RpcId { get { if (rpcId == 0xFFFFFF) rpcId = 0; return ++rpcId; } }
         public PacketParser RecvParser { get; protected set; }
         public PacketParser SendParser { get; protected set; }
         public ANetService NetService { get; }
