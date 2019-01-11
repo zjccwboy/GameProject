@@ -52,8 +52,8 @@ namespace H6Game.Base.Config
                 IsProxyServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
-                CenterAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
-                LocalAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
+                CenterAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" ,ProtocalType = ProtocalType.Tcp},
+                LocalAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口", ProtocalType = ProtocalType.Tcp },
                 OuterAcceptConfig = new OuterAcceptConfigEntity
                 {
                     OuterKcpAcceptConfig = new EndPointConfigEntity
@@ -62,7 +62,7 @@ namespace H6Game.Base.Config
                         Port = 50000,
                         Host = "127.0.0.1",
                         ProtocalType =  ProtocalType.Kcp,
-                        Desc = "监听KCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                        Desc = "监听KCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口，KCP ProtocalType = 2。",
                     },
                     OuterTcpAcceptConfig = new EndPointConfigEntity
                     {
@@ -70,7 +70,7 @@ namespace H6Game.Base.Config
                         Port = 50000,
                         Host = "127.0.0.1",
                         ProtocalType = ProtocalType.Tcp,
-                        Desc = "监听TCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                        Desc = "监听TCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口，TCP ProtocalType = 1。",
                     },
                     OuterWebSocketConfig = new EndPointWebSocketConfigEntity
                     {
@@ -79,7 +79,7 @@ namespace H6Game.Base.Config
                         Host = "127.0.0.1",
                         HttpType = "http",
                         ProtocalType = ProtocalType.Wcp,
-                        Desc = "监听WebSocket外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
+                        Desc = "监听WebSocket外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口，WebSocket ProtocalType = 3。",
                     },
                 },
             };

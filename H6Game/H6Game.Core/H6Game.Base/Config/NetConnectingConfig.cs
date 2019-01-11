@@ -50,7 +50,7 @@ namespace H6Game.Base.Config
                 IsEncrypt = false,
                 Port = 9000,
                 HttpType = "http",
-                Desc = "客户端连接服务端的IP端口配置。",
+                Desc = "客户端连接服务端的IP端口配置，TCP ProtocalType = 1, KCP ProtocalType = 2, WebSocket ProtocalType = 3。",
             };
 
             using (var fileStream = new FileStream(fullName, FileMode.OpenOrCreate))
