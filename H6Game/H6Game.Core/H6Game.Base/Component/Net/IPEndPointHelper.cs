@@ -10,7 +10,7 @@ namespace H6Game.Base.Component
     {
         public static IPEndPoint GetIPEndPoint(NetEndPointMessage message)
         {
-            var ip = IPAddress.Parse(message.IP);
+            var ip = IPAddress.Parse(message.Host);
             var port = message.Port;
             return new IPEndPoint(ip, port);
         }

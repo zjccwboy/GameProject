@@ -44,11 +44,12 @@ namespace H6Game.Base.Config
         {
             Config = new NetConnectConfigEntity
             {
-                Host = "ws://127.0.0.1:9000/",
+                Host = "127.0.0.1",
                 ProtocalType = ProtocalType.Wcp,
                 IsCompress = false,
                 IsEncrypt = false,
-                Port = 50000,
+                Port = 9000,
+                HttpType = "http",
                 Desc = "客户端连接服务端的IP端口配置。",
             };
 

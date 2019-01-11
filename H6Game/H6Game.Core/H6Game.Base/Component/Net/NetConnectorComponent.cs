@@ -49,16 +49,23 @@ namespace H6Game.Base.Component
         /// </summary>
         public Action<Network, ConnectType> OnDisconnect { get; set; }
 
+        private string WebSocketPrefixed { get; set; }
+
         public override void Awake()
         {
             this.Config = new NetConnectingConfig().Config;
-            ProtocalType = Config.ProtocalType;
+            this.ProtocalType = Config.ProtocalType;
+            if(this.ProtocalType == ProtocalType.Wcp)
+            {
+                var ws = this.Config.HttpType == "https" ? "wss" : "ws";
+                this.WebSocketPrefixed = $"{ws}://{this.Config.Host}:{this.Config.Port}/";
+            }
         }
 
         public override void Start()
         {
             //连接代理
-            this.ConnectingProxy();
+            this.StartConnecting();
         }
 
         public override void Dispose()
@@ -86,7 +93,7 @@ namespace H6Game.Base.Component
             if (this.Network != null)
                 this.Network.Dispose();
 
-            ConnectingProxy();
+            this.StartConnecting();
         }
 
         /// <summary>
@@ -118,7 +125,8 @@ namespace H6Game.Base.Component
             }
             else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
-                var prefixed = message.WsPrefixed;
+                var ws = this.Config.HttpType == "https" ? "wss" : "ws";
+                var prefixed = $"{ws}://{message.Host}:{message.Port}/";
                 var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateWebSocketConnector(prefixed, network =>
                 {
@@ -134,7 +142,7 @@ namespace H6Game.Base.Component
             }
         }
 
-        private void ConnectingProxy()
+        private void StartConnecting()
         {
             if(this.Config.ProtocalType == ProtocalType.Kcp || this.ProtocalType == ProtocalType.Tcp)
             {
@@ -155,8 +163,7 @@ namespace H6Game.Base.Component
             }
             else if(this.Config.ProtocalType == ProtocalType.Wcp)
             {
-                var prefixed = this.Config.Host;
-                this.Network = Network.CreateWebSocketConnector(prefixed, network =>
+                this.Network = Network.CreateWebSocketConnector(this.WebSocketPrefixed, network =>
                 {
                     if (this.Config.ProxyEnable)
                     {

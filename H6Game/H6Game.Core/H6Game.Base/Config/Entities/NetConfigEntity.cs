@@ -1,7 +1,6 @@
-﻿
-
-using H6Game.Base.Component;
+﻿using H6Game.Base.Component;
 using H6Game.Base.Message;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace H6Game.Base.Config
 {
@@ -96,22 +95,22 @@ namespace H6Game.Base.Config
 
     public class EndPointWebSocketConfigEntity : EndPointConfigEntity
     {
-        public string HttpPrefixed { get; set; }
+        [BsonIgnore]
+        public string HttpPrefixed
+        {
+            get
+            {
+                return $"{this.HttpType}://{this.Host}:{this.Port}/";
+            }
+        }
+
+        public string HttpType { get; set; }
 
         public override NetEndPointMessage GetMessage()
         {
             if (this.message == null)
-                this.message = new NetEndPointMessage { Port = this.Port, IP = this.IP , WsPrefixed = this.GetWsPrefied()};
+                this.message = new NetEndPointMessage { Port = this.Port, Host = this.Host};
             return this.message;
-        }
-        private string GetWsPrefied()
-        {
-            var result = string.Empty;
-            if (this.HttpPrefixed.StartsWith("http"))
-                result = this.HttpPrefixed.Replace("http", "ws");
-            else if (this.HttpPrefixed.StartsWith("https"))
-                result = this.HttpPrefixed.Replace("https", "wss");
-            return result;
         }
     }
 
@@ -130,7 +129,7 @@ namespace H6Game.Base.Config
         /// <summary>
         /// IP地址
         /// </summary>
-        public string IP { get; set; }
+        public string Host { get; set; }
 
         /// <summary>
         /// 协议类型，1 TCP, 2 KCP 3 WCP
@@ -146,7 +145,7 @@ namespace H6Game.Base.Config
         public virtual NetEndPointMessage GetMessage()
         {
             if(this.message == null)
-                this.message = new NetEndPointMessage{ Port = this.Port, IP = this.IP};
+                this.message = new NetEndPointMessage{ Port = this.Port, Host = this.Host };
             return this.message;
         }
     }
@@ -167,6 +166,17 @@ namespace H6Game.Base.Config
         /// 协议类型，1 TCP, 2 KCP 3 WCP
         /// </summary>
         public ProtocalType ProtocalType { get; set; }
+
+        [BsonIgnore]
+        public string HttpPrefixed
+        {
+            get
+            {
+                return $"{this.HttpType}://{this.Host}:{this.Port}/";
+            }
+        }
+
+        public string HttpType { get; set; }
 
         /// <summary>
         /// 是否启用代理连接

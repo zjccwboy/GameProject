@@ -69,10 +69,7 @@ namespace H6Game.Base.Component
         public int Port { get; set; }
 
         [ProtoMember(2)]
-        public string IP { get; set; }
-
-        [ProtoMember(3, IsRequired = true)]
-        public string WsPrefixed { get; set; }
+        public string Host { get; set; }
 
         public static bool operator ==(NetEndPointMessage left, NetEndPointMessage right)
         {
@@ -106,7 +103,7 @@ namespace H6Game.Base.Component
 
         public override int GetHashCode()
         {
-            return $"{this.IP}:{this.Port}:{this.WsPrefixed}".GetHashCode();
+            return $"{this.Host}:{this.Port}".GetHashCode();
         }
     }
 }

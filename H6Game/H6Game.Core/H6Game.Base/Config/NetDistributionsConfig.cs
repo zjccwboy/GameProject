@@ -52,15 +52,15 @@ namespace H6Game.Base.Config
                 IsProxyServer = false,
                 IsCompress = false,
                 IsEncrypt = false,
-                CenterAcceptConfig = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
-                LocalAcceptConfig = new EndPointConfigEntity { IP = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
+                CenterAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "分布式中心服务监听IP端口" },
+                LocalAcceptConfig = new EndPointConfigEntity { Host = "127.0.0.1", Port = 40000, Desc = "本地服务监听IP端口" },
                 OuterAcceptConfig = new OuterAcceptConfigEntity
                 {
                     OuterKcpAcceptConfig = new EndPointConfigEntity
                     {
                         Enable = true,
                         Port = 50000,
-                        IP = "127.0.0.1",
+                        Host = "127.0.0.1",
                         ProtocalType =  ProtocalType.Kcp,
                         Desc = "监听KCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
                     },
@@ -68,15 +68,17 @@ namespace H6Game.Base.Config
                     {
                         Enable = true,
                         Port = 50000,
-                        IP = "127.0.0.1",
+                        Host = "127.0.0.1",
                         ProtocalType = ProtocalType.Tcp,
                         Desc = "监听TCP外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
                     },
                     OuterWebSocketConfig = new EndPointWebSocketConfigEntity
                     {
                         Enable = true,
+                        Port = 9000,
+                        Host = "127.0.0.1",
+                        HttpType = "http",
                         ProtocalType = ProtocalType.Wcp,
-                        HttpPrefixed = "http://127.0.0.1:9000/",
                         Desc = "监听WebSocket外网连接的IP端口配置项，一般用于跟客户端连接的网关监听IP端口。",
                     },
                 },
