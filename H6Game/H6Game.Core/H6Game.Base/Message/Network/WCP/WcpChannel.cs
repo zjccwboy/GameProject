@@ -74,11 +74,10 @@ namespace H6Game.Base.Message
                 while (this.SendParser.Buffer.DataSize > 0)
                 {
                     var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                    this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
-
                     try
                     {
                         await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                        this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                     }
                     catch
                     {
