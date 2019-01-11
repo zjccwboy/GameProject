@@ -35,7 +35,7 @@ namespace H6Game.Actor
             }
 
             this.Distributions = Game.Scene.AddComponent<NetDistributionsComponent>();
-            this.Distributions.OnDisconnect += network =>
+            this.Distributions.OnDisconnected += network =>
             {
                 if (!NetIdActors.TryGetValue(network.Id, out Dictionary<int, BaseActorComponent> dicVal))
                     return;
@@ -47,7 +47,7 @@ namespace H6Game.Actor
                     acotr.Dispose();
             };
 
-            this.Distributions.OnConnect += network => 
+            this.Distributions.OnConnected += network => 
             {
                 this.OnConnected?.Invoke(network);
                 network.Send((ushort)MSGCommand.SyncActorInfoCmd);

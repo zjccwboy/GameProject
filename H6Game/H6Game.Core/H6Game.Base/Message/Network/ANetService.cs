@@ -57,10 +57,10 @@ namespace H6Game.Base.Message
         public NetServiceType ServiceType { get; set; }
         public ConcurrentDictionary<long, ANetChannel> Channels { get; } = new ConcurrentDictionary<long, ANetChannel>();
         public Session Session { get;private set; }
-        public Action<ANetChannel> OnServerDisconnect { get; set; }
-        public Action<ANetChannel> OnServerConnect { get; set; }
-        public Action<ANetChannel> OnClientDisconnect { get; set; }
-        public Action<ANetChannel> OnClientConnect { get; set; }
+        public Action<ANetChannel> OnServerDisconnected { get; set; }
+        public Action<ANetChannel> OnServerConnected { get; set; }
+        public Action<ANetChannel> OnClientDisconnected { get; set; }
+        public Action<ANetChannel> OnClientConnected { get; set; }
 
         public abstract void Update();
         public abstract void Accept();
@@ -123,9 +123,9 @@ namespace H6Game.Base.Message
             }
             channel.Connected = true;
             AddChannel(channel);
-            channel.OnDisConnect = OnServerDisConnect;
+            channel.OnDisconnected = OnServerDisConnect;
             channel.OnReceive = (p) => { channel.Network.Dispatching(p); };
-            OnServerConnect?.Invoke(channel);
+            OnServerConnected?.Invoke(channel);
         }
 
         protected void OnConnect(ANetChannel channel)
@@ -143,9 +143,9 @@ namespace H6Game.Base.Message
 
             channel.Connected = true;
             this.AddChannel(channel);
-            channel.OnDisConnect = OnClientDisConnect;
+            channel.OnDisconnected = OnClientDisConnect;
             channel.OnReceive = (p) => { channel.Network.Dispatching(p); };
-            this.OnClientConnect?.Invoke(channel);
+            this.OnClientConnected?.Invoke(channel);
         }
 
         protected void OnServerDisConnect(ANetChannel channel)
@@ -162,7 +162,7 @@ namespace H6Game.Base.Message
                     var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
                     Log.Debug($"{this.ProtocalType}监听端口:{loacalPort}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 }
-                OnServerDisconnect?.Invoke(channel);
+                OnServerDisconnected?.Invoke(channel);
             }
         }
 
@@ -180,7 +180,7 @@ namespace H6Game.Base.Message
                     var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
                     Log.Debug($"{this.ProtocalType}端口:{loacalPort}与服务端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
                 }
-                OnClientDisconnect?.Invoke(value);
+                OnClientDisconnected?.Invoke(value);
             }
         }
 

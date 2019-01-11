@@ -15,7 +15,7 @@ namespace H6Game.TestKcpClientBenckmarkCore
         static void Main(string[] args)
         {
             Game.Scene.AddComponent<MongoConfig>();
-            Game.Scene.AddComponent<NetConnectorComponent>().OnConnect = (c, t) => { Start(); };
+            Game.Scene.AddComponent<NetConnectorComponent>().OnConnected = (c, t) => { Start(); };
             Game.Start();
 
             while (true)

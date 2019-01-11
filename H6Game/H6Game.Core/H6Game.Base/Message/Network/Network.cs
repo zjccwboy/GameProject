@@ -83,8 +83,8 @@ namespace H6Game.Base.Message
             var network = new Network();
             var session = new Session(endPoint, network, protocalType);
             network.Session = session;
-            session.OnServerConnect += connectAction;
-            session.OnServerDisconnect += disconnectAction;
+            session.OnServerConnected += connectAction;
+            session.OnServerDisconnected += disconnectAction;
             session.Accept();
             return network;
         }
@@ -118,8 +118,8 @@ namespace H6Game.Base.Message
             var network = new Network();
             var session = new Session(endPoint, network, protocalType);
             network.Session = session;
-            session.OnClientConnect += connectAction;
-            session.OnClientDisconnect += disconnectAction;
+            session.OnClientConnected += connectAction;
+            session.OnClientDisconnected += disconnectAction;
             session.Connect();
             return network;
         }
@@ -152,8 +152,8 @@ namespace H6Game.Base.Message
             var network = new Network();
             var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
             network.Session = session;
-            session.OnServerConnect += connectAction;
-            session.OnServerDisconnect += disconnectAction;
+            session.OnServerConnected += connectAction;
+            session.OnServerDisconnected += disconnectAction;
             session.Accept();
             return network;
         }
@@ -185,8 +185,8 @@ namespace H6Game.Base.Message
             var network = new Network();
             var session = new Session(httpPrefixed, network, ProtocalType.Wcp);
             network.Session = session;
-            session.OnClientConnect += connectAction;
-            session.OnClientDisconnect += disconnectAction;
+            session.OnClientConnected += connectAction;
+            session.OnClientDisconnected += disconnectAction;
             session.Connect();
             return network;
         }

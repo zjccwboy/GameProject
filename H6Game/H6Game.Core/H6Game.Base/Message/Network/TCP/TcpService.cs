@@ -107,7 +107,7 @@ namespace H6Game.Base.Message
             {
                 ClientChannel = new TcpChannel(EndPoint, this, this.Network)
                 {
-                    OnConnect = OnConnect
+                    OnConnected = OnConnect
                 };
                 ClientChannel.StartConnecting();
             }

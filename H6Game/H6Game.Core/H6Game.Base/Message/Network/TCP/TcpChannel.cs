@@ -138,7 +138,7 @@ namespace H6Game.Base.Message
             e.RemoteEndPoint = null;
             this.LastConnectTime = TimeUitls.Now();
             this.Connected = true;
-            OnConnect?.Invoke(this);
+            OnConnected?.Invoke(this);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace H6Game.Base.Message
 
             this.Connected = false;
 
-            this.OnDisConnect?.Invoke(this);
+            this.OnDisconnected?.Invoke(this);
 
             //服务端连接断开把缓冲区丢进池
             if (this.NetService.ServiceType == NetServiceType.Server)
@@ -302,7 +302,7 @@ namespace H6Game.Base.Message
         private void OnDisconnectComplete(object o)
         {
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
-            this.OnDisConnect?.Invoke(this);
+            this.OnDisconnected?.Invoke(this);
         }
     }
 }

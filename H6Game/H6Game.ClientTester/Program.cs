@@ -9,7 +9,7 @@ namespace H6Game.ClientTester
         static void Main(string[] args)
         {
             var connector = Game.Scene.AddComponent<NetConnectorComponent>();
-            connector.OnConnect += (n, t) => { TestBenckmark.Start(n);};
+            connector.OnConnected += (n, t) => { TestBenckmark.Start(n);};
             Game.Start();
 
             while (true)

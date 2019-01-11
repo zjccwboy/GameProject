@@ -40,13 +40,13 @@ namespace H6Game.Base.Message
 
             this.LastConnectTime = now;
             if(await StartConnectingAsync())
-                ThreadCallbackContext.Instance.Post(this.OnConnected, null);
+                ThreadCallbackContext.Instance.Post(this.OnConnectComplete, null);
         }
 
-        private void OnConnected(object o)
+        private void OnConnectComplete(object o)
         {
             this.Connected = true;
-            this.OnConnect?.Invoke(this);
+            this.OnConnected?.Invoke(this);
         }
 
         private async Task<bool> StartConnectingAsync()
@@ -175,12 +175,12 @@ namespace H6Game.Base.Message
 
             await SendClose(this.NetSocket);
 
-            ThreadCallbackContext.Instance.Post(this.OnDisconnected, null);
+            ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, null);
         }
 
-        private void OnDisconnected(object o)
+        private void OnDisconnectComplete(object o)
         {
-            this.OnDisConnect(this);
+            this.OnDisconnected(this);
         }
 
         private async Task SendClose(WebSocket netSocket)

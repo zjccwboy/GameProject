@@ -181,19 +181,19 @@ namespace H6Game.Base.Message
                 channel = this.ClientChannel as KcpChannel;
                 channel.RemoteEndPoint = remoteEP as IPEndPoint;
                 channel.Id = packet.NetCommand;
-                channel.OnConnect = OnConnect;
+                channel.OnConnected = OnConnect;
                 ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.NetCommand);
             }
             else
             {
                 channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.NetCommand)
                 {
-                    OnConnect = OnAccept
+                    OnConnected = OnAccept
                 };
             }
 
             channel.InitKcp();
-            channel.OnConnect?.Invoke(channel);
+            channel.OnConnected?.Invoke(channel);
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace H6Game.Base.Message
             if (this.Channels.TryGetValue(packet.NetCommand, out ANetChannel channel))
             {
                 channel.Connected = false;
-                channel.OnDisConnect?.Invoke(channel);
+                channel.OnDisconnected?.Invoke(channel);
             }
         }   
     }

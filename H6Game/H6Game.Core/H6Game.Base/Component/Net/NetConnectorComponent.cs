@@ -42,12 +42,12 @@ namespace H6Game.Base.Component
         /// <summary>
         /// Socket连接成功时回调。
         /// </summary>
-        public Action<Network, ConnectType> OnConnect { get; set; }
+        public Action<Network, ConnectType> OnConnected { get; set; }
 
         /// <summary>
         /// Socket连接断开时回调。
         /// </summary>
-        public Action<Network, ConnectType> OnDisconnect { get; set; }
+        public Action<Network, ConnectType> OnDisconnected { get; set; }
 
         private string WebSocketPrefixed { get; set; }
 
@@ -114,13 +114,13 @@ namespace H6Game.Base.Component
                 var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateConnector(endPoint, this.ProtocalType, network =>
                 {
-                    this.OnConnect?.Invoke(network, ConnectType.Gate);
+                    this.OnConnected?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
                     proxyNetwork.Disconnect();
                 }, network =>
                 {
-                    this.OnDisconnect?.Invoke(network, ConnectType.Gate);
+                    this.OnDisconnected?.Invoke(network, ConnectType.Gate);
                 });
             }
             else if(this.Config.ProtocalType == ProtocalType.Wcp)
@@ -130,14 +130,14 @@ namespace H6Game.Base.Component
                 var proxyNetwork = this.Network.Channel;
                 this.Network = Network.CreateWebSocketConnector(prefixed, network =>
                 {
-                    this.OnConnect?.Invoke(network, ConnectType.Gate);
+                    this.OnConnected?.Invoke(network, ConnectType.Gate);
 
                     //连接成功以后断开代理服务。
                     proxyNetwork.Disconnect();
                 },
                 network =>
                 {
-                    this.OnDisconnect?.Invoke(network, ConnectType.Gate);
+                    this.OnDisconnected?.Invoke(network, ConnectType.Gate);
                 });
             }
         }
@@ -154,10 +154,10 @@ namespace H6Game.Base.Component
                         ConnectingGate();
                         return;
                     }
-                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnConnected?.Invoke(network, ConnectType.Proxy);
                 }, network =>
                 {
-                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnDisconnected?.Invoke(network, ConnectType.Proxy);
                 });
                 return;
             }
@@ -170,11 +170,11 @@ namespace H6Game.Base.Component
                         ConnectingGate();
                         return;
                     }
-                    this.OnConnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnConnected?.Invoke(network, ConnectType.Proxy);
                 },
                 network =>
                 {
-                    this.OnDisconnect?.Invoke(network, ConnectType.Proxy);
+                    this.OnDisconnected?.Invoke(network, ConnectType.Proxy);
                 });
                 return;
             }

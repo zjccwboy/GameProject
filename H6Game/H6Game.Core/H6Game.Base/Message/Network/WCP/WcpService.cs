@@ -72,7 +72,7 @@ namespace H6Game.Base.Message
             {
                 ClientChannel = new WcpChannel(this.HttpPrefixed, this, this.Network)
                 {
-                    OnConnect = c=> { OnConnect(c); c.StartRecv(); c.StartSend(); } 
+                    OnConnected = c=> { OnConnect(c); c.StartRecv(); c.StartSend(); } 
                 };
                 ClientChannel.StartConnecting();
             }

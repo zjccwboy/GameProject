@@ -169,7 +169,7 @@ namespace H6Game.Base.Message
 
             this.Connected = false;
 
-            this.OnDisConnect?.Invoke(this);
+            this.OnDisconnected?.Invoke(this);
             ConnectSender.SendFIN(this.SendParser.Packet, this.NetSocket, this.RemoteEndPoint, this.Id);
 
             //服务端连接断开把缓冲区丢进池

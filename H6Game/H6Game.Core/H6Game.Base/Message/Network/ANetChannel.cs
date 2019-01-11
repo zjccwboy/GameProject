@@ -79,8 +79,8 @@ namespace H6Game.Base.Message
         public uint LastSendTime { get; protected set; } = TimeUitls.Now();
         public Action<Packet> OnReceive { get; set; }
         public Action<ANetChannel, SocketError> OnError { get; set; }
-        public Action<ANetChannel> OnConnect { get; set; }
-        public Action<ANetChannel> OnDisConnect { get; set; }
+        public Action<ANetChannel> OnConnected { get; set; }
+        public Action<ANetChannel> OnDisconnected { get; set; }
         public bool Connected { get; set; }
         public abstract void StartConnecting();
         public abstract void Disconnect();

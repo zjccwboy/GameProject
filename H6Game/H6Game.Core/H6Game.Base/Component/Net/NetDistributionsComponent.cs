@@ -89,12 +89,12 @@ namespace H6Game.Base.Component
         /// <summary>
         /// 内网网络服务端连接成功回调事件。
         /// </summary>
-        public Action<Network> OnConnect { get; set; }
+        public Action<Network> OnConnected { get; set; }
 
         /// <summary>
         /// 内网客户端网络连接断开回调事件。
         /// </summary>
-        public Action<Network> OnDisconnect { get; set; }
+        public Action<Network> OnDisconnected { get; set; }
 
         public override void Awake()
         {
@@ -279,7 +279,7 @@ namespace H6Game.Base.Component
                 return;
             }
 
-            this.OnConnect?.Invoke(network);
+            this.OnConnected?.Invoke(network);
         }
 
         private void SendConnections(Network network)
@@ -313,7 +313,7 @@ namespace H6Game.Base.Component
             this.OuterNetMapManager.Remove(network);
 
 
-            this.OnDisconnect?.Invoke(network);
+            this.OnDisconnected?.Invoke(network);
         }
     }
 }

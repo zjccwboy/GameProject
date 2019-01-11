@@ -31,7 +31,7 @@ namespace H6Game.ServerApp
                     Game.Scene.AddComponent<GateComponent>();
                     break;
                 case ApplicationType.Benckmark:
-                    Game.Scene.AddComponent<NetDistributionsComponent>().OnConnect += network => { TestBenckmark.Start(network); };
+                    Game.Scene.AddComponent<NetDistributionsComponent>().OnConnected += network => { TestBenckmark.Start(network); };
                     break;
             }
             Game.Start();
