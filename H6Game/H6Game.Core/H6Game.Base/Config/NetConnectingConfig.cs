@@ -45,7 +45,7 @@ namespace H6Game.Base.Config
             Config = new NetConnectConfigEntity
             {
                 Host = "127.0.0.1",
-                ProtocalType = ProtocalType.Wcp,
+                ProtocalType = ProtocalType.Tcp,
                 IsCompress = false,
                 IsEncrypt = false,
                 Port = 9000,

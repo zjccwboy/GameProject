@@ -58,7 +58,7 @@ namespace H6Game.Base.Message
         public Action<Network> OnServerDisconnect { get; set; }
 
         /// <summary>
-        /// 连接断开回调发生在服务端
+        /// 连接成功回调发生在服务端
         /// </summary>
         public Action<Network> OnServerConnect { get; set; }
 
@@ -68,7 +68,7 @@ namespace H6Game.Base.Message
         public Action<Network> OnClientDisconnect { get; set; }
 
         /// <summary>
-        /// 连接断开回调发生在客户端
+        /// 连接成功回调发生在客户端
         /// </summary>
         public Action<Network> OnClientConnect { get; set; }
 
