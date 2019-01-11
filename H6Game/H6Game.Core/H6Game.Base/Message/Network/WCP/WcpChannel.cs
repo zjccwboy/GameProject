@@ -137,12 +137,10 @@ namespace H6Game.Base.Message
         private async Task<WebSocketReceiveResult> ReceviceAsync()
         {
             WebSocketReceiveResult result = null;
+            var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
             try
             {
-                var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
                 result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-                if (result.Count == 0)
-                    return result;
             }
             catch
             {

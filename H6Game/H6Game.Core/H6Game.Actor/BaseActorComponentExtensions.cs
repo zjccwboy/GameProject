@@ -46,8 +46,13 @@ namespace H6Game.Actor
             }
             else
             {
-                var network = actor.ActorEntity.Network;
-                network.Send(message, (ushort)command);
+                var localActorId = message.ActorId;
+                //需要使用远程进程的ActorId发送
+                message.ActorId = actor.ActorEntity.ActorId;
+
+                actor.ActorEntity.Network.Send(message, (ushort)command);
+
+                message.ActorId = localActorId;
             }
         }
 
@@ -69,8 +74,13 @@ namespace H6Game.Actor
             }
             else
             {
-                var network = actor.ActorEntity.Network;
-                response = await network.CallMessageAsync<TActorResponse>(message, (ushort)command);
+                var localActorId = message.ActorId;
+                //需要使用远程进程的ActorId发送
+                message.ActorId = actor.ActorEntity.ActorId;
+
+                response = await actor.ActorEntity.Network.CallMessageAsync<TActorResponse>(message, (ushort)command);
+
+                message.ActorId = localActorId;
             }
             return response;
         }
