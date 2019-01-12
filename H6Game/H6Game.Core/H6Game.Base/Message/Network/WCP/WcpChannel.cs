@@ -114,10 +114,10 @@ namespace H6Game.Base.Message
                     result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
 
                     await this.SyncContext;
-                    OnReceiveComplete(result);
-
                     if (result.Count == 0)
-                        this.Disconnect();
+                        continue;
+
+                    OnReceiveComplete(result);
                 }
                 catch(Exception e)
                 {
