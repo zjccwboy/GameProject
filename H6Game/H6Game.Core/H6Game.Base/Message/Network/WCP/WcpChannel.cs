@@ -114,8 +114,11 @@ namespace H6Game.Base.Message
                     result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
 
                     await this.SyncContext;
-                    if (result.Count == 0)
-                        continue;
+                    if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        this.Disconnect();
+                        return;
+                    }
 
                     OnReceiveComplete(result);
                 }
@@ -130,6 +133,12 @@ namespace H6Game.Base.Message
 
         private void OnReceiveComplete(WebSocketReceiveResult recvResult)
         {
+            if (recvResult == null)
+                return;
+
+            if (recvResult.Count == 0)
+                return;
+
             this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
             while (true)
             {
