@@ -75,7 +75,7 @@ namespace H6Game.Actor
         /// <returns></returns>
         internal bool Remove<T>(T component) where T : BaseActorComponent
         {
-            if (!IdComponents.Remove(component.Id))
+            if (!IdComponents.TryRemove(component.Id, out BaseComponent val))
                 return false;
 
             var type = typeof(T);
@@ -96,7 +96,7 @@ namespace H6Game.Actor
             if (!IdComponents.TryGetValue(id, out BaseComponent value))
                 return false;
 
-            if (!IdComponents.Remove(id))
+            if (!IdComponents.TryRemove(id, out value))
                 return false;
 
             var type = value.GetType();

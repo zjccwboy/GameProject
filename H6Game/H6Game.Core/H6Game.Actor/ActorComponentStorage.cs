@@ -4,6 +4,7 @@ using H6Game.Base.Logger;
 using H6Game.Base.Message;
 using MongoDB.Bson;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +15,11 @@ namespace H6Game.Actor
     [SingleCase]
     public class ActorComponentStorage : BaseComponent
     {
-        private Dictionary<ActorType, Type> ActorTypes { get; } = new Dictionary<ActorType, Type>();
-        private Dictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new Dictionary<int, Dictionary<int, BaseActorComponent>>();
-        private Dictionary<int, BaseActorComponent> RemoteActors { get; } = new Dictionary<int, BaseActorComponent>();
-        private Dictionary<int, BaseActorComponent> LocalActors { get; } = new Dictionary<int, BaseActorComponent>();
-        private Dictionary<string, BaseActorComponent> ActorComponents { get; } = new Dictionary<string, BaseActorComponent>();
+        private ConcurrentDictionary<ActorType, Type> ActorTypes { get; } = new ConcurrentDictionary<ActorType, Type>();
+        private ConcurrentDictionary<int, Dictionary<int, BaseActorComponent>> NetIdActors { get; } = new ConcurrentDictionary<int, Dictionary<int, BaseActorComponent>>();
+        private ConcurrentDictionary<int, BaseActorComponent> RemoteActors { get; } = new ConcurrentDictionary<int, BaseActorComponent>();
+        private ConcurrentDictionary<int, BaseActorComponent> LocalActors { get; } = new ConcurrentDictionary<int, BaseActorComponent>();
+        private ConcurrentDictionary<string, BaseActorComponent> ActorComponents { get; } = new ConcurrentDictionary<string, BaseActorComponent>();
         private NetDistributionsComponent Distributions { get; set; }
         private Action<Network> OnDisconnected { get; set; }
         private Action<Network> OnConnected { get; set; }
@@ -26,7 +27,7 @@ namespace H6Game.Actor
         public override void Awake()
         {
             var types = ObjectTypeStorage.GetTypes<BaseActor>();
-            foreach(var type in types)
+            foreach (var type in types)
             {
                 using (var component = ObjectStorage.Fetch(type) as BaseActorComponent)
                 {
@@ -47,7 +48,7 @@ namespace H6Game.Actor
                     acotr.Dispose();
             };
 
-            this.Distributions.OnConnected += network => 
+            this.Distributions.OnConnected += network =>
             {
                 this.OnConnected?.Invoke(network);
                 network.Send((ushort)MSGCommand.SyncActorInfoCmd);
@@ -91,7 +92,7 @@ namespace H6Game.Actor
             if (this.LocalActors.ContainsKey(component.Id))
                 return;
 
-            this.LocalActors.Add(component.Id, component);
+            this.LocalActors.AddOrUpdate(component.Id, component, (k, v) => component);
 
             this.ActorComponents[component.ActorEntity.Id] = component;
 
@@ -129,7 +130,7 @@ namespace H6Game.Actor
 
         public BaseActorComponent GetActor(int actorId)
         {
-            if(!Game.Scene.GetComponent(actorId, out BaseComponent component))
+            if (!Game.Scene.GetComponent(actorId, out BaseComponent component))
             {
                 return null;
             }
@@ -165,16 +166,16 @@ namespace H6Game.Actor
             if (!dicVal.Remove(component.ActorEntity.ActorId))
                 return;
 
-            if (!RemoteActors.Remove(component.Id))
+            if (!RemoteActors.TryRemove(component.Id, out BaseActorComponent val))
                 return;
         }
 
         private void RemoveLocal(BaseActorComponent component)
         {
-            if (!this.LocalActors.Remove(component.Id))
+            if (!this.LocalActors.TryRemove(component.Id, out BaseActorComponent val))
                 return;
 
-            if (!this.ActorComponents.Remove(component.ActorEntity.Id))
+            if (!this.ActorComponents.TryRemove(component.ActorEntity.Id, out val))
                 return;
 
             this.Distributions.InnerNetworks.Send(component.Id, (ushort)MSGCommand.RemoveActorCmd);
