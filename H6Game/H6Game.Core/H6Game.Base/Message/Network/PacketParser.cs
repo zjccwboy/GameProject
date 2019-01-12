@@ -111,34 +111,43 @@ namespace H6Game.Base.Message
                             if (Buffer.DataSize < HeadSize)
                                 return;
 
-                            ReadPacketSize();
+                            var offset = 0;
+                            UpdateHeadBytes(offset, LengthFlagSize);
+                            PacketSize = BitConverter.ToInt32(Packet.HeadBytes, offset);
                             State = ParseState.BitFlag;
+                            continue;
                         }
-                        continue;
                     case ParseState.BitFlag:
                         {
                             this.ReadBitFlag();
                             State = ParseState.RpcId;
+                            continue;
                         }
-                        continue;
                     case ParseState.RpcId:
                         {
-                            ReadRpcId();
+                            Packet.HeadBytes[NetCommandOffset] = 0;
+                            var offset = RpcIdOffset;
+                            UpdateHeadBytes(offset, RpcFlagSize);
+                            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
                             State = ParseState.Command;
+                            continue;
                         }
-                        continue;
                     case ParseState.Command:
                         {
-                            ReadCommand();
+                            var offset = NetCommandOffset;
+                            UpdateHeadBytes(offset, NetCommandFlagSize);
+                            Packet.NetCommand = BitConverter.ToUInt16(Packet.HeadBytes, offset);
                             State = ParseState.MsgType;
+                            continue;
                         }
-                        continue;
                     case ParseState.MsgType:
                         {
-                            ReadMsgType();
+                            var offset = MsgTypeOffset;
+                            UpdateHeadBytes(offset, MsgTypeFlagSize);
+                            Packet.MsgTypeCode = BitConverter.ToUInt16(Packet.HeadBytes, offset);
                             State = ParseState.Body;
+                            continue;
                         }
-                        continue;
                     case ParseState.Body:
                         {
                             ReadBody();
@@ -162,23 +171,22 @@ namespace H6Game.Base.Message
             }
         }
 
-        private void ReadPacketSize()
+        private void UpdateHeadBytes(int offset,int size)
         {
-            if (Buffer.FirstDataSize >= LengthFlagSize)
+            if (Buffer.FirstDataSize >= size)
             {
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, LengthFlagSize);
-                Buffer.UpdateRead(LengthFlagSize);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, size);
+                Buffer.UpdateRead(size);
             }
             else
             {
                 var count = Buffer.FirstDataSize;
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, 0, count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
                 Buffer.UpdateRead(count);
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, LengthFlagSize - count);
-                Buffer.UpdateRead(LengthFlagSize - count);
+                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, count, size - count);
+                Buffer.UpdateRead(size - count);
             }
-            ReadLength += LengthFlagSize;
-            PacketSize = BitConverter.ToInt32(Packet.HeadBytes, 0);
+            ReadLength += size;
         }
 
         private void ReadBitFlag()
@@ -187,67 +195,6 @@ namespace H6Game.Base.Message
             Buffer.UpdateRead(BitFlagSize);
             ReadLength += BitFlagSize;
             SetBitFlag(Packet.HeadBytes[BitFlagOffset]);
-        }
-
-        private void ReadRpcId()
-        {
-            var offset = RpcIdOffset;
-            if (Buffer.FirstDataSize >= RpcFlagSize)
-            {
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, RpcFlagSize);
-                Buffer.UpdateRead(RpcFlagSize);
-            }
-            else
-            {
-                var count = Buffer.FirstDataSize;
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                Buffer.UpdateRead(count);
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, RpcFlagSize - count);
-                Buffer.UpdateRead(RpcFlagSize - count);
-            }
-            ReadLength += RpcFlagSize;
-            Packet.HeadBytes[NetCommandOffset] = 0;
-            Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
-        }
-
-        private void ReadCommand()
-        {
-            var offset = NetCommandOffset;
-            if (Buffer.FirstDataSize >= NetCommandFlagSize)
-            {
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, NetCommandFlagSize);
-                Buffer.UpdateRead(NetCommandFlagSize);
-            }
-            else
-            {
-                var count = Buffer.FirstDataSize;
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                Buffer.UpdateRead(count);
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, NetCommandFlagSize - count);
-                Buffer.UpdateRead(NetCommandFlagSize - count);
-            }
-            ReadLength += NetCommandFlagSize;
-            Packet.NetCommand = BitConverter.ToUInt16(Packet.HeadBytes, offset);
-        }
-
-        private void ReadMsgType()
-        {
-            var offset = MsgTypeOffset;
-            if (Buffer.FirstDataSize >= MsgTypeFlagSize)
-            {
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, MsgTypeFlagSize);
-                Buffer.UpdateRead(MsgTypeFlagSize);
-            }
-            else
-            {
-                var count = Buffer.FirstDataSize;
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset, count);
-                Buffer.UpdateRead(count);
-                System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, offset + count, MsgTypeFlagSize - count);
-                Buffer.UpdateRead(MsgTypeFlagSize - count);
-            }
-            ReadLength += MsgTypeFlagSize;
-            Packet.MsgTypeCode = BitConverter.ToUInt16(Packet.HeadBytes, offset);
         }
 
         private void ReadBody()
