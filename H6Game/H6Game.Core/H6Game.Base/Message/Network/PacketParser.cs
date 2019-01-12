@@ -119,7 +119,9 @@ namespace H6Game.Base.Message
                         }
                     case ParseState.BitFlag:
                         {
-                            this.ReadBitFlag();
+                            var offset = BitFlagOffset;
+                            UpdateHeadBytes(offset, BitFlagSize);
+                            SetBitFlag(Packet.HeadBytes[offset]);
                             State = ParseState.RpcId;
                             continue;
                         }
@@ -187,14 +189,6 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(size - count);
             }
             ReadLength += size;
-        }
-
-        private void ReadBitFlag()
-        {
-            System.Buffer.BlockCopy(Buffer.First, Buffer.FirstReadOffset, Packet.HeadBytes, BitFlagOffset, BitFlagSize);
-            Buffer.UpdateRead(BitFlagSize);
-            ReadLength += BitFlagSize;
-            SetBitFlag(Packet.HeadBytes[BitFlagOffset]);
         }
 
         private void ReadBody()
