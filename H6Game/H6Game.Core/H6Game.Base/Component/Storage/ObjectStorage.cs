@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -6,9 +7,9 @@ namespace H6Game.Base.Component
 {
     public static class ObjectStorage
     {
-        private static Dictionary<int, BaseComponent> IdComponents{ get; } = new Dictionary<int, BaseComponent>();
-        private static Dictionary<Type, Queue<BaseComponent>> TypeComponents { get; } = new Dictionary<Type, Queue<BaseComponent>>();
-        private static Dictionary<Type, BaseComponent> SingleCaseComponents { get; } = new Dictionary<Type, BaseComponent>();
+        private static ConcurrentDictionary<int, BaseComponent> IdComponents{ get; } = new ConcurrentDictionary<int, BaseComponent>();
+        private static ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>> TypeComponents { get; } = new ConcurrentDictionary<Type, ConcurrentQueue<BaseComponent>>();
+        private static ConcurrentDictionary<Type, BaseComponent> SingleCaseComponents { get; } = new ConcurrentDictionary<Type, BaseComponent>();
         private static HashSet<Type> SingleTypes { get; } = new HashSet<Type>();
 
         public static void Load()
@@ -23,9 +24,9 @@ namespace H6Game.Base.Component
                     continue;
                 }
 
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
             }
@@ -58,17 +59,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type);
                 }
@@ -94,17 +91,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1);
                 }
@@ -129,17 +122,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type);
                 }
@@ -165,17 +154,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1, k2);
                 }
@@ -201,17 +186,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1, k2, k3);
                 }
@@ -237,17 +218,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4);
                 }
@@ -273,17 +250,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5);
                 }
@@ -309,17 +282,13 @@ namespace H6Game.Base.Component
             }
             else
             {
-                if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+                if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
                 {
-                    queue = new Queue<BaseComponent>();
+                    queue = new ConcurrentQueue<BaseComponent>();
                     TypeComponents[type] = queue;
                 }
 
-                if (queue.Count > 0)
-                {
-                    result = queue.Dequeue();
-                }
-                else
+                if (!queue.TryDequeue(out result))
                 {
                     result = ComponentFactory.CreateComponent(type, k1, k2, k3, k4, k5, k6);
                 }
@@ -332,13 +301,13 @@ namespace H6Game.Base.Component
 
         public static void PutBack(this BaseComponent component)
         {
-            if (!IdComponents.Remove(component.Id))
+            if (!IdComponents.TryRemove(component.Id, out BaseComponent val))
                 return;
 
             var type = component.GetType();
-            if (!TypeComponents.TryGetValue(type, out Queue<BaseComponent> queue))
+            if (!TypeComponents.TryGetValue(type, out ConcurrentQueue<BaseComponent> queue))
             {
-                queue = new Queue<BaseComponent>();
+                queue = new ConcurrentQueue<BaseComponent>();
                 TypeComponents[type] = queue;
             }
 
