@@ -4,6 +4,7 @@ using H6Game.Base.Component;
 using H6Game.Hotfix.Entities;
 using H6Game.Rpository;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace H6Game.TestActorMessage
 {
@@ -23,7 +24,7 @@ namespace H6Game.TestActorMessage
             var room = new TRoom();
             room.SetCreator("Admin");
             room.SetUpdater("Admin");
-            rpository.DBContext.Insert(room);
+            await rpository.DBContext.InsertAsync(room);
             return room;
         }
 

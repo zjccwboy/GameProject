@@ -5,6 +5,7 @@ using H6Game.Hotfix.Entities;
 using H6Game.Rpository;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace H6Game.TestActorMessage
 {
@@ -27,7 +28,7 @@ namespace H6Game.TestActorMessage
             };
             account.SetCreator("Admin");
             account.SetUpdater("Admin");
-            rpository.DBContext.Insert(account);
+            await rpository.DBContext.InsertAsync(account);
             return account;
         }
 

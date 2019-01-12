@@ -3,6 +3,7 @@ using H6Game.Base;
 using H6Game.Base.Component;
 using H6Game.Hotfix.Entities;
 using H6Game.Rpository;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace H6Game.TestActorMessage
@@ -23,7 +24,7 @@ namespace H6Game.TestActorMessage
             var game = new TGame();
             game.SetCreator("Admin");
             game.SetUpdater("Admin");
-            rpository.DBContext.Insert(game);
+            await rpository.DBContext.InsertAsync(game);
             return game;
         }
 

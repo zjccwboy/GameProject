@@ -206,6 +206,7 @@ namespace H6Game.Base.Message
                 Buffer.UpdateRead(RpcFlagSize - count);
             }
             ReadLength += RpcFlagSize;
+            Packet.HeadBytes[NetCommandOffset] = 0;
             Packet.RpcId = BitConverter.ToInt32(Packet.HeadBytes, offset);
         }
 
