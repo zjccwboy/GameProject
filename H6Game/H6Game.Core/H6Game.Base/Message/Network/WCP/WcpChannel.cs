@@ -104,6 +104,8 @@ namespace H6Game.Base.Message
         {
             while (true)
             {
+                var tid = Thread.CurrentThread.ManagedThreadId;
+
                 if (!this.Connected)
                     return;
 
@@ -112,14 +114,21 @@ namespace H6Game.Base.Message
                 try
                 {
                     result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-
-                    await this.SyncContext;
-                    if (result.MessageType == WebSocketMessageType.Close)
+                    if (result.Count == 0)
                     {
+                        await this.SyncContext;
                         this.Disconnect();
                         return;
                     }
 
+                    if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        await this.SyncContext;
+                        this.Disconnect();
+                        return;
+                    }
+
+                    await this.SyncContext;
                     OnReceiveComplete(result);
                 }
                 catch(Exception e)
@@ -133,12 +142,6 @@ namespace H6Game.Base.Message
 
         private void OnReceiveComplete(WebSocketReceiveResult recvResult)
         {
-            if (recvResult == null)
-                return;
-
-            if (recvResult.Count == 0)
-                return;
-
             this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
             while (true)
             {
