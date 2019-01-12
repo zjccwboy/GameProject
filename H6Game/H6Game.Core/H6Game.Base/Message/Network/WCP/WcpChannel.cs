@@ -104,8 +104,6 @@ namespace H6Game.Base.Message
         {
             while (true)
             {
-                var tid = Thread.CurrentThread.ManagedThreadId;
-
                 if (!this.Connected)
                     return;
 
