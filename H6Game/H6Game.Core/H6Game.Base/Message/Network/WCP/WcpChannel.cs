@@ -41,7 +41,7 @@ namespace H6Game.Base.Message
 
             this.LastConnectTime = now;
             if(await StartConnectingAsync())
-                ThreadCallbackContext.Instance.Post(this.OnConnectComplete, null);
+                SynchronizationThreadContext.Instance.Post(this.OnConnectComplete, null);
         }
 
         private void OnConnectComplete(object o)
@@ -86,7 +86,7 @@ namespace H6Game.Base.Message
                     }
                 }
                 var tcs = new TaskCompletionSource<bool>();
-                ThreadCallbackContext.Instance.Post(this.OnSendComplete, tcs);
+                SynchronizationThreadContext.Instance.Post(this.OnSendComplete, tcs);
                 await tcs.Task;
             }
         }
@@ -114,7 +114,7 @@ namespace H6Game.Base.Message
                 this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
 
                 var tcs = new TaskCompletionSource<bool>();
-                ThreadCallbackContext.Instance.Post(this.OnReceiveComplete, tcs);
+                SynchronizationThreadContext.Instance.Post(this.OnReceiveComplete, tcs);
                 await tcs.Task;
             }
         }
@@ -173,7 +173,7 @@ namespace H6Game.Base.Message
 
             await SendClose(this.NetSocket);
 
-            ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, null);
+            SynchronizationThreadContext.Instance.Post(this.OnDisconnectComplete, null);
         }
 
         private void OnDisconnectComplete(object o)

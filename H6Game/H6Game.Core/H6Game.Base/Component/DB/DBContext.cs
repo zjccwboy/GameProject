@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using H6Game.Base.SyncContext;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -15,7 +16,7 @@ namespace H6Game.Base.Component
     /// MongoDB 驱动上下文类。
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public class DBContext<TEntity> where TEntity : BaseEntity, new()
+    public class DBContext<TEntity> : SynchronizationThreadContextObject where TEntity : BaseEntity, new()
     {
         #region 私有变量
         private string DatabaseName { get; set; }
@@ -93,6 +94,7 @@ namespace H6Game.Base.Component
         public async Task<bool> ExistedAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
             var result = await WhereAsync(filter, options);
+            await this.SyncContext;
             return result.Any();
         }
 
@@ -115,11 +117,13 @@ namespace H6Game.Base.Component
         /// <param name="filter">过滤表达式。</param>
         /// <param name="options">查找配置项。</param>
         /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
+        public async Task<List<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> filter, FindOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            return colleciton.Find(filter, options).ToListAsync();
+            var result = await colleciton.Find(filter, options).ToListAsync();
+            await this.SyncContext;
+            return result;
         }
 
         /// <summary>
@@ -139,9 +143,11 @@ namespace H6Game.Base.Component
         /// <param name="objectId">object id.</param>
         /// <param name="options">查找配置项。</param>
         /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> FindByIdAsync(string objectId, FindOptions options = null)
+        public async Task<List<TEntity>> FindByIdAsync(string objectId, FindOptions options = null)
         {
-            return WhereAsync(t => t.Id == objectId);
+            var result = await WhereAsync(t => t.Id == objectId);
+            await this.SyncContext;
+            return result;
         }
 
         /// <summary>
@@ -168,33 +174,6 @@ namespace H6Game.Base.Component
         }
 
         /// <summary>
-        /// 分页查找异步。
-        /// </summary>
-        /// <typeparam name="TResult">查找选择器表达式返回数据类型。</typeparam>
-        /// <param name="filter">查找过滤器表达式。</param>
-        /// <param name="keySelector">查找选择器表达式。</param>
-        /// <param name="pageIndex">页码。</param>
-        /// <param name="pageSize">分页大小。</param>
-        /// <param name="rsCount">分页数量。</param>
-        /// <returns>返回实体集合。</returns>
-        public Task<List<TEntity>> FindByPageAsync<TResult>(Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TResult>> keySelector, int pageIndex, int pageSize, out int rsCount)
-        {
-            string collectionName = typeof(TEntity).Name;
-            var colleciton = GetMongoCollection(collectionName);
-            rsCount = colleciton.AsQueryable().Where(filter).Count();
-
-            int pageCount = rsCount / pageSize + ((rsCount % pageSize) > 0 ? 1 : 0);
-            if (pageIndex > pageCount) pageIndex = pageCount;
-            if (pageIndex <= 0) pageIndex = 1;
-
-            var result = colleciton.AsQueryable(new AggregateOptions { AllowDiskUse = true }).Where(filter).OrderByDescending(keySelector).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-            var tcs = new TaskCompletionSource<List<TEntity>>();
-            tcs.TrySetResult(result);
-            return tcs.Task;
-
-        }
-
-        /// <summary>
         /// 插入一行。
         /// </summary>
         /// <param name="entity">插入数据实体。</param>
@@ -211,11 +190,12 @@ namespace H6Game.Base.Component
         /// </summary>
         /// <param name="entity">插入数据实体。</param>
         /// <param name="options">插入数据配置项。</param>
-        public Task InsertAsync(TEntity entity, InsertOneOptions options = null)
+        public async Task InsertAsync(TEntity entity, InsertOneOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            return colleciton.InsertOneAsync(entity, options);
+            await colleciton.InsertOneAsync(entity, options);
+            await this.SyncContext;
         }
 
         /// <summary>
@@ -235,11 +215,12 @@ namespace H6Game.Base.Component
         /// </summary>
         /// <param name="entities">插入实体集合。</param>
         /// <param name="options">插入数据配置项。</param>
-        public void InsertManyAsync(IEnumerable<TEntity> entities, InsertManyOptions options = null)
+        public async Task InsertManyAsync(IEnumerable<TEntity> entities, InsertManyOptions options = null)
         {
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
-            colleciton.InsertManyAsync(entities, options);
+            await colleciton.InsertManyAsync(entities, options);
+            await this.SyncContext;
         }
 
         /// <summary>
@@ -259,6 +240,24 @@ namespace H6Game.Base.Component
         }
 
         /// <summary>
+        /// 更新一行。
+        /// </summary>
+        /// <param name="entity">更新实体。</param>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="options">更新配置项。</param>
+        /// <returns>修改行数。</returns>
+        public async Task<int> UpdateAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
+            var result = await colleciton.UpdateOneAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            var count = (int)result.ModifiedCount;
+            await this.SyncContext;
+            return count;
+        }
+
+        /// <summary>
         /// 根据指定字段更新某一行。
         /// </summary>
         /// <param name="filter">过滤表达式。</param>
@@ -271,6 +270,23 @@ namespace H6Game.Base.Component
             var colleciton = GetMongoCollection(collectionName);
             var result = colleciton.UpdateOne(filter, updateFields, options);
             return (int)result.ModifiedCount;
+        }
+
+        /// <summary>
+        /// 根据指定字段更新某一行。
+        /// </summary>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="updateFields">指定更新字段。</param>
+        /// <param name="options">更新配置项。</param>
+        /// <returns>修改行数。</returns>
+        public async Task<int> UpdateAsync(Expression<Func<TEntity, bool>> filter, UpdateDefinition<TEntity> updateFields, UpdateOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            var result = await colleciton.UpdateOneAsync(filter, updateFields, options);
+            var count = (int)result.ModifiedCount;
+            await this.SyncContext;
+            return count;
         }
 
         /// <summary>
@@ -290,6 +306,24 @@ namespace H6Game.Base.Component
         }
 
         /// <summary>
+        /// 更新多行。
+        /// </summary>
+        /// <param name="entity">更新实体。</param>
+        /// <param name="filter">更新过滤表达式。</param>
+        /// <param name="options">更新配置项。</param>
+        /// <returns>修改行数。</returns>
+        public async Task<int> UpdateManyAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, UpdateOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, null);
+            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), options);
+            var count = (int)result.ModifiedCount;
+            await this.SyncContext;
+            return count;
+        }
+
+        /// <summary>
         /// 批量更新，并指定更新的字段。
         /// </summary>
         /// <param name="entity">更新实体。</param>
@@ -303,6 +337,24 @@ namespace H6Game.Base.Component
             List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
             var result = colleciton.UpdateMany(filter, Builders<TEntity>.Update.Combine(updateList), null);
             return (int)result.ModifiedCount;
+        }
+
+        /// <summary>
+        /// 批量更新，并指定更新的字段。
+        /// </summary>
+        /// <param name="entity">更新实体。</param>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="updateFields">更新字段名。</param>
+        /// <returns>修改行数。</returns>
+        public async Task<int> UpdateManyAsAsync(TEntity entity, Expression<Func<TEntity, bool>> filter, params string[] updateFields)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            List<UpdateDefinition<TEntity>> updateList = BuildUpdateDefinition(entity, null, updateFields);
+            var result = await colleciton.UpdateManyAsync(filter, Builders<TEntity>.Update.Combine(updateList), null);
+            var count = (int)result.ModifiedCount;
+            await this.SyncContext;
+            return count;
         }
 
         /// <summary>
@@ -320,6 +372,21 @@ namespace H6Game.Base.Component
         }
 
         /// <summary>
+        /// 删除一行。
+        /// </summary>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="options">删除配置项。</param>
+        /// <returns>删除结果，删除成功为true，删除失败为false。</returns>
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            var result = await colleciton.DeleteOneAsync(filter, options);
+            await this.SyncContext;
+            return result.DeletedCount > 0;
+        }
+
+        /// <summary>
         /// 删除多行。
         /// </summary>
         /// <param name="filter">过滤表达式。</param>
@@ -330,6 +397,21 @@ namespace H6Game.Base.Component
             string collectionName = typeof(TEntity).Name;
             var colleciton = GetMongoCollection(collectionName);
             return colleciton.DeleteMany(filter, options);
+        }
+
+        /// <summary>
+        /// 删除多行。
+        /// </summary>
+        /// <param name="filter">过滤表达式。</param>
+        /// <param name="options">删除配置项。</param>
+        /// <returns>删除结果。</returns>
+        public async Task<DeleteResult> DeleteManyAsync(Expression<Func<TEntity, bool>> filter, DeleteOptions options = null)
+        {
+            string collectionName = typeof(TEntity).Name;
+            var colleciton = GetMongoCollection(collectionName);
+            var result = await colleciton.DeleteManyAsync(filter, options);
+            await this.SyncContext;
+            return result;
         }
 
         /// <summary>

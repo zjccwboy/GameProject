@@ -6,7 +6,7 @@ namespace H6Game.Base.SyncContext
 {
     public class SynchronizationContextAwaiter : INotifyCompletion
     {
-        private SynchronizationContext Context { get; } = ThreadCallbackContext.Instance;
+        private SynchronizationContext Context { get; } = SynchronizationThreadContext.Instance;
         private SendOrPostCallback Executor { get; } = a => (a as Action)();
 
         public bool IsCompleted

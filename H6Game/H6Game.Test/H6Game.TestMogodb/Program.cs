@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using H6Game.Base;
 using H6Game.Base.Component;
 using H6Game.Base.Config;
@@ -17,237 +18,181 @@ namespace TestMogodb
     {
         static void Main(string[] args)
         {
-            //TestDBContext();
-            //Game.InitDB();
-
-            //TestRpository();
-
-            Test();
-
-
-            Console.Read();
-        }
-
-        static async void Test()
-        {
             Game.Scene.AddComponent<MongoConfig>();
+            Game.Scene.GetComponent<AccountRpository>();
 
-            //MongoClient client = new MongoClient(ConnectionString + DBName + AuthSource);
-            //MongoServer server = new MongoServer(MongoServerSettings.FromClientSettings(client.Settings));
-            //var yourCollection = server.GetDatabase(DBName).GetCollection<ItemEntity>(CollectionName);
+            DeleteAllAsync();
 
-            //var servers = MongoServer.GetAllServers();
+            TestInsert();
+            TestInsertAsync();
 
-            //var server = (MongoConfig.Database.Client as MongoClient).GetServer();
-            //var settings = new MongoGridFSSettings();
-            ////settings.WriteConcern = database.Settings.WriteConcern;
+            TestInsertMany();
+            TestInsertManyAsync();
 
-            //MongoCollection<TAccount> books = server.GetDatabase("H6Game").GetCollection<TAccount>("TAccount");
+            TestWhere();
+            TestWhereAsync();
 
+            TestFindByPage();
 
-            ////var query = Query.EQ("_id", "5b97ca7c90d43696d4de4f83");
-            //var fields = Fields.Include("FA");
+            Update();
+            UpdateAsync();
 
-            //var query = Query<TAccount>.EQ(b => b.Id, "5b97ca7c90d43696d4de4f83");
+            UpdateMany();
+            UpdateManyAsync();
+            UpdateManyAsAsync();
 
-            //foreach (TAccount book in books.FindAs<TAccount>(query).SetFields(fields))
-            //{
-            //    var b = book;
-            //    // do something with book
-            //}
+            Delete();
+            DeleteAsync();
 
-            var rpository = Game.Scene.GetComponent<AccountRpository>();
-            var account = new TAccount { FAccountName = "SAM" };
-            
+            DeleteMany();
+            DeleteManyAsync();
 
-            // var q = chuncks.Find(query).SetFields(fields).FirstOrDefault();
-            //var q = gridFS.Find(query).SetFields(fields);
+            while (true)
+            {
+                Game.Update();
+                Thread.Sleep(1);
+            }
         }
 
-
-        static async void TestRpository()
+        static void TestInsert()
         {
-            
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
             var account = new TAccount
             {
+                FCreateTime = DateTime.Now,
                 FAccountName = "Sam",
-                FSex = UserSex.Man,
-                FCreateTime = DateTime.UtcNow,
-                FUpdateTime = DateTime.UtcNow,
-                FType = AccountType.Agent,
             };
-            //await Game.Scene.GetComponent<AccountRpository>().DBContext.DeleteManyAsync(a => a.FAccountName == "Sam");
-
-            //await Game.Scene.GetComponent<AccountRpository>().AddAsync(account);
-
+            rpository.DBContext.Insert(account);
         }
 
-        static async void TestDBContext()
+        static async void TestInsertAsync()
         {
-            //var context = new DBContext<TestAccount>(Game.Scene.GetComponent<MongoConfig>().Database);
-
-            var context = Game.Scene.GetComponent<AccountRpository>().DBContext;
-
-
-            var accountInfo = new TAccount
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var account = new TAccount
             {
                 FCreateTime = DateTime.Now,
+                FAccountName = "Sam",
             };
-            context.Insert(accountInfo);
+            await rpository.DBContext.InsertAsync(account);
+        }
 
-            accountInfo = new TAccount
-            {
-                FCreateTime = DateTime.Now,
-            };
-
-            
+        static void TestInsertMany()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
             var inserts = new List<TAccount>();
             for (var i = 0; i < 10; i++)
             {
-                accountInfo = new TAccount
+                var account = new TAccount
                 {
                     FCreateTime = DateTime.Now,
+                    FAccountName = $"Sam{i}",
                 };
-                inserts.Add(accountInfo);
+                inserts.Add(account);
             }
-            context.InsertMany(inserts);
+            rpository.DBContext.InsertMany(inserts);
+        }
 
-
-            inserts.Clear();
+        static async void TestInsertManyAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var inserts = new List<TAccount>();
             for (var i = 0; i < 10; i++)
             {
-                accountInfo = new TAccount
+                var account = new TAccount
                 {
                     FCreateTime = DateTime.Now,
+                    FAccountName = $"SamAsync{i}",
                 };
-                inserts.Add(accountInfo);
+                inserts.Add(account);
             }
-
-            
-
-            var findResult = context.Where(t => t.FAccountName == "InsertMany");
-            findResult = await context.WhereAsync(t => t.FAccountName == "InsertManyAsync");
-
-            var pageResult = context.FindByPage<string>(t => t.FAccountName == "InsertMany", t => t.FAccountName, 1, 20, out int pageCount);
-            pageResult = await context.FindByPageAsync<string>(t => t.FAccountName == "InsertManyAsync", t => t.FAccountName, 1, 20, out pageCount);
-
-
-            context.Update(t => t.FAccountName == "Insert", Builders<TAccount>.Update.Set("FAmt", 102));
-
-            context.Update(new TAccount
-            {
-            }, t => t.FAccountName == "Insert");
-
-
-
-
-            context.Update(t => t.FAccountName == "InsertMany", Builders<TAccount>.Update.Set("FAmt", 102));
-
-            //var updateAccount = BaseEntity.Create<TestAccount>();
-            //var elementName = updateAccount.GetElementName(nameof(updateAccount.FAccount));
-
-            var ecp = Game.Scene.AddComponent<EntityComponent>();
-            var  elementName = ecp[typeof(TestAccount), "FAmt"];
-
-
-
-            context.UpdateMany(new TAccount
-            {
-                FCreateTime = DateTime.Now,
-            }, t => t.FAccountName == "InsertAsync");
-
-            context.Delete(t => t.FAccountName == "UpdateMany");
-
+            await rpository.DBContext.InsertManyAsync(inserts);
         }
 
-
-
-        static async void Insert(IMongoDatabase database)
+        static void TestWhere()
         {
-            var collection = database.GetCollection<TestAccount>("TestAccount");
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = rpository.DBContext.Where(t => t.FAccountName.Contains("Sam"));
+        }
 
-            var accountInfo = new TestAccount
+        static async void TestWhereAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = await rpository.DBContext.WhereAsync(t => t.FAccountName.Contains("Sam"));
+        }
+
+        static void TestFindByPage()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = rpository.DBContext.FindByPage<string>(t => t.FAccountName.Contains("Sam"), t => t.FAccountName, 1, 20, out int pageCount);
+        }
+
+        static void Update()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var reuslt = rpository.DBContext.Update(t => t.FAccountName.Contains("Sam"), Builders<TAccount>.Update.Set("FAmt", 102));
+            reuslt = rpository.DBContext.Update(new TAccount{}, t => t.FAccountName.Contains("Sam"));
+        }
+
+        static async void UpdateAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var reuslt = await rpository.DBContext.UpdateAsync(t => t.FAccountName.Contains("Sam"), Builders<TAccount>.Update.Set("FAmt", 102));
+            reuslt = await rpository.DBContext.UpdateAsync(new TAccount { }, t => t.FAccountName.Contains("Sam"));
+        }
+
+        static void UpdateMany()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = rpository.DBContext.UpdateMany(new TAccount{FCreateTime = DateTime.Now,}, t => t.FAccountName.Contains("Sam"));
+        }
+
+        static async void UpdateManyAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = await rpository.DBContext.UpdateManyAsync(new TAccount { FCreateTime = DateTime.Now, }, t => t.FAccountName.Contains("Sam"));
+        }
+
+        static async void UpdateManyAsAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var ecp = Game.Scene.GetComponent<EntityComponent>();
+            var updateFileds = new string[]
             {
-                FAccount = "Sam",
-                FAmt = 100m,
-                FCreateTime = DateTime.Now,
-                FVIPLevel = 1,
+                nameof(TAccount.FAccountName),
+                nameof(TAccount.FAccumulativeRecharge),
+                nameof(TAccount.FAlipayHeadImgUrl),
             };
-
-
-
-
-            var tableName = accountInfo.GetType().Name;
-
-            //mongoDbHelper.CreateCollection<TestAccount>(tableName, new[] { "LogDT" });
-
-
-            Console.WriteLine(accountInfo.ToJson());
-
-            await collection.InsertOneAsync(accountInfo);
-
-            var bson = accountInfo.ToJson();
-            var obj = BsonToObject<TestAccount>(bson);
-
-            //通过Document查找
-            var doc = accountInfo.ToBsonDocument();
-            var list = await collection.Find(doc).ToListAsync();
-
-            //通过_id查找
-            //var objectId = new ObjectId(accountInfo.Id);
-            //list = await collection.Find(new BsonDocument("_id", objectId)).ToListAsync();
-
-            //var filter = Builders<TestAccount>.Filter.Eq("_id", objectId);
-            //var update = Builders<TestAccount>.Update.Set("FVIPLevel", 110);
-            //collection.UpdateOne(filter, update);
-
-
-            foreach (var document in list)
-            {
-                Console.WriteLine(document.ToJson());
-            }
+            var result = await rpository.DBContext.UpdateManyAsAsync(new TAccount { FCreateTime = DateTime.Now, }, t => t.FAccountName.Contains("Sam"), updateFileds);
         }
 
-
-        //public static string ToBson<T>(T data) where T : class
-        //{
-        //    data.ToBson()
-
-        //    var result = data.ToJson();
-        //    return result;
-
-        //    //using (var stream = new MemoryStream())
-        //    //{
-        //    //    using (var writer = new BsonBinaryWriter(stream))
-        //    //    {
-        //    //        BsonSerializer.Serialize(writer, typeof(T), data);
-        //    //        stream.Seek(0, SeekOrigin.Begin);
-        //    //        using (var reader = new BsonBinaryReader(stream))
-        //    //        {
-        //    //            var context = BsonDeserializationContext.CreateRoot(reader);
-        //    //            BsonDocument doc = BsonDocumentSerializer.Instance.Deserialize(context);
-        //    //            return doc.ToString();
-        //    //        }
-        //    //    }
-        //    //}
-        //}
-
-        public static T BsonToObject<T>(string bson)
+        static void Delete()
         {
-            var retsult = BsonSerializer.Deserialize(bson, typeof(T));
-            return (T)retsult;
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = rpository.DBContext.Delete(t => t.FAccountName.Contains("Sam"));
         }
-    }
 
-    public class TestAccount : BaseEntity
-    {
-        [BsonElement("FAcc")]
-        public string FAccount { get; set; }
-        [BsonElement("FAmt")]
-        public decimal FAmt { get; set; }
-        [BsonElement("FCT")]
-        public DateTime FCreateTime { get; set; }
-        [BsonElement("FVL")]
-        public byte FVIPLevel { get; set; }
+        static async void DeleteAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result =await rpository.DBContext.DeleteAsync(t => t.FAccountName.Contains("Sam"));
+        }
+
+        static void DeleteMany()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = rpository.DBContext.DeleteMany(t => t.FAccountName.Contains("Sam"));
+        }
+
+        static async void DeleteManyAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = await rpository.DBContext.DeleteManyAsync(t => t.FAccountName.Contains("Sam"));
+        }
+
+        static async void DeleteAllAsync()
+        {
+            var rpository = Game.Scene.GetComponent<AccountRpository>();
+            var result = await rpository.DBContext.DeleteManyAsync(t => t.FAccountName == null);
+        }
     }
 }

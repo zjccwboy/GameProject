@@ -62,16 +62,16 @@ namespace H6Game.Base.Message
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Connect:
-                    ThreadCallbackContext.Instance.Post(this.OnConnectComplete, e);
+                    SynchronizationThreadContext.Instance.Post(this.OnConnectComplete, e);
                     break;
                 case SocketAsyncOperation.Receive:
-                    ThreadCallbackContext.Instance.Post(this.OnRecvComplete, e);
+                    SynchronizationThreadContext.Instance.Post(this.OnRecvComplete, e);
                     break;
                 case SocketAsyncOperation.Send:
-                    ThreadCallbackContext.Instance.Post(this.OnSendComplete, e);
+                    SynchronizationThreadContext.Instance.Post(this.OnSendComplete, e);
                     break;
                 case SocketAsyncOperation.Disconnect:
-                    ThreadCallbackContext.Instance.Post(this.OnDisconnectComplete, e);
+                    SynchronizationThreadContext.Instance.Post(this.OnDisconnectComplete, e);
                     break;
                 default:
                     throw new NetworkException($"socket error: {e.LastOperation}");

@@ -69,7 +69,7 @@ namespace H6Game.Base.Message
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Accept:
-                    ThreadCallbackContext.Instance.Post(this.OnAcceptComplete, e);
+                    SynchronizationThreadContext.Instance.Post(this.OnAcceptComplete, e);
                     break;
                 default:
                     throw new Exception($"socket error: {e.LastOperation}");

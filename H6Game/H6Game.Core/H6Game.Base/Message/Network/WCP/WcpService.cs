@@ -48,7 +48,7 @@ namespace H6Game.Base.Message
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
-            ThreadCallbackContext.Instance.Post(this.OnAcceptComplete, channel);
+            SynchronizationThreadContext.Instance.Post(this.OnAcceptComplete, channel);
         }
 
         private void OnAcceptComplete(object o)
