@@ -33,7 +33,7 @@ namespace H6Game.Base.Logger
             {
                 entity.FExceptionName = exception.GetType().Name;
                 entity.FExceptionMessage = exception.Message;
-                entity.FExceptionInfo = exception.StackTrace;
+                entity.FExceptionInfo = exception.ToString();
             }
 
             entity.SetCreator("Sys");

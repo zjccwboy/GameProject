@@ -14,6 +14,7 @@ namespace H6Game.Base.Message
     {
         public string HttpPrefixed { get;}
         private WebSocket NetSocket { get; set; }
+        private bool IsSending { get; set; }
 
         public WcpChannel(string httpPrefixed, ANetService netService, Network network) : base(netService, network)
         {
@@ -40,14 +41,13 @@ namespace H6Game.Base.Message
                 return;
 
             this.LastConnectTime = now;
-            if(await StartConnectingAsync())
-                SynchronizationThreadContext.Instance.Post(this.OnConnectComplete, null);
-        }
-
-        private void OnConnectComplete(object o)
-        {
-            this.Connected = true;
-            this.OnConnected?.Invoke(this);
+            var state = await StartConnectingAsync();
+            if (state)
+            {
+                await this.SyncContext;
+                this.Connected = true;
+                this.OnConnected?.Invoke(this);
+            }
         }
 
         private async Task<bool> StartConnectingAsync()
@@ -59,42 +59,45 @@ namespace H6Game.Base.Message
                 await (this.NetSocket as ClientWebSocket).ConnectAsync(new Uri(this.HttpPrefixed), ctk.Token);
                 return true;
             }
-            catch
+            catch(Exception e)
             {
+                await this.SyncContext;
+                Log.Error(e, LoggerBllType.System);
                 return false;
             }
         }
 
         public override async void StartSend()
         {
+            if (this.IsSending)
+                return;
+
+            this.IsSending = true;
+
             while (true)
             {
                 if (!this.Connected)
-                    return;
+                    break;
 
-                while (this.SendParser.Buffer.DataSize > 0)
+                if (this.SendParser.Buffer.DataSize == 0)
+                    break;
+
+                var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+                try
                 {
-                    var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
-                    try
-                    {
-                        await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
-                        this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
-                    }
-                    catch
-                    {
-                        this.Disconnect();
-                    }
+                    await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
+                    await this.SyncContext;
+                    this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                 }
-                var tcs = new TaskCompletionSource<bool>();
-                SynchronizationThreadContext.Instance.Post(this.OnSendComplete, tcs);
-                await tcs.Task;
+                catch(Exception e)
+                {
+                    await this.SyncContext;
+                    Log.Error(e, LoggerBllType.System);
+                    this.Disconnect();
+                }
             }
-        }
 
-        private void OnSendComplete(object o)
-        {
-            var tcs = o as TaskCompletionSource<bool>;
-            tcs.SetResult(true);
+            this.IsSending = false;
         }
 
         public override async void StartRecv()
@@ -104,24 +107,30 @@ namespace H6Game.Base.Message
                 if (!this.Connected)
                     return;
 
-                var recvResult = await ReceviceAsync();
-                if (recvResult == null)
-                    continue;
+                WebSocketReceiveResult result = null;
+                var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+                try
+                {
+                    result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
 
-                if (recvResult.Count == 0)
-                    continue;
+                    await this.SyncContext;
+                    OnReceiveComplete(result);
 
-                this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
-
-                var tcs = new TaskCompletionSource<bool>();
-                SynchronizationThreadContext.Instance.Post(this.OnReceiveComplete, tcs);
-                await tcs.Task;
+                    if (result.Count == 0)
+                        this.Disconnect();
+                }
+                catch(Exception e)
+                {
+                    await this.SyncContext;
+                    Log.Error(e, LoggerBllType.System);
+                    this.Disconnect();
+                }
             }
         }
 
-        private void OnReceiveComplete(object o)
+        private void OnReceiveComplete(WebSocketReceiveResult recvResult)
         {
-            var tcs = o as TaskCompletionSource<bool>;
+            this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
             while (true)
             {
                 if (!this.RecvParser.TryRead())
@@ -131,22 +140,6 @@ namespace H6Game.Base.Message
                 this.RecvParser.Packet.BodyStream.SetLength(0);
                 this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
             }
-            tcs.SetResult(true);
-        }
-
-        private async Task<WebSocketReceiveResult> ReceviceAsync()
-        {
-            WebSocketReceiveResult result = null;
-            var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
-            try
-            {
-                result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-            }
-            catch
-            {
-                this.Disconnect();
-            }
-            return result;
         }
 
         public async override void Disconnect()
@@ -173,11 +166,7 @@ namespace H6Game.Base.Message
 
             await SendClose(this.NetSocket);
 
-            SynchronizationThreadContext.Instance.Post(this.OnDisconnectComplete, null);
-        }
-
-        private void OnDisconnectComplete(object o)
-        {
+            await this.SyncContext;
             this.OnDisconnected(this);
         }
 

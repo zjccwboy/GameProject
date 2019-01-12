@@ -10,7 +10,7 @@ namespace H6Game.Base.Message
     /// <summary>
     /// 网络通讯服务抽象类
     /// </summary>
-    public abstract class ANetService : IDisposable
+    public abstract class ANetService : SynchronizationThreadContextObject, IDisposable
     {
         /// <summary>
         /// 构造函数

@@ -9,7 +9,7 @@ namespace H6Game.Base.Message
     /// <summary>
     /// 通讯管道抽象类
     /// </summary>
-    public abstract class ANetChannel : IDisposable
+    public abstract class ANetChannel : SynchronizationThreadContextObject,IDisposable
     {
         /// <summary>
         /// 构造函数,TCP Connect
