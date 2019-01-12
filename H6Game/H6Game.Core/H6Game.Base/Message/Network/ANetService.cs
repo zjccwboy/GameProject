@@ -1,5 +1,6 @@
 ﻿using H6Game.Base.Exceptions;
 using H6Game.Base.Logger;
+using H6Game.Base.SyncContext;
 using System;
 using System.Collections.Concurrent;
 using System.Net.Sockets;

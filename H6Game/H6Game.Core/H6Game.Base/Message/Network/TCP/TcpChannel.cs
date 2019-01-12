@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Net;
 using H6Game.Base.Exceptions;
 using H6Game.Base.Logger;
+using H6Game.Base.SyncContext;
 
 namespace H6Game.Base.Message
 {

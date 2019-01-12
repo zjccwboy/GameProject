@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using H6Game.Base.SyncContext;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace H6Game.Base.Message

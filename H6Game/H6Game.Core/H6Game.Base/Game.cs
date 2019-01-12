@@ -1,6 +1,7 @@
 ﻿using H6Game.Base.Component;
 using H6Game.Base.Logger;
 using H6Game.Base.Message;
+using H6Game.Base.SyncContext;
 using System;
 
 namespace H6Game.Base

@@ -1,4 +1,5 @@
 ﻿using H6Game.Base.Logger;
+using H6Game.Base.SyncContext;
 using System;
 using System.Net.WebSockets;
 using System.Threading;
