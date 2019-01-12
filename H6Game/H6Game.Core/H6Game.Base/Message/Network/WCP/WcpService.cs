@@ -48,12 +48,12 @@ namespace H6Game.Base.Message
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
-            SynchronizationThreadContext.Instance.Post(this.OnAcceptComplete, channel);
+            await this.SyncContext;
+            OnAcceptComplete(channel);
         }
 
-        private void OnAcceptComplete(object o)
+        private void OnAcceptComplete(ANetChannel channel)
         {
-            var channel = o as ANetChannel;
             OnAccept(channel);
             channel.StartRecv();
         }
