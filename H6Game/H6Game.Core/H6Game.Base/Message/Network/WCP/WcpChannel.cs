@@ -82,7 +82,7 @@ namespace H6Game.Base.Message
                 if (this.SendParser.Buffer.DataSize == 0)
                     break;
 
-#if SERVER
+#if NETCORE
                 var segment = new Memory<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
 #else
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
@@ -110,7 +110,7 @@ namespace H6Game.Base.Message
             {
                 if (!this.Connected)
                     return;
-#if SERVER
+#if NETCORE
                 ValueWebSocketReceiveResult recvResult;
                 var segment = new Memory<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
 #else
