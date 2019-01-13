@@ -107,40 +107,42 @@ namespace H6Game.Base.Message
                 if (!this.Connected)
                     return;
 
-                WebSocketReceiveResult result = null;
+                WebSocketReceiveResult recvResult = null;
                 var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
                 try
                 {
-                    result = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
-                    if (result.Count == 0)
-                    {
-                        await this.SyncContext;
-                        this.Disconnect();
-                        return;
-                    }
-
-                    if (result.MessageType == WebSocketMessageType.Close)
-                    {
-                        await this.SyncContext;
-                        this.Disconnect();
-                        return;
-                    }
+                    recvResult = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
 
                     await this.SyncContext;
-                    OnReceiveComplete(result);
+                    if (recvResult.Count == 0)
+                    {
+                        this.Disconnect();
+                        return;
+                    }
+
+                    if (recvResult.MessageType == WebSocketMessageType.Close)
+                    {
+                        this.Disconnect();
+                        return;
+                    }
+                    this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
+                    if (recvResult.EndOfMessage)
+                    {
+                        OnReceiveComplete();
+                    }
                 }
                 catch(Exception e)
                 {
                     await this.SyncContext;
                     Log.Error(e, LoggerBllType.System);
                     this.Disconnect();
+                    return;
                 }
             }
         }
 
-        private void OnReceiveComplete(WebSocketReceiveResult recvResult)
+        private void OnReceiveComplete()
         {
-            this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
             while (true)
             {
                 if (!this.RecvParser.TryRead())
