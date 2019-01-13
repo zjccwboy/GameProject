@@ -81,6 +81,7 @@ namespace H6Game.Base.Message
 
                 if (this.SendParser.Buffer.DataSize == 0)
                     break;
+
 #if SERVER
                 var segment = new Memory<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
 #else
@@ -88,9 +89,9 @@ namespace H6Game.Base.Message
 #endif
                 try
                 {
+                    this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                     await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
                     await this.SyncContext;
-                    this.SendParser.Buffer.UpdateRead(SendParser.Buffer.FirstDataSize);
                 }
                 catch(Exception e)
                 {
@@ -120,7 +121,6 @@ namespace H6Game.Base.Message
                 {
                     recvResult = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);
 
-                    await this.SyncContext;
                     if (recvResult.Count == 0)
                     {
                         this.Disconnect();
@@ -132,6 +132,8 @@ namespace H6Game.Base.Message
                         this.Disconnect();
                         return;
                     }
+
+                    await this.SyncContext;
                     this.RecvParser.Buffer.UpdateWrite(recvResult.Count);
                     if (recvResult.EndOfMessage)
                     {
@@ -197,7 +199,7 @@ namespace H6Game.Base.Message
                 if (this.NetSocket.State == WebSocketState.Open)
                 {
                     var ctk = new CancellationTokenSource();
-                    await socket.CloseOutputAsync(WebSocketCloseStatus.Empty, null, ctk.Token);
+                    await socket.CloseAsync(WebSocketCloseStatus.Empty, null, ctk.Token);
                 }
             }
             catch { }
