@@ -42,9 +42,9 @@ namespace H6Game.Base.Message
 
             this.LastConnectTime = now;
             var state = await StartConnectingAsync();
+            await this.SyncContext;
             if (state)
             {
-                await this.SyncContext;
                 this.Connected = true;
                 this.OnConnected?.Invoke(this);
             }

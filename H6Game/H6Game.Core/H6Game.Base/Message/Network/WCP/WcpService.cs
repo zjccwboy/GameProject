@@ -1,4 +1,6 @@
-﻿using H6Game.Base.SyncContext;
+﻿using H6Game.Base.Logger;
+using H6Game.Base.SyncContext;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -26,20 +28,22 @@ namespace H6Game.Base.Message
             this.Listener.Start();
             while (true)
             {
-                HttpListenerContext context = null;
                 try
                 {
-                    context = await this.Listener.GetContextAsync();
+                    var context = await this.Listener.GetContextAsync();
+                    var channel = await HandleAccept(context);
+                    await this.SyncContext;
+                    OnAcceptComplete(channel);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Log.Error(e, LoggerBllType.System);
                     return;
                 }
-                await HandleAccept(context);
             }
         }
 
-        private async Task HandleAccept(HttpListenerContext context)
+        private async Task<ANetChannel> HandleAccept(HttpListenerContext context)
         {
             var wsContext = await context.AcceptWebSocketAsync(null);
             var client = wsContext.WebSocket;
@@ -48,8 +52,7 @@ namespace H6Game.Base.Message
                 LocalEndPoint = context.Request.LocalEndPoint,
                 RemoteEndPoint = context.Request.RemoteEndPoint,
             };
-            await this.SyncContext;
-            OnAcceptComplete(channel);
+            return channel;
         }
 
         private void OnAcceptComplete(ANetChannel channel)
