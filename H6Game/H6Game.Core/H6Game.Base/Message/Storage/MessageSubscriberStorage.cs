@@ -46,7 +46,15 @@ namespace H6Game.Base.Message
                         subscribers = new Dictionary<Type, ISubscriber>();
                         Subscribers[cmd] = subscribers;
                     }
-                    subscribers.Add(subscriber.MessageType, subscriber);
+
+                    if(subscriber.MessageType.BaseType == typeof(Enum))
+                    {
+                        subscribers.Add(typeof(int), subscriber);
+                    }
+                    else
+                    {
+                        subscribers.Add(subscriber.MessageType, subscriber);
+                    }
 
                     if (subscriber.MessageType == null)
                         continue;
@@ -92,7 +100,14 @@ namespace H6Game.Base.Message
                 return false;
             }
 
-            return subscribers.TryGetValue(messageType, out subscriber);
+            if(!subscribers.TryGetValue(messageType, out subscriber))
+            {
+                if (messageType.BaseType != typeof(Enum))
+                    return false;
+
+                return subscribers.TryGetValue(typeof(int), out subscriber);
+            }
+            return true;
         }
 
         private static void Validate(ISubscriber subscriber, int netCommand)

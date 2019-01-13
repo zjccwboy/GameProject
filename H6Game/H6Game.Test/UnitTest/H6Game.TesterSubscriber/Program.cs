@@ -244,7 +244,7 @@ namespace H6Game.TesterSubscriber
         private static async void SubChar()
         {
             var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
-            var charResult = await network.CallMessageAsync<char, char>('a', (ushort)NetCommandTest.SubSByte);
+            var charResult = await network.CallMessageAsync<char, char>('a', (ushort)NetCommandTest.SubChar);
             if ('a' == charResult)
             {
                 Console.WriteLine("SubChar success.");

@@ -26,6 +26,7 @@ namespace H6Game.Base.Message
         BooLean,
         DateTime,
         Guid,
+        Enum,
 
         #endregion
     }

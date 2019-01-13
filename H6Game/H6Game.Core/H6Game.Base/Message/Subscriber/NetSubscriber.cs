@@ -31,7 +31,13 @@ namespace H6Game.Base.Message
         public void Receive(Network network)
         {
             if (this.MsgTypeCode != network.RecvPacket.MsgTypeCode)
-                return;
+            {
+                if (network.RecvPacket.MsgTypeCode != (int)BasicMessageType.Int)
+                    return;
+
+                if (this.MessageType.BaseType != typeof(Enum))
+                    return;
+            }
 
             if (!MessageSubscriberStorage.ExistSubscriberCmd(network.RecvPacket.NetCommand, this.MessageType))
                 return;
