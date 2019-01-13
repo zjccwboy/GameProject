@@ -164,6 +164,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H6Game.ServerApp", "H6Game.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.ConfigApp", "H6Game.ConfigApp\H6Game.ConfigApp.csproj", "{6BA4FE71-E47E-4C14-A1C9-3594D2347317}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H6Game.Base.DotNetCore", "H6Game.Core\H6Game.Base.DotNetCore\H6Game.Base.DotNetCore.csproj", "{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -274,6 +276,10 @@ Global
 		{6BA4FE71-E47E-4C14-A1C9-3594D2347317}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA4FE71-E47E-4C14-A1C9-3594D2347317}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA4FE71-E47E-4C14-A1C9-3594D2347317}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -304,6 +310,7 @@ Global
 		{EB95C38A-CF3D-4C4B-AFF9-07081250A1EF} = {01F6CA76-6392-4DC6-A347-722D831261B6}
 		{98D385DF-C875-41C1-8165-6B1C6CA81081} = {01F6CA76-6392-4DC6-A347-722D831261B6}
 		{469B580D-1B5C-42F5-9C59-1D025E219853} = {D8ED7650-6CBA-4445-B9DF-7B6BD5B4886C}
+		{DBC356AE-B4C3-44B9-9F5D-12C9D78E1B00} = {D8ED7650-6CBA-4445-B9DF-7B6BD5B4886C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9256E0EA-B7B6-467E-888A-9A55B18CEB05}

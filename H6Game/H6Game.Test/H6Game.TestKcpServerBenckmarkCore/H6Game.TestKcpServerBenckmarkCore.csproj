@@ -6,8 +6,13 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\H6Game.Core\H6Game.Base\H6Game.Base.csproj" />
+    <ProjectReference Include="..\..\H6Game.Core\H6Game.Base.DotNetCore\H6Game.Base.DotNetCore.csproj" />
     <ProjectReference Include="..\..\H6Game.Core\H6Game.Hotfix\H6Game.Hotfix.csproj" />
     <ProjectReference Include="..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
     <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\MongoDB.Bson.csproj" />

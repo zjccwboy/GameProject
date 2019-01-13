@@ -81,8 +81,11 @@ namespace H6Game.Base.Message
 
                 if (this.SendParser.Buffer.DataSize == 0)
                     break;
-
+#if SERVER
+                var segment = new Memory<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+#else
                 var segment = new ArraySegment<byte>(SendParser.Buffer.First, SendParser.Buffer.FirstReadOffset, SendParser.Buffer.FirstDataSize);
+#endif
                 try
                 {
                     await NetSocket.SendAsync(segment, WebSocketMessageType.Binary, true, CancellationToken.None);
@@ -106,9 +109,13 @@ namespace H6Game.Base.Message
             {
                 if (!this.Connected)
                     return;
-
+#if SERVER
+                ValueWebSocketReceiveResult recvResult;
+                var segment = new Memory<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+#else
                 WebSocketReceiveResult recvResult = null;
                 var segment = new ArraySegment<byte>(this.RecvParser.Buffer.Last, this.RecvParser.Buffer.LastWriteOffset, this.RecvParser.Buffer.LastCapacity);
+#endif
                 try
                 {
                     recvResult = await this.NetSocket.ReceiveAsync(segment, CancellationToken.None);

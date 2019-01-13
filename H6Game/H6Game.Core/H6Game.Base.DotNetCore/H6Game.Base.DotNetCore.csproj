@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;SERVER</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\H6Game.Base\**\*.cs;" Exclude="..\H6Game.Base\bin\**;..\H6Game.Base\obj\**;**\*.xproj;packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\MongoDB.Bson.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Core\MongoDB.Driver.Core.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.GridFS\MongoDB.Driver.GridFS.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver.Legacy\MongoDB.Driver.Legacy.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\MongoDB.Driver.csproj" />
+  </ItemGroup>
+
+</Project>
