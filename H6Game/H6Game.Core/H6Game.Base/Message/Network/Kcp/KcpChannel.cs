@@ -94,7 +94,7 @@ namespace H6Game.Base.Message
             }
             catch (Exception e)
             {
-                Log.Error(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.System);
             }
         }
 
@@ -199,7 +199,7 @@ namespace H6Game.Base.Message
             }
             catch(Exception e)
             {
-                Log.Error(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.System);
                 this.Disconnect();
             }
         }

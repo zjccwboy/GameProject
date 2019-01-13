@@ -28,7 +28,7 @@ namespace H6Game.Base.Message
             }
             catch (Exception e)
             {
-                Log.Error(e, LoggerBllType.System, packet.ToJson());
+                Log.Warn(e, LoggerBllType.System, packet.ToJson());
             }
         }
     }

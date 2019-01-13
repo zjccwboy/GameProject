@@ -65,6 +65,14 @@ namespace H6Game.Base.Logger
             Write(LogLevel.Warn, stackInfo, message, bllType, null, args);
         }
 
+        public static void Warn(Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
+             [CallerLineNumber] int line = 0,
+             [CallerMemberName] string member = null)
+        {
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Error, stackInfo, exception.StackTrace, bllType, exception, args);
+        }
+
         public static void Error(string message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
                      [CallerLineNumber] int line = 0,
                      [CallerMemberName] string member = null)

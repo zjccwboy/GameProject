@@ -62,7 +62,7 @@ namespace H6Game.Base.Message
             catch(Exception e)
             {
                 await this.SyncContext;
-                Log.Error(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.System);
                 return false;
             }
         }
@@ -96,7 +96,7 @@ namespace H6Game.Base.Message
                 catch(Exception e)
                 {
                     await this.SyncContext;
-                    Log.Error(e, LoggerBllType.System);
+                    Log.Warn(e, LoggerBllType.System);
                     this.Disconnect();
                 }
             }
@@ -143,7 +143,7 @@ namespace H6Game.Base.Message
                 catch(Exception e)
                 {
                     await this.SyncContext;
-                    Log.Error(e, LoggerBllType.System);
+                    Log.Warn(e, LoggerBllType.System);
                     this.Disconnect();
                     return;
                 }
