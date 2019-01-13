@@ -17,7 +17,7 @@ namespace H6Game.Base.Message
 
         public NetMessageTypeAttribute(object type)
         {
-            TypeCode = (ushort)type;
+            this.TypeCode = (ushort)type;
         }
     }
 }

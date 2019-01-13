@@ -4,9 +4,9 @@ using System.Text;
 
 namespace H6Game.BaseTest
 {
-    public enum NetMessageTypeTest
+    public enum NetMessageTypeTest : ushort
     {
-        TesterMessage = 666666,
-        TesterMyMessage = 7777777,
+        TesterMessage = 44444,
+        TesterMyMessage,
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace H6Game.BaseTest
 {
-    public enum EnumType
+    public enum EnumType : ushort
     {
         None,
         Test1,
@@ -13,7 +13,7 @@ namespace H6Game.BaseTest
 
     public enum NetCommandTest : ushort
     {
-        SubEmpty = 55555,
+        SubEmpty = 33333,
         SubString,
         SubInt,
         SubUInt,

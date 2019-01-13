@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Google.Protobuf">
-      <HintPath>..\..\..\Bin\netstandard2.0\Google.Protobuf.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\H6Game.Core\H6Game.Base\H6Game.Base.csproj" />
+    <ProjectReference Include="..\..\..\ThirdParty\Google.Protobuf\Google.Protobuf.csproj" />
   </ItemGroup>
 
 </Project>
