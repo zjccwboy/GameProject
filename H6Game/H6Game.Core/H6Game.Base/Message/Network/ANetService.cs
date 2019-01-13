@@ -98,7 +98,7 @@ namespace H6Game.Base.Message
                     var timeSpan = now - channel.LastReceivedTime;
                     if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
                     {
-                        Log.Debug($"{this.ProtocalType}客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.System);
+                        Log.Debug($"{this.ProtocalType}客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.Network);
                         channel.Disconnect();
                     }
                 }
@@ -115,12 +115,12 @@ namespace H6Game.Base.Message
             if (this.ProtocalType == ProtocalType.Wcp)
             {
                 var wchannel = channel as WcpChannel;
-                Log.Debug($"{this.ProtocalType}监听Prefied:{wchannel.HttpPrefixed}接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+                Log.Debug($"{this.ProtocalType}监听Prefied:{wchannel.HttpPrefixed}接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.Network);
             }
             else
             {
                 var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
-                Log.Debug($"{this.ProtocalType}监听端口:{loacalPort}接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.System);
+                Log.Debug($"{this.ProtocalType}监听端口:{loacalPort}接受客户端:{channel.RemoteEndPoint}连接成功.", LoggerBllType.Network);
             }
             channel.Connected = true;
             AddChannel(channel);
@@ -134,12 +134,12 @@ namespace H6Game.Base.Message
             if(this.ProtocalType == ProtocalType.Wcp)
             {
                 var wchannel = channel as WcpChannel;
-                Log.Debug($"{this.ProtocalType}连接服务端:{wchannel.HttpPrefixed}成功.", LoggerBllType.System);
+                Log.Debug($"{this.ProtocalType}连接服务端:{wchannel.HttpPrefixed}成功.", LoggerBllType.Network);
             }
             else
             {
                 var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
-                Log.Debug($"{this.ProtocalType}端口:{loacalPort}连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.System);
+                Log.Debug($"{this.ProtocalType}端口:{loacalPort}连接服务端:{channel.RemoteEndPoint}成功.", LoggerBllType.Network);
             }
 
             channel.Connected = true;
@@ -156,12 +156,12 @@ namespace H6Game.Base.Message
                 if (this.ProtocalType == ProtocalType.Wcp)
                 {
                     var wchannel = channel as WcpChannel;
-                    Log.Debug($"{this.ProtocalType}监听Prefixed:{wchannel.HttpPrefixed}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                    Log.Debug($"{this.ProtocalType}监听Prefixed:{wchannel.HttpPrefixed}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.Network);
                 }
                 else
                 {
                     var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
-                    Log.Debug($"{this.ProtocalType}监听端口:{loacalPort}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                    Log.Debug($"{this.ProtocalType}监听端口:{loacalPort}与客户端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.Network);
                 }
                 OnServerDisconnected?.Invoke(channel);
             }
@@ -174,12 +174,12 @@ namespace H6Game.Base.Message
                 if (this.ProtocalType == ProtocalType.Wcp)
                 {
                     var wchannel = channel as WcpChannel;
-                    Log.Debug($"{this.ProtocalType}与服务端:{wchannel.HttpPrefixed}连接断开.", LoggerBllType.System);
+                    Log.Debug($"{this.ProtocalType}与服务端:{wchannel.HttpPrefixed}连接断开.", LoggerBllType.Network);
                 }
                 else
                 {
                     var loacalPort = channel.LocalEndPoint == null ? 0 : channel.LocalEndPoint.Port;
-                    Log.Debug($"{this.ProtocalType}端口:{loacalPort}与服务端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.System);
+                    Log.Debug($"{this.ProtocalType}端口:{loacalPort}与服务端:{channel.RemoteEndPoint}连接断开.", LoggerBllType.Network);
                 }
                 OnClientDisconnected?.Invoke(value);
             }

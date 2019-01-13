@@ -116,7 +116,7 @@ namespace H6Game.Base.Message
             }
             catch (Exception e)
             {
-                Log.Warn(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.Network);
             }
         }
 
@@ -174,7 +174,7 @@ namespace H6Game.Base.Message
             catch (Exception e)
             {
                 this.IsSending = false;
-                Log.Warn(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.Network);
                 this.Disconnect();
                 return;
             }
@@ -231,7 +231,7 @@ namespace H6Game.Base.Message
             catch (Exception e)
             {
                 this.IsReceiving = false;
-                Log.Warn(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.Network);
                 Disconnect();
             }
         }

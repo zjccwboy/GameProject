@@ -106,7 +106,7 @@ namespace H6Game.Base.Message
             }
             catch (Exception e)
             {
-                Log.Warn(e, LoggerBllType.System);
+                Log.Warn(e, LoggerBllType.Network);
                 return;
             }
 
@@ -117,7 +117,7 @@ namespace H6Game.Base.Message
                 var packet = this.ConnectParser.Packet;
                 if (!ConnectParser.TryRead())
                 {
-                    Log.Error($"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.", LoggerBllType.System);
+                    Log.Error($"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.", LoggerBllType.Network);
                     //丢弃非法数据包
                     ConnectParser.Buffer.Flush();
                     return;

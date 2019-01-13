@@ -10,6 +10,11 @@ namespace H6Game.Base.Logger
         System,
 
         /// <summary>
+        /// 网络层日志
+        /// </summary>
+        Network,
+
+        /// <summary>
         /// 账号日志
         /// </summary>
         Account,

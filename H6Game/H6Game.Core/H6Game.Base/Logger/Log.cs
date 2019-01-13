@@ -33,6 +33,14 @@ namespace H6Game.Base.Logger
             Write(LogLevel.Fatal, stackInfo, message, bllType, exception, args);
         }
 
+        public static void Fatal(Exception exception, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
+                     [CallerLineNumber] int line = 0,
+                     [CallerMemberName] string member = null)
+        {
+            var stackInfo = GetFileInfo(file, line, member);
+            Write(LogLevel.Error, stackInfo, exception.StackTrace, bllType, exception, args);
+        }
+
         public static void Info(object message, LoggerBllType bllType, object args = null, [CallerFilePath] string file = null,
              [CallerLineNumber] int line = 0,
              [CallerMemberName] string member = null)

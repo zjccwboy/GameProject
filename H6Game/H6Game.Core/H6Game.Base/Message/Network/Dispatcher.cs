@@ -14,22 +14,14 @@ namespace H6Game.Base.Message
     {
         public static void Dispatching(this Network network, Packet packet)
         {
-            try
+            var type = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
+            if (MessageSubscriberStorage.TryGetSubscriber(packet.NetCommand, type, out ISubscriber subscriber))
             {
-                var type = MessageCommandStorage.GetMsgType(packet.MsgTypeCode);
-                if (MessageSubscriberStorage.TryGetSubscriber(packet.NetCommand, type, out ISubscriber subscriber))
-                {
-                    subscriber.Receive(network);
-                    return;
-                }
-               
-                throw new NetworkException($"消息命令:{packet.NetCommand} 类型:{packet.MsgTypeCode}没有被订阅。");
+                subscriber.Receive(network);
+                return;
+            }
 
-            }
-            catch (Exception e)
-            {
-                Log.Warn(e, LoggerBllType.System, packet.ToJson());
-            }
+            Log.Fatal($"消息命令:{packet.NetCommand} 消息类型:{packet.MsgTypeCode}找不到订阅器。", LoggerBllType.Network, packet.ToJson());
         }
     }
 }

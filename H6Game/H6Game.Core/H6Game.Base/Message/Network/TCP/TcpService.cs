@@ -85,7 +85,7 @@ namespace H6Game.Base.Message
 
             if (e.SocketError != SocketError.Success)
             {
-                Log.Warn($"接受连接发生错误.", LoggerBllType.System);
+                Log.Warn($"接受连接发生错误.", LoggerBllType.Network);
                 return;
             }
             var channel = new TcpChannel(this.EndPoint, e.AcceptSocket, this)
