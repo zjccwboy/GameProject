@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace H6Game.Base.Logger
 {
+    public class CreateFileCallbackModel
+    {
+        public string CustomName { get; set; }
+        public string LevelName { get; set; }
+        public string FileName { get; set; }
+    }
+
     public abstract class ALoggerFileWriter : SynchronizationThreadContextObject, ILoggerFileWriter
     {
         private LoggerConfigEntity Config { get; }
@@ -16,12 +23,13 @@ namespace H6Game.Base.Logger
         private StringBuilder MessageBuilder { get; } = new StringBuilder();
         private string Path { get; }
         public abstract LogLevel LogLevel { get; }
+        public Action<string> CreateFileCallBack { get; set; }
         public ALoggerFileWriter()
         {
             this.Config = LoggerFactory.Config;
             this.Path = this.Config.Path.EndsWith("\\") ? this.Config.Path : this.Config.Path + "\\";
         }
-        private async Task CreateFile(string fileName)
+        public async Task CreateFile(string customName, string levelName, string fileName)
         {
             if (this.logOutput != null)
             {
@@ -39,6 +47,8 @@ namespace H6Game.Base.Logger
             FileInfoManager.LastCreateFileNames[this.LogLevel] = fileName;
             FileInfoManager.LastCreateFileSize[this.LogLevel] = 0;
             FileInfoManager.LastCreateFileTime[this.LogLevel] = DateTime.UtcNow;
+
+            CreateFileCallBack?.Invoke(customName);
         }
 
         private void OpenFile(string fileName)
@@ -77,11 +87,14 @@ namespace H6Game.Base.Logger
 
             try
             {
-                var fileName = NewFileName();
+                var levelName = FileInfoManager.LevelNames[this.LogLevel];
+                var customName = GetCustomNameName();
+                var fileName = $"{customName}_{levelName}.log";
+
                 var isCreateNew = FileInfoManager.LogFiles.Add(fileName);
                 if (isCreateNew)
                 {
-                    await CreateFile(fileName);
+                    await CreateFile(customName, levelName, fileName);
                 }
                 else
                 {
@@ -115,14 +128,6 @@ namespace H6Game.Base.Logger
             {
                 Console.Write(e.ToString());
             }
-        }
-
-        private string NewFileName()
-        {
-            var levelName = FileInfoManager.LevelNames[this.LogLevel];
-            var customName = GetCustomNameName();
-            var fileName = $"{customName}_{levelName}.log";
-            return fileName;
         }
 
         private const string StartName = "100000";

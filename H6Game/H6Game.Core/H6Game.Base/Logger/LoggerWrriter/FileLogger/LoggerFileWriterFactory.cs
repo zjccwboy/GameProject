@@ -1,10 +1,12 @@
 ﻿using H6Game.Base.Config;
+using H6Game.Base.SyncContext;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace H6Game.Base.Logger
 {
-    public class LoggerFileWriterFactory
+    public class LoggerFileWriterFactory : SynchronizationThreadContextObject
     {
         private Dictionary<LogLevel, ILoggerFileWriter> FileWriters { get; }
         private LoggerConfigEntity Config { get; }
@@ -22,7 +24,28 @@ namespace H6Game.Base.Logger
             var levels = FileInfoManager.NameLevels.Values;
             foreach (var level in levels)
             {
-                FileWriters[level] = Create(level);
+                var writer = Create(level);
+                FileWriters[level] = writer;
+                writer.CreateFileCallBack = async customName =>
+                {
+                    await this.SyncContext;
+                    foreach(var wt in FileWriters.Values)
+                    {
+                        var levelName = FileInfoManager.LevelNames[wt.LogLevel];
+                        var fileName = $"{customName}_{levelName}.log";
+                        if (FileInfoManager.LogFiles.Add(fileName))
+                        {
+                            try
+                            {
+                                await wt.CreateFile(customName, levelName, fileName);
+                            }
+                            catch(Exception e)
+                            {
+                                Console.Write(e.ToString());
+                            }
+                        }
+                    }
+                };
             }
         }
 

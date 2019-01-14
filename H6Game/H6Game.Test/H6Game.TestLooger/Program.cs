@@ -1,4 +1,5 @@
 ﻿using H6Game.Base;
+using H6Game.Base.Component;
 using H6Game.Base.Config;
 using H6Game.Base.Logger;
 using System.Threading;
@@ -22,15 +23,18 @@ namespace H6Game.TestLooger
 
         static void TestWriteLog()
         {
-            for(var i = 0; i < 200; i++)
+            Game.Scene.AddComponent<TimerComponent>().SetTimer(() =>
             {
-                Log.Debug("Debug", LoggerBllType.System);
-                Log.Info("Info", LoggerBllType.System);
-                Log.Error("Error", LoggerBllType.System);
-                Log.Warn("Warning", LoggerBllType.System);
-                Log.Fatal("Fatal", LoggerBllType.System);
-                Log.Notice("Notice", LoggerBllType.System);
-            }
+                for (var i = 0; i < 200; i++)
+                {
+                    Log.Debug("Debug", LoggerBllType.System);
+                    Log.Info("Info", LoggerBllType.System);
+                    //Log.Error("Error", LoggerBllType.System);
+                    //Log.Warn("Warning", LoggerBllType.System);
+                    //Log.Fatal("Fatal", LoggerBllType.System);
+                    //Log.Notice("Notice", LoggerBllType.System);
+                }
+            }, 2000);
         }
     }
 }
