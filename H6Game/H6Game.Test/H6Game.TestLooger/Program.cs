@@ -29,12 +29,12 @@ namespace H6Game.TestLooger
                 {
                     Log.Debug("Debug", LoggerBllType.System);
                     Log.Info("Info", LoggerBllType.System);
-                    //Log.Error("Error", LoggerBllType.System);
-                    //Log.Warn("Warning", LoggerBllType.System);
-                    //Log.Fatal("Fatal", LoggerBllType.System);
-                    //Log.Notice("Notice", LoggerBllType.System);
+                    Log.Error("Error", LoggerBllType.System);
+                    Log.Warn("Warning", LoggerBllType.System);
+                    Log.Fatal("Fatal", LoggerBllType.System);
+                    Log.Notice("Notice", LoggerBllType.System);
                 }
-            }, 2000);
+            }, 1000);
         }
     }
 }

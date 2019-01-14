@@ -26,9 +26,8 @@ namespace H6Game.Base.Logger
             {
                 var writer = Create(level);
                 FileWriters[level] = writer;
-                writer.CreateFileCallBack = async customName =>
+                writer.CreateFileCallBack = customName =>
                 {
-                    await this.SyncContext;
                     foreach(var wt in FileWriters.Values)
                     {
                         var levelName = FileInfoManager.LevelNames[wt.LogLevel];
@@ -37,7 +36,7 @@ namespace H6Game.Base.Logger
                         {
                             try
                             {
-                                await wt.CreateFile(customName, levelName, fileName);
+                                wt.CreateFile(customName, levelName, fileName);
                             }
                             catch(Exception e)
                             {

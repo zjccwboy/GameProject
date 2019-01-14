@@ -8,6 +8,6 @@ namespace H6Game.Base.Logger
     {
         LogLevel LogLevel { get; }
         Action<string> CreateFileCallBack { get; set; }
-        Task CreateFile(string customName, string levelName, string fileName);
+        void CreateFile(string customName, string levelName, string fileName);
     }
 }
