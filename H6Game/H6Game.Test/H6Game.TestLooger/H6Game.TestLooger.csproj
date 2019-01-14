@@ -6,12 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="H6Game.Base">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="H6Game.Hotfix">
-      <HintPath>..\..\Bin\netstandard2.0\H6Game.Hotfix.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\H6Game.Core\H6Game.Base.DotNetCore\H6Game.Base.DotNetCore.csproj" />
+    <ProjectReference Include="..\..\H6Game.Core\H6Game.Hotfix\H6Game.Hotfix.csproj" />
   </ItemGroup>
 
 </Project>

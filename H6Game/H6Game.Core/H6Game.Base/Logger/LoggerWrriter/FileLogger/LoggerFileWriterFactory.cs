@@ -24,32 +24,13 @@ namespace H6Game.Base.Logger
             {
                 FileWriters[level] = Create(level);
             }
-            CreateNewFiles();
         }
 
         public async Task WriteMessage(TLogger entity)
         {
             var writer = FileWriters[entity.FLogLevel];
 
-            if (!writer.CanWrite())
-                CreateNewFiles();
-
             await writer.WriteMessage(entity);
-        }
-
-        private void CreateNewFiles()
-        {
-            foreach (var writer in FileWriters.Values)
-            {
-                if (!writer.IsWorking)
-                {
-                    writer.CreateNewFile();
-                }
-                else
-                {
-                    writer.IsCreateNew = true;
-                }
-            }
         }
 
         private ILoggerFileWriter Create(LogLevel logLevel)
