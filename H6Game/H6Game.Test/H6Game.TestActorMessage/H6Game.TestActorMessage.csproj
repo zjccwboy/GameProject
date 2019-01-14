@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Driver, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\bin\Debug\netstandard2.0\MongoDB.Driver.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -79,6 +75,10 @@
     <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Bson\MongoDB.Bson.csproj">
       <Project>{aa139d1f-e279-45a4-8d5f-d9b556016f90}</Project>
       <Name>MongoDB.Bson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\MongoDB.Driver.csproj">
+      <Project>{d0c93d98-2ced-4e71-bf8b-9e13b41f10b1}</Project>
+      <Name>MongoDB.Driver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
