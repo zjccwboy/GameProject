@@ -114,9 +114,17 @@ namespace H6Game.Base.Message
         {
             if(Subscribers.TryGetValue(netCommand, out Dictionary<Type, ISubscriber> oldSubscribers))
             {
-                if (oldSubscribers.ContainsKey(subscriber.MessageType))
+                if (oldSubscribers.TryGetValue(subscriber.MessageType, out ISubscriber value))
                 {
-                    throw new SubscribeException($"类:{subscriber.GetType()}与类:{subscriber.GetType()}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
+                    throw new SubscribeException($"类:{subscriber}与类:{value}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
+                }
+
+                if(subscriber.MessageType.BaseType == typeof(Enum))
+                {
+                    if (oldSubscribers.TryGetValue(typeof(int), out value))
+                    {
+                        throw new SubscribeException($"类:{subscriber}与类:{value}订阅消息类型相同，消息类型相同时不能订阅一样的NetCommand:{netCommand}");
+                    }
                 }
             }
         }
