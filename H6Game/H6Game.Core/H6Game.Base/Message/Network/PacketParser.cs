@@ -228,7 +228,7 @@ namespace H6Game.Base.Message
             Packet.KcpProtocal = (byte)(flagByte >> 4 & 3);
         }
 
-        private void Flush()
+        public void Flush()
         {
             Packet.Flush();
             ReadLength = 0;

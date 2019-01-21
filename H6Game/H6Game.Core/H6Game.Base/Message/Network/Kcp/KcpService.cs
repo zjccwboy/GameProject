@@ -118,8 +118,7 @@ namespace H6Game.Base.Message
                 if (!ConnectParser.TryRead())
                 {
                     Log.Error($"丢弃非法数据包:{this.Acceptor.RemoteEndPoint}.", LoggerBllType.Network);
-                    //丢弃非法数据包
-                    ConnectParser.Buffer.Flush();
+                    ConnectParser.Flush();
                     return;
                 }
                 if (packet.KcpProtocal == KcpNetProtocal.SYN)
@@ -134,7 +133,7 @@ namespace H6Game.Base.Message
                 {
                     HandleFIN(packet, this.ReuseEndPoint as IPEndPoint);
                 }
-                this.ConnectParser.Clear();
+                this.ConnectParser.Flush();
             }
             else
             {
