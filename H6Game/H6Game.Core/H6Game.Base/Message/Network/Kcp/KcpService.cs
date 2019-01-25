@@ -179,13 +179,13 @@ namespace H6Game.Base.Message
 
                 channel = this.ClientChannel as KcpChannel;
                 channel.RemoteEndPoint = remoteEP as IPEndPoint;
-                channel.Id = packet.NetCommand;
+                channel.Id = packet.RpcId;
                 channel.OnConnected = OnConnect;
-                ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.NetCommand);
+                ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.RpcId);
             }
             else
             {
-                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.NetCommand)
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.RpcId)
                 {
                     OnConnected = OnAccept
                 };

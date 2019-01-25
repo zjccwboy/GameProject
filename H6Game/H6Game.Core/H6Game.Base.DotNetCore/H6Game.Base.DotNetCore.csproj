@@ -28,4 +28,10 @@
     <ProjectReference Include="..\..\ThirdParty\MongodbDriver\src\Dotnet\MongoDB.Driver\MongoDB.Driver.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Kcp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

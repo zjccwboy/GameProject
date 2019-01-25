@@ -10,8 +10,9 @@ namespace H6Game.Base.Message
         private static int id;
         public static int CreateId()
         {
-            Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 1, int.MaxValue);
+            if (id == int.MaxValue)
+                id = 0;
+            id++;
             return id;
         }
     }
@@ -21,11 +22,14 @@ namespace H6Game.Base.Message
     /// </summary>
     public class KcpConvIdCreator
     {
-        private static int id = 100000;
+        private const int MinSize = 100000;
+        private const int MaxSize = 0xFFFFFF;
+        private static int id = MinSize;
         public static int CreateId()
         {
-            Interlocked.Increment(ref id);
-            Interlocked.CompareExchange(ref id, 100000, int.MaxValue);
+            if (id == 0xFFFFFF)
+                id = MinSize;
+            id++;
             return id;
         }
     }

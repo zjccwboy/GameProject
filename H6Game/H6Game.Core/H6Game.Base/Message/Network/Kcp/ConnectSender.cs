@@ -34,7 +34,7 @@ namespace H6Game.Base.Message
         public static void SendACK(Packet packet, Socket socket, EndPoint endPoint, int conv)
         {
             packet.KcpProtocal = KcpNetProtocal.ACK;
-            packet.NetCommand = (ushort)conv;
+            packet.RpcId = conv;
 
             //握手包不经过KCP发送
             var bytes = packet.GetHeadBytes(0);
@@ -51,7 +51,7 @@ namespace H6Game.Base.Message
         public static void SendFIN(Packet packet, Socket socket, EndPoint endPoint, int conv)
         {
             packet.KcpProtocal = KcpNetProtocal.FIN;
-            packet.NetCommand = (ushort)conv;
+            packet.RpcId = (ushort)conv;
 
             //握手包不经过KCP发送
             var bytes = packet.GetHeadBytes(0);

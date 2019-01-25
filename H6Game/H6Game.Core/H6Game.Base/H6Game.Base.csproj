@@ -37,4 +37,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Kcp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

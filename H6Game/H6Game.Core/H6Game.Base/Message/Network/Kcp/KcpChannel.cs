@@ -1,7 +1,9 @@
 ﻿using H6Game.Base.Logger;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 
 namespace H6Game.Base.Message
 {
@@ -29,10 +31,10 @@ namespace H6Game.Base.Message
     /// </summary>
     public class KcpChannel : ANetChannel
     {
-        private Kcp Kcp { get; set; }
+        private IntPtr Kcp { get; set; }
         private Socket NetSocket { get; set; }
         private byte[] CacheBytes { get; set; }
-        private int MaxPSize { get;} = Kcp.IKCP_MTU_DEF - Kcp.IKCP_OVERHEAD;
+        private int MaxPSize { get; } = KCP.IKCP_MTU_DEF - KCP.IKCP_OVERHEAD;
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace H6Game.Base.Message
         /// <param name="netService">网络服务</param>
         /// <param name="network">网络类</param>
         /// <param name="connectConv">网络连接Conv</param>
-        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, Network network, int connectConv) 
+        public KcpChannel(Socket socket, IPEndPoint endPoint, ANetService netService, Network network, int connectConv)
             : base(netService, network, connectConv)
         {
             this.RemoteEndPoint = endPoint;
@@ -68,9 +70,18 @@ namespace H6Game.Base.Message
 
         public void InitKcp()
         {
-            this.Kcp = new Kcp((uint)this.Id, this);
-            this.Kcp.SetOutput(this.Output);
-            this.Kcp.NoDelay(1, 10, 2, 1);  //fast
+            this.CacheBytes = new byte[1400];
+            this.Kcp = KCP.KcpCreate((uint)this.Id, new IntPtr(this.Id));
+            KCP.KcpSetoutput(this.Kcp,
+                (bytes, len, k, user) =>
+                {
+                    this.Output(bytes, len, user);
+                    return len;
+                });
+
+            KCP.KcpNodelay(this.Kcp, 1, 10, 1, 1);
+            KCP.KcpWndsize(this.Kcp, 256, 256);
+            KCP.KcpSetmtu(this.Kcp, 470);
         }
 
         /// <summary>
@@ -112,7 +123,7 @@ namespace H6Game.Base.Message
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
                 length = length > MaxPSize ? MaxPSize : length;
-                this.Kcp.Send(this.SendParser.Buffer.First, offset, length);
+                KCP.KcpSendEx(this.Kcp, this.SendParser.Buffer.First, offset, length);
                 this.SendParser.Buffer.UpdateRead(length);
             }
             this.SetKcpSendTime();
@@ -126,8 +137,7 @@ namespace H6Game.Base.Message
         /// <param name="lenght"></param>
         public void HandleRecv(byte[] bytes, int offset, int lenght)
         {
-            this.CacheBytes = bytes;
-            this.Kcp.Input(bytes, offset, lenght);
+            KCP.KcpInput(this.Kcp, bytes, offset, lenght);
         }
 
         /// <summary>
@@ -137,15 +147,15 @@ namespace H6Game.Base.Message
         {
             while (true)
             {
-                int n = this.Kcp.PeekSize();
-                if (n == 0)
+                int n = KCP.KcpPeeksize(this.Kcp);
+                if (n < 0)
                     return;
 
-                int count = this.Kcp.Recv(CacheBytes, 0, CacheBytes.Length);
+                int count = KCP.KcpRecv(this.Kcp, this.CacheBytes, this.CacheBytes.Length);
                 if (count <= 0)
                     return;
 
-                this.RecvParser.WriteBuffer(CacheBytes, 0, count);
+                this.RecvParser.WriteBuffer(this.CacheBytes, 0, count);
 
                 while (true)
                 {
@@ -191,13 +201,15 @@ namespace H6Game.Base.Message
         /// <param name="bytes"></param>
         /// <param name="count"></param>
         /// <param name="user"></param>
-        private void Output(byte[] bytes, int count, object user)
+        private void Output(IntPtr bytes, int count, object user)
         {
             try
             {
-                this.NetSocket.SendTo(bytes, 0, count, SocketFlags.None, this.RemoteEndPoint);
+                var buffer = this.SendParser.Packet.BodyStream.GetBuffer();
+                Marshal.Copy(bytes, buffer, 0, count);
+                this.NetSocket.SendTo(buffer, 0, count, SocketFlags.None, this.RemoteEndPoint);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Warn(e, LoggerBllType.Network);
                 this.Disconnect();
@@ -211,8 +223,12 @@ namespace H6Game.Base.Message
         {
             var now = TimeUitls.Now();
             this.LastSendTime = now;
-            this.Kcp.Update(this.LastCheckTime);
-            this.LastCheckTime = this.Kcp.Check(now);
+
+            if (now < this.LastCheckTime)
+                return;
+
+            KCP.KcpUpdate(this.Kcp, now);
+            this.LastCheckTime = KCP.KcpCheck(this.Kcp, now);
         }
     }
 }
