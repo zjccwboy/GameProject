@@ -39,7 +39,7 @@ namespace H6Game.Base.Message
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
         private static KcpService Service { get; set; }
         private const uint UpdateInterval = 10;
-        private event KcpOutput KcpOutputEvent;
+        private event KcpOutput KcpOutputEvent = KcpOutput;
 
         /// <summary>
         /// 构造函数
@@ -76,11 +76,6 @@ namespace H6Game.Base.Message
         {
             this.CacheBytes = new byte[1400];
             this.Kcp = KCP.KcpCreate((uint)this.Id, new IntPtr(this.Id));
-#if Linux
-            KcpOutputEvent = (bytes, len, k, user) => { this.Output(bytes, len, user); return len; };
-#else
-            KcpOutputEvent = KcpOutput;
-#endif
             KCP.KcpSetoutput(this.Kcp, KcpOutputEvent);
             KCP.KcpNodelay(this.Kcp, 1, 10, 1, 1);
             KCP.KcpWndsize(this.Kcp, 256, 256);
