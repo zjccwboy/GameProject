@@ -69,9 +69,8 @@ namespace H6Game.Base.Message
             foreach(var channel in this.Channels.Values)
             {
                 channel.StartSend();
+                channel.CheckHeadbeat();
             }
-
-            this.CheckHeadbeat();
         }
 
         public override ANetChannel Connect()

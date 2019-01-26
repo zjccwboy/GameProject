@@ -38,7 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Kcp.dll">
+    <None Update="kcp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="kcp.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

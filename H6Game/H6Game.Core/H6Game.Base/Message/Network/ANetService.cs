@@ -23,38 +23,11 @@ namespace H6Game.Base.Message
             this.Network = network;
         }
 
-        private uint LastCheckHeadbeatTime = TimeUitls.Now();
-        private const uint KcpHeartbeatTime = 20 * 1000;
-        private const uint TcpHeartbeatTime = 4 * 1000;
-        private const uint WcpHeartbeatTime = 10 * 1000;
-        /// <summary>
-        /// 心跳超时时长，TCP 4秒,KCP 20秒,WebSocket 10秒
-        /// </summary>
-        public uint HeartbeatTime
-        {
-            get
-            {
-                if (this.ProtocalType == ProtocalType.Kcp)
-                {
-                    return KcpHeartbeatTime;
-                }
-                else if(this.ProtocalType == ProtocalType.Tcp)
-                {
-                    return TcpHeartbeatTime;
-                }
-                else if(this.ProtocalType == ProtocalType.Wcp)
-                {
-                    return WcpHeartbeatTime;
-                }
-                throw new NetworkException("协议类型不存在。");
-            }
-        }
-
         protected Network Network { get; }
-        protected ProtocalType ProtocalType { get; set; }
         protected Socket Acceptor { get; set; }
         protected ANetChannel ClientChannel { get; set; }
 
+        public ProtocalType ProtocalType { get; set; }
         public NetServiceType ServiceType { get; set; }
         public ConcurrentDictionary<long, ANetChannel> Channels { get; } = new ConcurrentDictionary<long, ANetChannel>();
         public Session Session { get;private set; }
@@ -66,44 +39,6 @@ namespace H6Game.Base.Message
         public abstract void Update();
         public abstract void Accept();
         public abstract ANetChannel Connect();
-
-        /// <summary>
-        /// 心跳检测
-        /// </summary>
-        protected void CheckHeadbeat()
-        {
-            var now = TimeUitls.Now();
-            if (this.ServiceType == NetServiceType.Client)
-            {
-                if (this.ClientChannel == null)
-                    return;
-
-                if (!this.ClientChannel.Connected)
-                    return;
-
-                var  timeSendSpan = now - this.ClientChannel.LastSendTime;
-                if (timeSendSpan > HeartbeatTime)
-                    this.ClientChannel.SendHeartbeat();
-            }
-            else if (this.ServiceType == NetServiceType.Server)
-            {
-                var lastCheckSpan = now - this.LastCheckHeadbeatTime;
-                if (lastCheckSpan < HeartbeatTime / 2)
-                    return;
-                LastCheckHeadbeatTime = now;
-
-                var channels = this.Channels.Values;
-                foreach (var channel in channels)
-                {
-                    var timeSpan = now - channel.LastReceivedTime;
-                    if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
-                    {
-                        Log.Debug($"{this.ProtocalType}客户端:{channel.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.Network);
-                        channel.Disconnect();
-                    }
-                }
-            }
-        }
 
         protected void AddChannel(ANetChannel channel)
         {

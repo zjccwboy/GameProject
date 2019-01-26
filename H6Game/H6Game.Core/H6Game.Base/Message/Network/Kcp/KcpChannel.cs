@@ -1,4 +1,5 @@
-﻿using H6Game.Base.Logger;
+﻿using H6Game.Base.Component;
+using H6Game.Base.Logger;
 using System;
 using System.IO;
 using System.Net;
@@ -72,13 +73,7 @@ namespace H6Game.Base.Message
         {
             this.CacheBytes = new byte[1400];
             this.Kcp = KCP.KcpCreate((uint)this.Id, new IntPtr(this.Id));
-            KCP.KcpSetoutput(this.Kcp,
-                (bytes, len, k, user) =>
-                {
-                    this.Output(bytes, len, user);
-                    return len;
-                });
-
+            KCP.KcpSetoutput(this.Kcp,(bytes, len, k, user) =>{this.Output(bytes, len, user); return len;});
             KCP.KcpNodelay(this.Kcp, 1, 10, 1, 1);
             KCP.KcpWndsize(this.Kcp, 256, 256);
             KCP.KcpSetmtu(this.Kcp, 470);
@@ -123,10 +118,10 @@ namespace H6Game.Base.Message
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
                 length = length > MaxPSize ? MaxPSize : length;
-                KCP.KcpSendEx(this.Kcp, this.SendParser.Buffer.First, offset, length);
+                KCP.KcpSend(this.Kcp, this.SendParser.Buffer.First, offset, length);
+                this.Update();
                 this.SendParser.Buffer.UpdateRead(length);
             }
-            this.SetKcpSendTime();
         }
 
         /// <summary>
@@ -135,9 +130,9 @@ namespace H6Game.Base.Message
         /// <param name="bytes"></param>
         /// <param name="offset"></param>
         /// <param name="lenght"></param>
-        public void HandleRecv(byte[] bytes, int offset, int lenght)
+        public void Input(byte[] bytes, int lenght)
         {
-            KCP.KcpInput(this.Kcp, bytes, offset, lenght);
+            KCP.KcpInput(this.Kcp, bytes, lenght);
         }
 
         /// <summary>
@@ -151,12 +146,11 @@ namespace H6Game.Base.Message
                 if (n < 0)
                     return;
 
-                int count = KCP.KcpRecv(this.Kcp, this.CacheBytes, this.CacheBytes.Length);
+                int count = KCP.KcpRecv(this.Kcp, this.CacheBytes, n);
                 if (count <= 0)
                     return;
 
                 this.RecvParser.WriteBuffer(this.CacheBytes, 0, count);
-
                 while (true)
                 {
                     if (!this.RecvParser.TryRead())
@@ -164,7 +158,7 @@ namespace H6Game.Base.Message
 
                     this.HandleReceive(this.RecvParser.Packet);
                     this.RecvParser.Packet.BodyStream.SetLength(0);
-                    this.RecvParser.Packet.BodyStream.Seek(0, System.IO.SeekOrigin.Begin);
+                    this.RecvParser.Packet.BodyStream.Seek(0, SeekOrigin.Begin);
                 }
             }
         }
@@ -193,6 +187,9 @@ namespace H6Game.Base.Message
                 this.SendParser.Clear();
                 this.RecvParser.Clear();
             }
+
+            KCP.KcpRelease(this.Kcp);
+            this.Kcp = IntPtr.Zero;
         }
 
         /// <summary>
@@ -201,13 +198,14 @@ namespace H6Game.Base.Message
         /// <param name="bytes"></param>
         /// <param name="count"></param>
         /// <param name="user"></param>
-        private void Output(IntPtr bytes, int count, object user)
+        private void Output(IntPtr bytes, int count, IntPtr user)
         {
             try
             {
+                this.LastSendTime = TimeUitls.Now();
                 var buffer = this.SendParser.Packet.BodyStream.GetBuffer();
                 Marshal.Copy(bytes, buffer, 0, count);
-                this.NetSocket.SendTo(buffer, 0, count, SocketFlags.None, this.RemoteEndPoint);
+                this.NetSocket.SendTo(buffer, count, SocketFlags.None, this.RemoteEndPoint);
             }
             catch (Exception e)
             {
@@ -217,18 +215,16 @@ namespace H6Game.Base.Message
         }
 
         /// <summary>
-        /// 设置KCP重传时间
+        /// KcpUpdate
         /// </summary>
-        private void SetKcpSendTime()
+        public void Update()
         {
             var now = TimeUitls.Now();
-            this.LastSendTime = now;
-
-            if (now < this.LastCheckTime)
-                return;
-
-            KCP.KcpUpdate(this.Kcp, now);
-            this.LastCheckTime = KCP.KcpCheck(this.Kcp, now);
+            if (now >= this.LastCheckTime)
+            {
+                KCP.KcpUpdate(this.Kcp, this.LastCheckTime);
+                this.LastCheckTime = KCP.KcpCheck(this.Kcp, now);
+            }
         }
     }
 }

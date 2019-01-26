@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace H6Game.Base.Message
+namespace H6Game.KCPWINTester
 {
     public delegate int KcpOutput(IntPtr buf, int len, IntPtr kcp, IntPtr user);
 
@@ -25,7 +25,7 @@ namespace H6Game.Base.Message
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
         private static extern uint ikcp_getconv(IntPtr ptr);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int ikcp_input(IntPtr kcp, byte[] data, int size);
+        private static extern int ikcp_inputEx(IntPtr kcp, IntPtr data, int offset, int size);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
         private static extern int ikcp_nodelay(IntPtr kcp, int nodelay, int interval, int resend, int nc);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -35,7 +35,14 @@ namespace H6Game.Base.Message
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
         private static extern void ikcp_release(IntPtr kcp);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
-        private static extern int ikcp_send(IntPtr kcp, byte[] buffer, int offset, int len);
+
+        //private static extern int ikcp_send(IntPtr kcp, byte[] buffer, int len);
+        //[DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
+
+        private static extern int ikcp_send(IntPtr kcp, IntPtr buffer, int len);
+        [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
+
+        private static extern int ikcp_sendEx(IntPtr kcp, byte[] buffer,int offset, int len);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
         private static extern void ikcp_setminrto(IntPtr ptr, int minrto);
         [DllImport(KcpDLL, CallingConvention = CallingConvention.Cdecl)]
@@ -81,13 +88,13 @@ namespace H6Game.Base.Message
             return ikcp_getconv(ptr);
         }
 
-        public static int KcpInput(IntPtr kcp, byte[] data, int size)
+        public static int KcpInput(IntPtr kcp, IntPtr data, int offset, int size)
         {
             if (kcp == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_input(kcp, data, size);
+            return ikcp_inputEx(kcp, data, offset, size);
         }
 
         public static int KcpNodelay(IntPtr kcp, int nodelay, int interval, int resend, int nc)
@@ -126,13 +133,22 @@ namespace H6Game.Base.Message
             ikcp_release(kcp);
         }
 
-        public static int KcpSend(IntPtr kcp, byte[] buffer, int offset, int len)
+        public static int KcpSend(IntPtr kcp, IntPtr buffer, int len)
         {
             if (kcp == IntPtr.Zero)
             {
                 throw new Exception($"kcp error, kcp point is zero");
             }
-            return ikcp_send(kcp, buffer, offset, len);
+            return ikcp_send(kcp, buffer, len);
+        }
+
+        public static int KcpSendEx(IntPtr kcp, byte[] buffer,int offset, int len)
+        {
+            if (kcp == IntPtr.Zero)
+            {
+                throw new Exception($"kcp error, kcp point is zero");
+            }
+            return ikcp_sendEx(kcp, buffer,offset, len);
         }
 
         public static void KcpSetminrto(IntPtr kcp, int minrto)

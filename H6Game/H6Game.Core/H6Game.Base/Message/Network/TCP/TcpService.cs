@@ -59,9 +59,8 @@ namespace H6Game.Base.Message
             {
                 channel.StartSend();
                 channel.StartRecv();
+                channel.CheckHeadbeat();
             }
-
-            this.CheckHeadbeat();
         }
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)

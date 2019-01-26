@@ -1,4 +1,6 @@
-﻿using H6Game.Base.SyncContext;
+﻿using H6Game.Base.Exceptions;
+using H6Game.Base.Logger;
+using H6Game.Base.SyncContext;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
@@ -66,7 +68,13 @@ namespace H6Game.Base.Message
         public int Id { get; set; }
         public Session Session { get { return this.NetService.Session; } }
         public uint LastConnectTime { get; protected set; } = 0;
+
+        private uint LastCheckHeadbeatTime = TimeUitls.Now();
+        private const uint KcpHeartbeatTime = 20 * 1000;
+        private const uint TcpHeartbeatTime = 4 * 1000;
+        private const uint WcpHeartbeatTime = 10 * 1000;
         public const uint ReConnectInterval = 3000;
+
         public Network Network { get; }
 
         private int rpcId;
@@ -99,6 +107,61 @@ namespace H6Game.Base.Message
             this.LastSendTime = TimeUitls.Now();
             this.SendParser.Packet.IsHeartbeat = true;
             this.SendParser.Packet.WriteBuffer();
+        }
+
+        /// <summary>
+        /// 心跳检测
+        /// </summary>
+        public void CheckHeadbeat()
+        {
+            var now = TimeUitls.Now();
+            if (this.NetService.ServiceType == NetServiceType.Client)
+            {
+
+                if (!this.Connected)
+                    return;
+
+                var timeSendSpan = now - this.LastSendTime;
+                if (timeSendSpan > HeartbeatTime)
+                    this.SendHeartbeat();
+            }
+            else if (this.NetService.ServiceType == NetServiceType.Server)
+            {
+                var lastCheckSpan = now - this.LastCheckHeadbeatTime;
+                if (lastCheckSpan < HeartbeatTime / 2)
+                    return;
+                LastCheckHeadbeatTime = now;
+
+                var timeSpan = now - this.LastReceivedTime;
+                if (timeSpan > HeartbeatTime + 2000) //允许2秒钟网络延迟
+                {
+                    Log.Debug($"{this.NetService.ProtocalType}客户端:{this.RemoteEndPoint}连接超时，心跳检测断开，心跳时长{timeSpan}.", LoggerBllType.Network);
+                    this.Disconnect();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 心跳超时时长，TCP 4秒,KCP 20秒,WebSocket 10秒
+        /// </summary>
+        private uint HeartbeatTime
+        {
+            get
+            {
+                if (this.NetService.ProtocalType == ProtocalType.Kcp)
+                {
+                    return KcpHeartbeatTime;
+                }
+                else if (this.NetService.ProtocalType == ProtocalType.Tcp)
+                {
+                    return TcpHeartbeatTime;
+                }
+                else if (this.NetService.ProtocalType == ProtocalType.Wcp)
+                {
+                    return WcpHeartbeatTime;
+                }
+                throw new NetworkException("协议类型不存在。");
+            }
         }
 
         protected void HandleReceive(Packet packet)

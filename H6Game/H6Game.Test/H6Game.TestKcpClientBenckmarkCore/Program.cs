@@ -50,18 +50,19 @@ namespace H6Game.TestKcpClientBenckmarkCore
                 };
 
                 var result = await network.CallMessageAsync<TestMessage, TestMessage>(send, 1024);
+                Count++;
                 if (result.Actor != send.Actor && result.Message != send.Message)
                 {
                     Log.Error($"解包出错。", LoggerBllType.System);
                 }
 
-                Count++;
+
                 if (Swatch.ElapsedMilliseconds >= 1000)
                 {
                     SN++;
                     Log.Info($"{SN}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
                     Swatch.Restart();
-                    Count = 0;
+                    //Count = 0;
                 }
             }
         }

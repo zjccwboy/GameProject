@@ -1,5 +1,6 @@
 ﻿using H6Game.Base.Logger;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -10,10 +11,10 @@ namespace H6Game.Base.Message
     /// </summary>
     public class KcpService : ANetService
     {
-        private readonly PacketParser ConnectParser = ParserStorage.GetParser(PacketParser.HeadSize);
-        private readonly IPEndPoint EndPoint;
         private EndPoint ReuseEndPoint = new IPEndPoint(IPAddress.Any, 0);
-        private readonly byte[] ReuseRecvBytes = new byte[1400];
+        private PacketParser ConnectParser { get; } = ParserStorage.GetParser(PacketParser.HeadSize);
+        private IPEndPoint EndPoint { get; set; }
+        private byte[] ReuseRecvBytes { get; } = new byte[1400];
 
         /// <summary>
         /// 构造函数
@@ -84,11 +85,13 @@ namespace H6Game.Base.Message
             }
 
             foreach (var channel in this.Channels.Values)
-                channel.StartSend();
+            {
+                var kChannel = channel as KcpChannel;
+                kChannel.StartSend();
+                kChannel.CheckHeadbeat();
+            }
 
             this.StartRecv();
-
-            this.CheckHeadbeat();
         }
 
         /// <summary>
@@ -141,7 +144,8 @@ namespace H6Game.Base.Message
                 if (!this.Channels.TryGetValue(connectConv, out ANetChannel channel))
                     return;
 
-                (channel as KcpChannel).HandleRecv(ReuseRecvBytes, 0, recvCount);
+                var kChannel = channel as KcpChannel;
+                kChannel.Input(ReuseRecvBytes, recvCount);
                 channel.StartRecv();
             }
 
@@ -171,6 +175,7 @@ namespace H6Game.Base.Message
         /// <param name="remoteEP"></param>
         private void HandleACK(Packet packet, Socket socket, EndPoint remoteEP)
         {
+            var conv = packet.RpcId;
             KcpChannel channel;
             if(this.ServiceType == NetServiceType.Client)
             {
@@ -181,11 +186,11 @@ namespace H6Game.Base.Message
                 channel.RemoteEndPoint = remoteEP as IPEndPoint;
                 channel.Id = packet.RpcId;
                 channel.OnConnected = OnConnect;
-                ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, packet.RpcId);
+                ConnectSender.SendACK(this.ConnectParser.Packet, this.Acceptor, remoteEP, conv);
             }
             else
             {
-                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, packet.RpcId)
+                channel = new KcpChannel(socket, remoteEP as IPEndPoint, this, conv)
                 {
                     OnConnected = OnAccept
                 };
