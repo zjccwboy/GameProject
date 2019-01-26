@@ -25,7 +25,8 @@ namespace H6Game.TestKcpClientBenckmarkCore
             }
         }
 
-        static int Count;
+        static int CallCount;
+        static int SendSn;
         static int SN;
         static Stopwatch Swatch = new Stopwatch();
 
@@ -33,7 +34,7 @@ namespace H6Game.TestKcpClientBenckmarkCore
         {
             Swatch.Start();
 
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 5000; i++)
                 Call();
         }
 
@@ -45,24 +46,24 @@ namespace H6Game.TestKcpClientBenckmarkCore
 
                 var send = new TestMessage
                 {
-                    Actor = Count,
+                    Actor = SendSn,
                     Message = "我是客户端",
                 };
-
+                SendSn++;
                 var result = await network.CallMessageAsync<TestMessage, TestMessage>(send, 1024);
-                Count++;
+
                 if (result.Actor != send.Actor && result.Message != send.Message)
                 {
                     Log.Error($"解包出错。", LoggerBllType.System);
                 }
-
-
+                CallCount++;
                 if (Swatch.ElapsedMilliseconds >= 1000)
                 {
                     SN++;
-                    Log.Info($"{SN}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{Count}", LoggerBllType.System);
+                    Log.Info($"{SN}耗时:{Swatch.ElapsedMilliseconds}/ms RPS:{CallCount}", LoggerBllType.System);
                     Swatch.Restart();
-                    //Count = 0;
+                    CallCount = 0;
+                    return;
                 }
             }
         }

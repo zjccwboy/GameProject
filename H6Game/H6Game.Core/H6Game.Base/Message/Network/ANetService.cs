@@ -3,6 +3,7 @@ using H6Game.Base.Logger;
 using H6Game.Base.SyncContext;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace H6Game.Base.Message
@@ -35,6 +36,7 @@ namespace H6Game.Base.Message
         public Action<ANetChannel> OnServerConnected { get; set; }
         public Action<ANetChannel> OnClientDisconnected { get; set; }
         public Action<ANetChannel> OnClientConnected { get; set; }
+
 
         public abstract void Update();
         public abstract void Accept();

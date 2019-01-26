@@ -95,6 +95,7 @@ namespace H6Game.Base.Message
         public abstract void Disconnect();
         public abstract void StartSend();
         public abstract void StartRecv();
+        public abstract void Update();
 
         public void AddRpcPacket(int rpcId, Action<Packet> recvAction)
         {
@@ -139,6 +140,54 @@ namespace H6Game.Base.Message
                     this.Disconnect();
                 }
             }
+        }
+
+        internal void Send<TSender>(TSender data, ushort netCommand, int rpcId)
+        {
+            var packet = this.SendParser.Packet;
+            SetHead(packet, netCommand, rpcId);
+            packet.WriteTo(data);
+        }
+
+        internal void Send(object data, ushort netCommand, int rpcId, Type type)
+        {
+            var packet = this.SendParser.Packet;
+            SetHead(packet, netCommand, rpcId);
+            packet.WriteTo(data, type);
+        }
+
+        internal void Send(ushort netCommand, int rpcId)
+        {
+            var packet = this.SendParser.Packet;
+            SetHead(packet, netCommand, rpcId);
+            packet.WriteTo();
+        }
+
+        internal void Subscribe(object data, Action<Packet> notificationAction, ushort netCommand)
+        {
+            var rpcId = this.RpcId;
+            this.AddRpcPacket(rpcId, notificationAction);
+            Send(data, netCommand, rpcId);
+        }
+
+        internal void Subscribe<TRequest>(TRequest data, Action<Packet> notificationAction, ushort netCommand)
+        {
+            var rpcId = this.RpcId;
+            this.AddRpcPacket(rpcId, notificationAction);
+            Send(data, netCommand, rpcId);
+        }
+
+        internal void Subscribe(Action<Packet> notificationAction, ushort netCommand)
+        {
+            var rpcId = this.RpcId;
+            this.AddRpcPacket(rpcId, notificationAction);
+            Send(netCommand, rpcId);
+        }
+
+        protected virtual void SetHead(Packet packet, ushort netCommand, int rpcId)
+        {
+            packet.NetCommand = netCommand;
+            packet.RpcId = rpcId;
         }
 
         /// <summary>

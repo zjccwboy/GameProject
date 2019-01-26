@@ -1,6 +1,7 @@
 ﻿using H6Game.Base.Logger;
 using H6Game.Base.SyncContext;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -68,8 +69,7 @@ namespace H6Game.Base.Message
 
             foreach(var channel in this.Channels.Values)
             {
-                channel.StartSend();
-                channel.CheckHeadbeat();
+                channel.Update();
             }
         }
 

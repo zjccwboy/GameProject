@@ -67,6 +67,15 @@ namespace H6Game.Base.Message
             }
         }
 
+        public override void Update()
+        {
+            if (!this.Connected)
+                return;
+
+            this.StartSend();
+            this.CheckHeadbeat();
+        }
+
         public override async void StartSend()
         {
             if (this.IsSending)

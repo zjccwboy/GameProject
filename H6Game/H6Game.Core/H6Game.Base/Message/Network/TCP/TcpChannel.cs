@@ -142,6 +142,13 @@ namespace H6Game.Base.Message
             OnConnected?.Invoke(this);
         }
 
+        public override void Update()
+        {
+            this.StartSend();
+            this.StartRecv();
+            this.CheckHeadbeat();
+        }
+
         /// <summary>
         /// 发送缓冲区队列中的数据(合并发送)
         /// </summary>

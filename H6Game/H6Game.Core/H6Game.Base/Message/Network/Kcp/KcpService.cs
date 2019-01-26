@@ -15,6 +15,7 @@ namespace H6Game.Base.Message
         private PacketParser ConnectParser { get; } = ParserStorage.GetParser(PacketParser.HeadSize);
         private IPEndPoint EndPoint { get; set; }
         private byte[] ReuseRecvBytes { get; } = new byte[1400];
+        protected HashSet<int> Updates { get; } = new HashSet<int>();
 
         /// <summary>
         /// 构造函数
@@ -86,12 +87,23 @@ namespace H6Game.Base.Message
 
             foreach (var channel in this.Channels.Values)
             {
-                var kChannel = channel as KcpChannel;
-                kChannel.StartSend();
-                kChannel.CheckHeadbeat();
+                if (this.Updates.Contains(channel.Id))
+                {
+                    channel.Update();
+                }
+                channel.CheckHeadbeat();
             }
-
             this.StartRecv();
+        }
+
+        public void AddUpdate(int channelId)
+        {
+            this.Updates.Add(channelId);
+        }
+
+        public void RemoveUpdate(int channelId)
+        {
+            this.Updates.Remove(channelId);
         }
 
         /// <summary>

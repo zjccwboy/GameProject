@@ -143,44 +143,32 @@ namespace H6Game.Base.Message
         
         internal void Send<TSender>(ANetChannel channel, TSender data, ushort netCommand, int rpcId)
         {
-            var packet = channel.SendParser.Packet;
-            SetHead(packet, netCommand, rpcId);
-            packet.WriteTo(data);
+            channel.Send(data, netCommand, rpcId);
         }
 
         internal void Send(ANetChannel channel, object data, ushort netCommand, int rpcId, Type type)
         {
-            var packet = channel.SendParser.Packet;
-            SetHead(packet, netCommand, rpcId);
-            packet.WriteTo(data, type);
+            channel.Send(data, netCommand, rpcId, type);
         }
 
         internal void Send(ANetChannel channel, ushort netCommand, int rpcId)
         {
-            var packet = channel.SendParser.Packet;
-            SetHead(packet, netCommand, rpcId);
-            packet.WriteTo();
+            channel.Send(netCommand, rpcId);
         }
 
         internal void Subscribe(ANetChannel channel, object data, Action<Packet> notificationAction, ushort netCommand)
         {
-            var rpcId = channel.RpcId;
-            channel.AddRpcPacket(rpcId, notificationAction);
-            Send(channel, data, netCommand, rpcId);
+            channel.Subscribe(data, notificationAction, netCommand);
         }
 
         internal void Subscribe<TRequest>(ANetChannel channel, TRequest data, Action<Packet> notificationAction, ushort netCommand)
         {
-            var rpcId = channel.RpcId;
-            channel.AddRpcPacket(rpcId, notificationAction);
-            Send(channel, data, netCommand, rpcId);
+            channel.Subscribe(data, notificationAction, netCommand);
         }
 
         internal void Subscribe(ANetChannel channel, Action<Packet> notificationAction, ushort netCommand)
         {
-            var rpcId = channel.RpcId;
-            channel.AddRpcPacket(rpcId, notificationAction);
-            Send(channel, netCommand, rpcId);
+            channel.Subscribe(notificationAction, netCommand);
         }
 
         internal void Broadcast<TRequest>(TRequest data, ushort netCommand)
@@ -188,7 +176,7 @@ namespace H6Game.Base.Message
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)
             {
-                Send(channel, data, netCommand, 0);
+                channel.Send(data, netCommand, 0);
             }
         }
 
@@ -197,14 +185,8 @@ namespace H6Game.Base.Message
             var channels = this.NService.Channels.Values;
             foreach (var channel in channels)
             {
-                Send(channel, netCommand, 0);
+                channel.Send(netCommand, 0);
             }
-        }
-
-        private void SetHead(Packet packet, ushort netCommand, int rpcId)
-        {
-            packet.NetCommand = netCommand;
-            packet.RpcId = rpcId;
         }
 
         public void Dispose()

@@ -37,6 +37,9 @@ namespace H6Game.Base.Message
         private byte[] CacheBytes { get; set; }
         private int MaxPSize { get; } = KCP.IKCP_MTU_DEF - KCP.IKCP_OVERHEAD;
         private uint LastCheckTime { get; set; } = TimeUitls.Now();
+        private static KcpService Service { get; set; }
+        private const uint UpdateInterval = 10;
+        private event KcpOutput KcpOutputEvent;
 
         /// <summary>
         /// 构造函数
@@ -73,10 +76,24 @@ namespace H6Game.Base.Message
         {
             this.CacheBytes = new byte[1400];
             this.Kcp = KCP.KcpCreate((uint)this.Id, new IntPtr(this.Id));
-            KCP.KcpSetoutput(this.Kcp,(bytes, len, k, user) =>{this.Output(bytes, len, user); return len;});
+#if Linux
+            KcpOutputEvent = (bytes, len, k, user) => { this.Output(bytes, len, user); return len; };
+#else
+            KcpOutputEvent = KcpOutput;
+#endif
+            KCP.KcpSetoutput(this.Kcp, KcpOutputEvent);
             KCP.KcpNodelay(this.Kcp, 1, 10, 1, 1);
             KCP.KcpWndsize(this.Kcp, 256, 256);
             KCP.KcpSetmtu(this.Kcp, 470);
+            Service = this.NetService as KcpService;
+        }
+
+        public static int KcpOutput(IntPtr buf, int len, IntPtr kcp, IntPtr user)
+        {
+            var channelId = user.ToInt32();
+            var channel = Service.Channels[channelId] as KcpChannel;
+            channel.Output(buf, len, user);
+            return len;
         }
 
         /// <summary>
@@ -104,6 +121,19 @@ namespace H6Game.Base.Message
             }
         }
 
+        public override void Update()
+        {
+            this.StartSend();
+
+            var now = TimeUitls.Now();
+            if (now > this.LastCheckTime)
+            {
+                KCP.KcpUpdate(this.Kcp, now);
+                Service.RemoveUpdate(this.Id);
+                this.LastCheckTime = KCP.KcpCheck(this.Kcp, now);
+            }
+        }
+
         /// <summary>
         /// 开始发送KCP数据包
         /// </summary>
@@ -112,14 +142,13 @@ namespace H6Game.Base.Message
         {
             if (!this.Connected)
                 return;
-
+            var now = TimeUitls.Now();
             while (this.SendParser.Buffer.DataSize > 0)
             {
                 var offset = this.SendParser.Buffer.FirstReadOffset;
                 var length = this.SendParser.Buffer.FirstDataSize;
                 length = length > MaxPSize ? MaxPSize : length;
                 KCP.KcpSend(this.Kcp, this.SendParser.Buffer.First, offset, length);
-                this.Update();
                 this.SendParser.Buffer.UpdateRead(length);
             }
         }
@@ -133,6 +162,7 @@ namespace H6Game.Base.Message
         public void Input(byte[] bytes, int lenght)
         {
             KCP.KcpInput(this.Kcp, bytes, lenght);
+            Service.AddUpdate(this.Id);
         }
 
         /// <summary>
@@ -192,13 +222,19 @@ namespace H6Game.Base.Message
             this.Kcp = IntPtr.Zero;
         }
 
+        protected override void SetHead(Packet packet, ushort netCommand, int rpcId)
+        {
+            Service.AddUpdate(this.Id);
+            base.SetHead(packet, netCommand, rpcId);
+        }
+
         /// <summary>
         /// KCP发送回调函数
         /// </summary>
         /// <param name="bytes"></param>
         /// <param name="count"></param>
         /// <param name="user"></param>
-        private void Output(IntPtr bytes, int count, IntPtr user)
+        public void Output(IntPtr bytes, int count, IntPtr user)
         {
             try
             {
@@ -211,19 +247,6 @@ namespace H6Game.Base.Message
             {
                 Log.Warn(e, LoggerBllType.Network);
                 this.Disconnect();
-            }
-        }
-
-        /// <summary>
-        /// KcpUpdate
-        /// </summary>
-        public void Update()
-        {
-            var now = TimeUitls.Now();
-            if (now >= this.LastCheckTime)
-            {
-                KCP.KcpUpdate(this.Kcp, this.LastCheckTime);
-                this.LastCheckTime = KCP.KcpCheck(this.Kcp, now);
             }
         }
     }

@@ -55,12 +55,27 @@ namespace H6Game.Base.Message
             if (this.ServiceType == NetServiceType.Client && ClientChannel != null)
                 ClientChannel.StartConnecting();
 
-            foreach(var channel in this.Channels.Values)
+            foreach (var channel in this.Channels.Values)
             {
-                channel.StartSend();
-                channel.StartRecv();
-                channel.CheckHeadbeat();
+                channel.Update();
             }
+        }
+
+        /// <summary>
+        /// 发送连接请求
+        /// </summary>
+        /// <returns></returns>
+        public override ANetChannel Connect()
+        {
+            if (this.ClientChannel == null)
+            {
+                ClientChannel = new TcpChannel(EndPoint, this, this.Network)
+                {
+                    OnConnected = OnConnect
+                };
+                ClientChannel.StartConnecting();
+            }
+            return this.ClientChannel;
         }
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -95,23 +110,6 @@ namespace H6Game.Base.Message
             this.OnAccept(channel);
 
             this.Accept();
-        }
-
-        /// <summary>
-        /// 发送连接请求
-        /// </summary>
-        /// <returns></returns>
-        public override ANetChannel Connect()
-        {
-            if(this.ClientChannel == null)
-            {
-                ClientChannel = new TcpChannel(EndPoint, this, this.Network)
-                {
-                    OnConnected = OnConnect
-                };
-                ClientChannel.StartConnecting();
-            }
-            return this.ClientChannel;
         }
     }
 }
