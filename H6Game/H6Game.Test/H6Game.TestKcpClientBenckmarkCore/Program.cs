@@ -34,13 +34,13 @@ namespace H6Game.TestKcpClientBenckmarkCore
         {
             Swatch.Start();
 
-            for (var i = 0; i < 5000; i++)
+            for (var i = 0; i < 500; i++)
                 Call();
         }
 
         private static async void Call()
         {
-            while (true)
+            for(var i=0;i<10000000;i++)
             {
                 var network = Game.Scene.GetComponent<NetConnectorComponent>().Network;
 

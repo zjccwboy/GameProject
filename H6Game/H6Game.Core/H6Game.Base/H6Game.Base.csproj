@@ -36,12 +36,9 @@
       <HintPath>..\..\Bin\netstandard2.0\MongoDB.Driver.Legacy.dll</HintPath>
     </Reference>
   </ItemGroup>
-
+  
   <ItemGroup>
     <None Update="kcp.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="kcp.lib">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
